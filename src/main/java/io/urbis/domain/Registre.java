@@ -15,8 +15,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,6 +26,7 @@ import javax.validation.constraints.Size;
  *
  * @author florent
  */
+@NamedQuery(name = "Registre.findMaxNumero", query = "Select max(r.numero) FROM Registre r")
 @Table(name = "registre")
 @Entity
 public class Registre extends PanacheEntityBase{
@@ -57,7 +60,7 @@ public class Registre extends PanacheEntityBase{
     
     @NotNull
     @Column(nullable = false)
-    public long annee;
+    public int annee;
     
     @NotNull
     @Column(nullable = false)
@@ -89,10 +92,15 @@ public class Registre extends PanacheEntityBase{
     @Enumerated(EnumType.STRING)
     public StatutRegistre statut;
     
+    public LocalDateTime dateAnnulation;
+    
+    @Size(max = 250)
+    public String motifAnnulation;
+    
     public Registre(){}
 
     public Registre(TypeRegistre typeRegistre, String libelle, Localite localite, Centre centre, 
-            long annee, long numero, Tribunal tribunal, String officierEtatCivilID, 
+            int annee, long numero, Tribunal tribunal, String officierEtatCivilID, 
             long numeroPremierActe, long numeroDernierActe, long nombreDeFeuillets,
             StatutRegistre statut) {
         
@@ -111,6 +119,5 @@ public class Registre extends PanacheEntityBase{
     }
 
    
-    
    
 }

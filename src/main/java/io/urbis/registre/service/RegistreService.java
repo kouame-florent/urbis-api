@@ -13,9 +13,17 @@ import io.urbis.domain.Tribunal;
 import io.urbis.domain.TypeRegistre;
 import io.urbis.dto.RegistreDto;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -24,7 +32,13 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class RegistreService {
     
-    public Registre creerRegistre(@NotNull RegistreDto registreDto){
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
+    
+    public RegistreDto creerRegistre(@NotNull RegistreDto registreDto){
         var typeRegistre = getTypeRgistre(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocalite());
         Centre centre = Centre.findById(registreDto.getCentreID());
@@ -37,7 +51,7 @@ public class RegistreService {
         
         registre.persist();
         
-        return registre;
+        return mapToDto(registre);
     }
     
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
@@ -74,9 +88,11 @@ public class RegistreService {
         
     }
     
-    public void annulerRegistre(@NotBlank String registreID){
+    public void annulerRegistre(@NotBlank String registreID, String motifAnnulation){
         Registre registre = Registre.findById(registreID);
         registre.statut = StatutRegistre.ANNULE;
+        registre.motifAnnulation = motifAnnulation;
+        registre.dateAnnulation = LocalDateTime.now();
     }
     
     public void cloturerRegistre(@NotBlank String registreID){
@@ -87,11 +103,46 @@ public class RegistreService {
     public void consulterRegistre(){}
     
     public void deplacerRegistre(){}
-      
-    public void mapToDto(){
+   
+    public List<RegistreDto> findAll(){
+        log.debug("Request to get all registres");
+        
+        Stream<Registre> registres = Registre.findAll().stream();
+        return registres.map(RegistreService::mapToDto).collect(Collectors.toList());       
     
     }
     
+    
+    /*
+    * propose une valeur pour le champ annee
+    */
+    public long annee(){
+        return LocalDateTime.now().getYear();
+    }
+    
+   /*
+    * propose une valeur pour le champ numeroRegistre
+    */
+    public long numeroRegistre(){
+   
+      TypedQuery<Long> query =  em.createNamedQuery("Registre.findMaxNumero", Long.class);
+      try{
+          return query.getSingleResult() + 1;
+      }catch(NoResultException e){
+          return 1;
+      }
+     
+        
+    }
+      
+    /*
+    * propose une valeur pour le champ numeroPremierActe
+    */
+    public long numeroPremierActe(){
+        return 1;
+    
+    }
+   
     public TypeRegistre getTypeRgistre(String value){
         switch(value){
             case "NAISSANCE":
@@ -128,6 +179,31 @@ public class RegistreService {
         
         
     }
+    
+    public static RegistreDto mapToDto(Registre registre){
+        return new RegistreDto(
+                registre.id,
+                registre.created,
+                registre.updated, 
+                registre.typeRegistre.name(), 
+                registre.libelle, 
+                registre.localite.libelle, 
+                registre.localite.id, 
+                registre.centre.libelle, 
+                registre.centre.id, 
+                registre.annee, 
+                registre.numero, 
+                registre.tribunal.libelle, 
+                registre.tribunal.id,
+                registre.officierEtatCivilID,
+                registre.numeroPremierActe, 
+                registre.numeroDernierActe, 
+                registre.nombreDeFeuillets, 
+                registre.statut.name(),
+                null,
+                null);
+    }
+    
 }
 
 

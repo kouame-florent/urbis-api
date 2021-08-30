@@ -6,6 +6,7 @@
 package io.urbis.dto;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,6 @@ public class RegistreDto {
     
     private LocalDateTime created; 
     private LocalDateTime updated;
-       
-    private long version;
     
     private String typeRegistre;
     
@@ -36,7 +35,7 @@ public class RegistreDto {
     private String centre;
     private String centreID;
     
-    private long annee;
+    private int annee;
     
     private long numero;
     
@@ -52,4 +51,9 @@ public class RegistreDto {
     private long nombreDeFeuillets;
     
     private String statut;
+    
+    private LocalDateTime dateAnnulation;
+    
+    @Size(max = 250)
+    private String motifAnnulation;
 }

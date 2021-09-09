@@ -5,8 +5,8 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.dto.TribunalDto;
-import io.urbis.registre.service.TribunalService;
+import io.urbis.dto.TypeRegistreDto;
+import io.urbis.registre.service.TypeRegistreService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,19 +16,15 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/tribunaux")
-public class TribunalResource {
+@Path("/types-registre")
+public class TypeRegistreResource {
     
     @Inject
-    TribunalService tribunalService;
+    TypeRegistreService typeRegistreService;
     
     @GET
-    public List<TribunalDto> findAll(){
-        return tribunalService.findAll();
+    public List<TypeRegistreDto> findAll(){
+        return this.typeRegistreService.findAllTypeRegistres();
     }
     
-    @GET @Path("active")
-    public TribunalDto findActive(){
-        return this.tribunalService.findActiveTribunal();
-    }
 }

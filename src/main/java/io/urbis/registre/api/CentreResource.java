@@ -27,6 +27,9 @@ public class CentreResource {
         return this.centreService.findAll();
     }
     
-    
-    
+    @GET @Path("active")
+    public CentreDto findActive(){
+        return this.centreService.findActiveCentre();
+    }
+
 }

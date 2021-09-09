@@ -7,12 +7,12 @@ package io.urbis.registre.service;
 
 import io.urbis.domain.Centre;
 import io.urbis.dto.CentreDto;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 import org.jboss.logging.Logger;
 
 /**
@@ -33,14 +33,23 @@ public class CentreService {
     
     }
     
-      public static CentreDto mapToDto(Centre centre){
-          
-          return new CentreDto(centre.id, 
-                  centre.created,
-                  centre.updated,
-                  centre.code,
-                  centre.libelle);
-      
-      }
+    /*
+    *  renvoie le seul centre enregistré
+    */
+    public CentreDto findActiveCentre(){
+        Stream<Centre> centres = Centre.findAll().stream();
+        return centres.findFirst().map(CentreService::mapToDto)
+                .orElseThrow(() -> new NotFoundException("aucun centre configuré "));
+    }
+    
+    public static CentreDto mapToDto(Centre centre){
+
+        return new CentreDto(centre.id, 
+                centre.created,
+                centre.updated,
+                centre.code,
+                centre.libelle);
+
+    }
     
 }

@@ -11,7 +11,7 @@ package io.urbis.domain;
  */
 public enum StatutRegistre {
     
-    NON_VALIDE("non validé"),
+    PROJET("projet"),
     VALIDE("validé"),
     CLOTURE("cloturé"),
     ANNULE("annulé");

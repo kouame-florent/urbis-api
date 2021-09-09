@@ -12,8 +12,11 @@ import io.urbis.domain.StatutRegistre;
 import io.urbis.domain.Tribunal;
 import io.urbis.domain.TypeRegistre;
 import io.urbis.dto.RegistreDto;
+import io.urbis.dto.TypeRegistreDto;
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
@@ -40,17 +43,20 @@ public class RegistreService {
     
     public RegistreDto creerRegistre(@NotNull RegistreDto registreDto){
         var typeRegistre = getTypeRgistre(registreDto.getTypeRegistre());
-        Localite localite = Localite.findById(registreDto.getLocalite());
+        Localite localite = Localite.findById(registreDto.getLocaliteID());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
-        var statut = getStatutRegistre(registreDto.getStatut());
+        //var statut = getStatutRegistre(registreDto.getStatut());
+        
+        log.infof("-- TYPE REGISTRE: %s", typeRegistre);
         
         Registre registre = new Registre(typeRegistre, registreDto.getLibelle(), localite, centre, registreDto.getAnnee(), 
                 registreDto.getNumero(),tribunal, registreDto.getOfficierEtatCivilID(),registreDto.getNumeroPremierActe(),
-                registreDto.getNumeroDernierActe(), registreDto.getNombreDeFeuillets(),statut);
+                registreDto.getNumeroDernierActe(), registreDto.getNombreDeFeuillets(),
+                 StatutRegistre.PROJET);
         
         registre.persist();
-        
+       // return new RegistreDto();
         return mapToDto(registre);
     }
     
@@ -108,7 +114,7 @@ public class RegistreService {
         log.debug("Request to get all registres");
         
         Stream<Registre> registres = Registre.findAll().stream();
-        return registres.map(RegistreService::mapToDto).collect(Collectors.toList());       
+        return registres.map(this::mapToDto).collect(Collectors.toList());       
     
     }
     
@@ -116,35 +122,40 @@ public class RegistreService {
     /*
     * propose une valeur pour le champ annee
     */
-    public long annee(){
+    public int annee(){
         return LocalDateTime.now().getYear();
     }
     
    /*
     * propose une valeur pour le champ numeroRegistre
     */
-    public long numeroRegistre(){
+    public long numeroRegistre(String typeRegistre){
    
       TypedQuery<Long> query =  em.createNamedQuery("Registre.findMaxNumero", Long.class);
-      try{
-          return query.getSingleResult() + 1;
-      }catch(NoResultException e){
-          return 1;
-      }
-     
-        
+      query.setParameter("typeRegistre", getTypeRgistre(typeRegistre));
+      query.setParameter("annee", annee());
+      
+       return Optional.ofNullable(query.getSingleResult())
+                  .map(r -> r + 1).orElse(1L); 
     }
       
     /*
     * propose une valeur pour le champ numeroPremierActe
     */
-    public long numeroPremierActe(){
-        return 1;
+    public long numeroPremierActe(String typeRegistre){
+         TypedQuery<Long> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Long.class);
+      query.setParameter("typeRegistre", getTypeRgistre(typeRegistre));
+      query.setParameter("annee", annee());
+      
+       return Optional.ofNullable(query.getSingleResult())
+                  .map(r -> r + 1).orElse(1L); 
     
     }
+    
+    
    
     public TypeRegistre getTypeRgistre(String value){
-        switch(value){
+        switch(value.toUpperCase()){
             case "NAISSANCE":
                 return TypeRegistre.NAISSANCE;
             case "MARIAGE":
@@ -165,7 +176,7 @@ public class RegistreService {
     public StatutRegistre getStatutRegistre(String value){
         switch(value){
             case "NON_VALIDE":
-                return StatutRegistre.NON_VALIDE;
+                return StatutRegistre.PROJET;
             case "VALIDE":
                 return StatutRegistre.VALIDE;
             case "CLOTURE":
@@ -180,7 +191,8 @@ public class RegistreService {
         
     }
     
-    public static RegistreDto mapToDto(Registre registre){
+    public  RegistreDto mapToDto(Registre registre){
+        log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);
         return new RegistreDto(
                 registre.id,
                 registre.created,

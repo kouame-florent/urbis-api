@@ -14,11 +14,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,7 +27,15 @@ import javax.validation.constraints.Size;
  *
  * @author florent
  */
-@NamedQuery(name = "Registre.findMaxNumero", query = "Select max(r.numero) FROM Registre r")
+@NamedQueries({
+    @NamedQuery(name = "Registre.findMaxNumero",
+    query = "Select max(r.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.annee = :annee"
+    ),
+    @NamedQuery(name = "Registre.findNumeroDernierActe",
+    query = "Select max(r.numeroDernierActe) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.annee = :annee"
+    ),
+    
+})
 @Table(name = "registre")
 @Entity
 public class Registre extends PanacheEntityBase{
@@ -52,10 +61,12 @@ public class Registre extends PanacheEntityBase{
    
     @NotNull
     @ManyToOne
+    @JoinColumn(nullable = false)
     public Localite localite; 
     
     @NotNull
     @ManyToOne
+    @JoinColumn(nullable = false)
     public Centre centre;
     
     @NotNull
@@ -68,6 +79,7 @@ public class Registre extends PanacheEntityBase{
     
     @NotNull
     @ManyToOne
+    @JoinColumn(nullable = false)
     public Tribunal tribunal;
     
     @NotNull

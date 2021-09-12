@@ -44,9 +44,9 @@ public class RegistreResource {
        return registreService.annee();
     }
     
-    @GET @Path("numero/{type}")
-    public long numero(@PathParam("type") String typeRegistre){
-       return registreService.numeroRegistre(typeRegistre);
+    @GET @Path("numero/{type}/{annee}")
+    public long numero(@PathParam("type") String typeRegistre, @PathParam("annee") int annee){
+       return registreService.numeroRegistre(typeRegistre,annee);
     }
     
     @GET @Path("numero-premier-acte/{type}")

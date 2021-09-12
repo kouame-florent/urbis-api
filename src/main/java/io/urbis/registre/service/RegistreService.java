@@ -129,11 +129,11 @@ public class RegistreService {
    /*
     * propose une valeur pour le champ numeroRegistre
     */
-    public long numeroRegistre(String typeRegistre){
+    public long numeroRegistre(String typeRegistre, int annee){
    
       TypedQuery<Long> query =  em.createNamedQuery("Registre.findMaxNumero", Long.class);
       query.setParameter("typeRegistre", getTypeRgistre(typeRegistre));
-      query.setParameter("annee", annee());
+      query.setParameter("annee", annee);
       
        return Optional.ofNullable(query.getSingleResult())
                   .map(r -> r + 1).orElse(1L); 

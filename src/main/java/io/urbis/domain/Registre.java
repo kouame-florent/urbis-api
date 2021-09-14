@@ -10,6 +10,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,14 +31,16 @@ import javax.validation.constraints.Size;
  */
 @NamedQueries({
     @NamedQuery(name = "Registre.findMaxNumero",
-    query = "Select max(r.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.annee = :annee"
+    query = "Select max(r.reference.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.annee = :annee"
     ),
     @NamedQuery(name = "Registre.findNumeroDernierActe",
-    query = "Select max(r.numeroDernierActe) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.annee = :annee"
+    query = "Select max(r.numeroDernierActe) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.annee = :annee"
     ),
     
 })
-@Table(name = "registre")
+@Table(name = "registre",
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
+)
 @Entity
 public class Registre extends PanacheEntityBase{
     
@@ -58,7 +62,11 @@ public class Registre extends PanacheEntityBase{
     @Column(nullable = false)
     @Size(max = 255)
     public String libelle;
+    
+    @Embedded
+    public Reference reference;
    
+    /*
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -76,6 +84,7 @@ public class Registre extends PanacheEntityBase{
     @NotNull
     @Column(nullable = false)
     public long numero;
+*/
     
     @NotNull
     @ManyToOne
@@ -83,9 +92,9 @@ public class Registre extends PanacheEntityBase{
     public Tribunal tribunal;
     
     @NotNull
-    @Column(name = "officier_etat_civil_id",nullable = false)
-    @Size(max = 255)
-    public String officierEtatCivilID;
+    @ManyToOne
+    @JoinColumn(name = "officier_etat_civil_id",nullable = false)
+    public OfficierEtatCivil officierEtatCivil;
     
     @NotNull
     @Column(name = "numero_premier_acte",nullable = false)
@@ -104,6 +113,9 @@ public class Registre extends PanacheEntityBase{
     @Enumerated(EnumType.STRING)
     public StatutRegistre statut;
     
+    @Size(max = 250)
+    public String observation;
+    
     public LocalDateTime dateAnnulation;
     
     @Size(max = 250)
@@ -111,19 +123,20 @@ public class Registre extends PanacheEntityBase{
     
     public Registre(){}
 
-    public Registre(TypeRegistre typeRegistre, String libelle, Localite localite, Centre centre, 
-            int annee, long numero, Tribunal tribunal, String officierEtatCivilID, 
+    public Registre(TypeRegistre typeRegistre, String libelle, Reference reference, Tribunal tribunal,
+            OfficierEtatCivil officierEtatCivil, 
             long numeroPremierActe, long numeroDernierActe, long nombreDeFeuillets,
             StatutRegistre statut) {
         
         this.typeRegistre = typeRegistre;
         this.libelle = libelle;
-        this.localite = localite;
-        this.centre = centre;
-        this.annee = annee;
-        this.numero = numero;
+        this.reference = reference;
+       // this.reference.localite = localite;
+       // this.reference.centre = centre;
+       // this.reference.annee = annee;
+       // this.reference.numero = numero;
         this.tribunal = tribunal;
-        this.officierEtatCivilID = officierEtatCivilID;
+        this.officierEtatCivil = officierEtatCivil;
         this.numeroPremierActe = numeroPremierActe;
         this.numeroDernierActe = numeroDernierActe;
         this.nombreDeFeuillets = nombreDeFeuillets;

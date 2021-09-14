@@ -15,6 +15,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -30,6 +31,18 @@ public class RegistreResource {
     @GET
     public List<RegistreDto> findAll(){
         return this.registreService.findAll();
+    }
+    
+    @GET @Path("/count")
+    public long count(){
+        return this.registreService.count();
+    }
+    
+    @Transactional
+    @GET @Path("{type}")
+    public List<RegistreDto> findByType(@QueryParam("offset") int offset, @QueryParam("pageSize") int pageSize,
+            @PathParam("type") String typeRegistre){
+        return this.registreService.findByType(offset, pageSize, typeRegistre);
     }
     
     @Transactional

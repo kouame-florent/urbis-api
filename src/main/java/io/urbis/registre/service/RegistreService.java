@@ -5,8 +5,12 @@
  */
 package io.urbis.registre.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
 import io.urbis.domain.Centre;
 import io.urbis.domain.Localite;
+import io.urbis.domain.OfficierEtatCivil;
+import io.urbis.domain.Reference;
 import io.urbis.domain.Registre;
 import io.urbis.domain.StatutRegistre;
 import io.urbis.domain.Tribunal;
@@ -41,22 +45,36 @@ public class RegistreService {
     @Inject
     EntityManager em;
     
+    private final int PAGE_SIZE = 25;
+    
     public RegistreDto creerRegistre(@NotNull RegistreDto registreDto){
+        
         var typeRegistre = getTypeRgistre(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocaliteID());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(registreDto.getOfficierEtatCivilID());
         //var statut = getStatutRegistre(registreDto.getStatut());
         
-        log.infof("-- TYPE REGISTRE: %s", typeRegistre);
+        Reference reference = new Reference(localite, centre, registreDto.getAnnee(),
+                registreDto.getNumero());
         
-        Registre registre = new Registre(typeRegistre, registreDto.getLibelle(), localite, centre, registreDto.getAnnee(), 
-                registreDto.getNumero(),tribunal, registreDto.getOfficierEtatCivilID(),registreDto.getNumeroPremierActe(),
-                registreDto.getNumeroDernierActe(), registreDto.getNombreDeFeuillets(),
+        log.infof("-- TYPE REGISTRE: %s", typeRegistre);
+        log.infof("-- LOCALITE: %s", localite);
+        log.infof("-- CENTRE: %s", centre);
+        log.infof("-- TRIBUNAL: %s", tribunal);
+        log.infof("-- LIBELLE REGISTRE: %s", registreDto.getLibelle());
+        log.infof("-- NUM DERNIER ACTE: %s", registreDto.getNumeroDernierActe());
+        log.infof("-- NOMBRE FEUILLETS: %s", registreDto.getNombreDeFeuillets());
+        
+        Registre registre = new Registre(typeRegistre, registreDto.getLibelle(), reference,
+                tribunal, officier, registreDto.getNumeroPremierActe(),
+                registreDto.getNumeroDernierActe(), 
+                registreDto.getNombreDeFeuillets(),
                  StatutRegistre.PROJET);
         
         registre.persist();
-       // return new RegistreDto();
+       
         return mapToDto(registre);
     }
     
@@ -67,16 +85,17 @@ public class RegistreService {
         Localite localite = Localite.findById(registreDto.getLocalite());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(registreDto.getOfficierEtatCivilID());
         var statut = getStatutRegistre(registreDto.getStatut());
+        
+        Reference reference = new Reference(localite, centre, registreDto.getAnnee(),
+                registreDto.getNumero());
         
         registre.typeRegistre = typeRegistre;
         registre.libelle = registreDto.getLibelle();
-        registre.localite = localite;
-        registre.centre = centre;
-        registre.annee = registreDto.getAnnee();
-        registre.numero = registreDto.getNumero();
+        registre.reference = reference;
         registre.tribunal = tribunal;
-        registre.officierEtatCivilID = registreDto.getOfficierEtatCivilID();
+        registre.officierEtatCivil = officier;
         registre.numeroPremierActe = registreDto.getNumeroPremierActe();
         registre.numeroDernierActe = registreDto.getNumeroDernierActe();
         registre.nombreDeFeuillets = registreDto.getNombreDeFeuillets();
@@ -116,6 +135,18 @@ public class RegistreService {
         Stream<Registre> registres = Registre.findAll().stream();
         return registres.map(this::mapToDto).collect(Collectors.toList());       
     
+    }
+    
+    public List<RegistreDto> findByType(int offset,int pageSize, String type){
+       PanacheQuery<Registre> query = Registre.find("typeRegistre", getTypeRgistre(type));
+       query.range(offset, offset + pageSize);
+       log.infof("OFFSET: %d PAGESIZE: %d", offset,offset + pageSize);
+       return query.stream().map(this::mapToDto).collect(Collectors.toList());
+      
+    }
+    
+    public long count(){
+        return Registre.count();
     }
     
     
@@ -193,27 +224,29 @@ public class RegistreService {
     
     public  RegistreDto mapToDto(Registre registre){
         log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);
+        
         return new RegistreDto(
                 registre.id,
                 registre.created,
                 registre.updated, 
                 registre.typeRegistre.name(), 
                 registre.libelle, 
-                registre.localite.libelle, 
-                registre.localite.id, 
-                registre.centre.libelle, 
-                registre.centre.id, 
-                registre.annee, 
-                registre.numero, 
+                registre.reference.localite.libelle, 
+                registre.reference.localite.id, 
+                registre.reference.centre.libelle, 
+                registre.reference.centre.id, 
+                registre.reference.annee, 
+                registre.reference.numero, 
                 registre.tribunal.libelle, 
                 registre.tribunal.id,
-                registre.officierEtatCivilID,
+                registre.officierEtatCivil.id,
                 registre.numeroPremierActe, 
                 registre.numeroDernierActe, 
                 registre.nombreDeFeuillets, 
                 registre.statut.name(),
                 null,
                 null);
+
     }
     
 }

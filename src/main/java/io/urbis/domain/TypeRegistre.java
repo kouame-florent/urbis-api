@@ -27,4 +27,14 @@ public enum TypeRegistre {
         return libelle;
     }
     
+    public static TypeRegistre fromString(String typeString){
+        for(var t : TypeRegistre.values()){
+            if(t.name().equalsIgnoreCase(typeString)){
+                return TypeRegistre.valueOf(t.name());
+            }
+        }
+        
+        throw new IllegalArgumentException(typeString);
+    }
+    
 }

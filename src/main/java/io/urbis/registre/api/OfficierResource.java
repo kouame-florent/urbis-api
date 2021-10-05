@@ -22,6 +22,7 @@ public class OfficierResource {
     @Inject
     OfficierService officierService;
     
+    
     @GET
     public List<OfficierEtatCivilDto> findAll(){
         return this.officierService.findAll();

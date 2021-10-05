@@ -35,11 +35,11 @@ public class Reference implements Serializable{
     
     @NotNull
     @Column(nullable = false)
-    public long numero;
+    public int numero; 
 
     public Reference() {}
     
-    public Reference(Localite localite, Centre centre, int annee, long numero) {
+    public Reference(Localite localite, Centre centre, int annee, int numero) {
         this.localite = localite;
         this.centre = centre;
         this.annee = annee;

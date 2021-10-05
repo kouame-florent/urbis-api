@@ -7,6 +7,7 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import io.urbis.domain.Centre;
 import io.urbis.domain.Localite;
 import io.urbis.domain.OfficierEtatCivil;
@@ -16,17 +17,15 @@ import io.urbis.domain.StatutRegistre;
 import io.urbis.domain.Tribunal;
 import io.urbis.domain.TypeRegistre;
 import io.urbis.dto.RegistreDto;
-import io.urbis.dto.TypeRegistreDto;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -49,7 +48,7 @@ public class RegistreService {
     
     public RegistreDto creerRegistre(@NotNull RegistreDto registreDto){
         
-        var typeRegistre = getTypeRgistre(registreDto.getTypeRegistre());
+        var typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocaliteID());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
@@ -81,7 +80,7 @@ public class RegistreService {
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
         Registre registre = Registre.findById(registreID);
         
-        var typeRegistre = getTypeRgistre(registreDto.getTypeRegistre());
+        var typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocalite());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
@@ -109,7 +108,12 @@ public class RegistreService {
     
     public void validerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
-        registre.statut = StatutRegistre.VALIDE;
+        if(registre.statut == StatutRegistre.PROJET){
+            registre.statut = StatutRegistre.VALIDE;
+        }else{
+            throw new IllegalStateException("cannot validate, 'registre' is not in 'PROJECT' status");
+        }
+        
         
     }
     
@@ -137,16 +141,34 @@ public class RegistreService {
     
     }
     
-    public List<RegistreDto> findByType(int offset,int pageSize, String type){
-       PanacheQuery<Registre> query = Registre.find("typeRegistre", getTypeRgistre(type));
-       query.range(offset, offset + pageSize);
+    public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero){
+       
+       PanacheQuery<Registre> query = Registre.find("typeRegistre", 
+               Sort.by("numero", Sort.Direction.Descending),TypeRegistre.fromString(type));
+       if(annee != 0){
+           query.filter("anneeFilter", Map.of("anneeLimit",annee));
+       }
+       
+       if(numero != 0){
+           query.filter("numeroFilter", Map.of("numeroLimit",numero));
+       }
+       
+       query.range(offset, offset + (pageSize-1));
        log.infof("OFFSET: %d PAGESIZE: %d", offset,offset + pageSize);
        return query.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
+ 
     
-    public long count(){
-        return Registre.count();
+    public int count(String type, int annee,int numero){
+        PanacheQuery<Registre> query = Registre.find("typeRegistre", TypeRegistre.fromString(type));
+        if(annee != 0){
+           query.filter("anneeFilter", Map.of("anneeLimit",annee));
+        }
+        if(numero != 0){
+           query.filter("numeroFilter", Map.of("numeroLimit",numero));
+       }
+        return (int)query.count();
     }
     
     
@@ -160,31 +182,31 @@ public class RegistreService {
    /*
     * propose une valeur pour le champ numeroRegistre
     */
-    public long numeroRegistre(String typeRegistre, int annee){
+    public int numeroRegistre(String typeRegistre, int annee){
    
-      TypedQuery<Long> query =  em.createNamedQuery("Registre.findMaxNumero", Long.class);
-      query.setParameter("typeRegistre", getTypeRgistre(typeRegistre));
+      TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumero", Integer.class);
+      query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
       query.setParameter("annee", annee);
       
        return Optional.ofNullable(query.getSingleResult())
-                  .map(r -> r + 1).orElse(1L); 
+                  .map(r -> r + 1).orElse(1); 
     }
       
     /*
     * propose une valeur pour le champ numeroPremierActe
     */
-    public long numeroPremierActe(String typeRegistre){
-         TypedQuery<Long> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Long.class);
-      query.setParameter("typeRegistre", getTypeRgistre(typeRegistre));
-      query.setParameter("annee", annee());
+    public int numeroPremierActe(String typeRegistre){
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
+        query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
+        query.setParameter("annee", annee());
       
        return Optional.ofNullable(query.getSingleResult())
-                  .map(r -> r + 1).orElse(1L); 
+                  .map(r -> r + 1).orElse(1); 
     
     }
     
     
-   
+   /*
     public TypeRegistre getTypeRgistre(String value){
         switch(value.toUpperCase()){
             case "NAISSANCE":
@@ -203,10 +225,11 @@ public class RegistreService {
         
         
     }
+*/
     
     public StatutRegistre getStatutRegistre(String value){
         switch(value){
-            case "NON_VALIDE":
+            case "PROJET":
                 return StatutRegistre.PROJET;
             case "VALIDE":
                 return StatutRegistre.VALIDE;

@@ -37,18 +37,18 @@ public class RegistreDto {
     
     private int annee;
     
-    private long numero;
+    private int numero;
     
     private String tribunal;
     private String tribunalID;
     
     private String officierEtatCivilID;
     
-    private long numeroPremierActe; 
+    private int numeroPremierActe; 
     
-    private long numeroDernierActe;
+    private int numeroDernierActe;
     
-    private long nombreDeFeuillets;
+    private int nombreDeFeuillets;
     
     private String statut;
     

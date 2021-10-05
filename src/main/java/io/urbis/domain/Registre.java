@@ -24,6 +24,9 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 /**
  *
@@ -40,6 +43,22 @@ import javax.validation.constraints.Size;
 })
 @Table(name = "registre",
         uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
+)
+@FilterDef(
+    name = "anneeFilter", 
+    parameters = @ParamDef(name = "anneeLimit", type = "int")
+)
+@Filter(
+    name = "anneeFilter", 
+    condition = "annee = :anneeLimit"
+)
+@FilterDef(
+    name = "numeroFilter", 
+    parameters = @ParamDef(name = "numeroLimit", type = "int")
+)
+@Filter(
+    name = "numeroFilter", 
+    condition = "numero = :numeroLimit"
 )
 @Entity
 public class Registre extends PanacheEntityBase{
@@ -65,26 +84,7 @@ public class Registre extends PanacheEntityBase{
     
     @Embedded
     public Reference reference;
-   
-    /*
-    @NotNull
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    public Localite localite; 
-    
-    @NotNull
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    public Centre centre;
-    
-    @NotNull
-    @Column(nullable = false)
-    public int annee;
-    
-    @NotNull
-    @Column(nullable = false)
-    public long numero;
-*/
+  
     
     @NotNull
     @ManyToOne
@@ -98,15 +98,15 @@ public class Registre extends PanacheEntityBase{
     
     @NotNull
     @Column(name = "numero_premier_acte",nullable = false)
-    public long numeroPremierActe; 
+    public int numeroPremierActe; 
     
     
     @Column(name = "numero_dernier_acte",nullable = false)
-    public long numeroDernierActe;
+    public int numeroDernierActe;
     
     @NotNull
     @Column(name = "nombre_de_feuillets",nullable = false)
-    public long nombreDeFeuillets;
+    public int nombreDeFeuillets;
     
     @NotNull
     @Column(nullable = false)
@@ -125,16 +125,12 @@ public class Registre extends PanacheEntityBase{
 
     public Registre(TypeRegistre typeRegistre, String libelle, Reference reference, Tribunal tribunal,
             OfficierEtatCivil officierEtatCivil, 
-            long numeroPremierActe, long numeroDernierActe, long nombreDeFeuillets,
+            int numeroPremierActe, int numeroDernierActe, int nombreDeFeuillets,
             StatutRegistre statut) {
         
         this.typeRegistre = typeRegistre;
         this.libelle = libelle;
         this.reference = reference;
-       // this.reference.localite = localite;
-       // this.reference.centre = centre;
-       // this.reference.annee = annee;
-       // this.reference.numero = numero;
         this.tribunal = tribunal;
         this.officierEtatCivil = officierEtatCivil;
         this.numeroPremierActe = numeroPremierActe;

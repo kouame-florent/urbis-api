@@ -6,7 +6,6 @@
 package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import io.urbis.domain.Centre;
 import io.urbis.domain.Localite;
@@ -20,12 +19,12 @@ import io.urbis.dto.RegistreDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -72,8 +71,10 @@ public class RegistreService {
                 registreDto.getNombreDeFeuillets(),
                  StatutRegistre.PROJET);
         
-        registre.persist();
-       
+        if(!exist(typeRegistre, localite, centre, registreDto.getAnnee(), registreDto.getNumero())){
+           registre.persist(); 
+        }
+        
         return mapToDto(registre);
     }
     
@@ -85,7 +86,7 @@ public class RegistreService {
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(registreDto.getOfficierEtatCivilID());
-        var statut = getStatutRegistre(registreDto.getStatut());
+        var statut = StatutRegistre.fromString(registreDto.getStatut());
         
         Reference reference = new Reference(localite, centre, registreDto.getAnnee(),
                 registreDto.getNumero());
@@ -141,6 +142,12 @@ public class RegistreService {
     
     }
     
+    public RegistreDto findById(String id){
+       log.infof("FIND REG WITH ID: %s", id);
+       Registre reg = Registre.findById(id);
+       return mapToDto(reg);
+    }
+    
     public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero){
        
        PanacheQuery<Registre> query = Registre.find("typeRegistre", 
@@ -172,6 +179,19 @@ public class RegistreService {
     }
     
     
+    public boolean exist(TypeRegistre typeRegistre,Localite localite,Centre centre,int annee, int numero){
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findByUniqueConstraint", Registre.class);
+        query.setParameter("typeRegistre", typeRegistre);
+        query.setParameter("localite", localite);
+        query.setParameter("centre", centre);
+        query.setParameter("annee", annee);
+        query.setParameter("numero", numero);
+        
+        List<Registre> rs = query.getResultList();
+        return !rs.isEmpty();
+        
+    }
+    
     /*
     * propose une valeur pour le champ annee
     */
@@ -188,8 +208,14 @@ public class RegistreService {
       query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
       query.setParameter("annee", annee);
       
-       return Optional.ofNullable(query.getSingleResult())
-                  .map(r -> r + 1).orElse(1); 
+      try{
+         return  query.getSingleResult() + 1;
+      }catch(NoResultException ex){
+          return 1;
+      
+      }
+      
+      
     }
       
     /*
@@ -199,9 +225,15 @@ public class RegistreService {
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
         query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
         query.setParameter("annee", annee());
+        
+        try{
+            
+            return  query.getSingleResult() + 1;
+        }catch(NoResultException ex){
+             return 1;
+
+        }
       
-       return Optional.ofNullable(query.getSingleResult())
-                  .map(r -> r + 1).orElse(1); 
     
     }
     
@@ -226,7 +258,7 @@ public class RegistreService {
         
     }
 */
-    
+  /* 
     public StatutRegistre getStatutRegistre(String value){
         switch(value){
             case "PROJET":
@@ -244,9 +276,10 @@ public class RegistreService {
         
         
     }
+*/
     
     public  RegistreDto mapToDto(Registre registre){
-        log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);
+       // log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);
         
         return new RegistreDto(
                 registre.id,
@@ -262,6 +295,7 @@ public class RegistreService {
                 registre.reference.numero, 
                 registre.tribunal.libelle, 
                 registre.tribunal.id,
+                registre.officierEtatCivil.prenoms + " " + registre.officierEtatCivil.nom,
                 registre.officierEtatCivil.id,
                 registre.numeroPremierActe, 
                 registre.numeroDernierActe, 

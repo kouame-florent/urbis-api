@@ -21,4 +21,14 @@ public enum StatutRegistre {
     private StatutRegistre(String value){
         this.value = value;
     }
+    
+    public static StatutRegistre fromString(String statutString){
+        for(var t : StatutRegistre.values()){
+            if(t.name().equalsIgnoreCase(statutString)){
+                return StatutRegistre.valueOf(t.name());
+            }
+        }
+        
+        throw new IllegalArgumentException(statutString);
+    }
 }

@@ -39,6 +39,9 @@ import org.hibernate.annotations.ParamDef;
     @NamedQuery(name = "Registre.findNumeroDernierActe",
     query = "Select max(r.numeroDernierActe) FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.annee = :annee"
     ),
+    @NamedQuery(name = "Registre.findByUniqueConstraint",
+    query = "Select r FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.localite = :localite AND r.reference.centre = :centre AND r.reference.annee = :annee AND r.reference.numero = :numero"
+    ),
     
 })
 @Table(name = "registre",

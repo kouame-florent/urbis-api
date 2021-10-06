@@ -42,6 +42,7 @@ public class RegistreDto {
     private String tribunal;
     private String tribunalID;
     
+    private String officierEtatCivilNomComplet;
     private String officierEtatCivilID;
     
     private int numeroPremierActe; 

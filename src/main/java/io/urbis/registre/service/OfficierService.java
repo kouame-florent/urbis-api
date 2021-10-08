@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.service;
 
-import io.urbis.domain.OfficierEtatCivil;
+import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.dto.OfficierEtatCivilDto;
 import java.util.List;
 import java.util.stream.Collectors;

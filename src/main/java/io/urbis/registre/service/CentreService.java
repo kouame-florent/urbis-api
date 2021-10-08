@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.service;
 
-import io.urbis.domain.Centre;
+import io.urbis.registre.domain.Centre;
 import io.urbis.dto.CentreDto;
 import java.util.List;
 import java.util.stream.Collectors;

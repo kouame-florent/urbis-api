@@ -7,24 +7,23 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
-import io.urbis.domain.Centre;
-import io.urbis.domain.Localite;
-import io.urbis.domain.OfficierEtatCivil;
-import io.urbis.domain.Reference;
-import io.urbis.domain.Registre;
-import io.urbis.domain.StatutRegistre;
-import io.urbis.domain.Tribunal;
-import io.urbis.domain.TypeRegistre;
+import io.urbis.registre.domain.Centre;
+import io.urbis.registre.domain.Localite;
+import io.urbis.registre.domain.OfficierEtatCivil;
+import io.urbis.registre.domain.Reference;
+import io.urbis.registre.domain.Registre;
+import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.registre.domain.Tribunal;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.dto.RegistreDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -109,6 +108,7 @@ public class RegistreService {
     
     public void validerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
+        
         if(registre.statut == StatutRegistre.PROJET){
             registre.statut = StatutRegistre.VALIDE;
         }else{
@@ -134,6 +134,7 @@ public class RegistreService {
     
     public void deplacerRegistre(){}
    
+    /*
     public List<RegistreDto> findAll(){
         log.debug("Request to get all registres");
         
@@ -141,6 +142,7 @@ public class RegistreService {
         return registres.map(this::mapToDto).collect(Collectors.toList());       
     
     }
+    */
     
     public RegistreDto findById(String id){
        log.infof("FIND REG WITH ID: %s", id);
@@ -208,12 +210,12 @@ public class RegistreService {
       query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
       query.setParameter("annee", annee);
       
-      try{
-         return  query.getSingleResult() + 1;
-      }catch(NoResultException ex){
-          return 1;
-      
-      }
+      var num = query.getSingleResult();
+        if(num != null){
+            return num + 1;
+        }else{
+            return 1;
+        }
       
       
     }
@@ -223,60 +225,19 @@ public class RegistreService {
     */
     public int numeroPremierActe(String typeRegistre){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
+        log.infof("NUM PREMIER QUERY: %s", query);
         query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
         query.setParameter("annee", annee());
         
-        try{
-            
-            return  query.getSingleResult() + 1;
-        }catch(NoResultException ex){
-             return 1;
-
-        }
-      
-    
-    }
-    
-    
-   /*
-    public TypeRegistre getTypeRgistre(String value){
-        switch(value.toUpperCase()){
-            case "NAISSANCE":
-                return TypeRegistre.NAISSANCE;
-            case "MARIAGE":
-                return TypeRegistre.MARIAGE;
-            case "DECES":
-                return TypeRegistre.DECES;
-            case "DIVERS":
-                return TypeRegistre.DIVERS;
-            case "SPECIAL_NAISSANCE":
-                return TypeRegistre.SPECIAL_NAISSANCE;
-            default:
-                throw new IllegalArgumentException(value);
+        var num = query.getSingleResult();
+        if(num != null){
+            return num + 1;
+        }else{
+            return 1;
         }
         
-        
     }
-*/
-  /* 
-    public StatutRegistre getStatutRegistre(String value){
-        switch(value){
-            case "PROJET":
-                return StatutRegistre.PROJET;
-            case "VALIDE":
-                return StatutRegistre.VALIDE;
-            case "CLOTURE":
-                return StatutRegistre.CLOTURE;
-            case "ANNULE":
-                return StatutRegistre.ANNULE;
-           
-            default:
-                throw new IllegalArgumentException(value);
-        }
-        
-        
-    }
-*/
+    
     
     public  RegistreDto mapToDto(Registre registre){
        // log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);

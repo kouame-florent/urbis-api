@@ -3,21 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.domain;
+package io.urbis.registre.domain;
 
 /**
  *
  * @author florent
  */
-public enum TypeLocalite {
+public enum Roles {
     
-    COMMUNE("commune"),
-    SOUS_PREFECTURE("sous-préfecture");
+    CHEF_ETAT_CIVIL,
+    AGENT_ETAT_CIVIL,
+    ARCHIVISTE;
     
-    public String value;
     
-    private TypeLocalite(String value){
-        this.value = value;
-    }
     
 }

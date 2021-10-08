@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.service;
 
-import io.urbis.domain.TypeRegistre;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.dto.TypeRegistreDto;
 import java.util.EnumSet;
 import java.util.List;

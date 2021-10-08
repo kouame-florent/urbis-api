@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.domain;
+package io.urbis.registre.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import java.time.LocalDateTime;
@@ -17,9 +17,9 @@ import javax.persistence.Version;
  *
  * @author florent
  */
-@Table(name = "officier_etat_civil")
+@Table(name = "localite")
 @Entity
-public class OfficierEtatCivil extends PanacheEntityBase{
+public class Localite extends PanacheEntityBase{
     
     @Id
     public String id = UUID.randomUUID().toString();
@@ -30,11 +30,9 @@ public class OfficierEtatCivil extends PanacheEntityBase{
     @Version
     public long version;
     
-    public String nom;
-    public String prenoms;
-    public String qualite;
-    public String titre;
-    public boolean actif;
-    public boolean maire;
+    public String code;
+    public String libelle;
+    
+    public TypeLocalite type;
     
 }

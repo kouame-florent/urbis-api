@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.domain;
+package io.urbis.registre.domain;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,10 +30,12 @@ public class Reference implements Serializable{
     @JoinColumn(nullable = false,name = "centre_id")
     public Centre centre;
     
+    @DecimalMin("1900")
     @NotNull
     @Column(nullable = false)
     public int annee;
     
+    @DecimalMin("1")
     @NotNull
     @Column(nullable = false)
     public int numero; 

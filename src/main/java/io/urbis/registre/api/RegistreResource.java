@@ -5,8 +5,8 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.domain.Registre;
-import io.urbis.domain.StatutRegistre;
+import io.urbis.registre.domain.Registre;
+import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.dto.RegistrePatchDto;
 import io.urbis.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
@@ -30,11 +30,6 @@ public class RegistreResource {
     @Inject 
     RegistreService registreService;
     
-   
-    @GET
-    public List<RegistreDto> findAll(){
-        return this.registreService.findAll();
-    } 
     
     @GET @Path("/count/{type}")
     public int count(@PathParam("type") String typeRegistre,@QueryParam("annee") int annee,

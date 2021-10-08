@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.domain;
+package io.urbis.registre.domain;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -22,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Filter;
@@ -44,9 +45,7 @@ import org.hibernate.annotations.ParamDef;
     ),
     
 })
-@Table(name = "registre",
-        uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
-)
+
 @FilterDef(
     name = "anneeFilter", 
     parameters = @ParamDef(name = "anneeLimit", type = "int")
@@ -62,6 +61,9 @@ import org.hibernate.annotations.ParamDef;
 @Filter(
     name = "numeroFilter", 
     condition = "numero = :numeroLimit"
+)
+@Table(name = "registre",
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
 )
 @Entity
 public class Registre extends PanacheEntityBase{
@@ -99,14 +101,16 @@ public class Registre extends PanacheEntityBase{
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)
     public OfficierEtatCivil officierEtatCivil;
     
+    @DecimalMin("1")
     @NotNull
     @Column(name = "numero_premier_acte",nullable = false)
     public int numeroPremierActe; 
     
-    
+    @DecimalMin("1")
     @Column(name = "numero_dernier_acte",nullable = false)
     public int numeroDernierActe;
     
+    @DecimalMin("1")
     @NotNull
     @Column(name = "nombre_de_feuillets",nullable = false)
     public int nombreDeFeuillets;

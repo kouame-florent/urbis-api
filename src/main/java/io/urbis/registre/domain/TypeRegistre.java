@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.domain;
+package io.urbis.registre.domain;
 
 /**
  *
@@ -17,7 +17,7 @@ public enum TypeRegistre {
     DIVERS("Registre d'actes divers"),
     SPECIAL_NAISSANCE("Registre spécial de naissance");
     
-    public String libelle;
+    private final String libelle;
     
     private TypeRegistre(String libelle){
         this.libelle = libelle;

@@ -6,6 +6,7 @@
 package io.urbis.naissance.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,6 +24,9 @@ public class TypeMention extends PanacheEntityBase {
     
     @Id
     public String code;
+    
+    public LocalDateTime created = LocalDateTime.now();
+    public LocalDateTime updated = LocalDateTime.now();
     
     @Version
     public long version;

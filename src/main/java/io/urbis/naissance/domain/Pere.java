@@ -20,7 +20,7 @@ public class Pere implements Serializable{
     public String prenoms;
     public String profession;
     public String lieuNaissance;
-    public Nationalite nationalite;
+    public Nationalite nationalite; 
     public LocalDateTime dateNaissance;
     public LocalDateTime dateDeces;
     public String lieuDeces;

@@ -18,4 +18,14 @@ public enum Sexe {
     private Sexe(String abreviation){
         this.abreviation = abreviation;
     }
+    
+    public static Sexe fromString(String sexe){
+        for(var t : Sexe.values()){
+            if(t.name().equalsIgnoreCase(sexe)){
+                return Sexe.valueOf(t.name());
+            }
+        }
+        
+        throw new IllegalArgumentException(sexe);
+    }
 }

@@ -23,4 +23,13 @@ public enum TypeNaissance {
         this.libelle = libelle;
     }
     
+    public static TypeNaissance fromString(String typeNaissance){
+        for(var t : TypeNaissance.values()){
+            if(t.name().equalsIgnoreCase(typeNaissance)){
+                return TypeNaissance.valueOf(t.name());
+            }
+        }
+        
+        throw new IllegalArgumentException(typeNaissance);
+    }
 }

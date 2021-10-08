@@ -23,4 +23,14 @@ public enum ModeDeclaration {
     public String getLibelle() {
         return libelle;
     }
+    
+    public static ModeDeclaration fromString(String sexe){
+        for(var t : ModeDeclaration.values()){
+            if(t.name().equalsIgnoreCase(sexe)){
+                return ModeDeclaration.valueOf(t.name());
+            }
+        }
+        
+        throw new IllegalArgumentException(sexe);
+    }
 }

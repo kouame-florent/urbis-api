@@ -34,6 +34,9 @@ public class ActeNaissance extends PanacheEntityBase{
     @Id
     public String id = UUID.randomUUID().toString();
     
+    public LocalDateTime created = LocalDateTime.now();
+    public LocalDateTime updated = LocalDateTime.now();
+    
     @Version
     public long version;
     
@@ -150,6 +153,35 @@ public class ActeNaissance extends PanacheEntityBase{
                            column=@Column(name="mere_lieu_piece")),
     })
     public Mere mere;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name="lien",
+                           column=@Column(name="declarant_lien")),
+        @AttributeOverride(name="nom",
+                           column=@Column(name="declarant_nom")),
+        @AttributeOverride(name="prenoms",
+                           column=@Column(name="declarant_prenoms")),
+        @AttributeOverride(name="profession",
+                           column=@Column(name="declarant_profession")),
+        @AttributeOverride(name="lieuNaissance",
+                           column=@Column(name="declarant_lieu_naissance")),
+        @AttributeOverride(name="nationalite",
+                           column=@Column(name="declarant_nationalite")),
+        @AttributeOverride(name="dateNaissance",
+                           column=@Column(name="declarant_date_naissance")),
+        @AttributeOverride(name="localite",
+                           column=@Column(name="declarant_localite")),
+        @AttributeOverride(name="typePiece",
+                           column=@Column(name="declarant_type_piece")),
+        @AttributeOverride(name="numeroPiece",
+                           column=@Column(name="declarant_numero_piece")),
+        @AttributeOverride(name="datePiece",
+                           column=@Column(name="declarant_date_piece")),
+        @AttributeOverride(name="lieuPiece",
+                           column=@Column(name="declarant_lieu_piece")),
+    })
+    public Declarant declarant;
     
     @Column(name = "statut")
     @Enumerated(EnumType.ORDINAL)

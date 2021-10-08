@@ -22,8 +22,6 @@ public class Declarant {
     public String lieuNaissance;
     public Nationalite nationalite;
     public LocalDateTime dateNaissance;
-    public LocalDateTime dateDeces;
-    public String lieuDeces;
     public String localite;
     public String typePiece;
     public String numeroPiece;

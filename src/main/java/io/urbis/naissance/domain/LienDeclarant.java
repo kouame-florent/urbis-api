@@ -5,7 +5,7 @@
  */
 package io.urbis.naissance.domain;
 
-import io.urbis.naissance.dto.SexeDto;
+import io.urbis.naissance.dto.LienDeclarantDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -13,22 +13,22 @@ import javax.ws.rs.core.Response;
  *
  * @author florent
  */
-public enum Sexe {
-    MASCULIN("MASCULIN"),
-    FEMININ("FEMININ");
+public enum LienDeclarant {
+    
+    PERE("Père"),
+    MERE("Mère"),
+    AUTRES("Autres");
     
     private String libelle;
     
-    private Sexe(String libelle){
+    private LienDeclarant(String libelle){
         this.libelle = libelle;
     }
 
     public String getLibelle() {
         return libelle;
     }
-    
-    
-    
+   
     public static Sexe fromString(String sexe){
         for(var t : Sexe.values()){
             if(t.name().equalsIgnoreCase(sexe)){
@@ -42,7 +42,7 @@ public enum Sexe {
        
     }
     
-    public static SexeDto mapToDto(Sexe sexe){
-        return new SexeDto(sexe.name(), sexe.getLibelle());
+    public static LienDeclarantDto mapToDto(LienDeclarant lien){
+        return new LienDeclarantDto(lien.name(), lien.getLibelle());
     }
 }

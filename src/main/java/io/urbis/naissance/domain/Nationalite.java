@@ -5,6 +5,7 @@
  */
 package io.urbis.naissance.domain;
 
+import io.urbis.naissance.dto.NationaliteDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -14,8 +15,24 @@ import javax.ws.rs.core.Response;
  */
 public enum Nationalite {
     
-    IVOIRIENNE,
-    FRANCAISE;
+    ALGERIENNE("Algerienne"),
+    BENINOISE("Beninoise"),
+    BURKINABE("Burkinabe"),
+    CAMEROUNAISE("Camerounaise"),
+    GHANEENNE("Ghanéenne"),
+    GUINEENNE("Guinéenne"),
+    IVOIRIENNE("Ivoirienne"),
+    FRANCAISE("Francaise"),
+    LIBERIENNE("Liberienne"),
+    MALIENNE("Malienne");
+    
+    
+    
+    private String libelle;
+    
+    private Nationalite(String libelle){
+        this.libelle = libelle;
+    }
     
     public static Nationalite fromString(String nationalite){
         for(var t : Nationalite.values()){
@@ -29,4 +46,14 @@ public enum Nationalite {
         throw new WebApplicationException(res);
        
     }
+    
+    public static NationaliteDto mapToDto(Nationalite nationalite){
+        return new NationaliteDto(nationalite.name(), nationalite.getLibelle());
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+    
+    
 }

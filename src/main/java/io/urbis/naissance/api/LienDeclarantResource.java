@@ -5,8 +5,9 @@
  */
 package io.urbis.naissance.api;
 
+import io.urbis.naissance.dto.LienDeclarantDto;
 import io.urbis.naissance.dto.ModeDeclarationDto;
-import io.urbis.naissance.service.ModeDeclarationService;
+import io.urbis.naissance.service.LienDeclarantService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,14 +17,15 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/modes-declaration")
-public class ModeDeclarationResource {
+@Path("/liens-declarant")
+public class LienDeclarantResource {
     
     @Inject
-    ModeDeclarationService modeDeclarationService;
+    LienDeclarantService lienDeclarantService;
     
     @GET
-    public List<ModeDeclarationDto> findAll(){
-        return modeDeclarationService.findAllModeDeclaration();
+    public List<LienDeclarantDto> findAll(){
+        return lienDeclarantService.findAllLienDeclarant();
     }
+    
 }

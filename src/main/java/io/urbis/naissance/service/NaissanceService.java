@@ -103,8 +103,7 @@ public class NaissanceService {
         
         
     }
-    
-    
+ 
     
     public int numeroActe(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);

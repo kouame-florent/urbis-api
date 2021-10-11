@@ -5,8 +5,9 @@
  */
 package io.urbis.naissance.api;
 
-import io.urbis.naissance.dto.ModeDeclarationDto;
-import io.urbis.naissance.service.ModeDeclarationService;
+import io.urbis.naissance.dto.NationaliteDto;
+import io.urbis.naissance.dto.SexeDto;
+import io.urbis.naissance.service.NationaliteService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,14 +17,14 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/modes-declaration")
-public class ModeDeclarationResource {
+@Path("/nationalites")
+public class NationaliteResource {
     
     @Inject
-    ModeDeclarationService modeDeclarationService;
+    NationaliteService nationaliteService;
     
     @GET
-    public List<ModeDeclarationDto> findAll(){
-        return modeDeclarationService.findAllModeDeclaration();
+    public List<NationaliteDto> findAll(){
+      return nationaliteService.findAllNationalite();
     }
 }

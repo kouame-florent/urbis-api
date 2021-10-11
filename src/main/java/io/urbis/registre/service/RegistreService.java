@@ -15,7 +15,7 @@ import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.domain.Tribunal;
 import io.urbis.registre.domain.TypeRegistre;
-import io.urbis.dto.RegistreDto;
+import io.urbis.registre.dto.RegistreDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +27,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
 /**
@@ -69,6 +71,8 @@ public class RegistreService {
                 registreDto.getNumeroDernierActe(), 
                 registreDto.getNombreDeFeuillets(),
                  StatutRegistre.PROJET);
+        
+        registre.indexDernierNumero = registreDto.getNumeroPremierActe();
         
         if(!exist(typeRegistre, localite, centre, registreDto.getAnnee(), registreDto.getNumero())){
            registre.persist(); 
@@ -238,6 +242,29 @@ public class RegistreService {
         
     }
     
+    /**
+     * 
+     * Retourne le registre courant utilisé
+     */
+    public RegistreDto courant(String typeString){
+        TypeRegistre typeRegistre = TypeRegistre.fromString(typeString);
+        int annee = LocalDateTime.now().getYear();
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findCourant", Registre.class);
+        query.setParameter("typeRegistre", typeRegistre);
+        query.setParameter("annee", annee);
+        query.setParameter("statut", StatutRegistre.VALIDE);
+        
+        List<Registre> rs = query.getResultList();
+       if(!rs.isEmpty()){
+           Registre r = rs.get(0);
+           return mapToDto(r);
+       }else{
+           Response res = Response.status(Response.Status.NOT_FOUND)
+                   .entity("aucun registre validé n'a été trouvé").build();
+           throw new WebApplicationException(res);
+       }
+    
+    }
     
     public  RegistreDto mapToDto(Registre registre){
        // log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);

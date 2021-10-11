@@ -7,8 +7,9 @@ package io.urbis.registre.api;
 
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
-import io.urbis.dto.RegistrePatchDto;
-import io.urbis.dto.RegistreDto;
+import io.urbis.registre.dto.RegistrePatchDto;
+import io.urbis.registre.dto.RegistreDto;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.service.RegistreService;
 import java.util.List;
 import javax.inject.Inject;
@@ -83,6 +84,11 @@ public class RegistreResource {
     @GET @Path("{id}")
     public RegistreDto findById(@PathParam("id") String id){
        return registreService.findById(id);
+    }
+    
+    @GET @Path("/courant")
+    public RegistreDto courant(@QueryParam("type") String type){      
+       return registreService.courant(type);
     }
     
     @GET @Path("annee")

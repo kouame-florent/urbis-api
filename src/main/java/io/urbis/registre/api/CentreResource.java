@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.dto.CentreDto;
+import io.urbis.registre.dto.CentreDto;
 import io.urbis.registre.service.CentreService;
 import java.util.List;
 import javax.inject.Inject;

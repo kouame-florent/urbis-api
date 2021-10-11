@@ -5,7 +5,7 @@
  */
 package io.urbis.naissance.service;
 
-import io.urbis.dto.ActeNaissanceDto;
+import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.naissance.domain.ModeDeclaration;
 import io.urbis.naissance.domain.Nationalite;
@@ -15,6 +15,9 @@ import io.urbis.naissance.domain.TypeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import javax.enterprise.context.ApplicationScoped;
+import javax.validation.constraints.NotBlank;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -23,7 +26,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class NaissanceService {
     
-    public void creerActe(ActeNaissanceDto acteNaissanceDto){
+    public void creerActe(@NotBlank ActeNaissanceDto acteNaissanceDto){
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
@@ -99,5 +102,20 @@ public class NaissanceService {
         acte.persist();
         
         
+    }
+    
+    
+    
+    public int numeroActe(@NotBlank String registreID){
+        Registre registre = Registre.findById(registreID);
+        if(registre == null){
+            throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+        }
+        if(ActeNaissance.count() > 0){
+            return registre.indexDernierNumero + 1;
+        }else{
+            return registre.numeroPremierActe;
+        }
+      
     }
 }

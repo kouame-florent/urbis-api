@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.dto.OfficierEtatCivilDto;
+import io.urbis.registre.dto.OfficierEtatCivilDto;
 import io.urbis.registre.service.OfficierService;
 import java.util.List;
 import javax.inject.Inject;

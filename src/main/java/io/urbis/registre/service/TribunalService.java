@@ -7,7 +7,7 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.registre.domain.Tribunal;
-import io.urbis.dto.TribunalDto;
+import io.urbis.registre.dto.TribunalDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;

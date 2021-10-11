@@ -5,6 +5,9 @@
  */
 package io.urbis.naissance.domain;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 /**
  *
  * @author florent
@@ -28,6 +31,8 @@ public enum StatutActeNaissance {
             }
         }
         
-        throw new IllegalArgumentException(statutString);
+        Response res = Response.status(Response.Status.BAD_REQUEST)
+                   .entity(new IllegalArgumentException(statutString)).build();
+        throw new WebApplicationException(res);
     }
 }

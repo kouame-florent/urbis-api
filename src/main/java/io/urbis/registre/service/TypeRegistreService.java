@@ -6,7 +6,7 @@
 package io.urbis.registre.service;
 
 import io.urbis.registre.domain.TypeRegistre;
-import io.urbis.dto.TypeRegistreDto;
+import io.urbis.registre.dto.TypeRegistreDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class TypeRegistreService {
     
-    public List<TypeRegistreDto> findAllTypeRegistres(){
+    public List<TypeRegistreDto> findAllTypeRegistre(){
         EnumSet<TypeRegistre> types = EnumSet.allOf(TypeRegistre.class);
         return types.stream().map(TypeRegistreService::mapToDto).collect(Collectors.toList());
     }

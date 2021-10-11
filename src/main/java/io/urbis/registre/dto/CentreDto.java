@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.dto;
+package io.urbis.registre.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -17,12 +17,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocaliteDto {
-    
+public class CentreDto {
+      
     private String id;
     
-    private LocalDateTime created ;
-    private LocalDateTime updated ;
+    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime updated = LocalDateTime.now();
     
     private String code;
     private String libelle;

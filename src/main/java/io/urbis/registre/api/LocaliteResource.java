@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.dto.LocaliteDto;
+import io.urbis.registre.dto.LocaliteDto;
 import io.urbis.registre.service.LocaliteService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;

@@ -7,7 +7,7 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.registre.domain.Localite;
-import io.urbis.dto.LocaliteDto;
+import io.urbis.registre.dto.LocaliteDto;
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;

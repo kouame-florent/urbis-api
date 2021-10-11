@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.api;
+package io.urbis.naissance.api;
 
-import io.urbis.registre.dto.TypeRegistreDto;
-import io.urbis.registre.service.TypeRegistreService;
+import io.urbis.naissance.dto.TypeNaissanceDto;
+import io.urbis.naissance.service.TypeNaissanceService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,15 +16,14 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/types-registre")
-public class TypeRegistreResource {
+@Path("/types-naissance")
+public class TypeNaissanceResource {
     
     @Inject
-    TypeRegistreService typeRegistreService;
+    TypeNaissanceService typeNaissanceService;
     
     @GET
-    public List<TypeRegistreDto> findAll(){
-        return this.typeRegistreService.findAllTypeRegistre();
+    public List<TypeNaissanceDto> findAll(){
+        return typeNaissanceService.findAllTypeNaissance();
     }
-    
 }

@@ -5,7 +5,7 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.dto.TribunalDto;
+import io.urbis.registre.dto.TribunalDto;
 import io.urbis.registre.service.TribunalService;
 import java.util.List;
 import javax.inject.Inject;

@@ -5,6 +5,10 @@
  */
 package io.urbis.naissance.domain;
 
+import io.urbis.naissance.dto.ModeDeclarationDto;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 /**
  *
  * @author florent
@@ -24,13 +28,19 @@ public enum ModeDeclaration {
         return libelle;
     }
     
-    public static ModeDeclaration fromString(String sexe){
+    public static ModeDeclaration fromString(String modeDeclaration){
         for(var t : ModeDeclaration.values()){
-            if(t.name().equalsIgnoreCase(sexe)){
+            if(t.name().equalsIgnoreCase(modeDeclaration)){
                 return ModeDeclaration.valueOf(t.name());
             }
         }
+        Response res = Response.status(Response.Status.BAD_REQUEST)
+                   .entity(new IllegalArgumentException(modeDeclaration)).build();
+        throw new WebApplicationException(res);
         
-        throw new IllegalArgumentException(sexe);
+    }
+    
+    public static ModeDeclarationDto mapToDto(ModeDeclaration type){
+        return new ModeDeclarationDto(type.name(), type.getLibelle());
     }
 }

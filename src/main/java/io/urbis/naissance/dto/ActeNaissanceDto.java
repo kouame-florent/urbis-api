@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.dto;
+package io.urbis.naissance.dto;
 
-import io.urbis.naissance.domain.Nationalite;
+
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -82,8 +82,7 @@ public class ActeNaissanceDto {
     private String declarantNumeroPiece;
     private LocalDateTime declarantDatePiece;
     private String declarantLieuPiece;
-    
-   
+  
     private String statut;
     private String motifAnnulation;
     private int nombreCopiesIntegrales;

@@ -5,6 +5,9 @@
  */
 package io.urbis.naissance.domain;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 /**
  *
  * @author florent
@@ -26,6 +29,9 @@ public enum Sexe {
             }
         }
         
-        throw new IllegalArgumentException(sexe);
+        Response res = Response.status(Response.Status.BAD_REQUEST)
+                   .entity(new IllegalArgumentException(sexe)).build();
+        throw new WebApplicationException(res);
+       
     }
 }

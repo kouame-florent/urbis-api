@@ -5,6 +5,10 @@
  */
 package io.urbis.naissance.domain;
 
+import io.urbis.naissance.dto.TypeNaissanceDto;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 /**
  *
  * @author florent
@@ -17,11 +21,16 @@ public enum TypeNaissance {
     ENFANT_NATUREL("Enfant naturle"),
     ENFANT_SANS_MERE("Enfant sans mère/Enfant trouvé");
    
-    private String libelle;
+    private final String libelle;
     
     private TypeNaissance(String libelle){
         this.libelle = libelle;
     }
+
+    public String getLibelle() {
+        return libelle;
+    }
+   
     
     public static TypeNaissance fromString(String typeNaissance){
         for(var t : TypeNaissance.values()){
@@ -30,6 +39,12 @@ public enum TypeNaissance {
             }
         }
         
-        throw new IllegalArgumentException(typeNaissance);
+        Response res = Response.status(Response.Status.BAD_REQUEST)
+                   .entity(new IllegalArgumentException(typeNaissance)).build();
+        throw new WebApplicationException(res);
+    }
+    
+    public static TypeNaissanceDto mapToDto(TypeNaissance type){
+        return new TypeNaissanceDto(type.name(), type.getLibelle());
     }
 }

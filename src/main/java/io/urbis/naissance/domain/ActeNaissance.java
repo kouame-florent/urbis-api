@@ -183,6 +183,51 @@ public class ActeNaissance extends PanacheEntityBase{
     })
     public Declarant declarant;
     
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name="nom",
+                           column=@Column(name="interprete_nom")),
+        @AttributeOverride(name="prenoms",
+                           column=@Column(name="interprete_prenoms")),
+        @AttributeOverride(name="profession",
+                           column=@Column(name="interprete_profession")),
+        @AttributeOverride(name="dateNaissance",
+                           column=@Column(name="interprete_date_naissance")),
+        @AttributeOverride(name="domicile",
+                           column=@Column(name="interprete_domicile")),
+        @AttributeOverride(name="langue",
+                           column=@Column(name="interprete_langue")),
+    })
+    public Interprete interprete;
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name="premierNom",
+                           column=@Column(name="temoin_1_nom")),
+        @AttributeOverride(name="premierPrenoms",
+                           column=@Column(name="temoin_1_prenoms")),
+        @AttributeOverride(name="premierDateNaissance",
+                           column=@Column(name="temoin_1_date_naissance")),
+        @AttributeOverride(name="premierProfession",
+                           column=@Column(name="temoin_1_profession")),
+        @AttributeOverride(name="premierDomicile",
+                           column=@Column(name="temoin_1_domicile")),
+        @AttributeOverride(name="deuxiemeNom",
+                           column=@Column(name="temoin_2_nom")),
+        @AttributeOverride(name="deuxiemePrenoms",
+                           column=@Column(name="temoin_2_prenoms")),
+        @AttributeOverride(name="deuxiemeDateNaissance",
+                           column=@Column(name="temoin_2_date_naissance")),
+        @AttributeOverride(name="deuxiemeProfession",
+                           column=@Column(name="temoin_2_profession")),
+        @AttributeOverride(name="deuxiemeDomicile",
+                           column=@Column(name="temoin_2_domicile")),
+        
+    })
+    public Temoins temoins;
+    
+    
+    
     @Column(name = "statut")
     @Enumerated(EnumType.ORDINAL)
     public StatutActeNaissance statut;

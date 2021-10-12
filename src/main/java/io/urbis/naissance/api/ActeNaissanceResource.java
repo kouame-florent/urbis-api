@@ -6,7 +6,7 @@
 package io.urbis.naissance.api;
 
 import io.urbis.naissance.dto.ActeNaissanceDto;
-import io.urbis.naissance.service.NaissanceService;
+import io.urbis.naissance.service.ActeNaissanceService;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.GET;
@@ -22,7 +22,7 @@ import javax.ws.rs.PathParam;
 public class ActeNaissanceResource {
     
     @Inject
-    NaissanceService naissanceService;
+    ActeNaissanceService naissanceService;
     
     @Transactional
     @POST

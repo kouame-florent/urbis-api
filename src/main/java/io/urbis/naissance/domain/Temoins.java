@@ -6,6 +6,7 @@
 package io.urbis.naissance.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 
 /**
@@ -13,17 +14,17 @@ import javax.persistence.Embeddable;
  * @author florent
  */
 @Embeddable
-public class Temoin implements Serializable{
+public class Temoins implements Serializable{
     
     public String premierNom;
     public String premierPrenoms;
-    public int premierAge;
+    public LocalDateTime premierDateNaissance;
     public String premierProfession;
     public String premierDomicile;
     
     public String deuxiemeNom;
     public String deuxiemePrenoms;
-    public int deuxiemeAge;
+    public LocalDateTime deuxiemeDateNaissance;
     public String deuxiemeProfession;
     public String deuxiemeDomicile;
 }

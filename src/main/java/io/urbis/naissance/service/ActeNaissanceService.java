@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
  * @author florent
  */
 @ApplicationScoped
-public class NaissanceService {
+public class ActeNaissanceService {
     
     public void creerActe(@NotBlank ActeNaissanceDto acteNaissanceDto){
         

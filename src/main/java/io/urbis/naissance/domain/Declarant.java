@@ -23,7 +23,7 @@ public class Declarant {
     public Nationalite nationalite;
     public LocalDateTime dateNaissance;
     public String localite;
-    public String typePiece;
+    public TypePiece typePiece;
     public String numeroPiece;
     public LocalDateTime datePiece;
     public String lieuPiece;

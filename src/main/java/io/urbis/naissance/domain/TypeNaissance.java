@@ -38,7 +38,7 @@ public enum TypeNaissance {
                 return TypeNaissance.valueOf(t.name());
             }
         }
-        
+        System.out.printf("CANNOT GET ENUM TYPE NAISSANCE FROM: %s", typeNaissance);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(typeNaissance)).build();
         throw new WebApplicationException(res);

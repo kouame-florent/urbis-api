@@ -35,7 +35,7 @@ public enum Sexe {
                 return Sexe.valueOf(t.name());
             }
         }
-        
+        System.out.printf("CANNOT GET ENUM SEXE FROM: %s", sexe);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(sexe)).build();
         throw new WebApplicationException(res);

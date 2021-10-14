@@ -31,7 +31,7 @@ public enum StatutRegistre {
                 return StatutRegistre.valueOf(t.name());
             }
         }
-        
+        System.out.printf("CANNOT GET ENUM STATUT REGISTRE FROM: %s", statutString);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(statutString)).build();
         throw new WebApplicationException(res);

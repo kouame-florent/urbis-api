@@ -7,6 +7,8 @@ package io.urbis.naissance.dto;
 
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,10 +23,12 @@ public class ActeNaissanceDto {
     private LocalDateTime created; 
     private LocalDateTime updated; 
     
+    @NotBlank
     private String registreID;
+    @Min(1)
     private int numero;
     
-    private LocalDateTime enfantDateNaissance;
+    private String enfantDateNaissance;
     private String enfantLieuNaissance;
     private String enfantSexe;
     private String enfantLocalite;
@@ -32,11 +36,11 @@ public class ActeNaissanceDto {
     private String enfantPrenoms;
     private String enfantNationalite;  
 
-    private LocalDateTime dateDeclaration;
-    private LocalDateTime dateDressage;
-    private LocalDateTime dateEnregistrement;
+    private String dateDeclaration;
+    private String dateDressage;
+   // private String dateEnregistrement;
     
-    private LocalDateTime jugementDate;
+    private String jugementDate;
     private String jugementNumero;
     private String jugementTribunal;
     
@@ -48,13 +52,13 @@ public class ActeNaissanceDto {
     private String pereProfession;
     private String pereLieuNaissance;
     private String pereNationalite;
-    private LocalDateTime pereDateNaissance;
-    private LocalDateTime pereDateDeces;
+    private String pereDateNaissance;
+    private String pereDateDeces;
     private String pereLieuDeces;
     private String pereLocalite;
     private String pereTypePiece;
     private String pereNumeroPiece;
-    private LocalDateTime pereDatePiece;
+    private String pereDatePiece;
     private String pereLieuPiece;
     
     private String mereNom;
@@ -62,45 +66,46 @@ public class ActeNaissanceDto {
     private String mereProfession;
     private String mereLieuNaissance;
     private String mereNationalite;
-    private LocalDateTime mereDateNaissance;
-    private LocalDateTime mereDateDeces;
+    private String mereDateNaissance;
+    private String mereDateDeces;
     private String mereLieuDeces;
     private String mereLocalite;
     private String mereTypePiece;
     private String mereNumeroPiece;
-    private LocalDateTime mereDatePiece;
+    private String mereDatePiece;
     private String mereLieuPiece;
     
+    private String declarantLien;
     private String declarantNom;
     private String declarantPrenoms;
     private String declarantProfession;
     private String declarantLieuNaissance;
     private String declarantNationalite;
-    private LocalDateTime declarantDateNaissance;
+    private String declarantDateNaissance;
     private String declarantLocalite;
     private String declarantTypePiece;
     private String declarantNumeroPiece;
-    private LocalDateTime declarantDatePiece;
+    private String declarantDatePiece;
     private String declarantLieuPiece;
     
-    public String interpreteNom;
-    public String interpretePrenoms;
-    public String interpreteProfession;
-    public LocalDateTime interpreteDateNaissance;
-    public String interpreteDomicile;
-    public String interpreteLangue;
+    private String interpreteNom;
+    private String interpretePrenoms;
+    private String interpreteProfession;
+    private String interpreteDateNaissance;
+    private String interpreteDomicile;
+    private String interpreteLangue;
     
-    public String temoinPremierNom;
-    public String temoinPremierPrenoms;
-    public LocalDateTime temoinPremierDateNaissance;
-    public String temoinPremierProfession;
-    public String temoinPremierDomicile;
+    private String temoinPremierNom;
+    private String temoinPremierPrenoms;
+    private String temoinPremierDateNaissance;
+    private String temoinPremierProfession;
+    private String temoinPremierDomicile;
     
-    public String temoinDeuxiemeNom;
-    public String temoinDeuxiemePrenoms;
-    public LocalDateTime temoinDeuxiemeDateNaissance;
-    public String temoinDeuxiemeProfession;
-    public String temoinDeuxiemeDomicile;
+    private String temoinDeuxiemeNom;
+    private String temoinDeuxiemePrenoms;
+    private String temoinDeuxiemeDateNaissance;
+    private String temoinDeuxiemeProfession;
+    private String temoinDeuxiemeDomicile;
   
     private String statut;
     private String motifAnnulation;

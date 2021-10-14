@@ -26,8 +26,6 @@ public enum Nationalite {
     LIBERIENNE("Liberienne"),
     MALIENNE("Malienne");
     
-    
-    
     private String libelle;
     
     private Nationalite(String libelle){
@@ -40,7 +38,7 @@ public enum Nationalite {
                 return Nationalite.valueOf(t.name());
             }
         }
-        
+        System.out.printf("CANNOT GET ENUM NATIONALITE FROM: %s", nationalite);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(nationalite)).build();
         throw new WebApplicationException(res);

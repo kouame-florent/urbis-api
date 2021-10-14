@@ -36,6 +36,7 @@ public enum TypeRegistre {
                 return TypeRegistre.valueOf(t.name());
             }
         }
+        System.out.printf("CANNOT GET ENUM TYPE REGISTRE FROM: %s", typeString);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(typeString)).build();
         throw new WebApplicationException(res);

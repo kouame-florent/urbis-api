@@ -28,6 +28,7 @@ public class ActeNaissanceResource {
     @POST
     public void create(ActeNaissanceDto acteNaissanceDto){
         naissanceService.creerActe(acteNaissanceDto);
+        
     }
     
     @GET

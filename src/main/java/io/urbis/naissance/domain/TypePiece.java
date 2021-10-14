@@ -34,7 +34,7 @@ public enum TypePiece {
                 return TypePiece.valueOf(t.name());
             }
         }
-        
+        System.out.printf("CANNOT GET ENUM TYPE PIECE FROM: %s", type);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(type)).build();
         throw new WebApplicationException(res);

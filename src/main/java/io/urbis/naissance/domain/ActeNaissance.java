@@ -69,8 +69,8 @@ public class ActeNaissance extends PanacheEntityBase{
     @Column(name = "date_dressage")
     public LocalDateTime dateDressage;
     
-    @Column(name = "date_enregistrement")
-    public LocalDateTime dateEnregistrement;
+   // @Column(name = "date_enregistrement")
+   // public LocalDateTime dateEnregistrement;
     
     @Embedded
     @AttributeOverrides({
@@ -245,5 +245,21 @@ public class ActeNaissance extends PanacheEntityBase{
     @ManyToOne
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)
     public OfficierEtatCivil officierEtatCivil;
+
+    public ActeNaissance() {
+    }
+
+    public ActeNaissance(Enfant enfant, Jugement jugement, Pere pere, Mere mere,
+            Declarant declarant, Interprete interprete, Temoins temoins) {
+        this.enfant = enfant;
+        this.jugement = jugement;
+        this.pere = pere;
+        this.mere = mere;
+        this.declarant = declarant;
+        this.interprete = interprete;
+        this.temoins = temoins;
+    }
+    
+    
     
 } 

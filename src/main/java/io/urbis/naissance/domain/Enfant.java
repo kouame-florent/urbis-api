@@ -20,7 +20,10 @@ public class Enfant implements Serializable{
     
     public LocalDateTime dateNaissance;
     public String lieuNaissance;
+    
+    @Enumerated(EnumType.STRING)
     public Sexe sexe;
+    
     public String localite;
     public String nom;
     public String prenoms;

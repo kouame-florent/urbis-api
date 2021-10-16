@@ -7,12 +7,14 @@ package io.urbis.naissance.api;
 
 import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.service.ActeNaissanceService;
+import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -30,6 +32,18 @@ public class ActeNaissanceResource {
         naissanceService.creerActe(acteNaissanceDto);
         
     }
+    
+    @Transactional
+    @GET
+    public List<ActeNaissanceDto> findWithFilters(@QueryParam("offset") int offset, @QueryParam("page-size") int pageSize){
+        return naissanceService.findWithFilters(offset, pageSize);
+    }
+    
+    @GET @Path("/count")
+    public int count(){
+        return naissanceService.count();
+    }
+    
     
     @GET
     @Path("/numero-acte/{id}")

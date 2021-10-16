@@ -16,7 +16,10 @@ import javax.ws.rs.core.Response;
 public enum TypePiece {
     
     CNI("Carte nationale d'indentite"),
-    PASSEPORT("Passeport");
+    PASSEPORT("Passeport"),
+    CARTE_CONSULAIRE("Carte consulaire"),
+    CARTE_DE_SEJOUR("Carte de séjour"),
+    ATTESTATION_IDENTITE("Attestation d’identité");
     
     private final String libelle;
     

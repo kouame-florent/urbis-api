@@ -96,6 +96,7 @@ public class Registre extends PanacheEntityBase{
     @Size(max = 255)
     public String libelle;
     
+    @NotNull
     @Embedded
     public Reference reference;
   

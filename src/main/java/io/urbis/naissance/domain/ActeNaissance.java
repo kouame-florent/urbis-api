@@ -21,13 +21,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
  *
  * @author florent
  */
-@Table(name = "acte_naissance")
+@Table(name = "acte_naissance",uniqueConstraints = { 
+    @UniqueConstraint(columnNames = {"registre_id","numero"})
+})
 @Entity
 public class ActeNaissance extends PanacheEntityBase{
     
@@ -41,7 +44,7 @@ public class ActeNaissance extends PanacheEntityBase{
     public long version;
     
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false,name = "registre_id")
     public Registre registre;
     
     public int numero;

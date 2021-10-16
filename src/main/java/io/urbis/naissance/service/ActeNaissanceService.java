@@ -5,6 +5,7 @@
  */
 package io.urbis.naissance.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.common.service.DateTimeUtils;
 import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.domain.ActeNaissance;
@@ -23,9 +24,13 @@ import io.urbis.naissance.domain.TypeNaissance;
 import io.urbis.naissance.domain.TypePiece;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
@@ -41,7 +46,7 @@ public class ActeNaissanceService {
     Logger log;
     
     
-    public void creerActe(@NotBlank ActeNaissanceDto acteNaissanceDto){
+    public void creerActe(@NotNull ActeNaissanceDto acteNaissanceDto){
         
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
@@ -219,11 +224,26 @@ public class ActeNaissanceService {
         
         acte.persist();
         
+        //incrementer l'index du registre
+        registre.indexDernierNumero += 1;
+        registre.persist();
         
         
     }
+    
+    
+    public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize){
+        PanacheQuery<ActeNaissance>  query = ActeNaissance.findAll();
+        return query.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+    
+    public int count(){
+        return (int)ActeNaissance.count();
+    }
+    
+    
  
-    public ActeNaissanceDto mapToDto(ActeNaissance acte){
+    public ActeNaissanceDto mapToDto(@NotNull ActeNaissance acte){
         ActeNaissanceDto dto = new ActeNaissanceDto();
         
         dto.setCreated(acte.created);
@@ -234,116 +254,175 @@ public class ActeNaissanceService {
         if(acte.dateDressage != null){
             dto.setDateDressage(DateTimeUtils.fromDateTimeToString(acte.dateDressage));
         }
-        
-      //  dto.setDateEnregistrement(DateTimeUtils.fromDateTimeToString(acte.dateEnregistrement));
-        
-        dto.setDeclarantLien(acte.declarant.lien);
+         
         if(acte.declarant.dateNaissance != null){
             dto.setDeclarantDateNaissance(DateTimeUtils.fromDateTimeToString(acte.declarant.dateNaissance));
         }
         if(acte.declarant.datePiece != null){
             dto.setDeclarantDatePiece(DateTimeUtils.fromDateTimeToString(acte.declarant.datePiece));
         }
+     
+        Optional.ofNullable(acte.declarant).ifPresent(d -> {
+            dto.setDeclarantLien(d.lien);
+            dto.setDeclarantLieuNaissance(d.lieuNaissance);
+            dto.setDeclarantLieuPiece(d.lieuPiece);
+            dto.setDeclarantLocalite(d.localite);
+            dto.setDeclarantNom(d.nom);
+            dto.setDeclarantNumeroPiece(d.numeroPiece);
+            dto.setDeclarantPrenoms(d.prenoms);
+            dto.setDeclarantProfession(d.profession);
+        });
+     
+        Optional.ofNullable(acte.declarant).map(d -> d.nationalite).ifPresent(n -> {
+            dto.setDeclarantNationalite(n.name()); 
+        });
         
-        dto.setDeclarantLieuNaissance(acte.declarant.lieuNaissance);
-        dto.setDeclarantLieuPiece(acte.declarant.lieuPiece);
-        dto.setDeclarantLocalite(acte.declarant.localite);
-        dto.setDeclarantNationalite(acte.declarant.nationalite.name());
-        dto.setDeclarantNom(acte.declarant.nom);
-        dto.setDeclarantNumeroPiece(acte.declarant.numeroPiece);
-        dto.setDeclarantPrenoms(acte.declarant.prenoms);
-        dto.setDeclarantProfession(acte.declarant.profession);
-        dto.setDeclarantTypePiece(acte.declarant.typePiece.name());
+        Optional.ofNullable(acte.declarant).map(d -> d.typePiece).ifPresent(t -> {
+            dto.setDeclarantTypePiece(t.name()); 
+        });
+    
+        Optional.ofNullable(acte.enfant).ifPresent(e -> {
+            dto.setEnfantNom(acte.enfant.nom);
+            dto.setEnfantPrenoms(acte.enfant.prenoms);
+        });
         
-        if(acte.enfant.dateNaissance != null){
-            dto.setEnfantDateNaissance(DateTimeUtils.fromDateTimeToString(acte.enfant.dateNaissance));
-        }
+        Optional.ofNullable(acte.enfant).map(e -> e.dateNaissance).ifPresent(d -> {
+            dto.setEnfantDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+        });
         
-        dto.setEnfantLieuNaissance(acte.enfant.lieuNaissance);
-        dto.setEnfantLocalite(acte.enfant.lieuNaissance);
-        dto.setEnfantNationalite(acte.enfant.nationalite.name());
-        dto.setEnfantNom(acte.enfant.nom);
-        dto.setEnfantPrenoms(acte.enfant.prenoms);
-        dto.setEnfantSexe(acte.enfant.sexe.name());
+        Optional.ofNullable(acte.enfant).map(e -> e.nationalite).ifPresent(n -> {
+            dto.setEnfantNationalite(n.name());
+        });
         
-        if(acte.interprete.dateNaissance != null){
+        Optional.ofNullable(acte.enfant).map(e -> e.sexe).ifPresent(s -> {
+            dto.setEnfantSexe(s.name());
+        });
+     
+        Optional.ofNullable(acte.interprete).ifPresent(i -> {
+            dto.setInterpreteDomicile(i.domicile);
+            dto.setInterpreteLangue(i.langue);
+            dto.setInterpreteNom(i.nom);
+            dto.setInterpretePrenoms(i.prenoms);
+            dto.setInterpreteProfession(i.profession);
+        });
+        
+        Optional.ofNullable(acte.interprete).map(i -> i.dateNaissance).ifPresent(d -> {
             dto.setInterpreteDateNaissance(DateTimeUtils.fromDateTimeToString(acte.interprete.dateNaissance));
-        }
+        });
         
-        dto.setInterpreteDomicile(acte.interprete.domicile);
-        dto.setInterpreteLangue(acte.interprete.langue);
-        dto.setInterpreteNom(acte.interprete.nom);
-        dto.setInterpretePrenoms(acte.interprete.prenoms);
-        dto.setInterpreteProfession(acte.interprete.profession);
+        Optional.ofNullable(acte.jugement).ifPresent(j -> {
+            dto.setJugementNumero(j.numero);
+            dto.setJugementTribunal(j.tribunal);
         
-        if(acte.jugement.date != null){
+        });
+        
+        Optional.ofNullable(acte.jugement).map(j -> j.date).ifPresent(d -> {
             dto.setJugementDate(DateTimeUtils.fromDateTimeToString(acte.jugement.date));
-        }
+        });
         
-        dto.setJugementNumero(acte.jugement.numero);
-        dto.setJugementTribunal(acte.jugement.tribunal);
+        //mere
+        Optional.ofNullable(acte.mere).ifPresent(m -> {
+            dto.setMereLieuDeces(m.lieuDeces);
+            dto.setMereLieuNaissance(m.lieuNaissance);
+            dto.setMereLieuPiece(m.lieuPiece);
+            dto.setMereLocalite(m.localite);
+            dto.setMereNom(m.nom);
+            dto.setMereNumeroPiece(m.numeroPiece);
+            dto.setMerePrenoms(m.prenoms);
+            dto.setMereProfession(m.profession);
         
-        if(acte.mere.dateDeces != null){
-            dto.setMereDateDeces(DateTimeUtils.fromDateTimeToString(acte.mere.dateDeces));
-        }
-        if(acte.mere.dateNaissance != null){
-            dto.setMereDateNaissance(DateTimeUtils.fromDateTimeToString(acte.mere.dateNaissance));
-        }
-        if(acte.mere.datePiece != null){
-            dto.setMereDatePiece(DateTimeUtils.fromDateTimeToString(acte.mere.datePiece));
-        }
+        });
         
-        dto.setMereLieuDeces(acte.mere.lieuDeces);
-        dto.setMereLieuNaissance(acte.mere.lieuNaissance);
-        dto.setMereLieuPiece(acte.mere.lieuPiece);
-        dto.setMereLocalite(acte.mere.localite);
-        dto.setMereNationalite(acte.mere.nationalite.name());
-        dto.setMereNom(acte.mere.nom);
-        dto.setMereNumeroPiece(acte.mere.numeroPiece);
-        dto.setMerePrenoms(acte.mere.prenoms);
-        dto.setMereProfession(acte.mere.profession);
-        dto.setMereTypePiece(acte.mere.typePiece.name());
+         Optional.ofNullable(acte.mere).map(m -> m.dateDeces).ifPresent(d -> {
+             dto.setMereDateDeces(DateTimeUtils.fromDateTimeToString(d));
+         });
+       
+        Optional.ofNullable(acte.mere).map(m -> m.dateNaissance).ifPresent(d -> {
+             dto.setMereDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+         });
         
-        if(acte.pere.dateDeces != null){
-            dto.setPereDateDeces(DateTimeUtils.fromDateTimeToString(acte.pere.dateDeces));
-        }
-        if(acte.pere.dateNaissance != null){
-            dto.setPereDateNaissance(DateTimeUtils.fromDateTimeToString(acte.pere.dateNaissance));
-        }
-        if(acte.pere.datePiece != null){
-            dto.setPereDatePiece(DateTimeUtils.fromDateTimeToString(acte.pere.datePiece));
-        }
+        Optional.ofNullable(acte.mere).map(m -> m.datePiece).ifPresent(d -> {
+             dto.setMereDatePiece(DateTimeUtils.fromDateTimeToString(d));
+         });
         
-        dto.setPereLieuDeces(acte.pere.lieuDeces);
-        dto.setPereLieuNaissance(acte.pere.lieuNaissance);
-        dto.setPereLieuPiece(acte.pere.lieuPiece);
-        dto.setPereLocalite(acte.pere.localite);
-        dto.setPereNationalite(acte.pere.nationalite.name());
-        dto.setPereNom(acte.pere.nom);
-        dto.setPereNumeroPiece(acte.pere.numeroPiece);
-        dto.setPerePrenoms(acte.pere.prenoms);
-        dto.setPereProfession(acte.pere.profession);
-        dto.setPereTypePiece(acte.pere.typePiece.name());
+        Optional.ofNullable(acte.mere).map(m -> m.nationalite).ifPresent(n -> {
+             dto.setMereNationalite(n.name());
+         });
         
-        if(acte.temoins.premierDateNaissance != null){
+        Optional.ofNullable(acte.mere).map(m -> m.typePiece).ifPresent(t -> {
+             dto.setMereTypePiece(t.name());
+         });
+       
+        //pere   
+        Optional.ofNullable(acte.pere).ifPresent(p -> {
+            dto.setPereLieuDeces(p.lieuDeces);
+            dto.setPereLieuNaissance(p.lieuNaissance);
+            dto.setPereLieuPiece(p.lieuPiece);
+            dto.setPereLocalite(p.localite);
+            dto.setPereNom(p.nom);
+            dto.setPereNumeroPiece(p.numeroPiece);
+            dto.setPerePrenoms(p.prenoms);
+            dto.setPereProfession(p.profession);
+        
+        });
+        
+         Optional.ofNullable(acte.pere).map(p -> p.dateDeces).ifPresent(d -> {
+             dto.setPereDateDeces(DateTimeUtils.fromDateTimeToString(d));
+         });
+       
+        Optional.ofNullable(acte.pere).map(p -> p.dateNaissance).ifPresent(d -> {
+             dto.setPereDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+         });
+        
+        Optional.ofNullable(acte.pere).map(p -> p.datePiece).ifPresent(d -> {
+             dto.setPereDatePiece(DateTimeUtils.fromDateTimeToString(d));
+         });
+        
+        Optional.ofNullable(acte.pere).map(p -> p.nationalite).ifPresent(n -> {
+             dto.setPereNationalite(n.name());
+         });
+        
+        Optional.ofNullable(acte.pere).map(p -> p.typePiece).ifPresent(t -> {
+             dto.setPereTypePiece(t.name());
+         });
+        
+        //temoins
+        Optional.ofNullable(acte.temoins).ifPresent(t -> {
+            dto.setTemoinPremierDomicile(acte.temoins.premierDomicile);
+            dto.setTemoinPremierNom(acte.temoins.premierNom);
+            dto.setTemoinPremierPrenoms(acte.temoins.premierPrenoms);
+            dto.setTemoinPremierProfession(acte.temoins.premierProfession);
+            
+            dto.setTemoinDeuxiemeDomicile(acte.temoins.deuxiemeDomicile);
+            dto.setTemoinDeuxiemeNom(acte.temoins.deuxiemeNom);
+            dto.setTemoinDeuxiemePrenoms(acte.temoins.deuxiemePrenoms);
+            dto.setTemoinDeuxiemeProfession(acte.temoins.deuxiemeProfession);
+        });
+        
+        Optional.ofNullable(acte.temoins).map(t -> t.premierDateNaissance).ifPresent(d -> {
             dto.setTemoinPremierDateNaissance(DateTimeUtils.fromDateTimeToString(acte.temoins.premierDateNaissance));
+        });
+        if(acte.temoins.premierDateNaissance != null){
+            
         }
-        
-        dto.setTemoinPremierDomicile(acte.temoins.premierDomicile);
-        dto.setTemoinPremierNom(acte.temoins.premierNom);
-        dto.setTemoinPremierPrenoms(acte.temoins.premierPrenoms);
-        dto.setTemoinPremierProfession(acte.temoins.premierProfession);
         
         if(acte.temoins.deuxiemeDateNaissance != null){
             dto.setTemoinDeuxiemeDateNaissance(DateTimeUtils.fromDateTimeToString(acte.temoins.deuxiemeDateNaissance));
         }
+     
         
-        dto.setTemoinDeuxiemeDomicile(acte.temoins.deuxiemeDomicile);
-        dto.setTemoinDeuxiemeNom(acte.temoins.deuxiemeNom);
-        dto.setTemoinDeuxiemePrenoms(acte.temoins.deuxiemePrenoms);
-        dto.setTemoinDeuxiemeProfession(acte.temoins.deuxiemeProfession);
+        Optional.ofNullable(acte.modeDeclaration).ifPresent(m -> {
+            dto.setModeDeclaration(acte.modeDeclaration.name());
+        });
         
-        dto.setModeDeclaration(acte.modeDeclaration.name());
+        Optional.ofNullable(acte.statut).ifPresent(m -> {
+            dto.setStatut(acte.statut.name());
+        });
+        
+        Optional.ofNullable(acte.typeNaissance).ifPresent(m -> {
+            dto.setTypeNaissance(acte.typeNaissance.name());
+        });
+        
         dto.setMotifAnnulation(acte.motifAnnulation);
         dto.setNombreCopiesIntegrales(acte.nombreCopiesIntegrales);
         dto.setNombreExtraits(acte.nombreExtraits);
@@ -351,8 +430,9 @@ public class ActeNaissanceService {
         dto.setNumero(acte.numero);
         dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
         dto.setRegistreID(acte.registre.id);
-        dto.setStatut(acte.statut.name());
-        dto.setTypeNaissance(acte.typeNaissance.name());
+        
+        dto.setRegistreNumero(acte.registre.reference.numero);
+        dto.setRegistreAnnee(acte.registre.reference.annee);
         
         return dto;
     }

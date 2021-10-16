@@ -9,7 +9,6 @@ import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.dto.RegistrePatchDto;
 import io.urbis.registre.dto.RegistreDto;
-import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.service.RegistreService;
 import java.util.List;
 import javax.inject.Inject;

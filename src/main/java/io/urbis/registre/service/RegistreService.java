@@ -7,6 +7,7 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
+import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.Centre;
 import io.urbis.registre.domain.Localite;
 import io.urbis.registre.domain.OfficierEtatCivil;
@@ -244,9 +245,9 @@ public class RegistreService {
     
     /**
      * 
-     * Retourne le registre courant utilisé
+     * Retourne le registre RegistreCourant utilisé
      */
-    public RegistreDto courant(String typeString){
+    public RegistreDto RegistreCourant(String typeString){
         TypeRegistre typeRegistre = TypeRegistre.fromString(typeString);
         int annee = LocalDateTime.now().getYear();
         TypedQuery<Registre> query =  em.createNamedQuery("Registre.findCourant", Registre.class);
@@ -264,6 +265,19 @@ public class RegistreService {
            throw new WebApplicationException(res);
        }
     
+    }
+    
+    /**
+     * 
+     * @param registre
+     * @return 
+     */
+    public int nombreActe(Registre registre){
+        int nbrActe = (int)ActeNaissance.count("registre", registre);
+        log.infof("----- NOMBRE ACTE : %s", nbrActe);
+        //+ActeMariage.count()
+        //+ActeDivers.count()...
+        return nbrActe;
     }
     
     public  RegistreDto mapToDto(Registre registre){
@@ -288,6 +302,7 @@ public class RegistreService {
                 registre.numeroPremierActe, 
                 registre.numeroDernierActe, 
                 registre.nombreDeFeuillets, 
+                nombreActe(registre),
                 registre.statut.name(),
                 null,
                 null);

@@ -58,8 +58,12 @@ public class ActeNaissanceService {
         ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
         
+        validerActe(registre, acteNaissanceDto);
+        
         acte.officierEtatCivil = officier;
         acte.registre = registre;
+        
+        acte.numero = acteNaissanceDto.getNumero();
         
         if(acteNaissanceDto.getDateDeclaration() != null && !acteNaissanceDto.getDateDeclaration().isBlank()){
             acte.dateDeclaration = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDeclaration());
@@ -209,8 +213,7 @@ public class ActeNaissanceService {
         acte.motifAnnulation = acteNaissanceDto.getMotifAnnulation();
         acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
         acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
-        acte.numero = acteNaissanceDto.getNumero();
-        
+                
         
         if(acteNaissanceDto.getStatut() != null && !acteNaissanceDto.getStatut().isBlank()){
             acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
@@ -231,9 +234,62 @@ public class ActeNaissanceService {
         
     }
     
+    public void validerActe(Registre registre,ActeNaissanceDto acte){
+        verifierNumero(registre, acte);
+        validerBorneInferieure(registre, acte.getNumero());
+        validerBorneSuperieure(registre, acte.getNumero());
+        //validerNombreDefeuillets(registre);
+    }
     
-    public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize){
-        PanacheQuery<ActeNaissance>  query = ActeNaissance.findAll();
+    public void verifierNumero(Registre registre,ActeNaissanceDto acte){
+        while(numeroExist(registre, acte.getNumero())){
+            acte.setNumero(acte.getNumero() + 1);
+        }
+    }
+    
+    /*
+    public void validerNombreDefeuillets(Registre registre){
+        if(registre.indexDernierNumero == registre.numeroDernierActe){
+            Response res = Response.status(Response.Status.EXPECTATION_FAILED)
+                    .entity(new Exception("le maximum de feuillets du registre est atteint"))
+                    .build();
+            throw new WebApplicationException(res);
+        }
+    
+    }
+    */
+    
+    public void validerBorneSuperieure(Registre registre,int numeroActe){
+        if(numeroActe > registre.numeroDernierActe){
+            Response res = Response.status(Response.Status.EXPECTATION_FAILED)
+                   .entity(new Exception("le numero de l'acte ne peut être supérieur au numéro du dernier acte du registre"))
+                   .build();
+            throw new WebApplicationException(res);
+        }
+            
+    }
+    
+    public void validerBorneInferieure(Registre registre,int numeroActe){
+        if(numeroActe < registre.numeroPremierActe){
+            Response res = Response.status(Response.Status.EXPECTATION_FAILED)
+                   .entity(new Exception("le numero de l'acte ne peut être inférieur au numéro du premier acte du registre"))
+                   .build();
+            throw new WebApplicationException(res);
+        }
+            
+    }
+    
+    public boolean numeroExist(Registre registre, int numeroActe){
+       Optional<ActeNaissance> optActe = ActeNaissance.find("registre = ?1 AND numero = ?2",
+               registre,numeroActe).firstResultOptional();
+       
+        return optActe.isPresent();
+    }
+    
+    
+    public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize,@NotBlank String registreID){
+        Registre registre = Registre.findById(registreID);
+        PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre", registre);
         return query.stream().map(this::mapToDto).collect(Collectors.toList());
     }
     

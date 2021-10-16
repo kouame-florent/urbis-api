@@ -87,7 +87,7 @@ public class RegistreResource {
     
     @GET @Path("/courant")
     public RegistreDto courant(@QueryParam("type") String type){      
-       return registreService.courant(type);
+       return registreService.RegistreCourant(type);
     }
     
     @GET @Path("annee")

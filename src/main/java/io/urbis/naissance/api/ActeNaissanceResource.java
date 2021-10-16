@@ -34,9 +34,10 @@ public class ActeNaissanceResource {
     }
     
     @Transactional
-    @GET
-    public List<ActeNaissanceDto> findWithFilters(@QueryParam("offset") int offset, @QueryParam("page-size") int pageSize){
-        return naissanceService.findWithFilters(offset, pageSize);
+    @GET @Path("/{registre-id}")
+    public List<ActeNaissanceDto> findWithFilters(@QueryParam("offset") int offset, 
+            @QueryParam("page-size") int pageSize,@PathParam("registre-id") String registreID){
+        return naissanceService.findWithFilters(offset, pageSize,registreID);
     }
     
     @GET @Path("/count")

@@ -5,7 +5,6 @@
  */
 package io.urbis.naissance.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.persistence.Version;
 
 /**
  *
@@ -32,7 +30,7 @@ import javax.persistence.Version;
     @UniqueConstraint(columnNames = {"registre_id","numero"})
 })
 @Entity
-public class ActeNaissance extends PanacheEntityBase{
+public class ActeNaissance extends Acte{
     
     @Id
     public String id = UUID.randomUUID().toString();
@@ -40,8 +38,7 @@ public class ActeNaissance extends PanacheEntityBase{
     public LocalDateTime created = LocalDateTime.now();
     public LocalDateTime updated = LocalDateTime.now();
     
-    @Version
-    public long version;
+    
     
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
@@ -55,12 +52,18 @@ public class ActeNaissance extends PanacheEntityBase{
                            column=@Column(name="enfant_nom")),
         @AttributeOverride(name="prenoms",
                            column=@Column(name="enfant_prenoms")),
+        @AttributeOverride(name="nomComplet",
+                           column=@Column(name="nom_complet")),
         @AttributeOverride(name="lieuNaissance",
                            column=@Column(name="enfant_lieu_naissance")),
         @AttributeOverride(name="nationalite",
                            column=@Column(name="enfant_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="enfant_date_naissance")),
+        @AttributeOverride(name="dateNaissanceLettre",
+                           column=@Column(name="enfant_date_naissance_lettre")),
+        @AttributeOverride(name="heureNaissanceLettre",
+                           column=@Column(name="enfant_heure_naissance_lettre")),
         @AttributeOverride(name="localite",
                            column=@Column(name="enfant_localite")),
     })
@@ -101,6 +104,8 @@ public class ActeNaissance extends PanacheEntityBase{
                            column=@Column(name="pere_nom")),
         @AttributeOverride(name="prenoms",
                            column=@Column(name="pere_prenoms")),
+        @AttributeOverride(name="nomComplet",
+                           column=@Column(name="pere_nom_complet")),
         @AttributeOverride(name="profession",
                            column=@Column(name="pere_profession")),
         @AttributeOverride(name="lieuNaissance",
@@ -132,6 +137,8 @@ public class ActeNaissance extends PanacheEntityBase{
                            column=@Column(name="mere_nom")),
         @AttributeOverride(name="prenoms",
                            column=@Column(name="mere_prenoms")),
+        @AttributeOverride(name="nomComplet",
+                           column=@Column(name="mere_nom_complet")),
         @AttributeOverride(name="profession",
                            column=@Column(name="mere_profession")),
         @AttributeOverride(name="lieuNaissance",
@@ -228,8 +235,6 @@ public class ActeNaissance extends PanacheEntityBase{
         
     })
     public Temoins temoins;
-    
-    
     
     @Column(name = "statut")
     @Enumerated(EnumType.ORDINAL)

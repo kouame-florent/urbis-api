@@ -1,5 +1,5 @@
-INSERT INTO localite(id, created, updated, version, code, libelle) VALUES(UUID(),NOW(),NOW(),1,'l-01','yopougon');
-INSERT INTO localite(id, created, updated, version, code, libelle) VALUES(UUID(),NOW(),NOW(),1,'l-02','gagnoa');
+INSERT INTO localite(id, created, updated, version, code, libelle, type_localite) VALUES(UUID(),NOW(),NOW(),1,'l-01','yopougon','COMMUNE');
+INSERT INTO localite(id, created, updated, version, code, libelle, type_localite) VALUES(UUID(),NOW(),NOW(),1,'l-02','gagnoa','COMMUNE');
 
 INSERT INTO centre(id, created, updated, version, code, libelle) VALUES(UUID(),NOW(),NOW(),1,'c-01','centre principal');
 --INSERT INTO centre(id, created, updated, version, code, libelle) VALUES(UUID(),NOW(),NOW(),1,'c-02','yo centre');

@@ -18,7 +18,7 @@ public enum TypeNaissance {
     ENFANT_RECONNU_PERE_PRESENT("Enfant reconnu père present"),
     ENFANT_LEGITIME("Enfant légitime"),
     ENFANT_RECONNU_PAR_PROCURATION("Enfant reconnu par procuration"),
-    ENFANT_NATUREL("Enfant naturle"),
+    ENFANT_NATUREL("Enfant naturel"),
     ENFANT_SANS_MERE("Enfant sans mère/Enfant trouvé");
    
     private final String libelle;

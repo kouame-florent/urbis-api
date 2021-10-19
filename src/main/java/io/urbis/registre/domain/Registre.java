@@ -120,6 +120,7 @@ public class Registre extends PanacheEntityBase{
     @Column(name = "numero_dernier_acte",nullable = false)
     public int numeroDernierActe;
     
+    @Column(name = "index_dernier_numero")
     public int indexDernierNumero;
     
     @DecimalMin("1")
@@ -135,9 +136,11 @@ public class Registre extends PanacheEntityBase{
     @Size(max = 250)
     public String observation;
     
+    @Column(name = "date_annulation")
     public LocalDateTime dateAnnulation;
     
     @Size(max = 250)
+    @Column(name = "motif_annulation")
     public String motifAnnulation;
     
     public Registre(){}

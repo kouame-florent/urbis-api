@@ -5,6 +5,7 @@
  */
 package io.urbis.naissance.service;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.common.service.DateTimeUtils;
 import io.urbis.naissance.dto.ActeNaissanceDto;
@@ -24,7 +25,10 @@ import io.urbis.naissance.domain.TypeNaissance;
 import io.urbis.naissance.domain.TypePiece;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
@@ -52,6 +56,7 @@ public class ActeNaissanceService {
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
         log.infof("-- OFFICIER ID: %s", acteNaissanceDto.getOfficierEtatCivilID());
         
+        
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
         
@@ -67,7 +72,10 @@ public class ActeNaissanceService {
         
         if(acteNaissanceDto.getDateDeclaration() != null && !acteNaissanceDto.getDateDeclaration().isBlank()){
             acte.dateDeclaration = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDeclaration());
+            
         }
+        
+        
         if(acteNaissanceDto.getDateDressage() != null && !acteNaissanceDto.getDateDressage().isBlank()){
             acte.dateDressage = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDressage());
         }
@@ -75,6 +83,8 @@ public class ActeNaissanceService {
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
         if(acteNaissanceDto.getEnfantDateNaissance() != null && !acteNaissanceDto.getEnfantDateNaissance().isBlank()){
             acte.enfant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getEnfantDateNaissance()) ;
+            acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
+            acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
         }      
         acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
         acte.enfant.localite = acteNaissanceDto.getEnfantLocalite();
@@ -85,6 +95,7 @@ public class ActeNaissanceService {
         
         acte.enfant.nom = acteNaissanceDto.getEnfantNom();
         acte.enfant.prenoms = acteNaissanceDto.getEnfantPrenoms();
+        acte.enfant.nomComplet = acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms();
         
         if(acteNaissanceDto.getEnfantSexe() != null && !acteNaissanceDto.getEnfantSexe().isBlank()){
             acte.enfant.sexe = Sexe.fromString(acteNaissanceDto.getEnfantSexe());
@@ -120,6 +131,8 @@ public class ActeNaissanceService {
         acte.mere.numeroPiece = acteNaissanceDto.getMereNumeroPiece();
         acte.mere.prenoms = acteNaissanceDto.getMerePrenoms();
         acte.mere.profession = acteNaissanceDto.getMereProfession();
+        acte.mere.nomComplet = acte.mere.nom + " " + acteNaissanceDto.getMerePrenoms();
+        
         
         if(acteNaissanceDto.getMereTypePiece() != null && !acteNaissanceDto.getMereTypePiece().isBlank()){
             acte.mere.typePiece = TypePiece.fromString(acteNaissanceDto.getMereTypePiece()) ;
@@ -148,6 +161,7 @@ public class ActeNaissanceService {
         acte.pere.numeroPiece = acteNaissanceDto.getPereNumeroPiece();
         acte.pere.prenoms = acteNaissanceDto.getPerePrenoms();
         acte.pere.profession = acteNaissanceDto.getPereProfession();
+        acte.pere.nomComplet = acte.pere.nom + " " + acte.pere.prenoms;
         
         if(acteNaissanceDto.getPereTypePiece() != null && !acteNaissanceDto.getPereTypePiece().isBlank()){
             acte.pere.typePiece = TypePiece.fromString(acteNaissanceDto.getPereTypePiece()) ;
@@ -232,6 +246,70 @@ public class ActeNaissanceService {
         registre.persist();
         
         
+    }
+    
+    public String dateNaissanceEnLettre(LocalDateTime localDateTime){
+      
+        int dayOfMonth = localDateTime.getDayOfMonth();
+        String month = localDateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
+        int year = localDateTime.getYear();
+        
+       String laDate = "";
+        
+        if(dayOfMonth == 1){
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth,"%spellout-ordinal-masculine") + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        
+        }else{
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth) + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        }
+        
+        
+        
+        
+        return laDate;
+        
+    }
+    
+    public String heureNaissanceEnLettre(LocalDateTime localDateTime){
+        
+        int hour = localDateTime.getHour();
+        int minute = localDateTime.getMinute();
+        String temps = "";
+        
+        if(hour != 0 && minute != 0){
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );    
+            
+            if(hour > 1){
+                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
+                    + "heures" + " ";
+                    
+            }else{
+                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
+                    + "heure" + " ";
+            }
+            
+            if(minute > 1 ){
+                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
+                        + " " + "minutes";
+            }else{
+                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
+                        + " " + "minute";
+            }
+                
+            
+
+            return temps;
+        }
+        
+        
+        return temps;
     }
     
     public void validerActe(Registre registre,ActeNaissanceDto acte){

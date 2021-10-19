@@ -5,6 +5,7 @@
  */
 package io.urbis.registre.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.registre.domain.Centre;
 import io.urbis.registre.dto.CentreDto;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 /**
@@ -21,6 +23,9 @@ import org.jboss.logging.Logger;
  */
 @ApplicationScoped
 public class CentreService {
+    
+    @ConfigProperty(name = "URBIS_CENTRE")
+    String codeCentre;
     
     @Inject
     Logger log;
@@ -37,9 +42,9 @@ public class CentreService {
     *  renvoie le seul centre enregistré
     */
     public CentreDto findActiveCentre(){
-        Stream<Centre> centres = Centre.findAll().stream();
-        return centres.findFirst().map(CentreService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucun centre configuré "));
+        PanacheQuery<Centre> query =  Centre.find("code", codeCentre);
+        return query.firstResultOptional().map(CentreService::mapToDto)
+                .orElseThrow(() -> new NotFoundException("aucune centre selectionnée"));
     }
     
     public static CentreDto mapToDto(Centre centre){

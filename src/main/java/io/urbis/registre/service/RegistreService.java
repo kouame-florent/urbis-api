@@ -200,9 +200,9 @@ public class RegistreService {
     }
     
     /*
-    * propose une valeur pour le champ annee
+    * propose une valeur pour le champ anneeCourante
     */
-    public int annee(){
+    public int anneeCourante(){
         return LocalDateTime.now().getYear();
     }
     
@@ -228,11 +228,11 @@ public class RegistreService {
     /*
     * propose une valeur pour le champ numeroPremierActe
     */
-    public int numeroPremierActe(String typeRegistre){
+    public int numeroPremierActe(String typeRegistre,int annee){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
         log.infof("NUM PREMIER QUERY: %s", query);
         query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
-        query.setParameter("annee", annee());
+        query.setParameter("annee", annee);
         
         var num = query.getSingleResult();
         if(num != null){

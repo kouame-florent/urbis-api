@@ -90,19 +90,19 @@ public class RegistreResource {
        return registreService.RegistreCourant(type);
     }
     
-    @GET @Path("annee")
-    public int annee(){
-       return registreService.annee();
+    @GET @Path("annee-courante")
+    public int anneeCourante(){
+       return registreService.anneeCourante();
     }
     
     @GET @Path("numero/{type}/{annee}")
-    public int numero(@PathParam("type") String typeRegistre, @PathParam("annee") int annee){
+    public int numeroRegistre(@PathParam("type") String typeRegistre, @PathParam("annee") int annee){
        return registreService.numeroRegistre(typeRegistre,annee);
     }
     
-    @GET @Path("numero-premier-acte/{type}")
-    public int numeroPremierActe(@PathParam("type") String typeRegistre){
-       return registreService.numeroPremierActe(typeRegistre);
+    @GET @Path("numero-premier-acte/{type}/{annee}")
+    public int numeroPremierActe(@PathParam("type") String typeRegistre,@PathParam("annee") int annee){
+       return registreService.numeroPremierActe(typeRegistre,annee);
     }
     
 }

@@ -102,6 +102,11 @@
             <scope>provided</scope>
     </dependency>
  
+    <dependency>
+        <groupId>com.ibm.icu</groupId>
+        <artifactId>icu4j</artifactId>
+        <version>69.1</version>
+    </dependency>
     
   </dependencies>
   <build>

@@ -24,6 +24,9 @@ public class ActeNaissanceDto {
     private LocalDateTime updated; 
     
     @NotBlank
+    private String id;
+    
+    @NotBlank
     private String registreID;
     @Min(1)
     private int numero;

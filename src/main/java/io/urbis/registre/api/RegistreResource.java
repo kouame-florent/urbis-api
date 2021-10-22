@@ -51,6 +51,7 @@ public class RegistreResource {
         return registreService.creerRegistre(registreDto);
     }
     
+    
    // @RolesAllowed("CHEF_ETAT_CIVIL")
     @Transactional
     @PATCH @Path("{id}")
@@ -65,6 +66,7 @@ public class RegistreResource {
              registreService.annulerRegistre(id, patchDto.getMotifAnnulation());
              break;
           case CLOTURE:
+              registreService.cloturerRegistre(id);
               break;
       }
       

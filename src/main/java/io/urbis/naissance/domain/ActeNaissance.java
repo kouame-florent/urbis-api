@@ -18,6 +18,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -60,10 +61,10 @@ public class ActeNaissance extends Acte{
                            column=@Column(name="enfant_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="enfant_date_naissance")),
-        @AttributeOverride(name="dateNaissanceLettre",
-                           column=@Column(name="enfant_date_naissance_lettre")),
-        @AttributeOverride(name="heureNaissanceLettre",
-                           column=@Column(name="enfant_heure_naissance_lettre")),
+       // @AttributeOverride(name="dateNaissanceLettre",
+       //                    column=@Column(name="enfant_date_naissance_lettre")),
+       // @AttributeOverride(name="heureNaissanceLettre",
+       //                    column=@Column(name="enfant_heure_naissance_lettre")),
         @AttributeOverride(name="localite",
                            column=@Column(name="enfant_localite")),
     })
@@ -248,6 +249,12 @@ public class ActeNaissance extends Acte{
     
     @Column(name = "nombre_extraits")
     public int nombreExtraits;
+    
+    @Lob
+    public String extraitTexte;
+    
+    @Lob
+    public String copieTexte;
     
     
     @ManyToOne

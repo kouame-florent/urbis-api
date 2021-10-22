@@ -19,8 +19,8 @@ import javax.persistence.Enumerated;
 public class Enfant implements Serializable{
     
     public LocalDateTime dateNaissance;
-    public String dateNaissanceLettre;
-    public String heureNaissanceLettre;
+    //public String dateNaissanceLettre;
+    //public String heureNaissanceLettre;
     public String lieuNaissance;
     
     @Enumerated(EnumType.STRING)

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -33,6 +34,17 @@ public class EtatResource {
    // @Produces("application/pdf")
     public File registres(){
         File file = etatService.downloadRegistre();
+        log.infof("-- ETAT REGISTRE NOM: %s", file.getName());
+        log.infof("-- ETAT REGISTRE ABSOLUTE PATH: %s", file.getAbsolutePath());
+        log.infof("-- ETAT REGISTRE SIZE: %s", file.length());
+        
+        return file;
+    }
+    
+    @GET
+    @Path("/acte_naissance")
+    public File acteNaissance(@QueryParam("ACTE_NAISSANCE_ID") String acteNaissanceID){
+        File file = etatService.downloadActeNaissance(acteNaissanceID);
         log.infof("-- ETAT REGISTRE NOM: %s", file.getName());
         log.infof("-- ETAT REGISTRE ABSOLUTE PATH: %s", file.getAbsolutePath());
         log.infof("-- ETAT REGISTRE SIZE: %s", file.length());

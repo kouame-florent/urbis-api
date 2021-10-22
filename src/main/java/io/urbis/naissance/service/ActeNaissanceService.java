@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.LockModeType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
@@ -56,12 +57,11 @@ public class ActeNaissanceService {
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
         log.infof("-- OFFICIER ID: %s", acteNaissanceDto.getOfficierEtatCivilID());
         
+        ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
+                new Mere(), new Declarant(), new Interprete(), new Temoins());
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
-        
-        ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
-                new Mere(), new Declarant(), new Interprete(), new Temoins());
         
         validerActe(registre, acteNaissanceDto);
         
@@ -83,8 +83,8 @@ public class ActeNaissanceService {
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
         if(acteNaissanceDto.getEnfantDateNaissance() != null && !acteNaissanceDto.getEnfantDateNaissance().isBlank()){
             acte.enfant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getEnfantDateNaissance()) ;
-            acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
-            acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
+            //acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
+            //acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
         }      
         acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
         acte.enfant.localite = acteNaissanceDto.getEnfantLocalite();
@@ -239,12 +239,216 @@ public class ActeNaissanceService {
         
         acte.statut = StatutActeNaissance.PROJET;
         
+        acte.extraitTexte = extraitTexte(acte);
+        
         acte.persist();
         
         //incrementer l'index du registre
         registre.indexDernierNumero += 1;
         registre.persist();
         
+        
+    }
+    
+    public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto){
+        
+        ActeNaissance acte = ActeNaissance.findById(id);
+        acte.enfant =  new Enfant();
+        acte.jugement = new Jugement();
+        acte.pere = new Pere(); 
+        acte.mere =  new Mere();
+        acte.declarant = new Declarant();
+        acte.interprete = new Interprete();
+        acte.temoins = new Temoins();
+        
+        
+        Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
+        
+        validerActe(registre, acteNaissanceDto);
+        
+        acte.officierEtatCivil = officier;
+        acte.registre = registre;
+        
+        acte.numero = acteNaissanceDto.getNumero();
+        
+        if(acteNaissanceDto.getDateDeclaration() != null && !acteNaissanceDto.getDateDeclaration().isBlank()){
+            acte.dateDeclaration = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDeclaration());
+            
+        }
+       
+        if(acteNaissanceDto.getDateDressage() != null && !acteNaissanceDto.getDateDressage().isBlank()){
+            acte.dateDressage = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDressage());
+        }
+        
+       // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
+        if(acteNaissanceDto.getEnfantDateNaissance() != null && !acteNaissanceDto.getEnfantDateNaissance().isBlank()){
+            acte.enfant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getEnfantDateNaissance()) ;
+         
+        }      
+        acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
+        acte.enfant.localite = acteNaissanceDto.getEnfantLocalite();
+        
+        if(acteNaissanceDto.getEnfantNationalite() != null && !acteNaissanceDto.getEnfantNationalite().isBlank()){
+            acte.enfant.nationalite = Nationalite.fromString(acteNaissanceDto.getEnfantNationalite());
+        }
+        
+        acte.enfant.nom = acteNaissanceDto.getEnfantNom();
+        acte.enfant.prenoms = acteNaissanceDto.getEnfantPrenoms();
+        acte.enfant.nomComplet = acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms();
+        
+        if(acteNaissanceDto.getEnfantSexe() != null && !acteNaissanceDto.getEnfantSexe().isBlank()){
+            acte.enfant.sexe = Sexe.fromString(acteNaissanceDto.getEnfantSexe());
+        }
+        
+                
+        if(acteNaissanceDto.getJugementDate() != null && !acteNaissanceDto.getJugementDate().isBlank()){
+            acte.jugement.date = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getJugementDate());
+        }
+        
+        Optional.ofNullable(acte.jugement).ifPresent(j -> {
+            acte.jugement.numero = acteNaissanceDto.getJugementNumero();
+            acte.jugement.tribunal = acteNaissanceDto.getJugementTribunal();
+        });
+        
+        
+        if(acteNaissanceDto.getMereDateDeces() != null && !acteNaissanceDto.getMereDateDeces().isBlank()){
+            acte.mere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateDeces());
+        }
+        if(acteNaissanceDto.getMereDateNaissance() != null && !acteNaissanceDto.getMereDateNaissance().isBlank()){
+            acte.mere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateNaissance());
+        }
+        if(acteNaissanceDto.getMereDatePiece() != null && !acteNaissanceDto.getMereDatePiece().isBlank()){
+            acte.mere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDatePiece());
+        }
+        
+        acte.mere.lieuDeces = acteNaissanceDto.getMereLieuDeces();
+        acte.mere.lieuNaissance = acteNaissanceDto.getMereLieuNaissance();
+        acte.mere.lieuPiece = acteNaissanceDto.getMereLieuPiece();
+        acte.mere.localite = acteNaissanceDto.getMereLocalite();
+        
+        if(acteNaissanceDto.getMereNationalite() != null && !acteNaissanceDto.getMereNationalite().isBlank()){
+            acte.mere.nationalite =  Nationalite.fromString(acteNaissanceDto.getMereNationalite());
+        }
+        
+        acte.mere.nom = acteNaissanceDto.getMereNom();
+        acte.mere.numeroPiece = acteNaissanceDto.getMereNumeroPiece();
+        acte.mere.prenoms = acteNaissanceDto.getMerePrenoms();
+        acte.mere.profession = acteNaissanceDto.getMereProfession();
+        acte.mere.nomComplet = acte.mere.nom + " " + acteNaissanceDto.getMerePrenoms();
+        
+        
+        if(acteNaissanceDto.getMereTypePiece() != null && !acteNaissanceDto.getMereTypePiece().isBlank()){
+            acte.mere.typePiece = TypePiece.fromString(acteNaissanceDto.getMereTypePiece()) ;
+        }
+        
+        if(acteNaissanceDto.getPereDateDeces() != null && !acteNaissanceDto.getPereDateDeces().isBlank()){
+             acte.pere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateDeces());
+        }
+        if(acteNaissanceDto.getPereDateNaissance() != null && !acteNaissanceDto.getPereDateNaissance().isBlank()){
+            acte.pere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateNaissance());
+        }
+        if(acteNaissanceDto.getPereDatePiece() != null && !acteNaissanceDto.getPereDatePiece().isBlank()){
+            acte.pere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDatePiece());
+        }
+        
+        acte.pere.lieuDeces = acteNaissanceDto.getPereLieuDeces();
+        acte.pere.lieuNaissance = acteNaissanceDto.getPereLieuNaissance();
+        acte.pere.lieuPiece = acteNaissanceDto.getPereLieuPiece();
+        acte.pere.localite = acteNaissanceDto.getPereLocalite();
+        
+        if(acteNaissanceDto.getPereNationalite() != null && !acteNaissanceDto.getPereNationalite().isBlank()){
+            acte.pere.nationalite =  Nationalite.fromString(acteNaissanceDto.getPereNationalite()); 
+        }
+        
+        acte.pere.nom = acteNaissanceDto.getPereNom();
+        acte.pere.numeroPiece = acteNaissanceDto.getPereNumeroPiece();
+        acte.pere.prenoms = acteNaissanceDto.getPerePrenoms();
+        acte.pere.profession = acteNaissanceDto.getPereProfession();
+        acte.pere.nomComplet = acte.pere.nom + " " + acte.pere.prenoms;
+        
+        if(acteNaissanceDto.getPereTypePiece() != null && !acteNaissanceDto.getPereTypePiece().isBlank()){
+            acte.pere.typePiece = TypePiece.fromString(acteNaissanceDto.getPereTypePiece()) ;
+        }
+            
+        acte.declarant.lien = acteNaissanceDto.getDeclarantLien();
+        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
+            acte.declarant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDateNaissance());
+        }
+        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
+            acte.declarant.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDatePiece());
+        }
+        
+        acte.declarant.lieuNaissance = acteNaissanceDto.getDeclarantLieuNaissance();
+        acte.declarant.lieuPiece = acteNaissanceDto.getDeclarantLieuPiece();
+        acte.declarant.localite = acteNaissanceDto.getDeclarantLocalite();
+        
+        if(acteNaissanceDto.getDeclarantNationalite() != null && !acteNaissanceDto.getDeclarantNationalite().isBlank()){
+            acte.declarant.nationalite =  Nationalite.fromString(acteNaissanceDto.getDeclarantNationalite()); 
+        }
+        
+        acte.declarant.nom = acteNaissanceDto.getDeclarantNom();
+        acte.declarant.numeroPiece = acteNaissanceDto.getDeclarantNumeroPiece();
+        acte.declarant.prenoms = acteNaissanceDto.getDeclarantPrenoms();
+        acte.declarant.profession = acteNaissanceDto.getDeclarantProfession();
+        
+        if(acteNaissanceDto.getDeclarantTypePiece() != null && !acteNaissanceDto.getDeclarantTypePiece().isBlank()){
+            acte.declarant.typePiece = TypePiece.fromString(acteNaissanceDto.getDeclarantTypePiece());
+        }
+        
+        if(acteNaissanceDto.getInterpreteDateNaissance() != null && !acteNaissanceDto.getInterpreteDateNaissance().isBlank()){
+            acte.interprete.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getInterpreteDateNaissance());
+        }
+        
+        acte.interprete.domicile = acteNaissanceDto.getInterpreteDomicile();
+        acte.interprete.langue = acteNaissanceDto.getInterpreteLangue();
+        acte.interprete.nom = acteNaissanceDto.getInterpreteNom();
+        acte.interprete.prenoms = acteNaissanceDto.getInterpretePrenoms();
+        acte.interprete.profession = acteNaissanceDto.getInterpreteProfession();
+        
+        if(acteNaissanceDto.getTemoinPremierDateNaissance() != null && !acteNaissanceDto.getTemoinPremierDateNaissance().isBlank()){
+            acte.temoins.premierDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinPremierDateNaissance());
+        }
+        
+        acte.temoins.premierDomicile = acteNaissanceDto.getTemoinPremierDomicile();
+        acte.temoins.premierNom = acteNaissanceDto.getTemoinPremierNom();
+        acte.temoins.premierPrenoms = acteNaissanceDto.getTemoinPremierPrenoms();
+        acte.temoins.premierProfession = acteNaissanceDto.getTemoinPremierProfession();
+        
+        if(acteNaissanceDto.getTemoinDeuxiemeDateNaissance() != null && !acteNaissanceDto.getTemoinDeuxiemeDateNaissance().isBlank()){
+            acte.temoins.deuxiemeDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinDeuxiemeDateNaissance());
+        }
+        
+        acte.temoins.deuxiemeDomicile = acteNaissanceDto.getTemoinDeuxiemeDomicile();
+        acte.temoins.deuxiemeNom = acteNaissanceDto.getTemoinDeuxiemeNom();
+        acte.temoins.deuxiemePrenoms = acteNaissanceDto.getTemoinDeuxiemePrenoms();
+        acte.temoins.deuxiemeProfession = acteNaissanceDto.getTemoinPremierProfession();
+        
+        if(acteNaissanceDto.getModeDeclaration() != null && !acteNaissanceDto.getModeDeclaration().isBlank()){
+            acte.modeDeclaration = ModeDeclaration.fromString(acteNaissanceDto.getModeDeclaration());
+        }
+        
+        acte.motifAnnulation = acteNaissanceDto.getMotifAnnulation();
+        acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
+        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
+                
+        
+        if(acteNaissanceDto.getStatut() != null && !acteNaissanceDto.getStatut().isBlank()){
+            acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
+        }
+        
+        if(acteNaissanceDto.getTypeNaissance() != null && !acteNaissanceDto.getTypeNaissance().isBlank()){
+            acte.typeNaissance = TypeNaissance.fromString(acteNaissanceDto.getTypeNaissance());
+        }
+        
+        acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
+        
+        acte.extraitTexte = extraitTexte(acte);
+        
+                
+        //incrementer l'index du registre
+        //registre.indexDernierNumero += 1;
+        //registre.persist();
         
     }
     
@@ -302,14 +506,41 @@ public class ActeNaissanceService {
                 temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
                         + " " + "minute";
             }
-                
-            
-
-            return temps;
+             return temps;
+        }
+        return temps;
+    }
+    
+    public String extraitTexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Le ");
+        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append("\n");
+        sb.append("à ");
+        sb.append(heureNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append("\n");
+        if(acte.enfant.sexe == Sexe.MASCULIN){
+            sb.append("est né ");
+        }else{
+            sb.append("est née ");
         }
         
+        sb.append(acte.enfant.nomComplet);
+        sb.append("\n");
+        sb.append(acte.enfant.lieuNaissance);
+        sb.append("\n");
+        sb.append("\n");
+        if(acte.enfant.sexe == Sexe.MASCULIN){
+            sb.append("fils de ");
+        }else{
+            sb.append("fille de ");
+        }
+        sb.append(acte.pere.nomComplet);
+        sb.append("\n");
+        sb.append("et de ");
+        sb.append(acte.mere.nomComplet);
         
-        return temps;
+        return sb.toString();
     }
     
     public void validerActe(Registre registre,ActeNaissanceDto acte){
@@ -382,6 +613,9 @@ public class ActeNaissanceService {
         
         dto.setCreated(acte.created);
         dto.setUpdated(acte.updated);
+        
+        dto.setId(acte.id);
+        
         if(acte.dateDeclaration != null){
             dto.setDateDeclaration(DateTimeUtils.fromDateTimeToString(acte.dateDeclaration));
         }
@@ -418,6 +652,8 @@ public class ActeNaissanceService {
         Optional.ofNullable(acte.enfant).ifPresent(e -> {
             dto.setEnfantNom(acte.enfant.nom);
             dto.setEnfantPrenoms(acte.enfant.prenoms);
+            dto.setEnfantLieuNaissance(acte.enfant.lieuNaissance);
+            dto.setEnfantLocalite(acte.enfant.localite);
         });
         
         Optional.ofNullable(acte.enfant).map(e -> e.dateNaissance).ifPresent(d -> {

@@ -120,8 +120,8 @@ public class Registre extends PanacheEntityBase{
     @Column(name = "numero_dernier_acte",nullable = false)
     public int numeroDernierActe;
     
-    @Column(name = "index_dernier_numero")
-    public int indexDernierNumero;
+    @Column(name = "numero_prochain_acte")
+    public int numeroProchainActe;
     
     @DecimalMin("1")
     @NotNull

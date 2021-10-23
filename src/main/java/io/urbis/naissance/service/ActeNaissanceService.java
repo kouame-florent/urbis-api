@@ -17,6 +17,7 @@ import io.urbis.naissance.domain.Jugement;
 import io.urbis.naissance.domain.Mere;
 import io.urbis.naissance.domain.ModeDeclaration;
 import io.urbis.naissance.domain.Nationalite;
+import io.urbis.naissance.domain.Operation;
 import io.urbis.naissance.domain.Pere;
 import io.urbis.naissance.domain.Sexe;
 import io.urbis.naissance.domain.StatutActeNaissance;
@@ -49,6 +50,15 @@ public class ActeNaissanceService {
     
     @Inject
     Logger log;
+    
+    
+    public ActeNaissanceDto findById(@NotBlank String id){
+        return Optional.ofNullable(ActeNaissance.findById(id))
+                .map(p -> (ActeNaissance)p)
+                .map(this::mapToDto)
+                .orElseThrow(() -> new WebApplicationException(Response.status(Response.Status.NOT_FOUND).build()));
+       
+    }
     
     
     public void creerActe(@NotNull ActeNaissanceDto acteNaissanceDto){
@@ -243,10 +253,14 @@ public class ActeNaissanceService {
         
         acte.persist();
         
-        //incrementer l'index du registre
-        registre.indexDernierNumero += 1;
-        registre.persist();
+        Operation operation = Operation.fromString(acteNaissanceDto.getOperation());
         
+        if(operation == Operation.DECLARATION_JUGEMENT){
+            //incrementer l'index du registre
+            registre.numeroProchainActe += 1;
+            //registre.persist();
+        }
+     
         
     }
     
@@ -447,7 +461,7 @@ public class ActeNaissanceService {
         
                 
         //incrementer l'index du registre
-        //registre.indexDernierNumero += 1;
+        //registre.numeroProchainActe += 1;
         //registre.persist();
         
     }
@@ -553,12 +567,13 @@ public class ActeNaissanceService {
     public void verifierNumero(Registre registre,ActeNaissanceDto acte){
         while(numeroExist(registre, acte.getNumero())){
             acte.setNumero(acte.getNumero() + 1);
+            registre.numeroProchainActe += 1;
         }
     }
     
     /*
     public void validerNombreDefeuillets(Registre registre){
-        if(registre.indexDernierNumero == registre.numeroDernierActe){
+        if(registre.numeroProchainActe == registre.numeroDernierActe){
             Response res = Response.status(Response.Status.EXPECTATION_FAILED)
                     .entity(new Exception("le maximum de feuillets du registre est atteint"))
                     .build();
@@ -812,11 +827,15 @@ public class ActeNaissanceService {
         if(registre == null){
             throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
         }
+        
+        return registre.numeroProchainActe;
+        /*
         if(ActeNaissance.count() > 0){
-            return registre.indexDernierNumero + 1;
+            return registre.numeroProchainActe + 1;
         }else{
             return registre.numeroPremierActe;
         }
+        */
       
     }
 }

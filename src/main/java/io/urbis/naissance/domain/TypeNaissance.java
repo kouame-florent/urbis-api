@@ -19,7 +19,11 @@ public enum TypeNaissance {
     ENFANT_LEGITIME("Enfant légitime"),
     ENFANT_RECONNU_PAR_PROCURATION("Enfant reconnu par procuration"),
     ENFANT_NATUREL("Enfant naturel"),
-    ENFANT_SANS_MERE("Enfant sans mère/Enfant trouvé");
+    ENFANT_SANS_MERE("Enfant sans mère/Enfant trouvé"),
+    ENFANT_TROUVE("Enfant trouvé"),
+    ENFANT_ADULTERIN_RECONNU_PAR_ACTE_DE_CONSENTEMENT("Enfant adultérin reconnu par acte de consentement"),
+    ENFANT_ADULTERIN_RECONNU_PAR_PROCURATION("Enfant adultérin reconnu par procuration");
+    
    
     private final String libelle;
     

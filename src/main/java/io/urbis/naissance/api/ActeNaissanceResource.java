@@ -27,6 +27,11 @@ public class ActeNaissanceResource {
     @Inject
     ActeNaissanceService naissanceService;
     
+    @GET @Path("{id}")
+    public ActeNaissanceDto findById(@PathParam("id") String id){
+        return naissanceService.findById(id);
+    }
+    
     @Transactional
     @POST
     public void create(ActeNaissanceDto acteNaissanceDto){
@@ -41,9 +46,9 @@ public class ActeNaissanceResource {
     }
     
     @Transactional
-    @GET @Path("/{registre-id}")
+    @GET
     public List<ActeNaissanceDto> findWithFilters(@QueryParam("offset") int offset, 
-            @QueryParam("page-size") int pageSize,@PathParam("registre-id") String registreID){
+            @QueryParam("page-size") int pageSize,@QueryParam("registre-id") String registreID){
         return naissanceService.findWithFilters(offset, pageSize,registreID);
     }
     

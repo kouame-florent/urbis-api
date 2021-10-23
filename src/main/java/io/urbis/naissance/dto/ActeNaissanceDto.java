@@ -6,6 +6,7 @@
 package io.urbis.naissance.dto;
 
 
+import io.urbis.naissance.domain.Operation;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -16,12 +17,15 @@ import lombok.NoArgsConstructor;
  *
  * @author florent
  */
+
 @Data
 @NoArgsConstructor
 public class ActeNaissanceDto {
     
     private LocalDateTime created; 
     private LocalDateTime updated; 
+    
+    private String operation;
     
     @NotBlank
     private String id;

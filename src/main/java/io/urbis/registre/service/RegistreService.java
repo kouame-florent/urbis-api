@@ -73,7 +73,7 @@ public class RegistreService {
                 registreDto.getNombreDeFeuillets(),
                  StatutRegistre.PROJET);
         
-        registre.indexDernierNumero = registreDto.getNumeroPremierActe();
+        registre.numeroProchainActe = registreDto.getNumeroPremierActe();
         
         if(!exist(typeRegistre, localite, centre, registreDto.getAnnee(), registreDto.getNumero())){
            registre.persist(); 

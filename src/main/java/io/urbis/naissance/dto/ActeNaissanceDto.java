@@ -25,6 +25,7 @@ public class ActeNaissanceDto {
     private LocalDateTime created; 
     private LocalDateTime updated; 
     
+    @NotBlank
     private String operation;
     
     @NotBlank
@@ -118,7 +119,12 @@ public class ActeNaissanceDto {
     private String motifAnnulation;
     private int nombreCopiesIntegrales;
     private int nombreExtraits;
+    
     private String officierEtatCivilID;
+    private String officierEtatCivilNom;
+    private String officierEtatCivilPrenoms;
+    private String officierEtatCivilQualite;
+    private String officierEtatCivilTitre;
     
     private int registreAnnee;
     private int registreNumero;

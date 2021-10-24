@@ -73,7 +73,8 @@ public class ActeNaissanceService {
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
         
-        validerActe(registre, acteNaissanceDto);
+        Operation op = Operation.fromString(acteNaissanceDto.getOperation());
+        validerActe(registre, acteNaissanceDto,op);
         
         acte.officierEtatCivil = officier;
         acte.registre = registre;
@@ -279,7 +280,8 @@ public class ActeNaissanceService {
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
         
-        validerActe(registre, acteNaissanceDto);
+        Operation op = Operation.fromString(acteNaissanceDto.getOperation());
+        validerActe(registre, acteNaissanceDto,op);
         
         acte.officierEtatCivil = officier;
         acte.registre = registre;
@@ -557,8 +559,11 @@ public class ActeNaissanceService {
         return sb.toString();
     }
     
-    public void validerActe(Registre registre,ActeNaissanceDto acte){
-        verifierNumero(registre, acte);
+    public void validerActe(Registre registre,ActeNaissanceDto acte,Operation operation){
+        if(operation == Operation.DECLARATION_JUGEMENT){
+            verifierNumero(registre, acte);
+        }
+        
         validerBorneInferieure(registre, acte.getNumero());
         validerBorneSuperieure(registre, acte.getNumero());
         //validerNombreDefeuillets(registre);
@@ -585,8 +590,8 @@ public class ActeNaissanceService {
     
     public void validerBorneSuperieure(Registre registre,int numeroActe){
         if(numeroActe > registre.numeroDernierActe){
-            Response res = Response.status(Response.Status.EXPECTATION_FAILED)
-                   .entity(new Exception("le numero de l'acte ne peut être supérieur au numéro du dernier acte du registre"))
+            Response res = Response.status(Response.Status.PRECONDITION_FAILED)
+                   .entity("le numero de l'acte ne peut être supérieur au numéro du dernier acte du registre")
                    .build();
             throw new WebApplicationException(res);
         }
@@ -595,8 +600,8 @@ public class ActeNaissanceService {
     
     public void validerBorneInferieure(Registre registre,int numeroActe){
         if(numeroActe < registre.numeroPremierActe){
-            Response res = Response.status(Response.Status.EXPECTATION_FAILED)
-                   .entity(new Exception("le numero de l'acte ne peut être inférieur au numéro du premier acte du registre"))
+            Response res = Response.status(Response.Status.PRECONDITION_FAILED)
+                   .entity("le numero de l'acte ne peut être inférieur au numéro du premier acte du registre")
                    .build();
             throw new WebApplicationException(res);
         }
@@ -813,8 +818,14 @@ public class ActeNaissanceService {
         dto.setNombreExtraits(acte.nombreExtraits);
         
         dto.setNumero(acte.numero);
-        dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
         dto.setRegistreID(acte.registre.id);
+        
+        dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
+        dto.setOfficierEtatCivilNom(acte.officierEtatCivil.nom);
+        dto.setOfficierEtatCivilPrenoms(acte.officierEtatCivil.prenoms);
+        dto.setOfficierEtatCivilQualite(acte.officierEtatCivil.qualite);
+        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre);
+        
         
         dto.setRegistreNumero(acte.registre.reference.numero);
         dto.setRegistreAnnee(acte.registre.reference.annee);

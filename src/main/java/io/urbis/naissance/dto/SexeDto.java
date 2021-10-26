@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
  * @author florent
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class SexeDto {
     

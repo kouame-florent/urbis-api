@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
  * @author florent
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class TribunalDto {
     private String id;

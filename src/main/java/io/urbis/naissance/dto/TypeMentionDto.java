@@ -7,7 +7,6 @@ package io.urbis.naissance.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
-public class LienDeclarantDto {
+public class TypeMentionDto {
     
     private String code;
     private String libelle;

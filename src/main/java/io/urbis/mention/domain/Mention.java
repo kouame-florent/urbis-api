@@ -6,13 +6,19 @@
 package io.urbis.mention.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.registre.domain.OfficierEtatCivil;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -34,4 +40,15 @@ public abstract class Mention extends PanacheEntityBase{
     public LocalDateTime created = LocalDateTime.now();
     public LocalDateTime updated = LocalDateTime.now();
     
+    //@Enumerated(EnumType.STRING)
+    //public TypeMention typeMention;
+    
+    @Lob
+    public String decision;
+   
+    @ManyToOne
+    public OfficierEtatCivil officierEtatCivil;
+    
+    @ManyToOne
+    public ActeNaissance acteNaissance;
 }

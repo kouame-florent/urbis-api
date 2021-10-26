@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.domain;
 
-import javax.persistence.DiscriminatorValue;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -17,4 +17,17 @@ import javax.persistence.Table;
 @Table(name = "mention_mariage")
 public class Mariage extends Mention{
     
+    public String lieu;
+    public LocalDateTime date;
+    public LocalDateTime dateDressage;
+    
+    public String epouseNom;
+    public String epousePrenoms;
+    public String epouseDomicile;
+    public String epouseProfession;
+    
+    public String epouxNom;
+    public String epouxPrenoms;
+    public String epouxDomicile;
+    public String epouxProfession;
 }

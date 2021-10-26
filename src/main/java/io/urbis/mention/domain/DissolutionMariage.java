@@ -5,8 +5,12 @@
  */
 package io.urbis.mention.domain;
 
-import javax.persistence.DiscriminatorValue;
+import io.urbis.registre.domain.Tribunal;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -16,5 +20,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "mention_dissolution_mariage")
 public class DissolutionMariage extends Mention{
+    
+    public String nom;
+    public String prenoms;
+    public String domicile;
+    public String profession;
+    public String lieu;
+    public String dateMariage;
+    
+    public String numeroJugement;
+    public LocalDateTime dateJugement;
+    
+    @Enumerated(EnumType.STRING)
+    public TypeDissolutionMariage typeDissolution;
+    
+    @ManyToOne
+    public Tribunal tribunal;
+    public LocalDateTime dateDressage;
+    
     
 }

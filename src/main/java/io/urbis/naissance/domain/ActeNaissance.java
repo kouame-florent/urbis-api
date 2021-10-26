@@ -259,7 +259,7 @@ public class ActeNaissance extends Acte{
     
     @ManyToOne
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)
-    public OfficierEtatCivil officierEtatCivil;
+    public OfficierEtatCivil officierEtatCivil; 
 
     public ActeNaissance() {
     }

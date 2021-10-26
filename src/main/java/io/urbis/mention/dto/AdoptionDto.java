@@ -3,20 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.naissance.dto;
+package io.urbis.mention.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author florent
  */
 @Data
-@AllArgsConstructor
-public class LienDeclarantDto {
+@EqualsAndHashCode(callSuper = true)
+public class AdoptionDto extends MentionDto{
     
-    private String code;
-    private String libelle;
 }

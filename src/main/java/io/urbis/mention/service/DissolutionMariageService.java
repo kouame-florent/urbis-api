@@ -69,22 +69,4 @@ public class DissolutionMariageService {
         return dto;
     }
     
-    /*
-    public String nom;
-    public String prenom;
-    public String domicile;
-    public String profession;
-    public String lieu;
-    public String dateMariage;
-    
-    public String numeroJugement;
-    public LocalDateTime dateJugement;
-    
-    @Enumerated(EnumType.STRING)
-    public TypeDissolutionMariage typeDissolution;
-    
-    @ManyToOne
-    public Tribunal tribunal;
-    public LocalDateTime dateDressage;
-    */
 }

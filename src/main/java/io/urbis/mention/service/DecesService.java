@@ -5,12 +5,10 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.mention.domain.Adoption;
+import io.urbis.common.service.DateTimeUtils;
 import io.urbis.mention.domain.Deces;
-import io.urbis.mention.domain.Mention;
 import io.urbis.mention.dto.DecesDto;
 import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.naissance.dto.MentionDto;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +32,12 @@ public class DecesService {
         mention.officierEtatCivil = officier;
         
         mention.decision = dto.getDecision();
-        
-
+       // mention.date = DateTimeUtils.fromStringToDateTime(dto.getDate());
+        mention.date = dto.getDate();
+        mention.lieu = dto.getLieu();
+        mention.localite = dto.getLocalite();
+        mention.dateDressage = DateTimeUtils.fromStringToDateTime(dto.getDateDressage());
+ 
     }
     
     public List<DecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
@@ -54,13 +56,5 @@ public class DecesService {
         
         return dto;
     }
-    
-    /*
-    public LocalDateTime DateDeces;
-    public String Lieu;
-    
-    @ManyToOne
-    public String localite;
-    public LocalDateTime DateDressage;
-    */
+   
 }

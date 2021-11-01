@@ -6,8 +6,10 @@
 package io.urbis.mention.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.urbis.common.domain.BaseEntity;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -30,16 +32,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "mention")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Mention extends PanacheEntityBase{
-    
-    @Id
-    public String id = UUID.randomUUID().toString();
-    
-    @Version
-    public long version;
-    
-    public LocalDateTime created = LocalDateTime.now();
-    public LocalDateTime updated = LocalDateTime.now();
+public abstract class Mention extends BaseEntity{
+        
+    @Column(nullable = false,name = "date_dressage")
+    public LocalDate dateDressage;
     
     @NotBlank
     @Lob
@@ -48,11 +44,11 @@ public abstract class Mention extends PanacheEntityBase{
    
     @NotNull
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false,name = "officier_etat_civil_id")
     public OfficierEtatCivil officierEtatCivil;
     
     @NotNull
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false,name = "acte_naissance_id")
     public ActeNaissance acteNaissance;
 }

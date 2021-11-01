@@ -6,6 +6,7 @@
 package io.urbis.registre.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.urbis.common.domain.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Entity;
@@ -19,16 +20,7 @@ import javax.persistence.Version;
  */
 @Table(name = "officier_etat_civil")
 @Entity
-public class OfficierEtatCivil extends PanacheEntityBase{
-    
-    @Id
-    public String id = UUID.randomUUID().toString();
-    
-    public LocalDateTime created = LocalDateTime.now();
-    public LocalDateTime updated = LocalDateTime.now();
-       
-    @Version
-    public long version;
+public class OfficierEtatCivil extends  BaseEntity{
     
     public String nom;
     public String prenoms;

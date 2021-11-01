@@ -6,33 +6,38 @@
 package io.urbis.mention.api;
 
 import io.urbis.mention.dto.MariageDto;
-import io.urbis.mention.service.MariageService;
-import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.mention.service.MentionMariageService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  *
  * @author florent
  */
 @Path("/mentions/mariages")
+@Tag(name = "mention")
 public class MariageResource {
     
     @Inject
-    MariageService mariageService;
+    MentionMariageService mariageService;
     
+    @Transactional
     @POST
     public void create(@NotNull MariageDto dto){
         mariageService.creerMention(dto);
     }
     
     @GET
-    public List<MariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public Set<MariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return mariageService.findByActeNaissance(acteNaissanceID);
     }
 }

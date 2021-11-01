@@ -6,26 +6,29 @@
 package io.urbis.mention.api;
 
 import io.urbis.mention.dto.RectificationDto;
-import io.urbis.mention.service.RectificationService;
-import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.mention.service.MentionRectificationService;
 import java.util.List;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  *
  * @author florent
  */
 @Path("/mentions/rectifications")
+@Tag(name = "mention")
 public class RectificationResource {
     
     @Inject
-    RectificationService rectificationService;
+    MentionRectificationService rectificationService;
     
+    @Transactional
     @POST
     public void create(@NotNull RectificationDto dto){
         rectificationService.creerMention(dto);

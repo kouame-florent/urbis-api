@@ -16,12 +16,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  *
  * @author florent
  */
 @Path("/naissances")
+@Tag(name = "acte de naissance")
 public class ActeNaissanceResource {
     
     @Inject
@@ -34,8 +36,8 @@ public class ActeNaissanceResource {
     
     @Transactional
     @POST
-    public void create(ActeNaissanceDto acteNaissanceDto){
-        naissanceService.creerActe(acteNaissanceDto);
+    public String create(ActeNaissanceDto acteNaissanceDto){
+        return naissanceService.creerActe(acteNaissanceDto);
         
     }
     

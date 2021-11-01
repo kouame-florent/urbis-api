@@ -5,12 +5,9 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.mention.domain.Adoption;
-import io.urbis.mention.domain.Mention;
-import io.urbis.mention.domain.Rectification;
-import io.urbis.mention.dto.RectificationDto;
+import io.urbis.mention.domain.MentionLegitimation;
+import io.urbis.mention.dto.LegitimationDto;
 import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.naissance.dto.MentionDto;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +20,11 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 @ApplicationScoped
-public class RectificationService {
+public class MentionLegitimationService {
     
-     public void creerMention(@NotNull RectificationDto dto){
-        Rectification mention = new Rectification();
+     public void creerMention(@NotNull LegitimationDto dto){
+        
+        MentionLegitimation mention = new MentionLegitimation();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
@@ -35,18 +33,18 @@ public class RectificationService {
         
         mention.decision = dto.getDecision();
         
-
+         mention.persist();
     }
     
-    public List<RectificationDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<LegitimationDto > findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<Rectification> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionLegitimation> mentions = ActeNaissance.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public RectificationDto mapToDto(@NotNull Rectification mention){
-        RectificationDto dto = new RectificationDto();
+    public LegitimationDto  mapToDto(@NotNull MentionLegitimation mention){
+        LegitimationDto  dto = new LegitimationDto ();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

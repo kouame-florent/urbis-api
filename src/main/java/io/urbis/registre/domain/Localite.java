@@ -6,6 +6,7 @@
 package io.urbis.registre.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.urbis.common.domain.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -23,16 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @Table(name = "localite")
 @Entity
-public class Localite extends PanacheEntityBase{
-    
-    @Id
-    public String id = UUID.randomUUID().toString();
-    
-    public LocalDateTime created = LocalDateTime.now();
-    public LocalDateTime updated = LocalDateTime.now();
-       
-    @Version
-    public long version;
+public class Localite extends  BaseEntity{
     
     public String code;
     public String libelle;

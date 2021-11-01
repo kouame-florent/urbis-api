@@ -19,12 +19,14 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  *
  * @author florent
  */
 @Path("/registres")
+@Tag(name = "registre", description = "All the registre methods")
 public class RegistreResource {
     
     @Inject 

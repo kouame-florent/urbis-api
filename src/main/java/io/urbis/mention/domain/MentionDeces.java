@@ -6,7 +6,6 @@
 package io.urbis.mention.domain;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -16,11 +15,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "mention_deces")
-public class Deces extends Mention{
+public class MentionDeces extends Mention{
     
     public LocalDate date;
     public String lieu;
-    
     public String localite;
-    public LocalDateTime dateDressage;
+    
 }

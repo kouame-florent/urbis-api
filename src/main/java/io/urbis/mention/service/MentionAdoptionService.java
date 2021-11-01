@@ -5,11 +5,9 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.mention.domain.Legitimation;
-import io.urbis.mention.domain.Mention;
-import io.urbis.mention.dto.LegitimationDto;
+import io.urbis.mention.domain.MentionAdoption;
+import io.urbis.mention.dto.AdoptionDto;
 import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.naissance.dto.MentionDto;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +20,11 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 @ApplicationScoped
-public class LegitimationService {
+public class MentionAdoptionService {
     
-     public void creerMention(@NotNull LegitimationDto dto){
+    public void creerMention(@NotNull AdoptionDto dto){
         
-        Legitimation mention = new Legitimation();
+        MentionAdoption mention = new MentionAdoption();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
@@ -35,18 +33,18 @@ public class LegitimationService {
         
         mention.decision = dto.getDecision();
         
-
+        mention.persist();
     }
     
-    public List<LegitimationDto > findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<AdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<Legitimation> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionAdoption> mentions = ActeNaissance.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public LegitimationDto  mapToDto(@NotNull Legitimation mention){
-        LegitimationDto  dto = new LegitimationDto ();
+    public AdoptionDto mapToDto(@NotNull MentionAdoption mention){
+        AdoptionDto dto = new AdoptionDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

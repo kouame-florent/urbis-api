@@ -5,30 +5,30 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.domain.Adoption;
-import io.urbis.mention.dto.AdoptionDto;
 import io.urbis.mention.dto.DecesDto;
-import io.urbis.mention.service.AdoptionService;
-import io.urbis.mention.service.DecesService;
-import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.mention.service.MentionDecesService;
 import java.util.List;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  *
  * @author florent
  */
 @Path("/mentions/deces")
+@Tag(name = "mention")
 public class DecesResource {
     
     @Inject
-    DecesService decesService;
+    MentionDecesService decesService;
     
+    @Transactional
     @POST
     public void create(@NotNull DecesDto dto){
         decesService.creerMention(dto);

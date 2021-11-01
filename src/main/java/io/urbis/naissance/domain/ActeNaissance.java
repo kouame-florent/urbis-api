@@ -33,13 +33,6 @@ import javax.persistence.UniqueConstraint;
 @Entity
 public class ActeNaissance extends Acte{
     
-    @Id
-    public String id = UUID.randomUUID().toString();
-    
-    public LocalDateTime created = LocalDateTime.now();
-    public LocalDateTime updated = LocalDateTime.now();
-    
-    
     
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")

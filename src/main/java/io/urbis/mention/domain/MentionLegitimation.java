@@ -13,7 +13,8 @@ import javax.persistence.Table;
  * @author florent
  */
 @Entity
-@Table(name = "mention_rectification")
-public class Rectification extends Mention{
+@Table(name = "mention_legitimation")
+public class MentionLegitimation extends Mention{
+    
     
 }

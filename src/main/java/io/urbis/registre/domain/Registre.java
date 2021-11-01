@@ -7,6 +7,7 @@ package io.urbis.registre.domain;
 
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.urbis.common.domain.BaseEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -75,17 +76,9 @@ import org.hibernate.annotations.ParamDef;
         uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
 )
 @Entity
-public class Registre extends PanacheEntityBase{
-    
-    @Id
-    public String id = UUID.randomUUID().toString();
-    
-    public LocalDateTime created = LocalDateTime.now();
-    public LocalDateTime updated = LocalDateTime.now();
-       
-    @Version
-    public long version;
-    
+public class Registre extends BaseEntity{
+   
+        
     @NotNull
     @Column(name = "type_registre",nullable = false)
     @Enumerated(EnumType.STRING)    

@@ -5,9 +5,8 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.common.service.DateTimeUtils;
-import io.urbis.mention.domain.Deces;
-import io.urbis.mention.dto.DecesDto;
+import io.urbis.mention.domain.MentionReconnaissance;
+import io.urbis.mention.dto.ReconnaissanceDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -21,10 +20,11 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 @ApplicationScoped
-public class DecesService {
+public class MentionReconnaissanceService {
     
-     public void creerMention(@NotNull DecesDto dto){
-        Deces mention = new Deces();
+     public void creerMention(@NotNull ReconnaissanceDto dto){
+        
+        MentionReconnaissance mention = new MentionReconnaissance();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
@@ -32,23 +32,19 @@ public class DecesService {
         mention.officierEtatCivil = officier;
         
         mention.decision = dto.getDecision();
-       // mention.date = DateTimeUtils.fromStringToDateTime(dto.getDate());
-        mention.date = dto.getDate();
-        mention.lieu = dto.getLieu();
-        mention.localite = dto.getLocalite();
-        mention.dateDressage = DateTimeUtils.fromStringToDateTime(dto.getDateDressage());
- 
+        
+        mention.persist();
     }
     
-    public List<DecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<ReconnaissanceDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<Deces> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionReconnaissance> mentions = ActeNaissance.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public DecesDto mapToDto(@NotNull Deces mention){
-        DecesDto dto = new DecesDto();
+    public ReconnaissanceDto mapToDto(@NotNull MentionReconnaissance mention){
+        ReconnaissanceDto dto = new ReconnaissanceDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
@@ -56,5 +52,4 @@ public class DecesService {
         
         return dto;
     }
-   
 }

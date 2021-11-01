@@ -158,7 +158,8 @@ public class RegistreService {
     public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero){
        
        PanacheQuery<Registre> query = Registre.find("typeRegistre", 
-               Sort.by("numero", Sort.Direction.Descending),TypeRegistre.fromString(type));
+               Sort.by("annee", Sort.Direction.Descending).and("numero", Sort.Direction.Descending),
+               TypeRegistre.fromString(type));
        if(annee != 0){
            query.filter("anneeFilter", Map.of("anneeLimit",annee));
        }

@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.mention.dto;
+package io.urbis.mention.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  *
  * @author florent
  */
-@Data
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
-public class AdoptionDto extends MentionDto{
+@Entity
+@Table(name = "mention_reconnaissance")
+public class MentionReconnaissance extends Mention{
+        
     
 }

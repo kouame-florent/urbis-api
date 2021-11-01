@@ -34,7 +34,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.LockModeType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
@@ -61,7 +60,7 @@ public class ActeNaissanceService {
     }
     
     
-    public void creerActe(@NotNull ActeNaissanceDto acteNaissanceDto){
+    public String creerActe(@NotNull ActeNaissanceDto acteNaissanceDto){
         
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
@@ -262,7 +261,7 @@ public class ActeNaissanceService {
             //registre.persist();
         }
      
-        
+        return acte.id;
     }
     
     public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto){
@@ -285,6 +284,8 @@ public class ActeNaissanceService {
         
         acte.officierEtatCivil = officier;
         acte.registre = registre;
+        
+        log.infof("-- NUMERO DTO: %d", acteNaissanceDto.getNumero());
         
         acte.numero = acteNaissanceDto.getNumero();
         

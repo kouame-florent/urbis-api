@@ -55,7 +55,7 @@ public class ActeNaissanceService {
         return Optional.ofNullable(ActeNaissance.findById(id))
                 .map(p -> (ActeNaissance)p)
                 .map(this::mapToDto)
-                .orElseThrow(() -> new WebApplicationException(Response.status(Response.Status.NOT_FOUND).build()));
+                .orElseThrow(() -> new WebApplicationException("acte naissance not found",Response.status(Response.Status.NOT_FOUND).build()));
        
     }
     
@@ -70,7 +70,13 @@ public class ActeNaissanceService {
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
+        if(registre == null){
+           throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+        }
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
+        if(registre == null){
+           throw new WebApplicationException("Officier not found", Response.Status.NOT_FOUND);
+       }
         
         Operation op = Operation.fromString(acteNaissanceDto.getOperation());
         validerActe(registre, acteNaissanceDto,op);
@@ -258,9 +264,9 @@ public class ActeNaissanceService {
         if(operation == Operation.DECLARATION_JUGEMENT){
             //incrementer l'index du registre
             registre.numeroProchainActe += 1;
-            //registre.persist();
         }
-     
+        
+       
         return acte.id;
     }
     
@@ -618,7 +624,11 @@ public class ActeNaissanceService {
     
     
     public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize,@NotBlank String registreID){
+        log.infof("||-- REGISTRE ID : %d", registreID);
         Registre registre = Registre.findById(registreID);
+        if(registre == null){
+            throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+        }
         PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre", registre);
         return query.stream().map(this::mapToDto).collect(Collectors.toList());
     }
@@ -838,6 +848,10 @@ public class ActeNaissanceService {
         Registre registre = Registre.findById(registreID);
         if(registre == null){
             throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+        }
+        
+        while(numeroExist(registre, registre.numeroProchainActe)){
+            registre.numeroProchainActe += 1;
         }
         
         return registre.numeroProchainActe;

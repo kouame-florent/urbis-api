@@ -5,7 +5,6 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.common.service.DateTimeUtils;
 import io.urbis.mention.domain.MentionDissolutionMariage;
 import io.urbis.mention.dto.DissolutionMariageDto;
 import io.urbis.naissance.domain.ActeNaissance;
@@ -23,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionDissolutionMariageService {
     
-     public void creerMention(@NotNull DissolutionMariageDto dto){
+     public void createMention(@NotNull DissolutionMariageDto dto){
         
         MentionDissolutionMariage mention = new MentionDissolutionMariage();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
@@ -37,6 +36,10 @@ public class MentionDissolutionMariageService {
         mention.dateDressage = dto.getDateDressage();
         
         mention.persist();
+    }
+     
+    public void deleteMention(String mentionID){
+        MentionDissolutionMariage.deleteById(mentionID);
     }
     
     public List<DissolutionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){

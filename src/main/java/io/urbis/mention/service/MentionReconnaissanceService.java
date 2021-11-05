@@ -22,18 +22,36 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionReconnaissanceService {
     
-     public void creerMention(@NotNull ReconnaissanceDto dto){
+     public void createMention(@NotNull ReconnaissanceDto dto){
         
-        MentionReconnaissance mention = new MentionReconnaissance();
-        ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
+         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
-        mention.acteNaissance = acte;
-        mention.officierEtatCivil = officier;
+        MentionReconnaissance mention = MentionReconnaissance.findById(dto.getId());
         
-        mention.decision = dto.getDecision();
+        if(mention != null){
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         
-        mention.persist();
+        }else{
+            mention = new MentionReconnaissance();
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
+
+            mention.persist();
+        }
+    }
+     
+    public void deleteMention(String mentionID){
+        MentionReconnaissance.deleteById(mentionID);
     }
     
     public List<ReconnaissanceDto> findByActeNaissance(@NotBlank String acteNaissanceID){

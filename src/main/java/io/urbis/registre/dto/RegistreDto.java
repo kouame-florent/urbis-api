@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
  * @author florent
  */
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 public class RegistreDto {
     
     private String id ;

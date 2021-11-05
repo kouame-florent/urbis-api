@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionMariageService {
   
-    public void creerMention(@NotNull MariageDto dto){
+    public void createMention(@NotNull MariageDto dto){
         
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
@@ -64,8 +64,8 @@ public class MentionMariageService {
      
     }
      
-    public void updateMention(String mentionID){
-        
+    public void deleteMention(String mentionID){
+        MentionMariage.deleteById(mentionID);
     }
     
     public Set<MariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){

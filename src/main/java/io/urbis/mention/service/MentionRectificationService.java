@@ -22,17 +22,35 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionRectificationService {
     
-     public void creerMention(@NotNull RectificationDto dto){
-        MentionRectification mention = new MentionRectification();
+     public void createMention(@NotNull RectificationDto dto){
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
-        mention.acteNaissance = acte;
-        mention.officierEtatCivil = officier;
+        MentionRectification mention = MentionRectification.findById(dto.getId());
         
-        mention.decision = dto.getDecision();
+        if(mention != null){
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         
-        mention.persist();
+        }else{
+            mention = new MentionRectification();
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
+
+            mention.persist();
+        }
+    }
+     
+    public void deleteMention(String mentionID){
+        MentionRectification.deleteById(mentionID);
     }
     
     public List<RectificationDto> findByActeNaissance(@NotBlank String acteNaissanceID){

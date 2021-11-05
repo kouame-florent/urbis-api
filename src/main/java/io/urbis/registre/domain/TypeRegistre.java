@@ -14,11 +14,12 @@ import javax.ws.rs.core.Response;
  */
 public enum TypeRegistre {
     
-    NAISSANCE("Registre de naissance"),
-    MARIAGE("Registre de mariage"),
-    DECES("Registre de decès"),
-    DIVERS("Registre d'actes divers"),
-    SPECIAL_NAISSANCE("Registre spécial de naissance");
+    NAISSANCE("Naissance"),
+    MARIAGE("Mariage"),
+    DIVERS("Divers"),
+    DECES("Décès"),
+    SPECIAL_NAISSANCE("Spécial de naissance"),
+    SPECIAL_DECES("Spécial de décès");
     
     private final String libelle;
     

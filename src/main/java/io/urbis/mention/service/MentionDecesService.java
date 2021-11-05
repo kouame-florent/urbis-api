@@ -5,7 +5,6 @@
  */
 package io.urbis.mention.service;
 
-import io.urbis.common.service.DateTimeUtils;
 import io.urbis.mention.domain.MentionDeces;
 import io.urbis.mention.dto.DecesDto;
 import io.urbis.naissance.domain.ActeNaissance;
@@ -28,25 +27,45 @@ public class MentionDecesService {
     @Inject
     Logger log;
     
-     public void creerMention(@NotNull DecesDto dto){
-        MentionDeces mention = new MentionDeces();
+     public void createMention(@NotNull DecesDto dto){
+        
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         log.infof("-- MENTION DECES OFFICIER ID: %s",dto.getOfficierEtatCivilID());
         log.infof("-- MENTION DECES LIEU: %s",dto.getLieu());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+       
+        MentionDeces mention = MentionDeces.findById(dto.getId());
         
-        mention.acteNaissance = acte;
-        mention.officierEtatCivil = officier;
+        if(mention != null){
+            
+            mention.decision = dto.getDecision();
+            mention.date = dto.getDate();
+            mention.lieu = dto.getLieu();
+            mention.localite = dto.getLocalite();
+            mention.dateDressage = dto.getDateDressage();
+
+        }else{
+            mention = new MentionDeces();
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+                        
+            mention.decision = dto.getDecision();
+            mention.date = dto.getDate();
+            mention.lieu = dto.getLieu();
+            mention.localite = dto.getLocalite();
+            mention.dateDressage = dto.getDateDressage();
+            
+            mention.persist();
+        }
         
-        mention.decision = dto.getDecision();
-       // mention.date = DateTimeUtils.fromStringToDateTime(dto.getDate());
-        mention.date = dto.getDate();
-        mention.lieu = dto.getLieu();
-        mention.localite = dto.getLocalite();
-        mention.dateDressage = dto.getDateDressage();
         
-        mention.persist();
+       
  
+    }
+     
+    public void deleteMention(String mentionID){
+        MentionDeces.deleteById(mentionID);
     }
     
     public List<DecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){

@@ -22,18 +22,38 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionAdoptionService {
     
-    public void creerMention(@NotNull AdoptionDto dto){
+    public void createMention(@NotNull AdoptionDto dto){
         
-        MentionAdoption mention = new MentionAdoption();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
-        mention.acteNaissance = acte;
-        mention.officierEtatCivil = officier;
+        MentionAdoption mention = MentionAdoption.findById(dto.getId());
         
-        mention.decision = dto.getDecision();
+        if(mention != null){
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         
-        mention.persist();
+        }else{
+            mention = new MentionAdoption();
+            
+            mention.acteNaissance = acte;
+            mention.officierEtatCivil = officier;
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
+
+            mention.persist();
+        }
+        
+        
+    }
+    
+    public void deleteMention(String mentionID){
+        MentionAdoption.deleteById(mentionID);
     }
     
     public List<AdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){

@@ -12,9 +12,11 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -31,11 +33,17 @@ public class AdoptionResource {
     @Transactional
     @POST
     public void create(@NotNull AdoptionDto dto){
-        adoptionService.creerMention(dto);
+        adoptionService.createMention(dto);
     }
     
     @GET
     public List<AdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
        return adoptionService.findByActeNaissance(acteNaissanceID);
+    }
+    
+    @Transactional
+    @DELETE @Path("{id}")
+    public void delete(@PathParam("id") String id){
+        adoptionService.deleteMention(id);
     }
 }

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -84,6 +85,9 @@ public class RegistreService {
     
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
         Registre registre = Registre.findById(registreID);
+        if(registre == null){
+           throw  new EntityNotFoundException("registre not found");
+       }
         
         var typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocalite());
@@ -113,7 +117,11 @@ public class RegistreService {
     
     public void validerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
+        if(registre == null){
+           throw  new EntityNotFoundException("registre not found");
+        }
         
+                
         if(registre.statut == StatutRegistre.PROJET){
             registre.statut = StatutRegistre.VALIDE;
         }else{
@@ -125,6 +133,9 @@ public class RegistreService {
     
     public void annulerRegistre(@NotBlank String registreID, String motifAnnulation){
         Registre registre = Registre.findById(registreID);
+        if(registre == null){
+           throw new EntityNotFoundException("registre not found");
+        }
         registre.statut = StatutRegistre.ANNULE;
         registre.motifAnnulation = motifAnnulation;
         registre.dateAnnulation = LocalDateTime.now();
@@ -132,6 +143,9 @@ public class RegistreService {
     
     public void cloturerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
+        if(registre == null){
+           throw new EntityNotFoundException("registre not found");
+        }
         registre.statut = StatutRegistre.CLOTURE;
     }
     
@@ -152,6 +166,9 @@ public class RegistreService {
     public RegistreDto findById(String id){
        log.infof("FIND REG WITH ID: %s", id);
        Registre reg = Registre.findById(id);
+       if(reg == null){
+           throw new EntityNotFoundException("registre not found");
+       }
        return mapToDto(reg);
     }
     
@@ -281,32 +298,35 @@ public class RegistreService {
         return nbrActe;
     }
     
-    public  RegistreDto mapToDto(Registre registre){
+    public  RegistreDto mapToDto(@NotNull Registre registre){
        // log.infof("-- TYPE REGISTRE: %s", registre.typeRegistre);
+       
+       RegistreDto reg = new RegistreDto();
+       
+       reg.setId(registre.id);
+       reg.setCreated(registre.created);
+       reg.setUpdated(registre.updated);
+       reg.setTypeRegistre(registre.typeRegistre.name());
+       reg.setLibelle(registre.libelle);
+       reg.setLocalite(registre.reference.localite.libelle);
+       reg.setLocaliteID(registre.reference.localite.id);
+       reg.setCentre(registre.reference.centre.libelle);
+       reg.setCentreID(registre.reference.centre.id);
+       reg.setAnnee(registre.reference.annee);
+       reg.setNumero(registre.reference.numero);
+       reg.setTribunal(registre.tribunal.libelle);
+       reg.setTribunalID(registre.tribunal.id);
+       reg.setOfficierEtatCivilNomComplet(registre.officierEtatCivil.prenoms + " " + registre.officierEtatCivil.nom);
+       reg.setOfficierEtatCivilID(registre.officierEtatCivil.id);
+       reg.setNumeroPremierActe(registre.numeroPremierActe);
+       reg.setNumeroDernierActe(registre.numeroDernierActe);
+       reg.setNombreDeFeuillets(registre.nombreDeFeuillets);
+       reg.setNombreActe(nombreActe(registre));
+       reg.setStatut(registre.statut.name());
+       reg.setDateAnnulation(registre.dateAnnulation);
+       reg.setMotifAnnulation(registre.motifAnnulation);
         
-        return new RegistreDto(
-                registre.id,
-                registre.created,
-                registre.updated, 
-                registre.typeRegistre.name(), 
-                registre.libelle, 
-                registre.reference.localite.libelle, 
-                registre.reference.localite.id, 
-                registre.reference.centre.libelle, 
-                registre.reference.centre.id, 
-                registre.reference.annee, 
-                registre.reference.numero, 
-                registre.tribunal.libelle, 
-                registre.tribunal.id,
-                registre.officierEtatCivil.prenoms + " " + registre.officierEtatCivil.nom,
-                registre.officierEtatCivil.id,
-                registre.numeroPremierActe, 
-                registre.numeroDernierActe, 
-                registre.nombreDeFeuillets, 
-                nombreActe(registre),
-                registre.statut.name(),
-                null,
-                null);
+       return reg;
 
     }
     

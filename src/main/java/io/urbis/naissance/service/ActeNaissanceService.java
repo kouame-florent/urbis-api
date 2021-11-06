@@ -86,19 +86,19 @@ public class ActeNaissanceService {
         
         acte.numero = acteNaissanceDto.getNumero();
         
-        if(acteNaissanceDto.getDateDeclaration() != null && !acteNaissanceDto.getDateDeclaration().isBlank()){
-            acte.dateDeclaration = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDeclaration());
+        if(acteNaissanceDto.getDateDeclaration() != null){
+            acte.dateDeclaration = acteNaissanceDto.getDateDeclaration();
             
         }
         
         
-        if(acteNaissanceDto.getDateDressage() != null && !acteNaissanceDto.getDateDressage().isBlank()){
-            acte.dateDressage = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDressage());
+        if(acteNaissanceDto.getDateDressage() != null ){
+            acte.dateDressage = acteNaissanceDto.getDateDressage();
         }
         
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
-        if(acteNaissanceDto.getEnfantDateNaissance() != null && !acteNaissanceDto.getEnfantDateNaissance().isBlank()){
-            acte.enfant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getEnfantDateNaissance()) ;
+        if(acteNaissanceDto.getEnfantDateNaissance() != null){
+            acte.enfant.dateNaissance = acteNaissanceDto.getEnfantDateNaissance() ;
             //acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
             //acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
         }      
@@ -117,21 +117,21 @@ public class ActeNaissanceService {
             acte.enfant.sexe = Sexe.fromString(acteNaissanceDto.getEnfantSexe());
         }
         
-        if(acteNaissanceDto.getJugementDate() != null && !acteNaissanceDto.getJugementDate().isBlank()){
-            acte.jugement.date = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getJugementDate());
+        if(acteNaissanceDto.getJugementDate() != null){
+            acte.jugement.date = acteNaissanceDto.getJugementDate(); 
         }
         
         acte.jugement.numero = acteNaissanceDto.getJugementNumero();
         acte.jugement.tribunal = acteNaissanceDto.getJugementTribunal();
         
-        if(acteNaissanceDto.getMereDateDeces() != null && !acteNaissanceDto.getMereDateDeces().isBlank()){
-            acte.mere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateDeces());
+        if(acteNaissanceDto.getMereDateDeces() != null){
+            acte.mere.dateDeces = acteNaissanceDto.getMereDateDeces();
         }
-        if(acteNaissanceDto.getMereDateNaissance() != null && !acteNaissanceDto.getMereDateNaissance().isBlank()){
-            acte.mere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateNaissance());
+        if(acteNaissanceDto.getMereDateNaissance() != null){
+            acte.mere.dateNaissance = acteNaissanceDto.getMereDateNaissance();
         }
-        if(acteNaissanceDto.getMereDatePiece() != null && !acteNaissanceDto.getMereDatePiece().isBlank()){
-            acte.mere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDatePiece());
+        if(acteNaissanceDto.getMereDatePiece() != null){
+            acte.mere.datePiece = acteNaissanceDto.getMereDatePiece();
         }
         
         acte.mere.lieuDeces = acteNaissanceDto.getMereLieuDeces();
@@ -154,14 +154,14 @@ public class ActeNaissanceService {
             acte.mere.typePiece = TypePiece.fromString(acteNaissanceDto.getMereTypePiece()) ;
         }
         
-        if(acteNaissanceDto.getPereDateDeces() != null && !acteNaissanceDto.getPereDateDeces().isBlank()){
-             acte.pere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateDeces());
+        if(acteNaissanceDto.getPereDateDeces() != null){
+             acte.pere.dateDeces = acteNaissanceDto.getPereDateDeces();
         }
-        if(acteNaissanceDto.getPereDateNaissance() != null && !acteNaissanceDto.getPereDateNaissance().isBlank()){
-            acte.pere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateNaissance());
+        if(acteNaissanceDto.getPereDateNaissance() != null){
+            acte.pere.dateNaissance = acteNaissanceDto.getPereDateNaissance();
         }
-        if(acteNaissanceDto.getPereDatePiece() != null && !acteNaissanceDto.getPereDatePiece().isBlank()){
-            acte.pere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDatePiece());
+        if(acteNaissanceDto.getPereDatePiece() != null){
+            acte.pere.datePiece = acteNaissanceDto.getPereDatePiece();
         }
         
         acte.pere.lieuDeces = acteNaissanceDto.getPereLieuDeces();
@@ -184,11 +184,11 @@ public class ActeNaissanceService {
         }
             
         acte.declarant.lien = acteNaissanceDto.getDeclarantLien();
-        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
-            acte.declarant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDateNaissance());
+        if(acteNaissanceDto.getDeclarantDatePiece() != null){
+            acte.declarant.dateNaissance = acteNaissanceDto.getDeclarantDateNaissance();
         }
-        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
-            acte.declarant.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDatePiece());
+        if(acteNaissanceDto.getDeclarantDatePiece() != null){
+            acte.declarant.datePiece = acteNaissanceDto.getDeclarantDatePiece();
         }
         
         acte.declarant.lieuNaissance = acteNaissanceDto.getDeclarantLieuNaissance();
@@ -208,8 +208,8 @@ public class ActeNaissanceService {
             acte.declarant.typePiece = TypePiece.fromString(acteNaissanceDto.getDeclarantTypePiece());
         }
         
-        if(acteNaissanceDto.getInterpreteDateNaissance() != null && !acteNaissanceDto.getInterpreteDateNaissance().isBlank()){
-            acte.interprete.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getInterpreteDateNaissance());
+        if(acteNaissanceDto.getInterpreteDateNaissance() != null){
+            acte.interprete.dateNaissance = acteNaissanceDto.getInterpreteDateNaissance();
         }
         
         acte.interprete.domicile = acteNaissanceDto.getInterpreteDomicile();
@@ -218,8 +218,8 @@ public class ActeNaissanceService {
         acte.interprete.prenoms = acteNaissanceDto.getInterpretePrenoms();
         acte.interprete.profession = acteNaissanceDto.getInterpreteProfession();
         
-        if(acteNaissanceDto.getTemoinPremierDateNaissance() != null && !acteNaissanceDto.getTemoinPremierDateNaissance().isBlank()){
-            acte.temoins.premierDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinPremierDateNaissance());
+        if(acteNaissanceDto.getTemoinPremierDateNaissance() != null){
+            acte.temoins.premierDateNaissance = acteNaissanceDto.getTemoinPremierDateNaissance();
         }
         
         acte.temoins.premierDomicile = acteNaissanceDto.getTemoinPremierDomicile();
@@ -227,8 +227,8 @@ public class ActeNaissanceService {
         acte.temoins.premierPrenoms = acteNaissanceDto.getTemoinPremierPrenoms();
         acte.temoins.premierProfession = acteNaissanceDto.getTemoinPremierProfession();
         
-        if(acteNaissanceDto.getTemoinDeuxiemeDateNaissance() != null && !acteNaissanceDto.getTemoinDeuxiemeDateNaissance().isBlank()){
-            acte.temoins.deuxiemeDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinDeuxiemeDateNaissance());
+        if(acteNaissanceDto.getTemoinDeuxiemeDateNaissance() != null){
+            acte.temoins.deuxiemeDateNaissance = acteNaissanceDto.getTemoinDeuxiemeDateNaissance();
         }
         
         acte.temoins.deuxiemeDomicile = acteNaissanceDto.getTemoinDeuxiemeDomicile();
@@ -295,18 +295,18 @@ public class ActeNaissanceService {
         
         acte.numero = acteNaissanceDto.getNumero();
         
-        if(acteNaissanceDto.getDateDeclaration() != null && !acteNaissanceDto.getDateDeclaration().isBlank()){
-            acte.dateDeclaration = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDeclaration());
+        if(acteNaissanceDto.getDateDeclaration() != null){
+            acte.dateDeclaration = acteNaissanceDto.getDateDeclaration();
             
         }
        
-        if(acteNaissanceDto.getDateDressage() != null && !acteNaissanceDto.getDateDressage().isBlank()){
-            acte.dateDressage = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateDressage());
+        if(acteNaissanceDto.getDateDressage() != null ){
+            acte.dateDressage = acteNaissanceDto.getDateDressage();
         }
         
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
-        if(acteNaissanceDto.getEnfantDateNaissance() != null && !acteNaissanceDto.getEnfantDateNaissance().isBlank()){
-            acte.enfant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getEnfantDateNaissance()) ;
+        if(acteNaissanceDto.getEnfantDateNaissance() != null){
+            acte.enfant.dateNaissance = acteNaissanceDto.getEnfantDateNaissance() ;
          
         }      
         acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
@@ -325,8 +325,8 @@ public class ActeNaissanceService {
         }
         
                 
-        if(acteNaissanceDto.getJugementDate() != null && !acteNaissanceDto.getJugementDate().isBlank()){
-            acte.jugement.date = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getJugementDate());
+        if(acteNaissanceDto.getJugementDate() != null){
+            acte.jugement.date = acteNaissanceDto.getJugementDate();
         }
         
         Optional.ofNullable(acte.jugement).ifPresent(j -> {
@@ -335,14 +335,14 @@ public class ActeNaissanceService {
         });
         
         
-        if(acteNaissanceDto.getMereDateDeces() != null && !acteNaissanceDto.getMereDateDeces().isBlank()){
-            acte.mere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateDeces());
+        if(acteNaissanceDto.getMereDateDeces() != null){
+            acte.mere.dateDeces = acteNaissanceDto.getMereDateDeces();
         }
-        if(acteNaissanceDto.getMereDateNaissance() != null && !acteNaissanceDto.getMereDateNaissance().isBlank()){
-            acte.mere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDateNaissance());
+        if(acteNaissanceDto.getMereDateNaissance() != null){
+            acte.mere.dateNaissance = acteNaissanceDto.getMereDateNaissance();
         }
-        if(acteNaissanceDto.getMereDatePiece() != null && !acteNaissanceDto.getMereDatePiece().isBlank()){
-            acte.mere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getMereDatePiece());
+        if(acteNaissanceDto.getMereDatePiece() != null){
+            acte.mere.datePiece = acteNaissanceDto.getMereDatePiece();
         }
         
         acte.mere.lieuDeces = acteNaissanceDto.getMereLieuDeces();
@@ -365,14 +365,14 @@ public class ActeNaissanceService {
             acte.mere.typePiece = TypePiece.fromString(acteNaissanceDto.getMereTypePiece()) ;
         }
         
-        if(acteNaissanceDto.getPereDateDeces() != null && !acteNaissanceDto.getPereDateDeces().isBlank()){
-             acte.pere.dateDeces = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateDeces());
+        if(acteNaissanceDto.getPereDateDeces() != null){
+             acte.pere.dateDeces = acteNaissanceDto.getPereDateDeces();
         }
-        if(acteNaissanceDto.getPereDateNaissance() != null && !acteNaissanceDto.getPereDateNaissance().isBlank()){
-            acte.pere.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDateNaissance());
+        if(acteNaissanceDto.getPereDateNaissance() != null){
+            acte.pere.dateNaissance = acteNaissanceDto.getPereDateNaissance();
         }
-        if(acteNaissanceDto.getPereDatePiece() != null && !acteNaissanceDto.getPereDatePiece().isBlank()){
-            acte.pere.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getPereDatePiece());
+        if(acteNaissanceDto.getPereDatePiece() != null){
+            acte.pere.datePiece = acteNaissanceDto.getPereDatePiece();
         }
         
         acte.pere.lieuDeces = acteNaissanceDto.getPereLieuDeces();
@@ -395,11 +395,11 @@ public class ActeNaissanceService {
         }
             
         acte.declarant.lien = acteNaissanceDto.getDeclarantLien();
-        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
-            acte.declarant.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDateNaissance());
+        if(acteNaissanceDto.getDeclarantDatePiece() != null){
+            acte.declarant.dateNaissance = acteNaissanceDto.getDeclarantDateNaissance();
         }
-        if(acteNaissanceDto.getDeclarantDatePiece() != null && !acteNaissanceDto.getDeclarantDatePiece().isBlank()){
-            acte.declarant.datePiece = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDeclarantDatePiece());
+        if(acteNaissanceDto.getDeclarantDatePiece() != null){
+            acte.declarant.datePiece = acteNaissanceDto.getDeclarantDatePiece();
         }
         
         acte.declarant.lieuNaissance = acteNaissanceDto.getDeclarantLieuNaissance();
@@ -419,8 +419,8 @@ public class ActeNaissanceService {
             acte.declarant.typePiece = TypePiece.fromString(acteNaissanceDto.getDeclarantTypePiece());
         }
         
-        if(acteNaissanceDto.getInterpreteDateNaissance() != null && !acteNaissanceDto.getInterpreteDateNaissance().isBlank()){
-            acte.interprete.dateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getInterpreteDateNaissance());
+        if(acteNaissanceDto.getInterpreteDateNaissance() != null){
+            acte.interprete.dateNaissance = acteNaissanceDto.getInterpreteDateNaissance();
         }
         
         acte.interprete.domicile = acteNaissanceDto.getInterpreteDomicile();
@@ -429,8 +429,8 @@ public class ActeNaissanceService {
         acte.interprete.prenoms = acteNaissanceDto.getInterpretePrenoms();
         acte.interprete.profession = acteNaissanceDto.getInterpreteProfession();
         
-        if(acteNaissanceDto.getTemoinPremierDateNaissance() != null && !acteNaissanceDto.getTemoinPremierDateNaissance().isBlank()){
-            acte.temoins.premierDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinPremierDateNaissance());
+        if(acteNaissanceDto.getTemoinPremierDateNaissance() != null){
+            acte.temoins.premierDateNaissance = acteNaissanceDto.getTemoinPremierDateNaissance();
         }
         
         acte.temoins.premierDomicile = acteNaissanceDto.getTemoinPremierDomicile();
@@ -438,8 +438,8 @@ public class ActeNaissanceService {
         acte.temoins.premierPrenoms = acteNaissanceDto.getTemoinPremierPrenoms();
         acte.temoins.premierProfession = acteNaissanceDto.getTemoinPremierProfession();
         
-        if(acteNaissanceDto.getTemoinDeuxiemeDateNaissance() != null && !acteNaissanceDto.getTemoinDeuxiemeDateNaissance().isBlank()){
-            acte.temoins.deuxiemeDateNaissance = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getTemoinDeuxiemeDateNaissance());
+        if(acteNaissanceDto.getTemoinDeuxiemeDateNaissance() != null){
+            acte.temoins.deuxiemeDateNaissance = acteNaissanceDto.getTemoinDeuxiemeDateNaissance();
         }
         
         acte.temoins.deuxiemeDomicile = acteNaissanceDto.getTemoinDeuxiemeDomicile();
@@ -648,17 +648,17 @@ public class ActeNaissanceService {
         dto.setId(acte.id);
         
         if(acte.dateDeclaration != null){
-            dto.setDateDeclaration(DateTimeUtils.fromDateTimeToString(acte.dateDeclaration));
+            dto.setDateDeclaration(acte.dateDeclaration);
         }
         if(acte.dateDressage != null){
-            dto.setDateDressage(DateTimeUtils.fromDateTimeToString(acte.dateDressage));
+            dto.setDateDressage(acte.dateDressage);
         }
          
         if(acte.declarant.dateNaissance != null){
-            dto.setDeclarantDateNaissance(DateTimeUtils.fromDateTimeToString(acte.declarant.dateNaissance));
+            dto.setDeclarantDateNaissance(acte.declarant.dateNaissance);
         }
         if(acte.declarant.datePiece != null){
-            dto.setDeclarantDatePiece(DateTimeUtils.fromDateTimeToString(acte.declarant.datePiece));
+            dto.setDeclarantDatePiece(acte.declarant.datePiece);
         }
      
         Optional.ofNullable(acte.declarant).ifPresent(d -> {
@@ -688,7 +688,7 @@ public class ActeNaissanceService {
         });
         
         Optional.ofNullable(acte.enfant).map(e -> e.dateNaissance).ifPresent(d -> {
-            dto.setEnfantDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+            dto.setEnfantDateNaissance(d); 
         });
         
         Optional.ofNullable(acte.enfant).map(e -> e.nationalite).ifPresent(n -> {
@@ -708,7 +708,7 @@ public class ActeNaissanceService {
         });
         
         Optional.ofNullable(acte.interprete).map(i -> i.dateNaissance).ifPresent(d -> {
-            dto.setInterpreteDateNaissance(DateTimeUtils.fromDateTimeToString(acte.interprete.dateNaissance));
+            dto.setInterpreteDateNaissance(acte.interprete.dateNaissance);
         });
         
         Optional.ofNullable(acte.jugement).ifPresent(j -> {
@@ -718,7 +718,7 @@ public class ActeNaissanceService {
         });
         
         Optional.ofNullable(acte.jugement).map(j -> j.date).ifPresent(d -> {
-            dto.setJugementDate(DateTimeUtils.fromDateTimeToString(acte.jugement.date));
+            dto.setJugementDate(acte.jugement.date);
         });
         
         //mere
@@ -735,15 +735,15 @@ public class ActeNaissanceService {
         });
         
          Optional.ofNullable(acte.mere).map(m -> m.dateDeces).ifPresent(d -> {
-             dto.setMereDateDeces(DateTimeUtils.fromDateTimeToString(d));
+             dto.setMereDateDeces(d);
          });
        
         Optional.ofNullable(acte.mere).map(m -> m.dateNaissance).ifPresent(d -> {
-             dto.setMereDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+             dto.setMereDateNaissance(d);
          });
         
         Optional.ofNullable(acte.mere).map(m -> m.datePiece).ifPresent(d -> {
-             dto.setMereDatePiece(DateTimeUtils.fromDateTimeToString(d));
+             dto.setMereDatePiece(d);
          });
         
         Optional.ofNullable(acte.mere).map(m -> m.nationalite).ifPresent(n -> {
@@ -768,15 +768,15 @@ public class ActeNaissanceService {
         });
         
          Optional.ofNullable(acte.pere).map(p -> p.dateDeces).ifPresent(d -> {
-             dto.setPereDateDeces(DateTimeUtils.fromDateTimeToString(d));
+             dto.setPereDateDeces(d);
          });
        
         Optional.ofNullable(acte.pere).map(p -> p.dateNaissance).ifPresent(d -> {
-             dto.setPereDateNaissance(DateTimeUtils.fromDateTimeToString(d));
+             dto.setPereDateNaissance(d);
          });
         
         Optional.ofNullable(acte.pere).map(p -> p.datePiece).ifPresent(d -> {
-             dto.setPereDatePiece(DateTimeUtils.fromDateTimeToString(d));
+             dto.setPereDatePiece(d);
          });
         
         Optional.ofNullable(acte.pere).map(p -> p.nationalite).ifPresent(n -> {
@@ -801,14 +801,14 @@ public class ActeNaissanceService {
         });
         
         Optional.ofNullable(acte.temoins).map(t -> t.premierDateNaissance).ifPresent(d -> {
-            dto.setTemoinPremierDateNaissance(DateTimeUtils.fromDateTimeToString(acte.temoins.premierDateNaissance));
+            dto.setTemoinPremierDateNaissance(acte.temoins.premierDateNaissance);
         });
         if(acte.temoins.premierDateNaissance != null){
             
         }
         
         if(acte.temoins.deuxiemeDateNaissance != null){
-            dto.setTemoinDeuxiemeDateNaissance(DateTimeUtils.fromDateTimeToString(acte.temoins.deuxiemeDateNaissance));
+            dto.setTemoinDeuxiemeDateNaissance(acte.temoins.deuxiemeDateNaissance);
         }
      
         

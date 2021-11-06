@@ -13,6 +13,7 @@ import io.urbis.registre.service.RegistreService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
@@ -89,9 +90,15 @@ public class RegistreResource {
        return registreService.findById(id);
     }
     
+    @Transactional
+    @DELETE @Path("{id}")
+    public void delete(@PathParam("id") String id){
+        registreService.supprimer(id);
+    }
+    
     @GET @Path("/courant")
     public RegistreDto courant(@QueryParam("type") String type){      
-       return registreService.RegistreCourant(type);
+       return registreService.registreCourant(type);
     }
     
     @GET @Path("annee-courante")

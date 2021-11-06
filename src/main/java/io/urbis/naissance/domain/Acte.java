@@ -5,16 +5,11 @@
  */
 package io.urbis.naissance.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.urbis.common.domain.BaseEntity;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
  *

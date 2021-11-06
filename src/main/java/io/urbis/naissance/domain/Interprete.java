@@ -6,7 +6,7 @@
 package io.urbis.naissance.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
 
@@ -20,7 +20,7 @@ public class Interprete implements Serializable{
     public String nom;
     public String prenoms;
     public String profession;
-    public LocalDateTime dateNaissance;
+    public LocalDate dateNaissance;
     public String domicile;
     public String langue;
 } 

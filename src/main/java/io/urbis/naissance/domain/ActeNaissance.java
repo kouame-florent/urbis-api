@@ -7,8 +7,8 @@ package io.urbis.naissance.domain;
 
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -16,7 +16,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -54,17 +53,13 @@ public class ActeNaissance extends Acte{
                            column=@Column(name="enfant_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="enfant_date_naissance")),
-       // @AttributeOverride(name="dateNaissanceLettre",
-       //                    column=@Column(name="enfant_date_naissance_lettre")),
-       // @AttributeOverride(name="heureNaissanceLettre",
-       //                    column=@Column(name="enfant_heure_naissance_lettre")),
         @AttributeOverride(name="localite",
                            column=@Column(name="enfant_localite")),
     })
     public Enfant enfant;
     
     @Column(name = "date_declaration")
-    public LocalDateTime dateDeclaration;
+    public LocalDate dateDeclaration;
     
     @Column(name = "date_dressage")
     public LocalDateTime dateDressage;

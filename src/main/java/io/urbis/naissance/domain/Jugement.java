@@ -6,7 +6,7 @@
 package io.urbis.naissance.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
 /**
@@ -16,7 +16,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Jugement implements Serializable{
     
-    public LocalDateTime date;
+    public LocalDate date;
     public String numero;
     public String tribunal;
     

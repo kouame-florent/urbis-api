@@ -9,6 +9,7 @@ package io.urbis.naissance.dto;
 import io.urbis.mention.dto.AdoptionDto;
 import io.urbis.mention.dto.DecesDto;
 import io.urbis.naissance.domain.Operation;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ActeNaissanceDto {
     @Min(1)
     private int numero;
     
-    private String enfantDateNaissance;
+    private LocalDateTime enfantDateNaissance;
     private String enfantLieuNaissance;
     private String enfantSexe;
     private String enfantLocalite;
@@ -48,11 +49,11 @@ public class ActeNaissanceDto {
     private String enfantPrenoms;
     private String enfantNationalite;  
 
-    private String dateDeclaration;
-    private String dateDressage;
+    private LocalDate dateDeclaration;
+    private LocalDateTime dateDressage;
    // private String dateEnregistrement;
     
-    private String jugementDate;
+    private LocalDate jugementDate;
     private String jugementNumero;
     private String jugementTribunal;
     
@@ -64,13 +65,13 @@ public class ActeNaissanceDto {
     private String pereProfession;
     private String pereLieuNaissance;
     private String pereNationalite;
-    private String pereDateNaissance;
-    private String pereDateDeces;
+    private LocalDate pereDateNaissance;
+    private LocalDate pereDateDeces;
     private String pereLieuDeces;
     private String pereLocalite;
     private String pereTypePiece;
     private String pereNumeroPiece;
-    private String pereDatePiece;
+    private LocalDate pereDatePiece;
     private String pereLieuPiece;
     
     private String mereNom;
@@ -78,13 +79,13 @@ public class ActeNaissanceDto {
     private String mereProfession;
     private String mereLieuNaissance;
     private String mereNationalite;
-    private String mereDateNaissance;
-    private String mereDateDeces;
+    private LocalDate mereDateNaissance;
+    private LocalDate mereDateDeces;
     private String mereLieuDeces;
     private String mereLocalite;
     private String mereTypePiece;
     private String mereNumeroPiece;
-    private String mereDatePiece;
+    private LocalDate mereDatePiece;
     private String mereLieuPiece;
     
     private String declarantLien;
@@ -93,29 +94,29 @@ public class ActeNaissanceDto {
     private String declarantProfession;
     private String declarantLieuNaissance;
     private String declarantNationalite;
-    private String declarantDateNaissance;
+    private LocalDate declarantDateNaissance;
     private String declarantLocalite;
     private String declarantTypePiece;
     private String declarantNumeroPiece;
-    private String declarantDatePiece;
+    private LocalDate declarantDatePiece;
     private String declarantLieuPiece;
     
     private String interpreteNom;
     private String interpretePrenoms;
     private String interpreteProfession;
-    private String interpreteDateNaissance;
+    private LocalDate interpreteDateNaissance;
     private String interpreteDomicile;
     private String interpreteLangue;
     
     private String temoinPremierNom;
     private String temoinPremierPrenoms;
-    private String temoinPremierDateNaissance;
+    private LocalDate temoinPremierDateNaissance;
     private String temoinPremierProfession;
     private String temoinPremierDomicile;
     
     private String temoinDeuxiemeNom;
     private String temoinDeuxiemePrenoms;
-    private String temoinDeuxiemeDateNaissance;
+    private LocalDate temoinDeuxiemeDateNaissance;
     private String temoinDeuxiemeProfession;
     private String temoinDeuxiemeDomicile;
   
@@ -133,7 +134,7 @@ public class ActeNaissanceDto {
     private int registreAnnee;
     private int registreNumero;
     
-    private List<AdoptionDto> adoptionDtos = new ArrayList<>();
-    private List<DecesDto> decesDtos = new ArrayList<>();
+    //private List<AdoptionDto> adoptionDtos = new ArrayList<>();
+    //private List<DecesDto> decesDtos = new ArrayList<>();
     
 }

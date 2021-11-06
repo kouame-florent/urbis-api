@@ -5,7 +5,7 @@
  */
 package io.urbis.naissance.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
 /**
@@ -21,10 +21,10 @@ public class Declarant {
     public String profession;
     public String lieuNaissance;
     public Nationalite nationalite;
-    public LocalDateTime dateNaissance;
+    public LocalDate dateNaissance;
     public String localite;
     public TypePiece typePiece;
     public String numeroPiece;
-    public LocalDateTime datePiece;
+    public LocalDate datePiece;
     public String lieuPiece;
 }

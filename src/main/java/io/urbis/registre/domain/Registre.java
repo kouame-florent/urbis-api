@@ -47,7 +47,7 @@ import org.hibernate.annotations.ParamDef;
     query = "Select r FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.localite = :localite "
             + "AND r.reference.centre = :centre AND r.reference.annee = :annee AND r.reference.numero = :numero"
     ),
-    @NamedQuery(name = "Registre.findCourant",
+    @NamedQuery(name = "Registre.findWithMaxNumero",
     query = "SELECT r FROM Registre r WHERE r.typeRegistre = :typeRegistre"
             + " AND r.reference.annee = :annee AND r.statut = :statut AND r.reference.numero = "
             + " (SELECT MAX(r.reference.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre "

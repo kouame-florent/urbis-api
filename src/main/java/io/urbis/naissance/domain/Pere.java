@@ -6,7 +6,7 @@
 package io.urbis.naissance.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
 /**
@@ -22,13 +22,13 @@ public class Pere implements Serializable{
     public String profession;
     public String lieuNaissance;
     public Nationalite nationalite; 
-    public LocalDateTime dateNaissance;
-    public LocalDateTime dateDeces;
+    public LocalDate dateNaissance;
+    public LocalDate dateDeces;
     public String lieuDeces;
     public String localite;
     public TypePiece typePiece;
     public String numeroPiece;
-    public LocalDateTime datePiece;
+    public LocalDate datePiece;
     public String lieuPiece;
     
 }

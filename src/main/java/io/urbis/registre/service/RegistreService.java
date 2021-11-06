@@ -152,6 +152,10 @@ public class RegistreService {
     public void consulterRegistre(){}
     
     public void deplacerRegistre(){}
+    
+    public void supprimer(@NotBlank String id){
+        Registre.deleteById(id);
+    }
    
     /*
     public List<RegistreDto> findAll(){
@@ -263,12 +267,12 @@ public class RegistreService {
     
     /**
      * 
-     * Retourne le registre RegistreCourant utilisé
+     * Retourne le registre registreCourant utilisé
      */
-    public RegistreDto RegistreCourant(String typeString){
+    public RegistreDto registreCourant(String typeString){
         TypeRegistre typeRegistre = TypeRegistre.fromString(typeString);
         int annee = LocalDateTime.now().getYear();
-        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findCourant", Registre.class);
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findWithMaxNumero", Registre.class);
         query.setParameter("typeRegistre", typeRegistre);
         query.setParameter("annee", annee);
         query.setParameter("statut", StatutRegistre.VALIDE);

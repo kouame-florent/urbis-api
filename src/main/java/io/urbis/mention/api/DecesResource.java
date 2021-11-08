@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.DecesDto;
+import io.urbis.mention.dto.MentionDecesDto;
 import io.urbis.mention.service.MentionDecesService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class DecesResource {
     
     @Transactional
     @POST
-    public void create(@NotNull DecesDto dto){
+    public void create(@NotNull MentionDecesDto dto){
         decesService.createMention(dto);
     }
     
     @GET
-    public List<DecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionDecesDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return decesService.findByActeNaissance(acteNaissanceID);
     }
     

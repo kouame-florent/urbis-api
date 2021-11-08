@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.AdoptionDto;
+import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.mention.service.MentionAdoptionService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class AdoptionResource {
     
     @Transactional
     @POST
-    public void create(@NotNull AdoptionDto dto){
+    public void create(@NotNull MentionAdoptionDto dto){
         adoptionService.createMention(dto);
     }
     
     @GET
-    public List<AdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionAdoptionDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return adoptionService.findByActeNaissance(acteNaissanceID);
     }
     

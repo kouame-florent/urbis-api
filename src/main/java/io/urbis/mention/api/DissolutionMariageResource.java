@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.DissolutionMariageDto;
+import io.urbis.mention.dto.MentionDissolutionMariageDto;
 import io.urbis.mention.service.MentionDissolutionMariageService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class DissolutionMariageResource {
     
     @Transactional
     @POST
-    public void create(@NotNull DissolutionMariageDto dto){
+    public void create(@NotNull MentionDissolutionMariageDto dto){
         dissolutionMariageService.createMention(dto);
     }
     
     @GET
-    public List<DissolutionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionDissolutionMariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return dissolutionMariageService.findByActeNaissance(acteNaissanceID);
     }
     

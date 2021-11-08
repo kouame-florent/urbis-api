@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionAdoption;
-import io.urbis.mention.dto.AdoptionDto;
+import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionAdoptionService {
     
-    public void createMention(@NotNull AdoptionDto dto){
+    public void createMention(@NotNull MentionAdoptionDto dto){
         
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
@@ -56,15 +56,15 @@ public class MentionAdoptionService {
         MentionAdoption.deleteById(mentionID);
     }
     
-    public List<AdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionAdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionAdoption> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionAdoption> mentions = MentionAdoption.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public AdoptionDto mapToDto(@NotNull MentionAdoption mention){
-        AdoptionDto dto = new AdoptionDto();
+    public MentionAdoptionDto mapToDto(@NotNull MentionAdoption mention){
+        MentionAdoptionDto dto = new MentionAdoptionDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

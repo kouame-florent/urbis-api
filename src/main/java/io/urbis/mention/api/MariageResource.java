@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.MariageDto;
+import io.urbis.mention.dto.MentionMariageDto;
 import io.urbis.mention.service.MentionMariageService;
 import java.util.Set;
 import javax.inject.Inject;
@@ -33,12 +33,12 @@ public class MariageResource {
     
     @Transactional
     @POST
-    public void create(@NotNull MariageDto dto){
+    public void create(@NotNull MentionMariageDto dto){
         mariageService.createMention(dto);
     }
     
     @GET
-    public Set<MariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionMariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return mariageService.findByActeNaissance(acteNaissanceID);
     }
     

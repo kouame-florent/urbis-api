@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionRectification;
-import io.urbis.mention.dto.RectificationDto;
+import io.urbis.mention.dto.MentionRectificationDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionRectificationService {
     
-     public void createMention(@NotNull RectificationDto dto){
+     public void createMention(@NotNull MentionRectificationDto dto){
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
@@ -53,15 +53,15 @@ public class MentionRectificationService {
         MentionRectification.deleteById(mentionID);
     }
     
-    public List<RectificationDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionRectificationDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionRectification> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionRectification> mentions = MentionRectification.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public RectificationDto mapToDto(@NotNull MentionRectification mention){
-        RectificationDto dto = new RectificationDto();
+    public MentionRectificationDto mapToDto(@NotNull MentionRectification mention){
+        MentionRectificationDto dto = new MentionRectificationDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

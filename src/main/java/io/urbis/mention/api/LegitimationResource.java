@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.LegitimationDto;
+import io.urbis.mention.dto.MentionLegitimationDto;
 import io.urbis.mention.service.MentionLegitimationService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class LegitimationResource {
     
     @Transactional
     @POST
-    public void create(@NotNull LegitimationDto dto){
+    public void create(@NotNull MentionLegitimationDto dto){
         legitimationService.createMention(dto);
     }
     
     @GET
-    public List<LegitimationDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionLegitimationDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return legitimationService.findByActeNaissance(acteNaissanceID);
     }
     

@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionLegitimation;
-import io.urbis.mention.dto.LegitimationDto;
+import io.urbis.mention.dto.MentionLegitimationDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionLegitimationService {
     
-     public void createMention(@NotNull LegitimationDto dto){
+     public void createMention(@NotNull MentionLegitimationDto dto){
         
        
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
@@ -55,15 +55,15 @@ public class MentionLegitimationService {
         MentionLegitimation.deleteById(mentionID);
     }
     
-    public List<LegitimationDto > findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionLegitimationDto > findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionLegitimation> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionLegitimation> mentions = MentionLegitimation.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public LegitimationDto  mapToDto(@NotNull MentionLegitimation mention){
-        LegitimationDto  dto = new LegitimationDto ();
+    public MentionLegitimationDto  mapToDto(@NotNull MentionLegitimation mention){
+        MentionLegitimationDto  dto = new MentionLegitimationDto ();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

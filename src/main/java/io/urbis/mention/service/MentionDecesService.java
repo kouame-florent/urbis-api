@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionDeces;
-import io.urbis.mention.dto.DecesDto;
+import io.urbis.mention.dto.MentionDecesDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -27,7 +27,7 @@ public class MentionDecesService {
     @Inject
     Logger log;
     
-     public void createMention(@NotNull DecesDto dto){
+     public void createMention(@NotNull MentionDecesDto dto){
         
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         log.infof("-- MENTION DECES OFFICIER ID: %s",dto.getOfficierEtatCivilID());
@@ -68,15 +68,15 @@ public class MentionDecesService {
         MentionDeces.deleteById(mentionID);
     }
     
-    public List<DecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionDecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionDeces> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionDeces> mentions = MentionDeces.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public DecesDto mapToDto(@NotNull MentionDeces mention){
-        DecesDto dto = new DecesDto();
+    public MentionDecesDto mapToDto(@NotNull MentionDeces mention){
+        MentionDecesDto dto = new MentionDecesDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

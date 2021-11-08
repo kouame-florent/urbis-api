@@ -6,13 +6,14 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionMariage;
-import io.urbis.mention.dto.MariageDto;
+import io.urbis.mention.dto.MentionMariageDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,12 +24,20 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionMariageService {
   
-    public void createMention(@NotNull MariageDto dto){
+    public void createMention(@NotNull MentionMariageDto dto){
         
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
+        }
+        
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
 
         MentionMariage mention = MentionMariage.findById(dto.getId());
+        
         if(mention != null){
             mention.decision = dto.getDecision();
 
@@ -68,15 +77,15 @@ public class MentionMariageService {
         MentionMariage.deleteById(mentionID);
     }
     
-    public Set<MariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public Set<MentionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
         List<MentionMariage> mentions = MentionMariage.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
     }
     
-    public MariageDto mapToDto(@NotNull MentionMariage mention){
-        MariageDto dto = new MariageDto();
+    public MentionMariageDto mapToDto(@NotNull MentionMariage mention){
+        MentionMariageDto dto = new MentionMariageDto();
         
         dto.setId(mention.id);
         dto.setDate(mention.date);

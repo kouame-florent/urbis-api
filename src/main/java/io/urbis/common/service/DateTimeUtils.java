@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
  * @author florent
  */
 public class DateTimeUtils {
-    
+    /*
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy[ HH:mm:ss]",new Locale("fr","FR"));
     
     public static LocalDateTime fromStringToDateTime(String dateTimeStr){
@@ -44,5 +44,6 @@ public class DateTimeUtils {
     public static String fromDateTimeToString(LocalDateTime localDateTime){
        return localDateTime.format(dateTimeFormatter);
     }
+*/
     
 }

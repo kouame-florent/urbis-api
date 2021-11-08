@@ -168,7 +168,7 @@ public class RegistreService {
     */
     
     public RegistreDto findById(String id){
-       log.infof("FIND REG WITH ID: %s", id);
+       //log.infof("FIND REG WITH ID: %s", id);
        Registre reg = Registre.findById(id);
        if(reg == null){
            throw new EntityNotFoundException("registre not found");
@@ -190,7 +190,7 @@ public class RegistreService {
        }
        
        query.range(offset, offset + (pageSize-1));
-       log.infof("OFFSET: %d PAGESIZE: %d", offset,offset + pageSize);
+       //log.infof("OFFSET: %d PAGESIZE: %d", offset,offset + pageSize);
        return query.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
@@ -296,7 +296,7 @@ public class RegistreService {
      */
     public int nombreActe(Registre registre){
         int nbrActe = (int)ActeNaissance.count("registre", registre);
-        log.infof("----- NOMBRE ACTE : %s", nbrActe);
+        //log.infof("----- NOMBRE ACTE : %s", nbrActe);
         //+ActeMariage.count()
         //+ActeDivers.count()...
         return nbrActe;

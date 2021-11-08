@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionDissolutionMariage;
-import io.urbis.mention.dto.DissolutionMariageDto;
+import io.urbis.mention.dto.MentionDissolutionMariageDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionDissolutionMariageService {
     
-     public void createMention(@NotNull DissolutionMariageDto dto){
+     public void createMention(@NotNull MentionDissolutionMariageDto dto){
         
         MentionDissolutionMariage mention = new MentionDissolutionMariage();
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
@@ -42,15 +42,15 @@ public class MentionDissolutionMariageService {
         MentionDissolutionMariage.deleteById(mentionID);
     }
     
-    public List<DissolutionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionDissolutionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionDissolutionMariage> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionDissolutionMariage> mentions = MentionDissolutionMariage.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public DissolutionMariageDto mapToDto(@NotNull MentionDissolutionMariage mention){
-        DissolutionMariageDto dto = new DissolutionMariageDto();
+    public MentionDissolutionMariageDto mapToDto(@NotNull MentionDissolutionMariage mention){
+        MentionDissolutionMariageDto dto = new MentionDissolutionMariageDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

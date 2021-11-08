@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.ReconnaissanceDto;
+import io.urbis.mention.dto.MentionReconnaissanceDto;
 import io.urbis.mention.service.MentionReconnaissanceService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class ReconnaissanceResource {
     
     @Transactional
     @POST
-    public void create(@NotNull ReconnaissanceDto dto){
+    public void create(@NotNull MentionReconnaissanceDto dto){
         reconnaissanceService.createMention(dto);
     }
     
     @GET
-    public List<ReconnaissanceDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionReconnaissanceDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return reconnaissanceService.findByActeNaissance(acteNaissanceID);
     }
     

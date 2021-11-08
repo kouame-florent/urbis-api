@@ -6,13 +6,20 @@
 package io.urbis.naissance.dto;
 
 
-import io.urbis.mention.dto.AdoptionDto;
-import io.urbis.mention.dto.DecesDto;
+import io.urbis.mention.dto.MentionAdoptionDto;
+import io.urbis.mention.dto.MentionDecesDto;
+import io.urbis.mention.dto.MentionDissolutionMariageDto;
+import io.urbis.mention.dto.MentionLegitimationDto;
+import io.urbis.mention.dto.MentionMariageDto;
+import io.urbis.mention.dto.MentionReconnaissanceDto;
+import io.urbis.mention.dto.MentionRectificationDto;
 import io.urbis.naissance.domain.Operation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
@@ -134,7 +141,12 @@ public class ActeNaissanceDto {
     private int registreAnnee;
     private int registreNumero;
     
-    //private List<AdoptionDto> adoptionDtos = new ArrayList<>();
-    //private List<DecesDto> decesDtos = new ArrayList<>();
+    private Set<MentionMariageDto> mentionMariageDtos = new HashSet<>();
+    private Set<MentionAdoptionDto> mentionAdoptionDtos = new HashSet<>();
+    private Set<MentionDecesDto> mentionDecesDtos = new HashSet<>();
+    private Set<MentionDissolutionMariageDto> mentionDissolutionMariageDtos = new HashSet<>();
+    private Set<MentionLegitimationDto> mentionLegitimationDtos = new HashSet<>();
+    private Set<MentionReconnaissanceDto> mentionReconnaissanceDtos = new HashSet<>();
+    private Set<MentionRectificationDto> mentionRectificationDtos = new HashSet<>();
     
 }

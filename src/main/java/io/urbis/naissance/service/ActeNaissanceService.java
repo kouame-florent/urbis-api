@@ -7,7 +7,20 @@ package io.urbis.naissance.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.urbis.common.service.DateTimeUtils;
+import io.urbis.mention.dto.MentionAdoptionDto;
+import io.urbis.mention.dto.MentionDecesDto;
+import io.urbis.mention.dto.MentionDissolutionMariageDto;
+import io.urbis.mention.dto.MentionLegitimationDto;
+import io.urbis.mention.dto.MentionMariageDto;
+import io.urbis.mention.dto.MentionReconnaissanceDto;
+import io.urbis.mention.dto.MentionRectificationDto;
+import io.urbis.mention.service.MentionAdoptionService;
+import io.urbis.mention.service.MentionDecesService;
+import io.urbis.mention.service.MentionDissolutionMariageService;
+import io.urbis.mention.service.MentionLegitimationService;
+import io.urbis.mention.service.MentionMariageService;
+import io.urbis.mention.service.MentionReconnaissanceService;
+import io.urbis.mention.service.MentionRectificationService;
 import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.naissance.domain.Declarant;
@@ -28,9 +41,11 @@ import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -49,6 +64,27 @@ public class ActeNaissanceService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    MentionAdoptionService mentionAdoptionService;
+    
+    @Inject
+    MentionDecesService mentionDecesService;
+    
+    @Inject
+    MentionDissolutionMariageService mentionDissolutionMariageService;
+    
+    @Inject
+    MentionLegitimationService mentionLegitimationService;
+    
+    @Inject
+    MentionReconnaissanceService mentionReconnaissanceService;
+    
+    @Inject
+    MentionRectificationService mentionRectificationService;
+    
+    @Inject
+    MentionMariageService mentionMariageService;
     
     
     public ActeNaissanceDto findById(@NotBlank String id){
@@ -266,8 +302,47 @@ public class ActeNaissanceService {
             registre.numeroProchainActe += 1;
         }
         
+        createMentions(acteNaissanceDto, acte);
+       
        
         return acte.id;
+    }
+    
+    public void createMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+        acteNaissanceDto.getMentionMariageDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionMariageService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionAdoptionDtos().forEach(ma -> {
+            ma.setActeNaissanceID(acte.id);
+            mentionAdoptionService.createMention(ma);
+        });
+        
+        acteNaissanceDto.getMentionDecesDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionDecesService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionDissolutionMariageDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionDissolutionMariageService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionLegitimationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionLegitimationService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionReconnaissanceDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionReconnaissanceService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionRectificationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionRectificationService.createMention(mm);
+        });
     }
     
     public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto){
@@ -468,12 +543,106 @@ public class ActeNaissanceService {
         
         acte.extraitTexte = extraitTexte(acte);
         
-                
-        //incrementer l'index du registre
-        //registre.numeroProchainActe += 1;
-        //registre.persist();
+        
         
     }
+    
+    public void updateMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+        //mariage
+        Set<MentionMariageDto> dm = new HashSet<>(mentionMariageService.findByActeNaissance(acte.id));
+        dm.removeAll(acteNaissanceDto.getMentionMariageDtos());
+        
+        dm.forEach(mm -> {
+            mentionMariageService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionMariageDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionMariageService.createMention(mm);
+        });
+        
+        //adoption
+        Set<MentionAdoptionDto> da = new HashSet<>(mentionAdoptionService.findByActeNaissance(acte.id));
+        da.removeAll(acteNaissanceDto.getMentionAdoptionDtos());
+        
+        da.forEach(mm -> {
+            mentionAdoptionService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionAdoptionDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionAdoptionService.createMention(mm);
+        });
+        
+        //dissolution
+        Set<MentionDissolutionMariageDto> dd = new HashSet<>(mentionDissolutionMariageService.findByActeNaissance(acte.id));
+        dd.removeAll(acteNaissanceDto.getMentionDissolutionMariageDtos());
+        
+        dd.forEach(mm -> {
+            mentionDissolutionMariageService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionDissolutionMariageDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionDissolutionMariageService.createMention(mm);
+        });
+        
+        //legitimation
+        Set<MentionLegitimationDto> dl = new HashSet<>(mentionLegitimationService.findByActeNaissance(acte.id));
+        dl.removeAll(acteNaissanceDto.getMentionLegitimationDtos());
+        
+        dl.forEach(mm -> {
+            mentionLegitimationService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionLegitimationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionLegitimationService.createMention(mm);
+        });
+        
+        //reconnaissance
+        Set<MentionReconnaissanceDto> dr = new HashSet<>(mentionReconnaissanceService.findByActeNaissance(acte.id));
+        dr.removeAll(acteNaissanceDto.getMentionReconnaissanceDtos());
+        
+        dr.forEach(mm -> {
+            mentionReconnaissanceService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionReconnaissanceDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionReconnaissanceService.createMention(mm);
+        });
+        
+        //rectification
+        Set<MentionRectificationDto> dre = new HashSet<>(mentionRectificationService.findByActeNaissance(acte.id));
+        dre.removeAll(acteNaissanceDto.getMentionRectificationDtos());
+        
+        dre.forEach(mm -> {
+            mentionReconnaissanceService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionRectificationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionRectificationService.createMention(mm);
+        });
+        
+        //décès
+        Set<MentionDecesDto> ddc = new HashSet<>(mentionDecesService.findByActeNaissance(acte.id));
+        ddc.removeAll(acteNaissanceDto.getMentionDecesDtos());
+        
+        ddc.forEach(mm -> {
+            mentionDecesService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionDecesDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionDecesService.createMention(mm);
+        });
+        
+        
+       
+    }
+    
     
     public String dateNaissanceEnLettre(LocalDateTime localDateTime){
       
@@ -624,13 +793,18 @@ public class ActeNaissanceService {
     
     
     public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize,@NotBlank String registreID){
-        log.infof("||-- REGISTRE ID : %d", registreID);
+        log.infof("||-- REGISTRE ID : %s", registreID);
         Registre registre = Registre.findById(registreID);
+        
         if(registre == null){
             throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
         }
+        
         PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre", registre);
+        
         return query.stream().map(this::mapToDto).collect(Collectors.toList());
+        
+        //return List.of();
     }
     
     public int count(){
@@ -642,26 +816,23 @@ public class ActeNaissanceService {
     public ActeNaissanceDto mapToDto(@NotNull ActeNaissance acte){
         ActeNaissanceDto dto = new ActeNaissanceDto();
         
+        
         dto.setCreated(acte.created);
         dto.setUpdated(acte.updated);
         
         dto.setId(acte.id);
         
+         
         if(acte.dateDeclaration != null){
             dto.setDateDeclaration(acte.dateDeclaration);
         }
         if(acte.dateDressage != null){
             dto.setDateDressage(acte.dateDressage);
         }
-         
-        if(acte.declarant.dateNaissance != null){
-            dto.setDeclarantDateNaissance(acte.declarant.dateNaissance);
-        }
-        if(acte.declarant.datePiece != null){
-            dto.setDeclarantDatePiece(acte.declarant.datePiece);
-        }
-     
+      
+       
         Optional.ofNullable(acte.declarant).ifPresent(d -> {
+            
             dto.setDeclarantLien(d.lien);
             dto.setDeclarantLieuNaissance(d.lieuNaissance);
             dto.setDeclarantLieuPiece(d.lieuPiece);
@@ -670,6 +841,14 @@ public class ActeNaissanceService {
             dto.setDeclarantNumeroPiece(d.numeroPiece);
             dto.setDeclarantPrenoms(d.prenoms);
             dto.setDeclarantProfession(d.profession);
+        });
+        
+        Optional.ofNullable(acte.declarant).map(d -> d.datePiece).ifPresent(dp -> {
+            dto.setDeclarantDatePiece(dp);
+        });
+        
+        Optional.ofNullable(acte.declarant).map(d -> d.dateNaissance).ifPresent(dn -> {
+            dto.setDeclarantDateNaissance(dn);
         });
      
         Optional.ofNullable(acte.declarant).map(d -> d.nationalite).ifPresent(n -> {
@@ -687,8 +866,8 @@ public class ActeNaissanceService {
             dto.setEnfantLocalite(acte.enfant.localite);
         });
         
-        Optional.ofNullable(acte.enfant).map(e -> e.dateNaissance).ifPresent(d -> {
-            dto.setEnfantDateNaissance(d); 
+        Optional.ofNullable(acte.enfant).map(e -> e.dateNaissance).ifPresent(dn -> {
+            dto.setEnfantDateNaissance(dn); 
         });
         
         Optional.ofNullable(acte.enfant).map(e -> e.nationalite).ifPresent(n -> {
@@ -707,8 +886,8 @@ public class ActeNaissanceService {
             dto.setInterpreteProfession(i.profession);
         });
         
-        Optional.ofNullable(acte.interprete).map(i -> i.dateNaissance).ifPresent(d -> {
-            dto.setInterpreteDateNaissance(acte.interprete.dateNaissance);
+        Optional.ofNullable(acte.interprete).map(i -> i.dateNaissance).ifPresent(di -> {
+            dto.setInterpreteDateNaissance(di);
         });
         
         Optional.ofNullable(acte.jugement).ifPresent(j -> {
@@ -717,8 +896,8 @@ public class ActeNaissanceService {
         
         });
         
-        Optional.ofNullable(acte.jugement).map(j -> j.date).ifPresent(d -> {
-            dto.setJugementDate(acte.jugement.date);
+        Optional.ofNullable(acte.jugement).map(j -> j.date).ifPresent(dj -> {
+            dto.setJugementDate(dj);
         });
         
         //mere
@@ -734,16 +913,16 @@ public class ActeNaissanceService {
         
         });
         
-         Optional.ofNullable(acte.mere).map(m -> m.dateDeces).ifPresent(d -> {
-             dto.setMereDateDeces(d);
+         Optional.ofNullable(acte.mere).map(m -> m.dateDeces).ifPresent(de -> {
+             dto.setMereDateDeces(de);
          });
        
-        Optional.ofNullable(acte.mere).map(m -> m.dateNaissance).ifPresent(d -> {
-             dto.setMereDateNaissance(d);
+        Optional.ofNullable(acte.mere).map(m -> m.dateNaissance).ifPresent(de -> {
+             dto.setMereDateNaissance(de);
          });
         
-        Optional.ofNullable(acte.mere).map(m -> m.datePiece).ifPresent(d -> {
-             dto.setMereDatePiece(d);
+        Optional.ofNullable(acte.mere).map(m -> m.datePiece).ifPresent(de -> {
+             dto.setMereDatePiece(de);
          });
         
         Optional.ofNullable(acte.mere).map(m -> m.nationalite).ifPresent(n -> {
@@ -767,16 +946,16 @@ public class ActeNaissanceService {
         
         });
         
-         Optional.ofNullable(acte.pere).map(p -> p.dateDeces).ifPresent(d -> {
-             dto.setPereDateDeces(d);
+         Optional.ofNullable(acte.pere).map(p -> p.dateDeces).ifPresent(ds -> {
+             dto.setPereDateDeces(ds);
          });
        
-        Optional.ofNullable(acte.pere).map(p -> p.dateNaissance).ifPresent(d -> {
-             dto.setPereDateNaissance(d);
+        Optional.ofNullable(acte.pere).map(p -> p.dateNaissance).ifPresent(ds -> {
+             dto.setPereDateNaissance(ds);
          });
         
-        Optional.ofNullable(acte.pere).map(p -> p.datePiece).ifPresent(d -> {
-             dto.setPereDatePiece(d);
+        Optional.ofNullable(acte.pere).map(p -> p.datePiece).ifPresent(ds -> {
+             dto.setPereDatePiece(ds);
          });
         
         Optional.ofNullable(acte.pere).map(p -> p.nationalite).ifPresent(n -> {
@@ -800,17 +979,14 @@ public class ActeNaissanceService {
             dto.setTemoinDeuxiemeProfession(acte.temoins.deuxiemeProfession);
         });
         
-        Optional.ofNullable(acte.temoins).map(t -> t.premierDateNaissance).ifPresent(d -> {
-            dto.setTemoinPremierDateNaissance(acte.temoins.premierDateNaissance);
+        Optional.ofNullable(acte.temoins).map(t -> t.premierDateNaissance).ifPresent(dp -> {
+            dto.setTemoinPremierDateNaissance(dp);
         });
-        if(acte.temoins.premierDateNaissance != null){
-            
-        }
         
-        if(acte.temoins.deuxiemeDateNaissance != null){
-            dto.setTemoinDeuxiemeDateNaissance(acte.temoins.deuxiemeDateNaissance);
-        }
-     
+        Optional.ofNullable(acte.temoins).map(t -> t.deuxiemeDateNaissance).ifPresent(dd -> {
+            dto.setTemoinPremierDateNaissance(dd);
+        });
+        
         
         Optional.ofNullable(acte.modeDeclaration).ifPresent(m -> {
             dto.setModeDeclaration(acte.modeDeclaration.name());
@@ -840,6 +1016,8 @@ public class ActeNaissanceService {
         
         dto.setRegistreNumero(acte.registre.reference.numero);
         dto.setRegistreAnnee(acte.registre.reference.annee);
+        
+        dto.setMentionMariageDtos(mentionMariageService.findByActeNaissance(acte.id));
         
         return dto;
     }

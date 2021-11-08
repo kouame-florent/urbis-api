@@ -6,7 +6,7 @@
 package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionReconnaissance;
-import io.urbis.mention.dto.ReconnaissanceDto;
+import io.urbis.mention.dto.MentionReconnaissanceDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import java.util.List;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionReconnaissanceService {
     
-     public void createMention(@NotNull ReconnaissanceDto dto){
+     public void createMention(@NotNull MentionReconnaissanceDto dto){
         
          ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
@@ -54,15 +54,15 @@ public class MentionReconnaissanceService {
         MentionReconnaissance.deleteById(mentionID);
     }
     
-    public List<ReconnaissanceDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionReconnaissanceDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionReconnaissance> mentions = ActeNaissance.list("acteNaissance", acte);
+        List<MentionReconnaissance> mentions = MentionReconnaissance.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
                 
     }
     
-    public ReconnaissanceDto mapToDto(@NotNull MentionReconnaissance mention){
-        ReconnaissanceDto dto = new ReconnaissanceDto();
+    public MentionReconnaissanceDto mapToDto(@NotNull MentionReconnaissance mention){
+        MentionReconnaissanceDto dto = new MentionReconnaissanceDto();
         
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);

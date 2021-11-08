@@ -5,7 +5,7 @@
  */
 package io.urbis.mention.api;
 
-import io.urbis.mention.dto.RectificationDto;
+import io.urbis.mention.dto.MentionRectificationDto;
 import io.urbis.mention.service.MentionRectificationService;
 import java.util.List;
 import javax.inject.Inject;
@@ -17,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
@@ -32,12 +33,12 @@ public class RectificationResource {
     
     @Transactional
     @POST
-    public void create(@NotNull RectificationDto dto){
+    public void create(@NotNull MentionRectificationDto dto){
         rectificationService.createMention(dto);
     }
     
     @GET
-    public List<RectificationDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public List<MentionRectificationDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return rectificationService.findByActeNaissance(acteNaissanceID);
     }
     

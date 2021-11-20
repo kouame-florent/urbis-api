@@ -8,19 +8,18 @@ package io.urbis.registre.service;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.registre.domain.Centre;
-import io.urbis.registre.domain.Localite;
+import io.urbis.param.domain.Centre;
+import io.urbis.param.domain.Localite;
 import io.urbis.registre.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Reference;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
-import io.urbis.registre.domain.Tribunal;
+import io.urbis.param.domain.Tribunal;
 import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.dto.RegistreDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -38,6 +37,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
+
 public class RegistreService {
     
     @Inject
@@ -115,6 +115,7 @@ public class RegistreService {
         
     }
     
+    
     public void validerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
@@ -127,9 +128,8 @@ public class RegistreService {
         }else{
             throw new IllegalStateException("cannot validate, 'registre' is not in 'PROJECT' status");
         }
-        
-        
     }
+    
     
     public void annulerRegistre(@NotBlank String registreID, String motifAnnulation){
         Registre registre = Registre.findById(registreID);

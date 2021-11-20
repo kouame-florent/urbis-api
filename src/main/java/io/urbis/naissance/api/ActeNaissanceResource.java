@@ -27,43 +27,61 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 public class ActeNaissanceResource {
     
     @Inject
-    ActeNaissanceService naissanceService;
+    ActeNaissanceService acteNaissanceService;
     
     @GET @Path("{id}")
     public ActeNaissanceDto findById(@PathParam("id") String id){
-        return naissanceService.findById(id);
+        return acteNaissanceService.findById(id);
     }
     
     @Transactional
     @POST
     public String create(ActeNaissanceDto acteNaissanceDto){
-        return naissanceService.creerActe(acteNaissanceDto);
+        return acteNaissanceService.creerActe(acteNaissanceDto);
         
     }
     
     @Transactional
     @PUT @Path("{id}")
     public void update(@PathParam("id")String id, ActeNaissanceDto acteNaissanceDto){
-        naissanceService.updateActe(id, acteNaissanceDto);
+        acteNaissanceService.updateActe(id, acteNaissanceDto);
     }
+    
+    /*
+    @Transactional
+    @PATCH @Path("{id}")
+    public void patch(@PathParam("id") String id,ActeNaissancePatchDto patchDto){
+      StatutActeNaissance statutActe = StatutActeNaissance.fromString(patchDto.getStatut());
+      switch(statutActe){
+          case VALIDE:
+             acteNaissanceService.validerActe(id);
+             break;
+          case ANNULE:
+             acteNaissanceService.annulerActe(id);
+             break;
+         
+      }
+      
+    }
+    */
     
     @Transactional
     @GET
     public List<ActeNaissanceDto> findWithFilters(@QueryParam("offset") int offset, 
             @QueryParam("page-size") int pageSize,@QueryParam("registre-id") String registreID){
-        return naissanceService.findWithFilters(offset, pageSize,registreID);
+        return acteNaissanceService.findWithFilters(offset, pageSize,registreID);
     }
     
     @GET @Path("/count")
     public int count(){
-        return naissanceService.count();
+        return acteNaissanceService.count();
     }
     
     
     @GET
     @Path("/numero-acte/{id}")
     public int numeroActe(@PathParam("id") String registreID){
-       return naissanceService.numeroActe(registreID);
+       return acteNaissanceService.numeroActe(registreID);
     }
     
 }

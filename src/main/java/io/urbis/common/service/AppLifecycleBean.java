@@ -9,7 +9,6 @@ import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
-import javax.transaction.Transactional;
 import org.jboss.logging.Logger;
 
 /**
@@ -20,24 +19,30 @@ import org.jboss.logging.Logger;
 @ApplicationScoped
 public class AppLifecycleBean {
     
-    private static final Logger LOGGER = Logger.getLogger("ListenerBean");
+    private static final Logger LOG = Logger.getLogger("AppLifecycleBean");
 
     void onStart(@Observes StartupEvent ev) {               
-        LOGGER.info("Urbis is starting...");
+        LOG.info("Urbis is starting...");
+        //loadUsers();
         
     }
 
     void onStop(@Observes ShutdownEvent ev) {               
-        LOGGER.info("The application is stopping...");
+        LOG.info("The application is stopping...");
     }
     
+    /*
     @Transactional
     public void loadUsers() {
         // reset and load all test users
-       // Utilisateur.add("lisa", "lisa", Roles.CHEF_ETAT_CIVIL.name());
+        Utilisateur.find("username = ?1", "lisa")
+                .firstResultOptional().ifPresentOrElse(u -> {LOG.infof("User {0} exists", u);},
+                        () ->{Utilisateur.add("lisa", "lisa", Roles.USER.name(),StatutUtilisateur.ACTIF);
+                });
+        
        // Utilisateur.add("bart", "bart", Roles.AGENT_ETAT_CIVIL.name());
        
     }
     
-    
+    */
 }

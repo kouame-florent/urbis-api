@@ -26,9 +26,7 @@ public enum Sexe {
     public String getLibelle() {
         return libelle;
     }
-    
-    
-    
+     
     public static Sexe fromString(String sexe){
         for(var t : Sexe.values()){
             if(t.name().equalsIgnoreCase(sexe)){

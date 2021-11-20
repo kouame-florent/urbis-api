@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.service;
+package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.urbis.registre.domain.Tribunal;
-import io.urbis.registre.dto.TribunalDto;
+import io.urbis.param.domain.Tribunal;
+import io.urbis.param.dto.TribunalDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +51,7 @@ public class TribunalService {
                 tribunal.created, 
                 tribunal.updated, 
                 tribunal.code, 
-                tribunal.libelle);
+                tribunal.libelle,
+                tribunal.statut.name());
     }
 }

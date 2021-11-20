@@ -5,7 +5,6 @@
  */
 package io.urbis.registre.api;
 
-import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.dto.RegistrePatchDto;
 import io.urbis.registre.dto.RegistreDto;
@@ -55,11 +54,10 @@ public class RegistreResource {
     }
     
     
-   // @RolesAllowed("CHEF_ETAT_CIVIL")
+   
     @Transactional
     @PATCH @Path("{id}")
     public void patch(@PathParam("id") String id,RegistrePatchDto patchDto){
-      Registre reg = Registre.findById(id);
       StatutRegistre statutRegistre = StatutRegistre.fromString(patchDto.getStatut());
       switch(statutRegistre){
           case VALIDE:

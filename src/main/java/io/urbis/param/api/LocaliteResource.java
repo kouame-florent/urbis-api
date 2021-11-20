@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.api;
+package io.urbis.param.api;
 
-import io.urbis.registre.dto.LocaliteDto;
-import io.urbis.registre.service.LocaliteService;
+import io.urbis.param.dto.LocaliteDto;
+import io.urbis.param.service.LocaliteService;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
 /**
@@ -20,6 +21,11 @@ public class LocaliteResource {
     
     @Inject
     LocaliteService localiteService;
+    
+    @POST
+    public void create(LocaliteDto dto){
+        localiteService.create(dto);
+    }
     
     @GET @Path("active")
     public LocaliteDto findActive(){

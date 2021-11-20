@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
@@ -358,7 +359,14 @@ public class ActeNaissanceService {
         
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
+        if(registre == null){
+            throw  new EntityNotFoundException("Registre not found");
+        }
+        
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
+        if(registre == null){
+            throw  new EntityNotFoundException("OfficierEtatCivil not found");
+        }
         
         Operation op = Operation.fromString(acteNaissanceDto.getOperation());
         validerActe(registre, acteNaissanceDto,op);
@@ -543,9 +551,27 @@ public class ActeNaissanceService {
         
         acte.extraitTexte = extraitTexte(acte);
         
-        
+    }
+    
+    /*
+    public void validerActe(String acteID){
+        ActeNaissance acte = ActeNaissance.findById(acteID);
+        if(acte == null){
+            throw new EntityNotFoundException("cannot find acte naissance");
+        }
+        acte.statut = StatutActeNaissance.VALIDE;
         
     }
+    
+    public void annulerActe(String acteID){
+        ActeNaissance acte = ActeNaissance.findById(acteID);
+        if(acte == null){
+            throw new EntityNotFoundException("cannot find acte naissance");
+        }
+        acte.statut = StatutActeNaissance.ANNULE;
+        
+    }
+    */
     
     public void updateMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         //mariage

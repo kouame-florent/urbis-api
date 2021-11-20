@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.domain;
+package io.urbis.param.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.urbis.common.domain.BaseEntity;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author florent
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "centre")
 @Entity
 public class Centre extends  BaseEntity{
@@ -25,5 +27,11 @@ public class Centre extends  BaseEntity{
     public String code;
     public String libelle;
     
+    @NotNull
+    @ManyToOne
+    @JoinColumn(nullable = false,name = "localite")
+    public Localite localite;
+    
+    public StatutParametre statut;
     
 }

@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.service;
+package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.urbis.registre.domain.Centre;
-import io.urbis.registre.dto.CentreDto;
+import io.urbis.param.domain.Centre;
+import io.urbis.param.domain.Localite;
+import io.urbis.param.domain.StatutParametre;
+import io.urbis.param.dto.CentreDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
@@ -29,6 +32,17 @@ public class CentreService {
     
     @Inject
     Logger log;
+    
+    public void create(CentreDto dto){
+        
+        Localite localite = Localite.findById(dto.getId());
+        if(localite != null){
+            throw new EntityNotFoundException("'localite' not found");
+        }
+        
+        Centre centre = new Centre(dto.getId(), dto.getCode(), localite,StatutParametre.ACTIF);
+        centre.persist();
+    }
     
     public List<CentreDto> findAll(){
         log.debug("Request to get all centres");
@@ -53,7 +67,11 @@ public class CentreService {
                 centre.created,
                 centre.updated,
                 centre.code,
-                centre.libelle);
+                centre.libelle,
+                centre.id,
+                centre.libelle,
+                centre.statut.name());
+        
 
     }
     

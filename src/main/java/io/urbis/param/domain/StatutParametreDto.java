@@ -3,16 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.security.domain;
+package io.urbis.param.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  *
  * @author florent
  */
-public enum Roles {
-    USER,
-    CHEF_ETAT_CIVIL,
-    AGENT_ETAT_CIVIL,
-    OFFICIER_ETAT_CIVIL;
-  
+@Data
+@AllArgsConstructor
+public class StatutParametreDto {
+    
+    private String code;
+    private String libelle;
 }

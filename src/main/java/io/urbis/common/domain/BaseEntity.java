@@ -9,6 +9,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -30,4 +31,7 @@ public abstract class BaseEntity extends PanacheEntityBase implements Serializab
     
     public LocalDateTime created ;
     public LocalDateTime updated ;
+    
+    @Column(nullable = false, name = "last_user")
+    public String lastUser;
 }

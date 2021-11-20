@@ -21,6 +21,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -32,7 +33,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 public class ActeNaissance extends Acte{
     
-    
+    @NotNull
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
     public Registre registre;

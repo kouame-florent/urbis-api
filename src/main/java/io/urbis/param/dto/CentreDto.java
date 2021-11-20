@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.dto;
+package io.urbis.param.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -25,5 +25,10 @@ public class CentreDto {
     
     private String code;
     private String libelle;
+    
+    private String localiteID;
+    private String localite;
+    
+    private String statut;
     
 }

@@ -5,6 +5,8 @@
  */
 package io.urbis.registre.domain;
 
+import io.urbis.param.domain.Centre;
+import io.urbis.param.domain.Localite;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

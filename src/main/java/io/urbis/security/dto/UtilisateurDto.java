@@ -3,19 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.dto;
+package io.urbis.security.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author florent
  */
-@Data
 @AllArgsConstructor
-public class RegistrePatchDto {
+@NoArgsConstructor
+public class UtilisateurDto {
+
+    public String username;
+
+    public String password;
+
+    public String role;
     
-    private String statut;
-    private String motifAnnulation;
+    public String statut;
 }

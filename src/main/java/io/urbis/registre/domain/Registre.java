@@ -6,6 +6,7 @@
 package io.urbis.registre.domain;
 
 
+import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.domain.Tribunal;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.urbis.common.domain.BaseEntity;

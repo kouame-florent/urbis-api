@@ -32,6 +32,6 @@ public class Centre extends  BaseEntity{
     @JoinColumn(nullable = false,name = "localite")
     public Localite localite;
     
-    public StatutParametre statut;
+    //public StatutParametre statut;
     
 }

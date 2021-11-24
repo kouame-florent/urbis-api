@@ -5,17 +5,14 @@
  */
 package io.urbis.param.service;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.param.dto.TribunalDto;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.NotFoundException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import javax.persistence.EntityNotFoundException;
 import org.jboss.logging.Logger;
 
 /**
@@ -28,8 +25,26 @@ public class TribunalService {
     @Inject
     Logger log;
     
-    @ConfigProperty(name = "URBIS_TRIBUNAL")
-    String codeTribunal;
+    //@ConfigProperty(name = "URBIS_TRIBUNAL")
+   // String codeTribunal;
+    
+    public void create(TribunalDto dto){
+ 
+        Tribunal tribunal = new Tribunal(dto.getCode(), dto.getLibelle());
+        tribunal.persist();
+       
+    }
+    
+    public void update(String tribunalID,TribunalDto dto){
+        Tribunal tribunal = Tribunal.findById(dto.getId());
+        if(tribunal != null){
+            tribunal.code = dto.getCode();
+            tribunal.libelle = dto.getLibelle();
+        }
+        else{
+            throw new EntityNotFoundException("cannot find entity 'tribunal'");
+        }
+    }
     
     public List<TribunalDto> findAll(){
         log.debug("Request to get all tribunaux");
@@ -39,11 +54,13 @@ public class TribunalService {
     
     }
     
+    /*
     public TribunalDto findActiveTribunal(){
         PanacheQuery<Tribunal> query =  Tribunal.find("code", codeTribunal);
         return query.firstResultOptional().map(TribunalService::mapToDto)
                 .orElseThrow(() -> new NotFoundException("aucun tribunal selectionnée"));
     }
+*/
     
      
     public static TribunalDto mapToDto(Tribunal tribunal){
@@ -51,7 +68,7 @@ public class TribunalService {
                 tribunal.created, 
                 tribunal.updated, 
                 tribunal.code, 
-                tribunal.libelle,
-                tribunal.statut.name());
+                tribunal.libelle);
+                //tribunal.statut.name());
     }
 }

@@ -27,11 +27,6 @@ public class Tribunal extends  BaseEntity{
     public String code;
     public String libelle;
     
-    @NotNull
-    @ManyToOne
-    @JoinColumn(nullable = false,name = "tribunal")
-    public Tribunal tribunal;
-    
-    public StatutParametre statut;
+   // public StatutParametre statut;
     
 }

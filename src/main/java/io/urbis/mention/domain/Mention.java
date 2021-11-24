@@ -8,7 +8,7 @@ package io.urbis.mention.domain;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.urbis.common.domain.BaseEntity;
 import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.registre.domain.OfficierEtatCivil;
+import io.urbis.param.domain.OfficierEtatCivil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;

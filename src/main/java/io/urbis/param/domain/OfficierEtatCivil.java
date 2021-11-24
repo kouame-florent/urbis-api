@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.domain;
+package io.urbis.param.domain;
 
 import io.urbis.common.domain.BaseEntity;
 import javax.persistence.Entity;
@@ -19,9 +19,9 @@ public class OfficierEtatCivil extends  BaseEntity{
     
     public String nom;
     public String prenoms;
-    public String qualite;
-    public String titre;
+   // public String qualite;
+    public TitreOfficier titre;
     public boolean actif;
-    public boolean maire;
+    public String profession;
     
 }

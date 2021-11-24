@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.api;
+package io.urbis.param.api;
 
-import io.urbis.registre.dto.OfficierEtatCivilDto;
-import io.urbis.registre.service.OfficierService;
+import io.urbis.param.dto.TitreOfficierDto;
+import io.urbis.param.service.TitreOfficierService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,15 +16,14 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/officiers")
-public class OfficierResource {
+@Path("/titres-officiers")
+public class TitreOfficierResource {
     
     @Inject
-    OfficierService officierService;
-    
-    
+    TitreOfficierService titreOfficierService;
+   
     @GET
-    public List<OfficierEtatCivilDto> findAll(){
-        return this.officierService.findAll();
+    public List<TitreOfficierDto> findAll(){
+        return titreOfficierService.findAll();
     }
 }

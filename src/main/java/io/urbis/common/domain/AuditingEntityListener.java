@@ -5,8 +5,10 @@
  */
 package io.urbis.common.domain;
 
+import io.quarkus.security.identity.SecurityIdentity;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -16,16 +18,20 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author florent
  */
+
 public class AuditingEntityListener {
     
-    @Inject
-    SecurityContext  securityContext;
+    //@Inject
+    //SecurityContext  securityContext;
+    
+    //@Inject
+    //SecurityIdentity secId;
     
     @PrePersist
     public void preCreate(BaseEntity auditable){
         auditable.id = UUID.randomUUID().toString();
         auditable.created = LocalDateTime.now();
-        auditable.lastUser = securityContext.getUserPrincipal().getName();
+        auditable.lastUser = "NOT SET";
     }
     
     @PreUpdate

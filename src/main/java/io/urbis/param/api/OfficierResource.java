@@ -5,8 +5,8 @@
  */
 package io.urbis.param.api;
 
-import io.urbis.param.dto.CentreDto;
-import io.urbis.param.service.CentreService;
+import io.urbis.param.dto.OfficierEtatCivilDto;
+import io.urbis.param.service.OfficierService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -20,33 +20,26 @@ import javax.ws.rs.PathParam;
  *
  * @author florent
  */
-@Path("/centres")
-public class CentreResource {
+@Path("/officiers")
+public class OfficierResource {
     
     @Inject
-    CentreService centreService;
+    OfficierService officierService;
     
     @Transactional
     @POST
-    public void create(CentreDto dto){
-        centreService.create(dto);
+    public void create(OfficierEtatCivilDto dto){
+        officierService.create(dto);
     }
     
     @Transactional
-    @PUT @Path("{id}")
-    public void update(@PathParam("id") String id, CentreDto dto){
-        centreService.update(id, dto);
+    @PUT @Path("/{id}")
+    public void update(@PathParam("id") String id,OfficierEtatCivilDto dto){
+        officierService.update(id, dto);
     }
     
     @GET
-    public List<CentreDto> findAll(){
-        return centreService.findAll();
+    public List<OfficierEtatCivilDto> findAll(){
+        return this.officierService.findAll();
     }
-    
-    
-    @GET @Path("active")
-    public CentreDto findActive(){
-        return centreService.findActive();
-    }
-    
 }

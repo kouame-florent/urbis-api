@@ -5,7 +5,7 @@
  */
 package io.urbis.naissance.domain;
 
-import io.urbis.registre.domain.OfficierEtatCivil;
+import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

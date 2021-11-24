@@ -37,7 +37,7 @@ import io.urbis.naissance.domain.StatutActeNaissance;
 import io.urbis.naissance.domain.Temoins;
 import io.urbis.naissance.domain.TypeNaissance;
 import io.urbis.naissance.domain.TypePiece;
-import io.urbis.registre.domain.OfficierEtatCivil;
+import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -1036,8 +1036,8 @@ public class ActeNaissanceService {
         dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
         dto.setOfficierEtatCivilNom(acte.officierEtatCivil.nom);
         dto.setOfficierEtatCivilPrenoms(acte.officierEtatCivil.prenoms);
-        dto.setOfficierEtatCivilQualite(acte.officierEtatCivil.qualite);
-        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre);
+        //dto.setOfficierEtatCivilQualite(acte.officierEtatCivil.qualite);
+        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre.name());
         
         
         dto.setRegistreNumero(acte.registre.reference.numero);

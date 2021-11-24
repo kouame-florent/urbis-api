@@ -10,7 +10,10 @@ import io.urbis.param.domain.Localite;
 import io.urbis.param.domain.StatutParametre;
 import io.urbis.param.domain.TypeLocalite;
 import io.urbis.param.dto.LocaliteDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -25,19 +28,54 @@ public class LocaliteService {
     String codeLocalite;
     
     public void create(LocaliteDto dto){
-        Localite localite = new Localite(dto.getCode(), 
+       // PanacheQuery<Localite> query =  Localite.find("statut", StatutParametre.ACTIF);
+        if(Localite.count() == 0){
+            Localite localite = new Localite(dto.getCode(), 
                 dto.getLibelle(),
-                TypeLocalite.fromString(dto.getType()), 
-                StatutParametre.ACTIF);
+                TypeLocalite.fromString(dto.getType()) );
         
-        localite.persist();
+            localite.persist();
+        }else{
+            throw new IllegalStateException("une localité 'active' existe déjà");
+        }
+        
     }
     
+    public void update(String localiteID,LocaliteDto dto){
+        Localite loc = Localite.findById(localiteID);
+        if(loc != null){
+            loc.code = dto.getCode();
+            loc.libelle = dto.getLibelle();
+            loc.typeLocalite = TypeLocalite.fromString(dto.getType());
+           // loc.statut = StatutParametre.fromString(dto.getStatut());
+            
+        }
+        else{
+            throw new EntityNotFoundException("cannot find entity 'localite'");
+        }
+    }
+    
+    public List<LocaliteDto> findAll(){
+        List<Localite> locs = Localite.listAll();
+        return locs.stream().map(LocaliteService::mapToDto)
+                .collect(Collectors.toList());
+    }
+    
+    public LocaliteDto findActive(){
+      //PanacheQuery<Localite> query =  Localite.find("statut", StatutParametre.ACTIF);
+      PanacheQuery<Localite> query =  Localite.findAll();
+      return query.firstResultOptional().map(LocaliteService::mapToDto)
+                .orElseThrow(() -> new NotFoundException("aucune 'localité' trouvée"));
+      
+    }
+    
+    /*
     public LocaliteDto findActiveLocalite(){
         PanacheQuery<Localite> query =  Localite.find("code", codeLocalite);
         return query.firstResultOptional().map(LocaliteService::mapToDto)
                 .orElseThrow(() -> new NotFoundException("aucune localité selectionnée"));
     }
+*/
     
     public static LocaliteDto mapToDto(Localite localite){
         return new LocaliteDto(localite.id,
@@ -46,7 +84,8 @@ public class LocaliteService {
                 localite.code, 
                 localite.libelle,
                 localite.typeLocalite.name(),
-                localite.statut.name());
+                localite.typeLocalite.getLibelle());
+                //localite.statut.name());
     
     }
     

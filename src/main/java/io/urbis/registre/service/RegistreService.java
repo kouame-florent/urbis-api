@@ -10,7 +10,7 @@ import io.quarkus.panache.common.Sort;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.Centre;
 import io.urbis.param.domain.Localite;
-import io.urbis.registre.domain.OfficierEtatCivil;
+import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Reference;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;

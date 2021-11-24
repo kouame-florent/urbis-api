@@ -5,7 +5,6 @@
  */
 package io.urbis.param.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,21 +14,9 @@ import lombok.NoArgsConstructor;
  * @author florent
  */
 @Data
-@AllArgsConstructor
+@AllArgsConstructor 
 @NoArgsConstructor
-public class CentreDto {
-      
-    private String id;
-    
-    private LocalDateTime created = LocalDateTime.now();
-    private LocalDateTime updated = LocalDateTime.now();
-    
+public class TitreOfficierDto {
     private String code;
     private String libelle;
-    
-    private String localiteID;
-    private String localite;
-    
-   // private String statut;
-    
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.dto;
+package io.urbis.param.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -16,16 +16,16 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class OfficierEtatCivilDto {
     
     private String id ;
-    
     private LocalDateTime created ;
     private LocalDateTime updated ;
     private String nom;
     private String prenoms;
-    private String qualite;
+    private String profession;
     private String titre; 
     private boolean actif;
-    private boolean maire;
+ 
 }

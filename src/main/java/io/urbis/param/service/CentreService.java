@@ -8,7 +8,6 @@ package io.urbis.param.service;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.param.domain.Centre;
 import io.urbis.param.domain.Localite;
-import io.urbis.param.domain.StatutParametre;
 import io.urbis.param.dto.CentreDto;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +16,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.NotFoundException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 /**
@@ -27,21 +25,42 @@ import org.jboss.logging.Logger;
 @ApplicationScoped
 public class CentreService {
     
-    @ConfigProperty(name = "URBIS_CENTRE")
-    String codeCentre;
+   // @ConfigProperty(name = "URBIS_CENTRE")
+   // String codeCentre;
     
     @Inject
     Logger log;
     
     public void create(CentreDto dto){
         
-        Localite localite = Localite.findById(dto.getId());
-        if(localite != null){
+        Localite localite = Localite.findById(dto.getLocaliteID());
+        if(localite == null){
             throw new EntityNotFoundException("'localite' not found");
         }
         
-        Centre centre = new Centre(dto.getId(), dto.getCode(), localite,StatutParametre.ACTIF);
-        centre.persist();
+        if(Centre.count() == 0){
+            Centre centre = new Centre(dto.getCode(), dto.getLibelle(), localite);
+            centre.persist();
+        }else{
+            throw new IllegalStateException("un centre 'actif' existe déjà");
+        }
+        
+        
+    }
+    
+    public void update(String centreID,CentreDto dto){
+        Centre cen = Centre.findById(centreID);
+        Localite loc = Localite.findById(dto.getLocaliteID());
+        if(cen != null){
+            cen.code = dto.getCode();
+            cen.libelle = dto.getLibelle();
+                       
+            //cen.statut = StatutParametre.fromString(dto.getStatut());
+            
+        }
+        else{
+            throw new EntityNotFoundException("cannot find entity 'localite'");
+        }
     }
     
     public List<CentreDto> findAll(){
@@ -55,10 +74,11 @@ public class CentreService {
     /*
     *  renvoie le seul centre enregistré
     */
-    public CentreDto findActiveCentre(){
-        PanacheQuery<Centre> query =  Centre.find("code", codeCentre);
+    public CentreDto findActive(){
+        PanacheQuery<Centre> query =  Centre.findAll();
         return query.firstResultOptional().map(CentreService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucune centre selectionnée"));
+                .orElseThrow(() -> new NotFoundException("aucun 'centre' trouvé"));
+    
     }
     
     public static CentreDto mapToDto(Centre centre){
@@ -68,9 +88,8 @@ public class CentreService {
                 centre.updated,
                 centre.code,
                 centre.libelle,
-                centre.id,
-                centre.libelle,
-                centre.statut.name());
+                centre.localite.id,
+                centre.localite.libelle);
         
 
     }

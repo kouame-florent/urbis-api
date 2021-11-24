@@ -33,5 +33,5 @@ public class Localite extends  BaseEntity{
     @Column(name = "type_localite",nullable = false)
     public TypeLocalite typeLocalite;
     
-    public StatutParametre statut;
+   // public StatutParametre statut;
 }

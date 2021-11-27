@@ -6,6 +6,7 @@
 package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.param.domain.Localite;
 import io.urbis.param.domain.StatutParametre;
 import io.urbis.param.domain.TypeLocalite;
@@ -13,9 +14,11 @@ import io.urbis.param.dto.LocaliteDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -24,10 +27,17 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class LocaliteService {
     
-    @ConfigProperty(name = "URBIS_LOCALITE")
-    String codeLocalite;
+    @Inject
+    Logger log;
+    
+   // @Inject
+   // SecurityIdentity securityIdentity;
+    
+    //@ConfigProperty(name = "URBIS_LOCALITE")
+    //String codeLocalite;
     
     public void create(LocaliteDto dto){
+       // log.logf(Logger.Level.INFO, "--- SECURITY IDENTITY: %s", securityIdentity.getPrincipal().getName());
        // PanacheQuery<Localite> query =  Localite.find("statut", StatutParametre.ACTIF);
         if(Localite.count() == 0){
             Localite localite = new Localite(dto.getCode(), 

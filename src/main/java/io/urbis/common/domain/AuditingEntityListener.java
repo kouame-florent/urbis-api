@@ -6,6 +6,7 @@
 package io.urbis.common.domain;
 
 import io.quarkus.security.identity.SecurityIdentity;
+import io.urbis.security.service.AuthenticationContext;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,7 +19,7 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author florent
  */
-
+@ApplicationScoped
 public class AuditingEntityListener {
     
     //@Inject
@@ -27,15 +28,19 @@ public class AuditingEntityListener {
     //@Inject
     //SecurityIdentity secId;
     
+    @Inject
+    AuthenticationContext authCtx;
+    
     @PrePersist
     public void preCreate(BaseEntity auditable){
         auditable.id = UUID.randomUUID().toString();
         auditable.created = LocalDateTime.now();
-        auditable.lastUser = "NOT SET";
+        auditable.lastUser = authCtx.getUserLogin();
     }
     
     @PreUpdate
     public void preUpdate(BaseEntity auditable){
         auditable.updated = LocalDateTime.now();
+        auditable.lastUser = authCtx.getUserLogin();
     }
 }

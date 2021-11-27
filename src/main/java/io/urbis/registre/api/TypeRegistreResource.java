@@ -5,10 +5,12 @@
  */
 package io.urbis.registre.api;
 
+import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.registre.dto.TypeRegistreDto;
 import io.urbis.registre.service.TypeRegistreService;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -34,7 +36,8 @@ public class TypeRegistreResource {
     @Inject
     TypeRegistreService typeRegistreService;
     
-    //@RolesAllowed("USER")
+    @RolesAllowed("USER")
+    //@Authenticated
     @GET
     public List<TypeRegistreDto> findAll(@HeaderParam("Authorization") String authorization,@Context SecurityContext sec){
         //log.infof("---- Authorization: %s", authorization);

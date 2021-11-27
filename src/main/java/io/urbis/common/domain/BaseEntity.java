@@ -20,7 +20,7 @@ import javax.persistence.Version;
  * @author florent
  */
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity extends PanacheEntityBase implements Serializable{
     
     @Id

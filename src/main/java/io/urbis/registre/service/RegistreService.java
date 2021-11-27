@@ -7,6 +7,7 @@ package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.Centre;
 import io.urbis.param.domain.Localite;
@@ -37,11 +38,12 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
-
 public class RegistreService {
     
     @Inject
     Logger log;
+    
+    
     
     @Inject
     EntityManager em;

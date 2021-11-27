@@ -10,6 +10,7 @@ import io.urbis.registre.dto.RegistrePatchDto;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
 import java.util.List;
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
@@ -25,6 +26,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
  *
  * @author florent
  */
+
 @Path("/registres")
 @Tag(name = "registre", description = "All the registre methods")
 public class RegistreResource {
@@ -39,6 +41,7 @@ public class RegistreResource {
         return this.registreService.count(typeRegistre,annee,numero);
     }
     
+    @PermitAll
     @Transactional
     @GET
     public List<RegistreDto> findWithFilters(@QueryParam("offset") int offset, @QueryParam("pageSize") int pageSize,

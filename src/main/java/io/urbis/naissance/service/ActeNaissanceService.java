@@ -22,21 +22,21 @@ import io.urbis.mention.service.MentionMariageService;
 import io.urbis.mention.service.MentionReconnaissanceService;
 import io.urbis.mention.service.MentionRectificationService;
 import io.urbis.naissance.dto.ActeNaissanceDto;
-import io.urbis.naissance.domain.ActeNaissance;
-import io.urbis.naissance.domain.Declarant;
-import io.urbis.naissance.domain.Enfant;
-import io.urbis.naissance.domain.Interprete;
-import io.urbis.naissance.domain.Jugement;
-import io.urbis.naissance.domain.Mere;
-import io.urbis.naissance.domain.ModeDeclaration;
-import io.urbis.naissance.domain.Nationalite;
-import io.urbis.naissance.domain.Operation;
-import io.urbis.naissance.domain.Pere;
-import io.urbis.naissance.domain.Sexe;
-import io.urbis.naissance.domain.StatutActeNaissance;
-import io.urbis.naissance.domain.Temoins;
-import io.urbis.naissance.domain.TypeNaissance;
-import io.urbis.naissance.domain.TypePiece;
+import io.urbis.acte.naissance.domain.ActeNaissance;
+import io.urbis.acte.naissance.domain.Declarant;
+import io.urbis.acte.naissance.domain.Enfant;
+import io.urbis.acte.naissance.domain.Interprete;
+import io.urbis.acte.naissance.domain.Jugement;
+import io.urbis.acte.naissance.domain.Mere;
+import io.urbis.acte.naissance.domain.ModeDeclaration;
+import io.urbis.acte.naissance.domain.Nationalite;
+import io.urbis.acte.naissance.domain.Operation;
+import io.urbis.acte.naissance.domain.Pere;
+import io.urbis.acte.naissance.domain.Sexe;
+import io.urbis.acte.naissance.domain.StatutActeNaissance;
+import io.urbis.acte.naissance.domain.Temoins;
+import io.urbis.acte.naissance.domain.TypeNaissance;
+import io.urbis.acte.naissance.domain.TypePiece;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDateTime;
@@ -108,11 +108,13 @@ public class ActeNaissanceService {
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         if(registre == null){
-           throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+           throw new EntityNotFoundException("Registre not found");
+           
         }
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
         if(registre == null){
-           throw new WebApplicationException("Officier not found", Response.Status.NOT_FOUND);
+           throw new EntityNotFoundException("Officier not found");
+           //throw new WebApplicationException("Officier not found", Response.Status.NOT_FOUND);
        }
         
         Operation op = Operation.fromString(acteNaissanceDto.getOperation());

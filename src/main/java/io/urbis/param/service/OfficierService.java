@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -20,6 +25,12 @@ import javax.persistence.EntityNotFoundException;
  */
 @ApplicationScoped
 public class OfficierService {
+    
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
     
     public void create(OfficierEtatCivilDto dto){
         
@@ -45,6 +56,27 @@ public class OfficierService {
         }else{
             throw new EntityNotFoundException("cannot find entity 'officier'");
         }
+    }
+    
+    public boolean delete(String id){
+    
+        boolean res = false;
+        try{
+           res = OfficierEtatCivil.deleteById(id);
+           em.flush();
+        }catch(PersistenceException  e){
+            Throwable t = e.getCause();
+            while ((t != null) && !(t instanceof ConstraintViolationException)) {
+                t = t.getCause();
+            }
+            if (t instanceof ConstraintViolationException) {
+                log.logf(Logger.Level.ERROR,e.getMessage() );
+                throw (ConstraintViolationException)t;
+            }
+            
+        }
+        return res;
+        
     }
     
     public List<OfficierEtatCivilDto> findAll(){

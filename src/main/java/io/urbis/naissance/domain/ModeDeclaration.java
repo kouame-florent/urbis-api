@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package io.urbis.naissance.domain;
-
+  
 import io.urbis.naissance.dto.ModeDeclarationDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
  *
  * @author florent
  */
-public enum ModeDeclaration {
+public enum ModeDeclaration { 
     
     DIRECT("Direct"),
     JUGEMENT("Jugement");

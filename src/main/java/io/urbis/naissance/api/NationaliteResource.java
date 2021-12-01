@@ -5,8 +5,8 @@
  */
 package io.urbis.naissance.api;
 
+
 import io.urbis.naissance.dto.NationaliteDto;
-import io.urbis.naissance.dto.SexeDto;
 import io.urbis.naissance.service.NationaliteService;
 import java.util.List;
 import javax.inject.Inject;

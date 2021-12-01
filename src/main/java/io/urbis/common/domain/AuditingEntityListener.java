@@ -10,6 +10,7 @@ import io.urbis.security.service.AuthenticationContext;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -19,7 +20,7 @@ import javax.ws.rs.core.SecurityContext;
  *
  * @author florent
  */
-@ApplicationScoped
+@Dependent
 public class AuditingEntityListener {
     
     //@Inject

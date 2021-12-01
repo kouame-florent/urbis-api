@@ -12,6 +12,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -53,6 +54,13 @@ public class LocaliteResource {
     public void update(@PathParam("id") String id, LocaliteDto dto){
         //log.infof("--- RAW TOKEN : %s",token.getRawToken());
         localiteService.update(id, dto);
+    }
+    
+    @RolesAllowed("USER")
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+       return localiteService.delete(id);
     }
     
     @GET

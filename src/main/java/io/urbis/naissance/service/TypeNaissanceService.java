@@ -5,13 +5,12 @@
  */
 package io.urbis.naissance.service;
 
-import io.urbis.naissance.domain.TypeNaissance;
 import io.urbis.naissance.dto.TypeNaissanceDto;
-import io.urbis.registre.domain.TypeRegistre;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import io.urbis.naissance.domain.TypeNaissance;
 
 /**
  *

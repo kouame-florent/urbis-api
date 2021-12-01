@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.NotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 
 /**
@@ -30,6 +33,9 @@ public class CentreService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    EntityManager em;
     
     public void create(CentreDto dto){
         
@@ -61,6 +67,27 @@ public class CentreService {
         else{
             throw new EntityNotFoundException("cannot find entity 'localite'");
         }
+    }
+    
+    public boolean delete(String id){
+    
+        boolean res = false;
+        try{
+           res = Centre.deleteById(id);
+           em.flush();
+        }catch(PersistenceException  e){
+            Throwable t = e.getCause();
+            while ((t != null) && !(t instanceof ConstraintViolationException)) {
+                t = t.getCause();
+            }
+            if (t instanceof ConstraintViolationException) {
+                log.logf(Logger.Level.ERROR,e.getMessage() );
+                throw (ConstraintViolationException)t;
+            }
+            
+        }
+        return res;
+        
     }
     
     public List<CentreDto> findAll(){

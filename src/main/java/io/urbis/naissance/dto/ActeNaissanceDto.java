@@ -13,12 +13,9 @@ import io.urbis.mention.dto.MentionLegitimationDto;
 import io.urbis.mention.dto.MentionMariageDto;
 import io.urbis.mention.dto.MentionReconnaissanceDto;
 import io.urbis.mention.dto.MentionRectificationDto;
-import io.urbis.naissance.domain.Operation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -37,8 +34,10 @@ public class ActeNaissanceDto {
     private LocalDateTime created; 
     private LocalDateTime updated; 
     
+    
     @NotBlank
     private String operation;
+    
     
     @NotBlank
     private String id;

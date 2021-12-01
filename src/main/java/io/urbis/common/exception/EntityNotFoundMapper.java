@@ -15,7 +15,7 @@ import javax.ws.rs.ext.Provider;
  * @author florent
  */
 //@Provider
-public class JAXRSExceptionMapper implements ExceptionMapper<EntityNotFoundException>{
+public class EntityNotFoundMapper implements ExceptionMapper<EntityNotFoundException>{
 
     @Override
     public Response toResponse(EntityNotFoundException e) {

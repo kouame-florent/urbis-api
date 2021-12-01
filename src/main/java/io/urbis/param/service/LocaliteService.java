@@ -6,18 +6,18 @@
 package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.param.domain.Localite;
-import io.urbis.param.domain.StatutParametre;
 import io.urbis.param.domain.TypeLocalite;
 import io.urbis.param.dto.LocaliteDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
 import javax.ws.rs.NotFoundException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 
 /**
@@ -29,6 +29,9 @@ public class LocaliteService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    EntityManager em;
     
    // @Inject
    // SecurityIdentity securityIdentity;
@@ -63,6 +66,31 @@ public class LocaliteService {
         else{
             throw new EntityNotFoundException("cannot find entity 'localite'");
         }
+    }
+    
+    public boolean delete(String id){
+        
+        //return Localite.deleteById(id);
+        
+        
+        boolean res = false;
+        try{
+           res = Localite.deleteById(id);
+           em.flush();
+        }catch(PersistenceException  e){
+            log.logf(Logger.Level.INFO, "--- CONSTRAINT CLASS: %s", e.getClass());
+            Throwable t = e.getCause();
+            while ((t != null) && !(t instanceof ConstraintViolationException)) {
+                t = t.getCause();
+            }
+            if (t instanceof ConstraintViolationException) {
+                log.logf(Logger.Level.ERROR,e.getMessage() );
+                throw (ConstraintViolationException)t;
+            }
+            
+        }
+        return res;
+        
     }
     
     public List<LocaliteDto> findAll(){

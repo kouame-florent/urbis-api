@@ -5,6 +5,7 @@
  */
 package io.urbis.naissance.domain;
 
+
 import io.urbis.naissance.dto.NationaliteDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

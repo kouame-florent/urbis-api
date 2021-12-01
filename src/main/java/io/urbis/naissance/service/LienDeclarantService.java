@@ -5,13 +5,12 @@
  */
 package io.urbis.naissance.service;
 
-import io.urbis.naissance.domain.LienDeclarant;
 import io.urbis.naissance.dto.LienDeclarantDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
-
+import io.urbis.naissance.domain.LienDeclarant;
 /**
  *
  * @author florent

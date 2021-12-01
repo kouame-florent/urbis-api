@@ -5,6 +5,7 @@
  */
 package io.urbis.param.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.param.dto.TribunalDto;
 import java.util.List;
@@ -12,7 +13,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
+import javax.ws.rs.NotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 
 /**
@@ -24,6 +29,9 @@ public class TribunalService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    EntityManager em;
     
     //@ConfigProperty(name = "URBIS_TRIBUNAL")
    // String codeTribunal;
@@ -46,6 +54,27 @@ public class TribunalService {
         }
     }
     
+    public boolean delete(String id){
+    
+        boolean res = false;
+        try{
+           res = Tribunal.deleteById(id);
+           em.flush();
+        }catch(PersistenceException  e){
+            Throwable t = e.getCause();
+            while ((t != null) && !(t instanceof ConstraintViolationException)) {
+                t = t.getCause();
+            }
+            if (t instanceof ConstraintViolationException) {
+                log.logf(Logger.Level.ERROR,e.getMessage() );
+                throw (ConstraintViolationException)t;
+            }
+            
+        }
+        return res;
+        
+    }
+    
     public List<TribunalDto> findAll(){
         log.debug("Request to get all tribunaux");
         
@@ -54,13 +83,13 @@ public class TribunalService {
     
     }
     
-    /*
-    public TribunalDto findActiveTribunal(){
-        PanacheQuery<Tribunal> query =  Tribunal.find("code", codeTribunal);
+    
+    public TribunalDto findActive(){
+        PanacheQuery<Tribunal> query = Tribunal.findAll();
         return query.firstResultOptional().map(TribunalService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucun tribunal selectionnée"));
+                .orElseThrow(() -> new NotFoundException("aucun 'tribunal' trouvé"));
     }
-*/
+
     
      
     public static TribunalDto mapToDto(Tribunal tribunal){

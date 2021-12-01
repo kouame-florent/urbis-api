@@ -10,6 +10,7 @@ import io.urbis.param.service.OfficierService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,6 +41,12 @@ public class OfficierResource {
     
     @GET
     public List<OfficierEtatCivilDto> findAll(){
-        return this.officierService.findAll();
+        return officierService.findAll();
+    }
+    
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+       return officierService.delete(id);
     }
 }

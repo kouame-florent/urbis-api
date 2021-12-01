@@ -5,17 +5,18 @@
  */
 package io.urbis.naissance.service;
 
-import io.urbis.naissance.domain.Nationalite;
+
 import io.urbis.naissance.dto.NationaliteDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import io.urbis.naissance.domain.Nationalite; 
 
 /**
  *
  * @author florent
- */
+ */ 
 @ApplicationScoped
 public class NationaliteService {
      public List<NationaliteDto> findAllNationalite(){

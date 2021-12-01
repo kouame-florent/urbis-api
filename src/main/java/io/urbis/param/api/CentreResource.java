@@ -10,6 +10,7 @@ import io.urbis.param.service.CentreService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -41,6 +42,12 @@ public class CentreResource {
     @GET
     public List<CentreDto> findAll(){
         return centreService.findAll();
+    }
+    
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+       return centreService.delete(id);
     }
     
     

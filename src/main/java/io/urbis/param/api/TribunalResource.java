@@ -10,6 +10,7 @@ import io.urbis.param.service.TribunalService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -43,10 +44,16 @@ public class TribunalResource {
         return tribunalService.findAll();
     }
     
-    /*
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+       return tribunalService.delete(id);
+    }
+    
+    
     @GET @Path("active")
     public TribunalDto findActive(){
-        return this.tribunalService.findActiveTribunal();
+        return tribunalService.findActive();
     }
-*/
+
 }

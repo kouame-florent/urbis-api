@@ -8,6 +8,7 @@ package io.urbis.mention.api;
 import io.urbis.mention.dto.MentionLegitimationDto;
 import io.urbis.mention.service.MentionLegitimationService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class LegitimationResource {
     }
     
     @GET
-    public List<MentionLegitimationDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionLegitimationDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return legitimationService.findByActeNaissance(acteNaissanceID);
     }
     

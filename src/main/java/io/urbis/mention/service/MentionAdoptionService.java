@@ -10,6 +10,7 @@ import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.validation.constraints.NotBlank;
@@ -56,10 +57,10 @@ public class MentionAdoptionService {
         MentionAdoption.deleteById(mentionID);
     }
     
-    public List<MentionAdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
+    public Set<MentionAdoptionDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
         List<MentionAdoption> mentions = MentionAdoption.list("acteNaissance", acte);
-        return mentions.stream().map(this::mapToDto).collect(Collectors.toList());
+        return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
     }
     
@@ -69,6 +70,7 @@ public class MentionAdoptionService {
         dto.setActeNaissanceID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
         dto.setDecision(mention.decision);
+        dto.setDateDressage(mention.dateDressage);
         
         return dto;
     }

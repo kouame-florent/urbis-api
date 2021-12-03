@@ -8,6 +8,7 @@ package io.urbis.mention.api;
 import io.urbis.mention.dto.MentionDissolutionMariageDto;
 import io.urbis.mention.service.MentionDissolutionMariageService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class DissolutionMariageResource {
     }
     
     @GET
-    public List<MentionDissolutionMariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionDissolutionMariageDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return dissolutionMariageService.findByActeNaissance(acteNaissanceID);
     }
     

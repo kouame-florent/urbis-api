@@ -8,6 +8,7 @@ package io.urbis.mention.api;
 import io.urbis.mention.dto.MentionReconnaissanceDto;
 import io.urbis.mention.service.MentionReconnaissanceService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class ReconnaissanceResource {
     }
     
     @GET
-    public List<MentionReconnaissanceDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionReconnaissanceDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return reconnaissanceService.findByActeNaissance(acteNaissanceID);
     }
     

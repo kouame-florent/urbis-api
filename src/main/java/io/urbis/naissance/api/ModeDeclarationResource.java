@@ -7,6 +7,7 @@ package io.urbis.naissance.api;
 
 
 
+
 import io.urbis.naissance.dto.ModeDeclarationDto;
 import io.urbis.naissance.service.ModeDeclarationService;
 import java.util.List;

@@ -8,6 +8,7 @@ package io.urbis.mention.api;
 import io.urbis.mention.dto.MentionDecesDto;
 import io.urbis.mention.service.MentionDecesService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class DecesResource {
     }
     
     @GET
-    public List<MentionDecesDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionDecesDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return decesService.findByActeNaissance(acteNaissanceID);
     }
     

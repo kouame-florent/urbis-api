@@ -74,6 +74,7 @@ public class ActeNaissanceResource {
         return acteNaissanceService.findWithFilters(offset, pageSize,registreID);
     }
     
+    
     @GET @Path("/count")
     public int count(){
         return acteNaissanceService.count();

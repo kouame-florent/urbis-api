@@ -7,6 +7,7 @@ package io.urbis.naissance.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Sort;
 import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.mention.dto.MentionDecesDto;
 import io.urbis.mention.dto.MentionDissolutionMariageDto;
@@ -21,22 +22,22 @@ import io.urbis.mention.service.MentionLegitimationService;
 import io.urbis.mention.service.MentionMariageService;
 import io.urbis.mention.service.MentionReconnaissanceService;
 import io.urbis.mention.service.MentionRectificationService;
+import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.naissance.domain.Sexe;
+import io.urbis.naissance.domain.Nationalite;
+import io.urbis.naissance.domain.Mere;
+import io.urbis.naissance.domain.Pere;
+import io.urbis.naissance.domain.Enfant;
+import io.urbis.naissance.domain.Jugement;
+import io.urbis.naissance.domain.Declarant;
+import io.urbis.naissance.domain.Interprete;
+import io.urbis.naissance.domain.Temoins;
+import io.urbis.naissance.domain.Operation;
+import io.urbis.naissance.domain.TypePiece;
+import io.urbis.naissance.domain.TypeNaissance;
+import io.urbis.naissance.domain.StatutActeNaissance;
 import io.urbis.naissance.dto.ActeNaissanceDto;
-import io.urbis.acte.naissance.domain.ActeNaissance;
-import io.urbis.acte.naissance.domain.Declarant;
-import io.urbis.acte.naissance.domain.Enfant;
-import io.urbis.acte.naissance.domain.Interprete;
-import io.urbis.acte.naissance.domain.Jugement;
-import io.urbis.acte.naissance.domain.Mere;
-import io.urbis.acte.naissance.domain.ModeDeclaration;
-import io.urbis.acte.naissance.domain.Nationalite;
-import io.urbis.acte.naissance.domain.Operation;
-import io.urbis.acte.naissance.domain.Pere;
-import io.urbis.acte.naissance.domain.Sexe;
-import io.urbis.acte.naissance.domain.StatutActeNaissance;
-import io.urbis.acte.naissance.domain.Temoins;
-import io.urbis.acte.naissance.domain.TypeNaissance;
-import io.urbis.acte.naissance.domain.TypePiece;
+import io.urbis.naissance.domain.ModeDeclaration;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDateTime;
@@ -154,7 +155,7 @@ public class ActeNaissanceService {
         
         if(acteNaissanceDto.getEnfantSexe() != null && !acteNaissanceDto.getEnfantSexe().isBlank()){
             acte.enfant.sexe = Sexe.fromString(acteNaissanceDto.getEnfantSexe());
-        }
+        } 
         
         if(acteNaissanceDto.getJugementDate() != null){
             acte.jugement.date = acteNaissanceDto.getJugementDate(); 
@@ -281,7 +282,7 @@ public class ActeNaissanceService {
         
         acte.motifAnnulation = acteNaissanceDto.getMotifAnnulation();
         acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
-        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
+        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits(); 
                 
         
         if(acteNaissanceDto.getStatut() != null && !acteNaissanceDto.getStatut().isBlank()){
@@ -352,7 +353,7 @@ public class ActeNaissanceService {
         
         ActeNaissance acte = ActeNaissance.findById(id);
         acte.enfant =  new Enfant();
-        acte.jugement = new Jugement();
+        acte.jugement = new Jugement(); 
         acte.pere = new Pere(); 
         acte.mere =  new Mere();
         acte.declarant = new Declarant();
@@ -828,7 +829,7 @@ public class ActeNaissanceService {
             throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
         }
         
-        PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre", registre);
+        PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre",Sort.by("numero").descending(),registre);
         
         return query.stream().map(this::mapToDto).collect(Collectors.toList());
         
@@ -1046,6 +1047,12 @@ public class ActeNaissanceService {
         dto.setRegistreAnnee(acte.registre.reference.annee);
         
         dto.setMentionMariageDtos(mentionMariageService.findByActeNaissance(acte.id));
+        dto.setMentionAdoptionDtos(mentionAdoptionService.findByActeNaissance(acte.id));
+        dto.setMentionDecesDtos(mentionDecesService.findByActeNaissance(acte.id));
+        dto.setMentionDissolutionMariageDtos(mentionDissolutionMariageService.findByActeNaissance(acte.id));
+        dto.setMentionLegitimationDtos(mentionLegitimationService.findByActeNaissance(acte.id));
+        dto.setMentionReconnaissanceDtos(mentionReconnaissanceService.findByActeNaissance(acte.id));
+        dto.setMentionRectificationDtos(mentionRectificationService.findByActeNaissance(acte.id));
         
         return dto;
     }

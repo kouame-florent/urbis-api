@@ -8,6 +8,7 @@ package io.urbis.mention.api;
 import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.mention.service.MentionAdoptionService;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
@@ -38,7 +39,7 @@ public class AdoptionResource {
     }
     
     @GET
-    public List<MentionAdoptionDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
+    public Set<MentionAdoptionDto> findByActeNaissance(@QueryParam("acte-naissance-id") @NotBlank String acteNaissanceID){
        return adoptionService.findByActeNaissance(acteNaissanceID);
     }
     

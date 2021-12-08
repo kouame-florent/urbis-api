@@ -81,4 +81,13 @@ public class Epoux {
                            column=@Column(name="epoux_temoin_age")),
     })
     public Temoin temoin;
+
+    public Epoux(Conjoint conjoint, Pere pere, Mere mere, Temoin temoin) {
+        this.conjoint = conjoint;
+        this.pere = pere;
+        this.mere = mere;
+        this.temoin = temoin;
+    }
+    
+    
 }

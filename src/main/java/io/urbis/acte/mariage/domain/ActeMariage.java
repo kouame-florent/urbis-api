@@ -10,6 +10,7 @@ import io.urbis.acte.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -41,8 +42,22 @@ public class ActeMariage extends Acte{
     public String lieuMariage;
     public Regime regime;
     
+    @Embedded
     public Epoux epoux;
+    
+    @Embedded
     public Epouse epouse;
     
     public OfficierEtatCivil officierEtatCivil;
+
+    public ActeMariage() {
+    }
+    
+    public ActeMariage(Epoux epoux, Epouse epouse) {
+        this.epoux = epoux;
+        this.epouse = epouse;
+        
+    }
+    
+    
 }

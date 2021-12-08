@@ -849,12 +849,14 @@ public class ActeNaissanceService {
         //validerNombreDefeuillets(registre);
     }
     
+    
     public void verifierNumero(Registre registre,ActeNaissanceDto acte){
         while(numeroExist(registre, acte.getNumero())){
             acte.setNumero(acte.getNumero() + 1);
             registre.numeroProchainActe += 1;
         }
     }
+    
     
     /*
     public void validerNombreDefeuillets(Registre registre){

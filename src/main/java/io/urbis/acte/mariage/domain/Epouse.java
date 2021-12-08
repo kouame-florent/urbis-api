@@ -82,4 +82,13 @@ public class Epouse implements Serializable{
                            column=@Column(name="epouse_temoin_age")),
     })
     public Temoin temoin;
+
+    public Epouse(Conjoint conjoint, Pere pere, Mere mere, Temoin temoin) {
+        this.conjoint = conjoint;
+        this.pere = pere;
+        this.mere = mere;
+        this.temoin = temoin;
+    }
+    
+    
 }

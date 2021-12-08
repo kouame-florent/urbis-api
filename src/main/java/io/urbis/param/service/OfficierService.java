@@ -85,6 +85,10 @@ public class OfficierService {
         
     }
     
+    public long count(){
+        return OfficierEtatCivil.count();
+    }
+    
     public static OfficierEtatCivilDto mapToDto(OfficierEtatCivil officier){
         return new OfficierEtatCivilDto(
                 officier.id, 

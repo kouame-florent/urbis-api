@@ -49,4 +49,9 @@ public class OfficierResource {
     public boolean delete(@PathParam("id") String id){
        return officierService.delete(id);
     }
+    
+    @GET @Path("count")
+    public long count(){
+        return officierService.count();
+    }
 }

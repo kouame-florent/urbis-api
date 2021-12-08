@@ -16,6 +16,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -103,9 +104,19 @@ public class CentreService {
     */
     public CentreDto findActive(){
         PanacheQuery<Centre> query =  Centre.findAll();
-        return query.firstResultOptional().map(CentreService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucun 'centre' trouvé"));
+        try{
+          Centre c = query.singleResult();
+          return mapToDto(c);
+        }catch(NoResultException e){
+           log.warnf("%s", e);
+           throw new NotFoundException("aucun 'centre' trouvé");
+        }
+       
     
+    }
+    
+    public long count(){
+        return Centre.count();
     }
     
     public static CentreDto mapToDto(Centre centre){

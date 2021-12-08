@@ -9,6 +9,7 @@ package io.urbis.naissance.api;
 
 import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.service.ActeNaissanceService;
+import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -38,14 +39,14 @@ public class ActeNaissanceResource {
     
     @Transactional
     @POST
-    public String create(ActeNaissanceDto acteNaissanceDto){
+    public String create(ActeNaissanceDto acteNaissanceDto) throws SQLException{
         return acteNaissanceService.creerActe(acteNaissanceDto);
         
     }
     
     @Transactional
     @PUT @Path("{id}")
-    public void update(@PathParam("id")String id, ActeNaissanceDto acteNaissanceDto){
+    public void update(@PathParam("id")String id, ActeNaissanceDto acteNaissanceDto) throws SQLException{
         acteNaissanceService.updateActe(id, acteNaissanceDto);
     }
     

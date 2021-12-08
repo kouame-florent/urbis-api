@@ -56,4 +56,9 @@ public class CentreResource {
         return centreService.findActive();
     }
     
+    @GET @Path("count")
+    public long count(){
+        return centreService.count();
+    }
+    
 }

@@ -5,8 +5,10 @@
  */
 package io.urbis.naissance.domain;
 
+import io.urbis.acte.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
+import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
@@ -240,10 +242,10 @@ public class ActeNaissance extends Acte{
     public int nombreExtraits;
     
     @Lob
-    public String extraitTexte;
+    public Clob extraitTexte;
     
     @Lob
-    public String copieTexte;
+    public Clob copieTexte;
     
     
     @ManyToOne

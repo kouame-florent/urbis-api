@@ -3,22 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.naissance.domain;
+package io.urbis.mariage.domain;
 
-import io.urbis.common.domain.BaseEntity;
+import io.urbis.acte.Acte;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  *
  * @author florent
  */
-@Table(name = "acte")
+@Table(name = "acte_naissance",uniqueConstraints = { 
+    @UniqueConstraint(columnNames = {"registre_id","numero"})
+})
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Acte extends BaseEntity{
+public class ActeMariage extends Acte{
     
-   
 }

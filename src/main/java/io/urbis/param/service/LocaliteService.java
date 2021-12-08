@@ -15,6 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -102,10 +103,20 @@ public class LocaliteService {
     public LocaliteDto findActive(){
       //PanacheQuery<Localite> query =  Localite.find("statut", StatutParametre.ACTIF);
       PanacheQuery<Localite> query =  Localite.findAll();
-      return query.firstResultOptional().map(LocaliteService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucune 'localité' trouvée"));
-      
+      try{
+          Localite loc = query.singleResult();
+          return mapToDto(loc);
+      }catch(NoResultException e){
+         log.warnf("%s", e);
+         throw new NotFoundException("aucune 'localité' trouvée");
+      }
+    
     }
+    
+    public long count(){
+        return Localite.count();
+    }
+    
     
     /*
     public LocaliteDto findActiveLocalite(){

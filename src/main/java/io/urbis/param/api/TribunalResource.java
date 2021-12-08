@@ -56,4 +56,8 @@ public class TribunalResource {
         return tribunalService.findActive();
     }
 
+    @GET @Path("count")
+    public long count(){
+        return tribunalService.count();
+    }
 }

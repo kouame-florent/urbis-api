@@ -39,7 +39,9 @@ import io.urbis.naissance.domain.StatutActeNaissance;
 import io.urbis.naissance.dto.ActeNaissanceDto;
 import io.urbis.naissance.domain.ModeDeclaration;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.HashSet;
@@ -88,6 +90,9 @@ public class ActeNaissanceService {
     @Inject
     MentionMariageService mentionMariageService;
     
+    @Inject
+    LocaliteService localiteService;
+    
     
     public ActeNaissanceDto findById(@NotBlank String id){
         return Optional.ofNullable(ActeNaissance.findById(id))
@@ -98,7 +103,7 @@ public class ActeNaissanceService {
     }
     
     
-    public String creerActe(@NotNull ActeNaissanceDto acteNaissanceDto){
+    public String creerActe(@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
@@ -295,7 +300,8 @@ public class ActeNaissanceService {
         
         acte.statut = StatutActeNaissance.PROJET;
         
-        acte.extraitTexte = extraitTexte(acte);
+        acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
         
         acte.persist();
         
@@ -349,7 +355,7 @@ public class ActeNaissanceService {
         });
     }
     
-    public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto){
+    public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         ActeNaissance acte = ActeNaissance.findById(id);
         acte.enfant =  new Enfant();
@@ -552,7 +558,12 @@ public class ActeNaissanceService {
         
         acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
         
-        acte.extraitTexte = extraitTexte(acte);
+       // acte.extraitTexte = extraitTexte(acte);
+       // acte.copieTexte = copieText(acte);
+        
+        acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
+       
         
     }
     
@@ -760,6 +771,70 @@ public class ActeNaissanceService {
         sb.append("\n");
         sb.append("et de ");
         sb.append(acte.mere.nomComplet);
+        
+        return sb.toString();
+    }
+    
+    public String copieText(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append(" ");
+        sb.append(acte.enfant.lieuNaissance);
+        sb.append(", ");
+        sb.append("\n");
+        sb.append(localiteService.findActive().getType());
+        sb.append(" de ");
+        sb.append(localiteService.findActive().getLibelle());
+        sb.append(", ");
+        sb.append("l'enfant ");
+        sb.append(acte.enfant.nomComplet);
+        sb.append("\n");
+        sb.append("de sexe ");
+        sb.append(acte.enfant.sexe);
+        sb.append(",");
+        sb.append("ayant pour père ");
+        sb.append(acte.pere.nomComplet);
+        sb.append(", ");
+        sb.append("né à ");
+        sb.append("\n");
+        sb.append(acte.pere.lieuNaissance);
+        sb.append(", ");
+        sb.append(acte.pere.profession);
+        sb.append(", ");
+        sb.append("domicilié à ");
+        sb.append(acte.pere.localite);
+        sb.append(" et pour mère ");
+        sb.append("\n");
+        sb.append(acte.mere.nomComplet);
+        sb.append(", ");
+        sb.append("né à ");
+        sb.append(acte.mere.lieuNaissance);
+        sb.append(", ");
+        sb.append("\n");
+        sb.append(acte.mere.profession);
+        sb.append(" domicilié à ");
+        sb.append(acte.mere.localite);
+        
+        sb.append("\n");
+        sb.append("\n");
+        
+        sb.append("Dressé le, par nous, ");
+        sb.append(acte.officierEtatCivil.nom);
+        sb.append(" ");
+        sb.append(acte.officierEtatCivil.prenoms);
+        sb.append(", ");
+        sb.append("Officier ");
+        sb.append("\n");
+        sb.append("d'état civil, ");
+        sb.append(acte.officierEtatCivil.titre);
+        sb.append(" de la commune, après que le déclarant ");
+        sb.append("\n");
+        sb.append("est été averti des peines sanctionnant les fausses ");
+        sb.append("déclarations. ");
+        sb.append("\n");
+        sb.append("\n");
+        sb.append("Lecture faite et le déclarant invité à lire l'acte.");
+        sb.append(" Nous avons signé avec le déclarant.");
         
         return sb.toString();
     }

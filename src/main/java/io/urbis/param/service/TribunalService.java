@@ -15,6 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.NotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -86,11 +87,19 @@ public class TribunalService {
     
     public TribunalDto findActive(){
         PanacheQuery<Tribunal> query = Tribunal.findAll();
-        return query.firstResultOptional().map(TribunalService::mapToDto)
-                .orElseThrow(() -> new NotFoundException("aucun 'tribunal' trouvé"));
+        try{
+          Tribunal t = query.singleResult();
+          return mapToDto(t);
+        }catch(NoResultException e){
+           log.warnf("%s", e);
+           throw new NotFoundException("aucun 'centre' trouvé");
+        }
+        
     }
 
-    
+    public long count(){
+        return Tribunal.count();
+    }
      
     public static TribunalDto mapToDto(Tribunal tribunal){
         return new TribunalDto(tribunal.id, 

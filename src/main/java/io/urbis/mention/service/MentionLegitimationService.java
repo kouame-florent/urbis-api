@@ -7,7 +7,7 @@ package io.urbis.mention.service;
 
 import io.urbis.mention.domain.MentionLegitimation;
 import io.urbis.mention.dto.MentionLegitimationDto;
-import io.urbis.naissance.domain.ActeNaissance;
+import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.Set;

@@ -19,6 +19,5 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Acte extends BaseEntity{
-    
    
 }

@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.domain;
+package io.urbis.acte.mariage.domain;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
@@ -14,21 +13,13 @@ import javax.persistence.Embeddable;
  * @author florent
  */
 @Embeddable
-public class Mere implements Serializable{
+public class Conjoint {
     
     public String nom;
     public String prenoms;
-    public String nomComplet;
     public String profession;
     public String lieuNaissance;
-    public Nationalite nationalite;
     public LocalDate dateNaissance;
-    public LocalDate dateDeces;
-    public String lieuDeces;
-    public String localite;
-    public TypePiece typePiece;
-    public String numeroPiece;
-    public LocalDate datePiece;
-    public String lieuPiece;
-    
+    public String domicile;
+    public SituationMatrimoniale situationMatrimoniale;
 }

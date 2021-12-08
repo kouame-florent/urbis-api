@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.mariage.domain;
+package io.urbis.acte.mariage.domain;
 
 import java.io.Serializable;
 import javax.persistence.Embeddable;
@@ -13,6 +13,10 @@ import javax.persistence.Embeddable;
  * @author florent
  */
 @Embeddable
-public class Epouse implements Serializable{
+public class Mere implements Serializable{
     
+    public String nom;
+    public String prenoms;
+    public String profession;
+    public String domicile;
 }

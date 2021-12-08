@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.mariage.domain;
+package io.urbis.acte.mariage.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  *
  * @author florent
  */
-public enum Regime {
-    
+@Data
+@AllArgsConstructor
+public class SituationMatrimonialeDto {
+    private String code;
+    private String libelle;
 }

@@ -29,9 +29,11 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
+
 @Table(name = "acte_naissance",uniqueConstraints = { 
     @UniqueConstraint(columnNames = {"registre_id","numero"})
 })
+
 @Entity
 public class ActeNaissance extends Acte{
     
@@ -40,6 +42,7 @@ public class ActeNaissance extends Acte{
     @JoinColumn(nullable = false,name = "registre_id")
     public Registre registre;
     
+    @Column(name = "numero")
     public int numero;
     
     @Embedded

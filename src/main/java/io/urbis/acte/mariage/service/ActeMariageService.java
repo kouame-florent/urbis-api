@@ -74,11 +74,13 @@ public class ActeMariageService {
         acte.epoux.pere.prenoms = acteMariageDto.getEpouxPerePrenoms();
         acte.epoux.pere.domicile = acteMariageDto.getEpouxPereDomicile();
         acte.epoux.pere.profession = acteMariageDto.getEpouxPereProfession();
+        acte.epoux.pere.decede = acteMariageDto.isEpouxPereDecede();
         
         acte.epoux.mere.nom = acteMariageDto.getEpouxMereNom();
         acte.epoux.mere.prenoms = acteMariageDto.getEpouxMerePrenoms();
         acte.epoux.mere.profession = acteMariageDto.getEpouxMereProfession();
         acte.epoux.mere.domicile = acteMariageDto.getEpouxMereDomicile();
+        acte.epoux.mere.decede = acteMariageDto.isEpouxMereDecede();
         
         acte.epoux.temoin.nom = acteMariageDto.getEpouxTemoinNom();
         acte.epoux.temoin.prenoms = acteMariageDto.getEpouxTemoinPrenoms();
@@ -96,11 +98,13 @@ public class ActeMariageService {
         acte.epouse.pere.prenoms = acteMariageDto.getEpousePerePrenoms();
         acte.epouse.pere.domicile = acteMariageDto.getEpousePereDomicile();
         acte.epouse.pere.profession = acteMariageDto.getEpousePereProfession();
+        acte.epouse.pere.decede = acteMariageDto.isEpousePereDecede();
         
         acte.epouse.mere.nom = acteMariageDto.getEpouseMereNom();
         acte.epouse.mere.prenoms = acteMariageDto.getEpouseMerePrenoms();
         acte.epouse.mere.profession = acteMariageDto.getEpouseMereProfession();
         acte.epouse.mere.domicile = acteMariageDto.getEpouseMereDomicile();
+        acte.epouse.mere.decede = acteMariageDto.isEpouxMereDecede();
         
         acte.epouse.temoin.nom = acteMariageDto.getEpouseTemoinNom();
         acte.epouse.temoin.prenoms = acteMariageDto.getEpouseTemoinPrenoms();
@@ -183,7 +187,75 @@ public class ActeMariageService {
     }
     
     public ActeMariageDto mapToDto(@NotNull ActeMariage acte){
-        return new ActeMariageDto();
+        ActeMariageDto dto = new ActeMariageDto();
+        
+        dto.setCreated(acte.created);
+        dto.setUpdated(acte.updated);
+        dto.setDateMariage(acte.dateMariage);
+        dto.setLieuMariage(acte.lieuMariage);
+        dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
+        dto.setOfficierEtatCivilNom(acte.officierEtatCivil.nom);
+        dto.setOfficierEtatCivilPrenoms(acte.officierEtatCivil.prenoms);
+        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre.name());
+        dto.setRegistreID(acte.registre.id);
+        dto.setRegistreNumero(acte.registre.reference.numero);
+        dto.setRegistreAnnee(acte.registre.reference.annee);
+        dto.setNumero(acte.numero);
+        
+        dto.setEpouxConjointDateNaissance(acte.epoux.conjoint.dateNaissance);
+        dto.setEpouxConjointLieuNaissance(acte.epoux.conjoint.lieuNaissance);
+        dto.setEpouxConjointDomicile(acte.epoux.conjoint.domicile);
+        dto.setEpouxConjointNom(acte.epoux.conjoint.nom);
+        dto.setEpouxConjointPrenoms(acte.epoux.conjoint.prenoms);
+        dto.setEpouxConjointProfession(acte.epoux.conjoint.profession);
+        dto.setEpouxConjointSituationMatrimoniale(acte.epoux.conjoint.situationMatrimoniale.name());
+        
+        dto.setEpouxPereNom(acte.epoux.pere.nom);
+        dto.setEpouxPerePrenoms(acte.epoux.pere.prenoms);
+        dto.setEpouxPereProfession(acte.epoux.pere.profession);
+        dto.setEpouxPereDomicile(acte.epoux.pere.domicile);
+        dto.setEpouxPereDecede(acte.epoux.pere.decede);
+        
+        dto.setEpouxMereNom(acte.epoux.mere.nom);
+        dto.setEpouxMerePrenoms(acte.epoux.mere.prenoms);
+        dto.setEpouxMereProfession(acte.epoux.mere.profession);
+        dto.setEpouxMereDomicile(acte.epoux.mere.domicile);
+        dto.setEpouxMereDecede(acte.epoux.mere.decede);
+        
+        dto.setEpouxTemoinAge(acte.epoux.temoin.age);
+        dto.setEpouxTemoinNom(acte.epoux.temoin.nom);
+        dto.setEpouxTemoinPrenoms(acte.epoux.temoin.prenoms);
+        dto.setEpouxTemoinProfession(acte.epoux.temoin.profession);
+        
+        //mere
+        
+        dto.setEpouseConjointDateNaissance(acte.epouse.conjoint.dateNaissance);
+        dto.setEpouseConjointLieuNaissance(acte.epouse.conjoint.lieuNaissance);
+        dto.setEpouseConjointDomicile(acte.epouse.conjoint.domicile);
+        dto.setEpouseConjointNom(acte.epouse.conjoint.nom);
+        dto.setEpouseConjointPrenoms(acte.epouse.conjoint.prenoms);
+        dto.setEpouseConjointProfession(acte.epouse.conjoint.profession);
+        dto.setEpouseConjointSituationMatrimoniale(acte.epouse.conjoint.situationMatrimoniale.name());
+        
+        dto.setEpousePereNom(acte.epouse.pere.nom);
+        dto.setEpousePerePrenoms(acte.epouse.pere.prenoms);
+        dto.setEpousePereProfession(acte.epouse.pere.profession);
+        dto.setEpousePereDomicile(acte.epouse.pere.domicile);
+        dto.setEpousePereDecede(acte.epouse.pere.decede);
+        
+        dto.setEpouseMereNom(acte.epouse.mere.nom);
+        dto.setEpouseMerePrenoms(acte.epouse.mere.prenoms);
+        dto.setEpouseMereProfession(acte.epouse.mere.profession);
+        dto.setEpouseMereDomicile(acte.epouse.mere.domicile);
+        dto.setEpouseMereDecede(acte.epouse.mere.decede);
+        
+        dto.setEpouseTemoinAge(acte.epouse.temoin.age);
+        dto.setEpouseTemoinNom(acte.epouse.temoin.nom);
+        dto.setEpouseTemoinPrenoms(acte.epouse.temoin.prenoms);
+        dto.setEpouseTemoinProfession(acte.epouse.temoin.profession);
+        
+        
+        return dto;
     }
     
     

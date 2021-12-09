@@ -32,9 +32,9 @@ public class ActeMariageDto {
     @Min(1)
     private int numero;
     
-    public LocalDateTime dateMariage;
-    public String lieuMariage;
-    public String regime;
+    private LocalDateTime dateMariage;
+    private String lieuMariage;
+    private String regime;
     
     private int registreAnnee;
     private int registreNumero;
@@ -44,7 +44,6 @@ public class ActeMariageDto {
     private String officierEtatCivilID;
     private String officierEtatCivilNom;
     private String officierEtatCivilPrenoms;
-    private String officierEtatCivilQualite;
     private String officierEtatCivilTitre;
     
     private String epouxConjointNom;

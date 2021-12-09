@@ -38,7 +38,6 @@ public class ActeNaissanceDto {
     @NotBlank
     private String operation;
     
-    
     @NotBlank
     private String id;
     

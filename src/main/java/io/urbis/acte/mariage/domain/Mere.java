@@ -19,4 +19,5 @@ public class Mere implements Serializable{
     public String prenoms;
     public String profession;
     public String domicile;
+    public boolean decede;
 }

@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
@@ -34,6 +35,11 @@ public class ActeMariageResource {
         acteMariageService.create(dto);
     }
     
+    @GET @Path("{id}")
+    public ActeMariageDto findById(@PathParam("id") String id){
+        return acteMariageService.findById(id);
+    }
+    
     @GET
     public List<ActeMariageDto> findWithFilters(@QueryParam("offset") int offset, 
             @QueryParam("page-size") int pageSize,@QueryParam("registre-id") String registreID){
@@ -43,6 +49,12 @@ public class ActeMariageResource {
     @GET @Path("/count")
     public int count(){
         return acteMariageService.count();
+    }
+    
+    @GET
+    @Path("/numero-acte/{id}")
+    public int numeroActe(@PathParam("id") String registreID){
+       return acteMariageService.numeroActe(registreID);
     }
     
 }

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.api;
+package io.urbis.registre.api;
 
-import io.urbis.acte.registre.service.EtatService;
+import io.urbis.registre.service.EtatService;
 import java.io.File;
 import javax.inject.Inject;
 import javax.ws.rs.GET;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.dto;
+package io.urbis.registre.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,22 +5,21 @@
  */
 package io.urbis.common.exception.mapper;
 
-
+import javax.persistence.EntityExistsException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
  * @author florent
  */
 @Provider
-public class ConstraintViolationMapper implements ExceptionMapper<ConstraintViolationException>{
+public class EntityExistExceptionMapper implements ExceptionMapper<EntityExistsException>{
 
     @Override
-    public Response toResponse(ConstraintViolationException e) {
-        return Response.status(Response.Status.BAD_REQUEST)
+    public Response toResponse(EntityExistsException e) {
+        return Response.status(Response.Status.CONFLICT)
                 .entity(e.getMessage()).build();
     }
     

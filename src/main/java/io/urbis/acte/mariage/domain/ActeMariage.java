@@ -6,7 +6,7 @@
 package io.urbis.acte.mariage.domain;
 
 import io.urbis.acte.Acte;
-import io.urbis.acte.registre.domain.Registre;
+import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.time.LocalDateTime;
 import javax.persistence.Column;

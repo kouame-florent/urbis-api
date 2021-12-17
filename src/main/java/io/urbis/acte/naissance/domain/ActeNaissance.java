@@ -7,7 +7,7 @@ package io.urbis.acte.naissance.domain;
 
 import io.urbis.acte.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
-import io.urbis.acte.registre.domain.Registre;
+import io.urbis.registre.domain.Registre;
 import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

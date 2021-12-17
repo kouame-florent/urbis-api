@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.api;
+package io.urbis.registre.api;
 
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
-import io.urbis.acte.registre.dto.TypeRegistreDto;
-import io.urbis.acte.registre.service.TypeRegistreService;
+import io.urbis.registre.dto.TypeRegistreDto;
+import io.urbis.registre.service.TypeRegistreService;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;

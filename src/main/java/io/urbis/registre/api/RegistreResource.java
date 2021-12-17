@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.api;
+package io.urbis.registre.api;
 
-import io.urbis.acte.registre.domain.StatutRegistre;
-import io.urbis.acte.registre.dto.RegistrePatchDto;
-import io.urbis.acte.registre.dto.RegistreDto;
-import io.urbis.acte.registre.service.RegistreService;
+import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.registre.dto.RegistrePatchDto;
+import io.urbis.registre.dto.RegistreDto;
+import io.urbis.registre.service.RegistreService;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -52,8 +52,8 @@ public class RegistreResource {
     //@RolesAllowed("CHEF_ETAT_CIVIL")
     @Transactional
     @POST
-    public RegistreDto create(RegistreDto registreDto){
-        return registreService.creerRegistre(registreDto);
+    public void create(RegistreDto registreDto){
+         registreService.creerRegistre(registreDto);
     }
     
     
@@ -107,14 +107,27 @@ public class RegistreResource {
        return registreService.anneeCourante();
     }
     
-    @GET @Path("numero/{type}/{annee}")
-    public int numeroRegistre(@PathParam("type") String typeRegistre, @PathParam("annee") int annee){
+    @GET @Path("numero/{type}")
+    public int numeroRegistre(@PathParam("type") String typeRegistre, @QueryParam("annee") int annee){
        return registreService.numeroRegistre(typeRegistre,annee);
     }
     
-    @GET @Path("numero-premier-acte/{type}/{annee}")
-    public int numeroPremierActe(@PathParam("type") String typeRegistre,@PathParam("annee") int annee){
-       return registreService.numeroPremierActe(typeRegistre,annee);
+    @GET @Path("numero-premier-acte-courant/{type}")
+    public int numeroPremierActeCourant(@PathParam("type") String typeRegistre,@QueryParam("annee") int annee){
+       return registreService.numeroPremierActeCourant(typeRegistre,annee);
+    }
+    
+    @GET @Path("numero-premier-acte/{type}")
+    public int numeroPremierActe(@PathParam("type") String typeRegistre,@QueryParam("annee") int annee,
+            @QueryParam("numero") int numero){
+       return registreService.numeroPremierActe(typeRegistre,annee,numero);
+    }
+    
+    @GET @Path("numero-dernier-acte/{type}")
+    public int numeroDernierActe(@PathParam("type") String typeRegistre,@QueryParam("annee") int annee,
+            @QueryParam("numero") int numero,@QueryParam("numero-premier-acte") int numeroPremierActe,
+            @QueryParam("nombre-feuillets") int nombreFeuillets){
+       return registreService.numeroDernierActe(typeRegistre,annee,numero,numeroPremierActe,nombreFeuillets);
     }
     
 }

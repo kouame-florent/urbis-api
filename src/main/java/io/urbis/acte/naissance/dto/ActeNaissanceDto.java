@@ -34,7 +34,6 @@ public class ActeNaissanceDto {
     private LocalDateTime created; 
     private LocalDateTime updated; 
     
-    
     @NotBlank
     private String operation;
     

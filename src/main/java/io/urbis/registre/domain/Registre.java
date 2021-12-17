@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.domain;
+package io.urbis.registre.domain;
 
 
 import io.urbis.param.domain.OfficierEtatCivil;
@@ -33,24 +33,40 @@ import org.hibernate.annotations.ParamDef;
  * @author florent
  */
 @NamedQueries({
-    @NamedQuery(name = "Registre.findMaxNumero",
+    @NamedQuery(name = "Registre.findMaxNumeroByType",
     query = "Select max(r.reference.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre "
             + "AND r.reference.annee = :annee"
     ),
+    
     @NamedQuery(name = "Registre.findNumeroDernierActe",
+    query = "Select numeroDernierActe FROM Registre r WHERE r.typeRegistre = :typeRegistre "
+            + "AND r.reference.annee = :annee AND r.reference.numero = :numero "
+            
+    ),
+    
+    @NamedQuery(name = "Registre.findNumeroPremierActe",
+    query = "Select numeroPremierActe FROM Registre r WHERE r.typeRegistre = :typeRegistre "
+            + "AND r.reference.annee = :annee AND r.reference.numero = :numero "
+            
+    ),
+    
+    @NamedQuery(name = "Registre.findMaxNumeroDernierActe",
     query = "Select max(r.numeroDernierActe) FROM Registre r WHERE r.typeRegistre = :typeRegistre "
             + "AND r.reference.annee = :annee"
     ),
-    @NamedQuery(name = "Registre.findByUniqueConstraint",
+    
+    @NamedQuery(name = "Registre.findByTypeAndReference",
     query = "Select r FROM Registre r WHERE r.typeRegistre = :typeRegistre AND r.reference.localite = :localite "
             + "AND r.reference.centre = :centre AND r.reference.annee = :annee AND r.reference.numero = :numero"
     ),
-    @NamedQuery(name = "Registre.findWithMaxNumero",
+    
+    @NamedQuery(name = "Registre.findWithMaxNumeroByType",
     query = "SELECT r FROM Registre r WHERE r.typeRegistre = :typeRegistre"
             + " AND r.reference.annee = :annee AND r.statut = :statut AND r.reference.numero = "
             + " (SELECT MAX(r.reference.numero) FROM Registre r WHERE r.typeRegistre = :typeRegistre "
             + " AND r.reference.annee = :annee)"
     ),
+    
     
 })
 

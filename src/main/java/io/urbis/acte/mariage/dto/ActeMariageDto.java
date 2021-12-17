@@ -22,6 +22,9 @@ public class ActeMariageDto {
     
     private LocalDateTime created; 
     private LocalDateTime updated; 
+    
+    @NotBlank
+    private String operation;
    
     @NotBlank
     private String id;
@@ -54,17 +57,23 @@ public class ActeMariageDto {
     private String epouxConjointDomicile;
     private String epouxConjointSituationMatrimoniale;
     
+    
     private String epouxPereNom;
     private String epouxPerePrenoms;
     private String epouxPereProfession;
     private String epouxPereDomicile;
     private boolean epouxPereDecede;
+    private String epouxPereLieuDeces;
+    private LocalDate epouxPereDateDeces;
     
     private String epouxMereNom;
     private String epouxMerePrenoms;
     private String epouxMereProfession;
     private String epouxMereDomicile;
     private boolean epouxMereDecede;
+    private String epouxMereLieuDeces;
+    private LocalDate epouxMereDateDeces;
+  
     
     private String epouxTemoinNom;
     private String epouxTemoinPrenoms;
@@ -85,12 +94,18 @@ public class ActeMariageDto {
     private String epousePereProfession;
     private String epousePereDomicile;
     private boolean epousePereDecede;
+    private String epousePereLieuDeces;
+    private LocalDate epousePereDateDeces;
+  
     
     private String epouseMereNom;
     private String epouseMerePrenoms;
     private String epouseMereProfession;
     private String epouseMereDomicile;
     private boolean epouseMereDecede;
+    private String epouseMereLieuDeces;
+    private LocalDate epouseMereDateDeces;
+  
     
     private String epouseTemoinNom;
     private String epouseTemoinPrenoms;

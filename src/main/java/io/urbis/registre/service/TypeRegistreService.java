@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.service;
+package io.urbis.registre.service;
 
-import io.urbis.acte.registre.domain.TypeRegistre;
-import io.urbis.acte.registre.dto.TypeRegistreDto;
+import io.urbis.registre.domain.TypeRegistre;
+import io.urbis.registre.dto.TypeRegistreDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;

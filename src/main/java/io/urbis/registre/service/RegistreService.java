@@ -3,34 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.registre.service;
+package io.urbis.registre.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.urbis.acte.naissance.domain.ActeNaissance;
+import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.param.domain.Centre;
 import io.urbis.param.domain.Localite;
 import io.urbis.param.domain.OfficierEtatCivil;
-import io.urbis.acte.registre.domain.Reference;
-import io.urbis.acte.registre.domain.Registre;
-import io.urbis.acte.registre.domain.StatutRegistre;
+import io.urbis.registre.domain.Reference;
+import io.urbis.registre.domain.Registre;
+import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.Tribunal;
-import io.urbis.acte.registre.domain.TypeRegistre;
-import io.urbis.acte.registre.dto.RegistreDto;
+import io.urbis.registre.domain.TypeRegistre;
+import io.urbis.registre.dto.RegistreDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+
 
 /**
  *
@@ -49,7 +54,7 @@ public class RegistreService {
     
     private final int PAGE_SIZE = 25;
     
-    public RegistreDto creerRegistre(@NotNull RegistreDto registreDto){
+    public void creerRegistre(@NotNull RegistreDto registreDto){
         
         var typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocaliteID());
@@ -77,11 +82,30 @@ public class RegistreService {
         
         registre.numeroProchainActe = registreDto.getNumeroPremierActe();
         
-        if(!exist(typeRegistre, localite, centre, registreDto.getAnnee(), registreDto.getNumero())){
+        verifierOrdreNumero(typeRegistre, reference);
+        
+        if(!exist(typeRegistre, reference)){
            registre.persist(); 
+        }else{
+            String msg = String.format("le registre %d de %d existe déjà", 
+                    registreDto.getNumero(),registreDto.getAnnee());
+            throw new EntityExistsException(msg);
         }
         
-        return mapToDto(registre);
+       // return mapToDto(registre);
+    }
+    
+    /*
+    * verifier que le registre de numero n est précédé du registre de n-1
+    */
+    public void verifierOrdreNumero(TypeRegistre type,Reference ref){
+        if(ref.numero > 1){
+            Reference previousRegRef = new Reference(ref.localite, ref.centre, ref.annee, ref.numero - 1);
+            if(!exist(type, previousRegRef)){
+                String msg = String.format("le registre numéro %d doit précéder le registre numéro %d ",ref.numero - 1,ref.numero );
+                throw new ValidationException(msg);
+            }
+        }
     }
     
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
@@ -147,7 +171,17 @@ public class RegistreService {
         if(registre == null){
            throw new EntityNotFoundException("registre not found");
         }
+        
+        if(countActeNaissanceActeWithStatus(registre, StatutActeNaissance.PROJET) > 0){
+            throw new ValidationException("le registre comprend des actes en projet");
+        }
+        
         registre.statut = StatutRegistre.CLOTURE;
+    }
+    
+    private long countActeNaissanceActeWithStatus(Registre reg, StatutActeNaissance statutActeNaissance){
+       long count = ActeNaissance.count("registre = ?1 AND statut = ?2", reg, statutActeNaissance);
+       return count;
     }
     
     public void consulterRegistre(){}
@@ -208,14 +242,26 @@ public class RegistreService {
         return (int)query.count();
     }
     
+    /*
+    public Registre findByTypeAndReference(TypeRegistre type, Reference ref){
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findByTypeAndReference", Registre.class);
+        query.setParameter("typeRegistre", type);
+        query.setParameter("localite",ref.localite);
+        query.setParameter("centre", ref.centre);
+        query.setParameter("annee", ref.annee);
+        query.setParameter("numero", ref.numero);
+        
+        query.getResultList();
+    }
+    */
     
-    public boolean exist(TypeRegistre typeRegistre,Localite localite,Centre centre,int annee, int numero){
-        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findByUniqueConstraint", Registre.class);
+    public boolean exist(TypeRegistre typeRegistre,Reference ref){
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findByTypeAndReference", Registre.class);
         query.setParameter("typeRegistre", typeRegistre);
-        query.setParameter("localite", localite);
-        query.setParameter("centre", centre);
-        query.setParameter("annee", annee);
-        query.setParameter("numero", numero);
+        query.setParameter("localite", ref.localite);
+        query.setParameter("centre", ref.centre);
+        query.setParameter("annee", ref.annee);
+        query.setParameter("numero", ref.numero);
         
         List<Registre> rs = query.getResultList();
         return !rs.isEmpty();
@@ -234,36 +280,95 @@ public class RegistreService {
     */
     public int numeroRegistre(String typeRegistre, int annee){
    
-      TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumero", Integer.class);
+      TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroByType", Integer.class);
       query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
       query.setParameter("annee", annee);
       
-      var num = query.getSingleResult();
-        if(num != null){
+        try{
+            var num = query.getSingleResult();
             return num + 1;
-        }else{
+        }catch(NoResultException ex){
+            log.infof("aucun registre trouvé...");
             return 1;
         }
       
       
     }
+    
+    /*
+    public int numeroRegistre(String typeRegistre, int annee,int numero){
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
+        query.setParameter("annee", annee);
+        query.setParameter("numero", numero);
+        
+        var num = query.getSingleResult();
+          if(num != null){
+              return num + 1;
+          }else{
+              return 1;
+          }
+
+      
+    }
+    */
+    
       
     /*
     * propose une valeur pour le champ numeroPremierActe
     */
-    public int numeroPremierActe(String typeRegistre,int annee){
-        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
+    public int numeroPremierActeCourant(String typeRegistre,int annee){
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroDernierActe", Integer.class);
         log.infof("NUM PREMIER QUERY: %s", query);
         query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
         query.setParameter("annee", annee);
         
-        var num = query.getSingleResult();
-        if(num != null){
+        try{
+            var num = query.getSingleResult();
             return num + 1;
-        }else{
+        }catch(NoResultException ex){
+            log.infof("aucun acte précédent...");
             return 1;
         }
         
+    }
+    
+    public int numeroPremierActe(String typeRegistre,int annee,int numero){
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);
+        log.infof("NUM PREMIER QUERY: %s", query);
+        query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
+        query.setParameter("annee", annee);
+        query.setParameter("numero", numero);
+        
+        try{
+            var num = query.getSingleResult();
+            return num + 1;
+        }catch(NoResultException ex){
+            log.infof("aucun acte précédent...");
+            return 1;
+        }
+                
+    }
+    
+    public int numeroDernierActe(String typeRegistre,int annee,int numero,int numeroPremierActe, int nombreFeuillet){
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroPremierActe", Integer.class);
+        log.infof("NUM PREMIER QUERY: %s", query);
+        query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
+        query.setParameter("annee", annee);
+        query.setParameter("numero", numero);
+        
+        try{
+            var num = query.getSingleResult();
+            return num - 1;
+        }catch(NoResultException ex){
+            log.infof("aucun acte suivant...");
+            return numeroPremierActe + nombreFeuillet - 1;
+        }
+    }
+    
+    
+    
+    public int numeroProchainActe(){
+        return 0;
     }
     
     /**
@@ -275,7 +380,7 @@ public class RegistreService {
     public RegistreDto registreCourant(String typeString){
         TypeRegistre typeRegistre = TypeRegistre.fromString(typeString);
         int annee = LocalDateTime.now().getYear();
-        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findWithMaxNumero", Registre.class);
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findWithMaxNumeroByType", Registre.class);
         query.setParameter("typeRegistre", typeRegistre);
         query.setParameter("annee", annee);
         query.setParameter("statut", StatutRegistre.VALIDE);

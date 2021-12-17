@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -88,4 +89,10 @@ public class ActeNaissanceResource {
        return acteNaissanceService.numeroActe(registreID);
     }
     
+    @Transactional
+    @DELETE 
+    @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+        return acteNaissanceService.supprimer(id);
+    }
 }

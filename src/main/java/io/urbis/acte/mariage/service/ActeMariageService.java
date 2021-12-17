@@ -12,10 +12,11 @@ import io.urbis.acte.mariage.domain.Conjoint;
 import io.urbis.acte.mariage.domain.Epouse;
 import io.urbis.acte.mariage.domain.Epoux;
 import io.urbis.acte.mariage.domain.Mere;
+import io.urbis.acte.mariage.domain.Operation;
 import io.urbis.acte.mariage.domain.Pere;
 import io.urbis.acte.mariage.domain.Temoin;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
-import io.urbis.acte.registre.domain.Registre;
+import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 
+
 /**
  *
  * @author florent
@@ -38,6 +40,14 @@ public class ActeMariageService {
     
     @Inject
     Logger log;
+    
+    public ActeMariageDto findById(@NotBlank String id){
+        return ActeMariage.findByIdOptional(id)
+                .map(p -> (ActeMariage)p)
+                .map(this::mapToDto)
+                .orElseThrow(() -> new WebApplicationException("acte naissance not found",Response.status(Response.Status.NOT_FOUND).build()));
+       
+    }
     
     public void create(@NotNull ActeMariageDto acteMariageDto){
         
@@ -114,6 +124,21 @@ public class ActeMariageService {
            
         validerActe(registre, acteMariageDto);
         
+        acte.persist();
+        
+        Operation operation = Operation.fromString(acteMariageDto.getOperation());
+        
+        if(operation == Operation.DECLARATION){
+            //incrementer l'index du registre
+            if(registre.numeroProchainActe == acteMariageDto.getNumero()){
+                registre.numeroProchainActe += 1;
+            }else{
+                //permet de changer l'index du registre en entrant le numero voulu
+                registre.numeroProchainActe = acteMariageDto.getNumero() + 1;
+            }
+            
+        }
+        
       }
     
     public void modifier(){
@@ -135,6 +160,21 @@ public class ActeMariageService {
         PanacheQuery<ActeMariage>  query = ActeMariage.find("registre",Sort.by("numero").descending(),registre);
         
         return query.stream().map(this::mapToDto).collect(Collectors.toList());
+      
+    }
+    
+    public int numeroActe(@NotBlank String registreID){
+        Registre registre = Registre.findById(registreID);
+        if(registre == null){
+            throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+        }
+        
+        while(numeroExist(registre, registre.numeroProchainActe)){
+            registre.numeroProchainActe += 1;
+        }
+        
+        return registre.numeroProchainActe;
+        
       
     }
     

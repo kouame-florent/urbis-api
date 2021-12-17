@@ -40,7 +40,8 @@ import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
-import io.urbis.acte.registre.domain.Registre;
+import io.urbis.registre.domain.Registre;
+import io.urbis.registre.domain.StatutRegistre;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
@@ -53,6 +54,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
@@ -109,6 +111,8 @@ public class ActeNaissanceService {
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
         log.infof("-- OFFICIER ID: %s", acteNaissanceDto.getOfficierEtatCivilID());
         
+        
+        
         ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
         
@@ -117,8 +121,12 @@ public class ActeNaissanceService {
            throw new EntityNotFoundException("Registre not found");
            
         }
+        if(registre.statut != StatutRegistre.VALIDE){
+            throw new ValidationException("impossible de créer l'acte, le registre n'a pas le statut VALID");
+        }
+        
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
-        if(registre == null){
+        if(officier == null){
            throw new EntityNotFoundException("Officier not found");
            //throw new WebApplicationException("Officier not found", Response.Status.NOT_FOUND);
        }
@@ -309,7 +317,12 @@ public class ActeNaissanceService {
         
         if(operation == Operation.DECLARATION_JUGEMENT){
             //incrementer l'index du registre
-            registre.numeroProchainActe += 1;
+            if(registre.numeroProchainActe == acteNaissanceDto.getNumero()){
+                registre.numeroProchainActe += 1;
+            }else{
+                registre.numeroProchainActe = acteNaissanceDto.getNumero() + 1;
+            }
+            
         }
         
         createMentions(acteNaissanceDto, acte);
@@ -372,10 +385,16 @@ public class ActeNaissanceService {
             throw  new EntityNotFoundException("Registre not found");
         }
         
+        if(registre.statut != StatutRegistre.VALIDE){
+            throw new ValidationException("le registre n'a pas le statut 'validé'");
+        }
+                
         OfficierEtatCivil officier = OfficierEtatCivil.findById(acteNaissanceDto.getOfficierEtatCivilID());
-        if(registre == null){
+        if(officier == null){
             throw  new EntityNotFoundException("OfficierEtatCivil not found");
         }
+        
+        
         
         Operation op = Operation.fromString(acteNaissanceDto.getOperation());
         validerActe(registre, acteNaissanceDto,op);
@@ -1153,5 +1172,10 @@ public class ActeNaissanceService {
         }
         */
       
+    }
+    
+    
+    public boolean supprimer(String id){
+        return ActeNaissance.deleteById(id);
     }
 }

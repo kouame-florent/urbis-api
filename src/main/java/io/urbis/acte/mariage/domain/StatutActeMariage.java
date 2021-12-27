@@ -6,6 +6,8 @@
 package io.urbis.acte.mariage.domain;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -15,9 +17,9 @@ import javax.ws.rs.core.Response;
  */
 public enum StatutActeMariage {
     
-    PROJET("projet"),
-    VALIDE("validé"),
-    ANNULE("annulé");
+    PROJET("Projet"),
+    VALIDE("Validé"),
+    ANNULE("Annulé");
     
     public String value;
     
@@ -31,7 +33,9 @@ public enum StatutActeMariage {
                 return StatutActeMariage.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM STATUT FROM: %s", statutString);
+        
+        Logger log = Logger.getLogger(SituationMatrimoniale.class.getName());
+        log.log(Level.SEVERE,"cannot get Enum 'StatutActeMariage' from: {0}", statutString);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(statutString)).build();
         throw new WebApplicationException(res);

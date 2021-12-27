@@ -6,6 +6,8 @@
 package io.urbis.security.domain;
 
 import io.urbis.security.dto.StatutUtilisateurDto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -35,7 +37,9 @@ public enum StatutUtilisateur {
                 return StatutUtilisateur.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM StatutUtilisateur FROM: %s", statut);
+ 
+        Logger log = Logger.getLogger(StatutUtilisateur.class.getName());
+        log.log(Level.SEVERE,"cannot get Enum 'StatutUtilisateur' from: {0}", statut);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(statut)).build();
         throw new WebApplicationException(res);

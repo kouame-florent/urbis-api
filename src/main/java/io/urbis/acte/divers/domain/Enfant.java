@@ -3,33 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.mariage.domain;
+package io.urbis.acte.divers.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 /**
  *
  * @author florent
  */
 @Embeddable
-public class Temoin implements Serializable{
+public class Enfant implements Serializable{
     
-    @NotBlank
+    public int numeroActe;
+    public LocalDate dateActe;
+    
     public String nom;
-    
-    @NotBlank
     public String prenoms;
-    
-    @NotBlank
-    public String profession;
-    
-    @NotBlank
-    public String domicile;
-    
-    @NotNull
     public LocalDate dateNaissance;
+    public String lieuNaissance;
+    public Sexe sexe;
+    
 }

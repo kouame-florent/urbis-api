@@ -7,6 +7,10 @@ package io.urbis.acte.mariage.domain;
 
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -15,11 +19,20 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Conjoint {
     
+    @NotBlank
     public String nom;
+    @NotBlank
     public String prenoms;
+    @NotBlank
     public String profession;
+    @NotBlank
     public String lieuNaissance;
+    @NotBlank
     public LocalDate dateNaissance;
+    @NotBlank
     public String domicile;
+    
+    @Enumerated(EnumType.STRING)
+    @NotNull
     public SituationMatrimoniale situationMatrimoniale;
 }

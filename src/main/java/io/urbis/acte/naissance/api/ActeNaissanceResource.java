@@ -41,14 +41,14 @@ public class ActeNaissanceResource {
     @Transactional
     @POST
     public String create(ActeNaissanceDto acteNaissanceDto) throws SQLException{
-        return acteNaissanceService.creerActe(acteNaissanceDto);
+        return acteNaissanceService.creer(acteNaissanceDto);
         
     }
     
     @Transactional
     @PUT @Path("{id}")
     public void update(@PathParam("id")String id, ActeNaissanceDto acteNaissanceDto) throws SQLException{
-        acteNaissanceService.updateActe(id, acteNaissanceDto);
+        acteNaissanceService.modifier(id, acteNaissanceDto);
     }
     
     /*

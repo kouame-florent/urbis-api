@@ -6,6 +6,7 @@
 package io.urbis.acte.mariage.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Embeddable;
 
 /**
@@ -20,4 +21,6 @@ public class Mere implements Serializable{
     public String profession;
     public String domicile;
     public boolean decede;
+    public LocalDate dateDeces;
+    public String lieuDeces;
 }

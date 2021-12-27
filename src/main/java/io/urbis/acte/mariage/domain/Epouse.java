@@ -50,6 +50,10 @@ public class Epouse implements Serializable{
                            column=@Column(name="epouse_pere_domicile")),
         @AttributeOverride(name="decede",
                            column=@Column(name="epouse_pere_decede")),
+        @AttributeOverride(name="dateDeces",
+                           column=@Column(name="epouse_pere_date_deces")),
+        @AttributeOverride(name="lieuDeces",
+                           column=@Column(name="epouse_pere_lieu_deces")),
     })
     public Pere pere;
     
@@ -65,6 +69,10 @@ public class Epouse implements Serializable{
                            column=@Column(name="epouse_mere_domicile")),
         @AttributeOverride(name="decede",
                            column=@Column(name="epouse_mere_decede")),
+        @AttributeOverride(name="dateDeces",
+                           column=@Column(name="epouse_mere_date_deces")),
+        @AttributeOverride(name="lieuDeces",
+                           column=@Column(name="epouse_mere_lieu_deces")),
     })
     public Mere mere;
     
@@ -78,11 +86,12 @@ public class Epouse implements Serializable{
                            column=@Column(name="epouse_temoin_profession")),
         @AttributeOverride(name="domicile",
                            column=@Column(name="epouse_temoin_domicile")),
-        @AttributeOverride(name="age",
-                           column=@Column(name="epouse_temoin_age")),
+        @AttributeOverride(name="dateNaissance",
+                           column=@Column(name="epouse_temoin_date_naissance")),
     })
     public Temoin temoin;
-
+    
+    public Epouse(){}
     public Epouse(Conjoint conjoint, Pere pere, Mere mere, Temoin temoin) {
         this.conjoint = conjoint;
         this.pere = pere;

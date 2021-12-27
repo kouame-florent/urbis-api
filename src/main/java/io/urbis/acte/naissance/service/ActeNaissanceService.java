@@ -105,13 +105,11 @@ public class ActeNaissanceService {
     }
     
     
-    public String creerActe(@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
+    public String creer(@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
         log.infof("-- OFFICIER ID: %s", acteNaissanceDto.getOfficierEtatCivilID());
-        
-        
         
         ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
@@ -325,13 +323,13 @@ public class ActeNaissanceService {
             
         }
         
-        createMentions(acteNaissanceDto, acte);
+        creerMentions(acteNaissanceDto, acte);
        
        
         return acte.id;
     }
     
-    public void createMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+    public void creerMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         acteNaissanceDto.getMentionMariageDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
             mentionMariageService.createMention(mm);
@@ -368,7 +366,7 @@ public class ActeNaissanceService {
         });
     }
     
-    public void updateActe(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
+    public void modifier(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         ActeNaissance acte = ActeNaissance.findById(id);
         acte.enfant =  new Enfant();
@@ -405,6 +403,7 @@ public class ActeNaissanceService {
         log.infof("-- NUMERO DTO: %d", acteNaissanceDto.getNumero());
         
         acte.numero = acteNaissanceDto.getNumero();
+        acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
         
         if(acteNaissanceDto.getDateDeclaration() != null){
             acte.dateDeclaration = acteNaissanceDto.getDateDeclaration();
@@ -575,38 +574,16 @@ public class ActeNaissanceService {
             acte.typeNaissance = TypeNaissance.fromString(acteNaissanceDto.getTypeNaissance());
         }
         
-        acte.statut = StatutActeNaissance.fromString(acteNaissanceDto.getStatut());
-        
-       // acte.extraitTexte = extraitTexte(acte);
-       // acte.copieTexte = copieText(acte);
-        
+             
         acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
         acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
        
         
     }
     
-    /*
-    public void validerActe(String acteID){
-        ActeNaissance acte = ActeNaissance.findById(acteID);
-        if(acte == null){
-            throw new EntityNotFoundException("cannot find acte naissance");
-        }
-        acte.statut = StatutActeNaissance.VALIDE;
-        
-    }
     
-    public void annulerActe(String acteID){
-        ActeNaissance acte = ActeNaissance.findById(acteID);
-        if(acte == null){
-            throw new EntityNotFoundException("cannot find acte naissance");
-        }
-        acte.statut = StatutActeNaissance.ANNULE;
-        
-    }
-    */
     
-    public void updateMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+    public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         //mariage
         Set<MentionMariageDto> dm = new HashSet<>(mentionMariageService.findByActeNaissance(acte.id));
         dm.removeAll(acteNaissanceDto.getMentionMariageDtos());
@@ -723,9 +700,7 @@ public class ActeNaissanceService {
             laDate = ruleBasedNumberFormat.format(dayOfMonth) + " " 
                  + month + " " + ruleBasedNumberFormat.format(year);
         }
-        
-        
-        
+      
         
         return laDate;
         
@@ -940,7 +915,6 @@ public class ActeNaissanceService {
  
     public ActeNaissanceDto mapToDto(@NotNull ActeNaissance acte){
         ActeNaissanceDto dto = new ActeNaissanceDto();
-        
         
         dto.setCreated(acte.created);
         dto.setUpdated(acte.updated);

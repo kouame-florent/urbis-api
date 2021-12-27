@@ -5,9 +5,11 @@
  */
 package io.urbis.acte.mariage.domain;
 
-import io.urbis.acte.naissance.domain.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+
 
 /**
  *
@@ -16,7 +18,8 @@ import javax.ws.rs.core.Response;
 public enum Operation {
     DECLARATION("Declaration"),
     SAISIE_ACTE_EXISTANT("Saisie acte existant"),
-    MODIFICATION("Modification");
+    MODIFICATION("Modification"),
+    VALIDATION("Validation");
     
     private final String libelle;
     
@@ -30,7 +33,9 @@ public enum Operation {
                 return Operation.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM Operation FROM: %s", operation);
+       
+        Logger log = Logger.getLogger(Operation.class.getName());
+        log.log(Level.SEVERE,"cannot get Enum 'Operation' from: {0}", operation);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(operation)).build();
         throw new WebApplicationException(res);

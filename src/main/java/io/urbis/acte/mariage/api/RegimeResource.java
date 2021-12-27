@@ -5,8 +5,8 @@
  */
 package io.urbis.acte.mariage.api;
 
-import io.urbis.acte.mariage.dto.SituationMatrimonialeDto;
-import io.urbis.acte.mariage.service.SituationMatrimonialeService;
+import io.urbis.acte.mariage.dto.RegimeDto;
+import io.urbis.acte.mariage.service.RegimeService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -17,15 +17,14 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
  *
  * @author florent
  */
-@Path("/situations-matrimoniales")
+@Path("/regimes")
 @Tag(name = "acte de mariage")
-public class SituationMatrimonialeResource {
-    
+public class RegimeResource {
     @Inject
-    SituationMatrimonialeService situationMatrimonialeService;
+    RegimeService regimeService;
     
     @GET
-    public List<SituationMatrimonialeDto> findAll(){
-      return  situationMatrimonialeService.findAllSituation();
+    public List<RegimeDto> findAll(){
+      return  regimeService.findAllRegimes();
     }
 }

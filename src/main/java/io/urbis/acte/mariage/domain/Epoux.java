@@ -49,6 +49,10 @@ public class Epoux {
                            column=@Column(name="epoux_pere_domicile")),
         @AttributeOverride(name="decede",
                            column=@Column(name="epoux_pere_decede")),
+        @AttributeOverride(name="dateDeces",
+                           column=@Column(name="epoux_pere_date_deces")),
+        @AttributeOverride(name="lieuDeces",
+                           column=@Column(name="epoux_pere_lieu_deces")),
     })
     public Pere pere;
     
@@ -64,6 +68,10 @@ public class Epoux {
                            column=@Column(name="epoux_mere_domicile")),
         @AttributeOverride(name="decede",
                            column=@Column(name="epoux_mere_decede")),
+        @AttributeOverride(name="dateDeces",
+                           column=@Column(name="epoux_mere_date_deces")),
+        @AttributeOverride(name="lieuDeces",
+                           column=@Column(name="epoux_mere_lieu_deces")),
     })
     public Mere mere;
     
@@ -77,10 +85,12 @@ public class Epoux {
                            column=@Column(name="epoux_temoin_profession")),
         @AttributeOverride(name="domicile",
                            column=@Column(name="epoux_temoin_domicile")),
-        @AttributeOverride(name="age",
-                           column=@Column(name="epoux_temoin_age")),
+        @AttributeOverride(name="dateNaissance",
+                           column=@Column(name="epoux_temoin_date_naissance")),
     })
     public Temoin temoin;
+    
+    public Epoux(){}
 
     public Epoux(Conjoint conjoint, Pere pere, Mere mere, Temoin temoin) {
         this.conjoint = conjoint;

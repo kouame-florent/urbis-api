@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -38,17 +40,28 @@ public class ActeMariage extends Acte{
     public int numero;
 
     
+    @Column(name = "date_mariage",nullable = false)
     public LocalDateTime dateMariage;
+    
+    @Column(name = "lieu_mariage",nullable = false)
     public String lieuMariage;
+    
+    @Column(name = "regime",nullable = false)
     public Regime regime;
     
+    @Column(name = "statut",nullable = false)
+    public StatutActeMariage statut;    
+        
     @Embedded
     public Epoux epoux;
     
     @Embedded
     public Epouse epouse;
     
-    public OfficierEtatCivil officierEtatCivil;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "officier_etat_civil_id",nullable = false)
+    public OfficierEtatCivil officierEtatCivil; 
 
     public ActeMariage() {
     }

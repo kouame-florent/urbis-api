@@ -86,7 +86,7 @@ public class ActeNaissance extends Acte{
     public Jugement jugement;
     
     @Column(name = "mode_declaration")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     public ModeDeclaration modeDeclaration;
     
     @Column(name = "type_naissance")
@@ -232,7 +232,7 @@ public class ActeNaissance extends Acte{
     public Temoins temoins;
     
     @Column(name = "statut")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     public StatutActeNaissance statut;
     
     @Column(name = "motif_annulation")
@@ -245,12 +245,14 @@ public class ActeNaissance extends Acte{
     public int nombreExtraits;
     
     @Lob
+    @Column(name = "extrait_texte")
     public Clob extraitTexte;
     
     @Lob
+    @Column(name = "copie_texte")
     public Clob copieTexte;
     
-    
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)
     public OfficierEtatCivil officierEtatCivil; 

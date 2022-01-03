@@ -5,6 +5,7 @@
  */
 package io.urbis.acte.naissance.domain;
 
+import io.urbis.common.domain.Sexe;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Embeddable;

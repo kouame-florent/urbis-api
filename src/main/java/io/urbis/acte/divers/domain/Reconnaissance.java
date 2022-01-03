@@ -5,10 +5,19 @@
  */
 package io.urbis.acte.divers.domain;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import javax.persistence.Embeddable;
+
 /**
  *
  * @author florent
  */
-public class Reconnaissance {
+@Embeddable
+public class Reconnaissance implements Serializable{
     
+    public LocalDateTime date;
+    public String lieu;
+    public String natureCirconscription;
+    public String nomCirconscription;
 }

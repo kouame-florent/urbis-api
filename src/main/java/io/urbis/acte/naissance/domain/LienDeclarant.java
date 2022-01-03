@@ -5,6 +5,7 @@
  */
 package io.urbis.acte.naissance.domain;
 
+import io.urbis.common.domain.Sexe;
 import io.urbis.acte.naissance.dto.LienDeclarantDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

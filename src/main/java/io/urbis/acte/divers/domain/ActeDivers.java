@@ -7,6 +7,8 @@ package io.urbis.acte.divers.domain;
 
 import io.urbis.acte.Acte;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +17,7 @@ import javax.persistence.Table;
  */
 @Table(name = "acte_divers")
 @Entity
-public class ActeDivers extends Acte{
+public abstract class ActeDivers extends Acte{
     
     
     

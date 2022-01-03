@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.api;
+package io.urbis.common.api;
 
 
-import io.urbis.acte.naissance.dto.SexeDto;
-import io.urbis.acte.naissance.service.SexeService;
+import io.urbis.common.dto.SexeDto;
+import io.urbis.common.service.SexeService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;

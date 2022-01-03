@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.domain;
+package io.urbis.common.domain;
 
 
-import io.urbis.acte.naissance.dto.SexeDto;
+import io.urbis.common.dto.SexeDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -18,7 +18,7 @@ public enum Sexe {
     MASCULIN("MASCULIN"),
     FEMININ("FEMININ");
     
-    private String libelle;
+    private final String libelle;
     
     private Sexe(String libelle){
         this.libelle = libelle;
@@ -34,7 +34,7 @@ public enum Sexe {
                 return Sexe.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM SEXE FROM: %s", sexe);
+        System.out.printf("cannot get enum sexe from: %s", sexe);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(sexe)).build();
         throw new WebApplicationException(res);

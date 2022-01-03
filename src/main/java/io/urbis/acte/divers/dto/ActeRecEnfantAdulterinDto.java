@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.dto;
+package io.urbis.acte.divers.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -14,10 +14,8 @@ import lombok.NoArgsConstructor;
  * @author florent
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class SexeDto {
+@EqualsAndHashCode(callSuper = false)
+public class ActeRecEnfantAdulterinDto extends ActeDiversDto{
     
-    private String code;
-    private String libelle;
 }

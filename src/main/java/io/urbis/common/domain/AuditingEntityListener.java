@@ -36,12 +36,12 @@ public class AuditingEntityListener {
     public void preCreate(BaseEntity auditable){
         auditable.id = UUID.randomUUID().toString();
         auditable.created = LocalDateTime.now();
-        auditable.lastUser = authCtx.getUserLogin();
+        auditable.updatedBy = authCtx.getUserLogin();
     }
     
     @PreUpdate
     public void preUpdate(BaseEntity auditable){
         auditable.updated = LocalDateTime.now();
-        auditable.lastUser = authCtx.getUserLogin();
+        auditable.updatedBy = authCtx.getUserLogin();
     }
 }

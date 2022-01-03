@@ -5,10 +5,21 @@
  */
 package io.urbis.acte.divers.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import javax.persistence.Embeddable;
+
 /**
  *
  * @author florent
  */
-public class Reconnaissant {
+@Embeddable
+public class Reconnaissant implements Serializable{
     
+    public String nom;
+    public String prenoms;
+    public String profession;
+    public String domicile;
+    public LocalDate dateNaissance;
+
 }

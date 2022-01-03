@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.service;
+package io.urbis.common.service;
 
-import io.urbis.acte.naissance.dto.SexeDto;
-import io.urbis.acte.naissance.domain.Sexe;
-import io.urbis.acte.naissance.dto.SexeDto;
+import io.urbis.common.dto.SexeDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
-import io.urbis.acte.naissance.domain.Sexe;
+import io.urbis.common.domain.Sexe;
 
 /**
  *

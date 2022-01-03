@@ -32,6 +32,6 @@ public abstract class BaseEntity extends PanacheEntityBase implements Serializab
     public LocalDateTime created ;
     public LocalDateTime updated ;
     
-    @Column(nullable = false, name = "last_user")
-    public String lastUser;
+    @Column(nullable = false, name = "updated_by")
+    public String updatedBy;
 }

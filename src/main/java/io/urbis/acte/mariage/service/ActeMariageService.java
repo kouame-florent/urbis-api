@@ -146,11 +146,10 @@ public class ActeMariageService {
         acte.epouse.temoin.domicile = acteMariageDto.getEpouseTemoinDomicile();
         acte.epouse.temoin.dateNaissance = acteMariageDto.getEpouseTemoinDateNaissance();
            
-        validerActe(registre, acteMariageDto);
+        Operation operation = Operation.fromString(acteMariageDto.getOperation());
+        validerActe(registre, acteMariageDto,operation);
         
         acte.persist();
-        
-        Operation operation = Operation.fromString(acteMariageDto.getOperation());
         
         if(operation == Operation.DECLARATION){
             //incrementer l'index du registre
@@ -163,7 +162,7 @@ public class ActeMariageService {
             
         }
         
-      }
+    }
     
     public void modifier(@NotBlank String id,@NotNull ActeMariageDto acteMariageDto){
         
@@ -273,6 +272,15 @@ public class ActeMariageService {
         validerBorneSuperieure(registre, acte.getNumero());
     }
     
+   /*
+    public void validerActe(Registre registre,ActeMariageDto acte){
+        verifierNumero(registre, acte);
+        validerBorneInferieure(registre, acte.getNumero());
+        validerBorneSuperieure(registre, acte.getNumero());
+   
+    }
+    */
+    
     public void verifierNumero(Registre registre,ActeMariageDto acte){
         while(numeroExist(registre, acte.getNumero())){
             acte.setNumero(acte.getNumero() + 1);
@@ -313,13 +321,7 @@ public class ActeMariageService {
         return (int)ActeMariage.count();
     }
     
-       
-    public void validerActe(Registre registre,ActeMariageDto acte){
-        verifierNumero(registre, acte);
-        validerBorneInferieure(registre, acte.getNumero());
-        validerBorneSuperieure(registre, acte.getNumero());
    
-    }
     
        
     public void validerBorneSuperieure(Registre registre,int numeroActe){

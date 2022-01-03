@@ -23,7 +23,7 @@ import io.urbis.mention.service.MentionMariageService;
 import io.urbis.mention.service.MentionReconnaissanceService;
 import io.urbis.mention.service.MentionRectificationService;
 import io.urbis.acte.naissance.domain.ActeNaissance;
-import io.urbis.acte.naissance.domain.Sexe;
+import io.urbis.common.domain.Sexe;
 import io.urbis.acte.naissance.domain.Nationalite;
 import io.urbis.acte.naissance.domain.Mere;
 import io.urbis.acte.naissance.domain.Pere;

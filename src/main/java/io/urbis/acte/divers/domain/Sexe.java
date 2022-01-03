@@ -7,7 +7,7 @@ package io.urbis.acte.divers.domain;
 
 
 import io.urbis.acte.naissance.domain.*;
-import io.urbis.acte.naissance.dto.SexeDto;
+import io.urbis.common.dto.SexeDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 

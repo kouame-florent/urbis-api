@@ -18,11 +18,11 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
-@Table(name = "acte_divers_reconnaissance_enfant_adulterin",uniqueConstraints = { 
+@Table(name = "acte_divers_consentement_reconnaissance",uniqueConstraints = { 
     @UniqueConstraint(columnNames = {"registre_id","numero"})
 }) 
 @Entity
-public class DecRecEnfantAdulterin extends ActeDivers {
+public class ActeConsReconnaissance extends ActeDivers{
     
     @NotNull
     @ManyToOne

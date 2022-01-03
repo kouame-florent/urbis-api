@@ -3,8 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.mariage.domain;
-
+package io.urbis.acte.divers.domain;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +14,7 @@ import javax.ws.rs.core.Response;
  *
  * @author florent
  */
-public enum StatutActeMariage {
+public enum StatutActeDivers {
     
     PROJET("Projet"),
     VALIDE("Validé"),
@@ -23,18 +22,18 @@ public enum StatutActeMariage {
     
     public String value;
     
-    private StatutActeMariage(String value){
+    private StatutActeDivers(String value){
         this.value = value;
     }
     
-    public static StatutActeMariage fromString(String statutString){
-        for(var t : StatutActeMariage.values()){
+   public static StatutActeDivers fromString(String statutString){
+        for(var t : StatutActeDivers.values()){
             if(t.name().equalsIgnoreCase(statutString)){
-                return StatutActeMariage.valueOf(t.name());
+                return StatutActeDivers.valueOf(t.name());
             }
         }
         
-        Logger log = Logger.getLogger(StatutActeMariage.class.getName());
+        Logger log = Logger.getLogger(StatutActeDivers.class.getName());
         log.log(Level.SEVERE,"cannot get Enum 'StatutActeMariage' from: {0}", statutString);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(statutString)).build();

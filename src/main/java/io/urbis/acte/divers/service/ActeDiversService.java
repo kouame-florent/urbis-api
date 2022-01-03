@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.divers.domain;
+package io.urbis.acte.divers.service;
+
+import javax.enterprise.context.ApplicationScoped;
 
 /**
  *
  * @author florent
  */
-public class ReconnaissanceEnfantNaturel {
+@ApplicationScoped
+public class ActeDiversService {
     
 }

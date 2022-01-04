@@ -13,6 +13,8 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -104,6 +106,7 @@ public class ActeRecEnfantNaturel extends ActeDivers{
     @Column(name = "mere_enfant_domicile")
     public String mereEnfantDomicile;
     
+    @Enumerated(EnumType.STRING)
     public StatutActeDivers statut;
     
     @NotNull

@@ -8,6 +8,8 @@ package io.urbis.acte.divers.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 
 /**
@@ -24,6 +26,7 @@ public class Enfant implements Serializable{
     public String prenoms;
     public LocalDate dateNaissance;
     public String lieuNaissance;
+    @Enumerated(EnumType.STRING)
     public Sexe sexe;
     
 }

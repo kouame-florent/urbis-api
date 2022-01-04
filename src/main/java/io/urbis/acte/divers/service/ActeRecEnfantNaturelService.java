@@ -25,6 +25,7 @@ import io.urbis.acte.divers.domain.Enfant;
 import io.urbis.acte.divers.domain.Operation;
 import io.urbis.acte.divers.domain.Reconnaissant;
 import io.urbis.acte.divers.domain.Sexe;
+import io.urbis.acte.divers.domain.StatutActeDivers;
 import io.urbis.registre.domain.StatutRegistre;
 import java.lang.invoke.VarHandle;
 import java.util.Optional;
@@ -67,6 +68,9 @@ public class ActeRecEnfantNaturelService {
                 new Enfant(), new Reconnaissant());
         
         acte.numero = dto.getNumero();
+        acte.registre = registre;
+        acte.officierEtatCivil = officier;
+        acte.statut = StatutActeDivers.PROJET;
         
         acte.mereEnfantDateNaissance = dto.getMereEnfantDateNaissance();
         acte.mereEnfantDomicile = dto.getMereEnfantDomicile();
@@ -91,10 +95,9 @@ public class ActeRecEnfantNaturelService {
         acte.reconnaissant.prenoms = dto.getReconnaissantPrenoms();
         acte.reconnaissant.profession = dto.getReconnaissantProfession();
         acte.reconnaissant.domicile = dto.getReconnaissantDomicile();
+        acte.reconnaissant.dateNaissance = dto.getReconnaissantDateNaissance();
         
-        acte.registre = registre;
-        acte.officierEtatCivil = officier;
-        
+                
         Operation operation = Operation.fromString(dto.getOperation());
         validerActe(registre, dto,operation);
         
@@ -137,6 +140,9 @@ public class ActeRecEnfantNaturelService {
         validerActe(registre, dto,op);
         
         acte.numero = dto.getNumero();
+        acte.registre = registre;
+        acte.officierEtatCivil = officier;
+        acte.statut = StatutActeDivers.fromString(dto.getStatut());
         
         acte.mereEnfantDateNaissance = dto.getMereEnfantDateNaissance();
         acte.mereEnfantDomicile = dto.getMereEnfantDomicile();
@@ -163,8 +169,7 @@ public class ActeRecEnfantNaturelService {
         acte.reconnaissant.profession = dto.getReconnaissantProfession();
         acte.reconnaissant.domicile = dto.getReconnaissantDomicile();
         
-        acte.registre = registre;
-        acte.officierEtatCivil = officier;
+        
     
     }
     

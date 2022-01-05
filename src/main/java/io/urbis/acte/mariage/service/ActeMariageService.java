@@ -272,6 +272,10 @@ public class ActeMariageService {
         validerBorneSuperieure(registre, acte.getNumero());
     }
     
+    public boolean supprimer(@NotBlank String id){
+        return ActeMariage.deleteById(id);
+    }
+    
    /*
     public void validerActe(Registre registre,ActeMariageDto acte){
         verifierNumero(registre, acte);

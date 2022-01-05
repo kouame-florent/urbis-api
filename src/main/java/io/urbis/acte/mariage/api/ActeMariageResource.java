@@ -11,6 +11,7 @@ import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -45,6 +46,12 @@ public class ActeMariageResource {
     @GET @Path("{id}")
     public ActeMariageDto findById(@PathParam("id") String id){
         return acteMariageService.findById(id);
+    }
+    
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+        return acteMariageService.supprimer(id);
     }
     
     @GET

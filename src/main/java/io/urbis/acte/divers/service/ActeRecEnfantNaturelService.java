@@ -27,7 +27,6 @@ import io.urbis.acte.divers.domain.Reconnaissant;
 import io.urbis.acte.divers.domain.Sexe;
 import io.urbis.acte.divers.domain.StatutActeDivers;
 import io.urbis.registre.domain.StatutRegistre;
-import java.lang.invoke.VarHandle;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
@@ -168,9 +167,58 @@ public class ActeRecEnfantNaturelService {
         acte.reconnaissant.prenoms = dto.getReconnaissantPrenoms();
         acte.reconnaissant.profession = dto.getReconnaissantProfession();
         acte.reconnaissant.domicile = dto.getReconnaissantDomicile();
-        
-        
+    }
     
+    public ActeRecEnfantNaturelDto mapToDto(@NotNull ActeRecEnfantNaturel acte){
+        ActeRecEnfantNaturelDto dto = new ActeRecEnfantNaturelDto();
+        
+        dto.setId(acte.id);
+        dto.setCreated(acte.created);
+        dto.setUpdated(acte.updated);
+        dto.setNumero(acte.numero);
+        dto.setStatut(acte.statut.name());
+        
+        dto.setMereEnfantDateNaissance(acte.mereEnfantDateNaissance);
+        dto.setMereEnfantDomicile(acte.mereEnfantDomicile);
+        dto.setMereEnfantNom(acte.mereEnfantNom);
+        dto.setMereEnfantPrenoms(acte.mereEnfantPrenoms);
+        dto.setMereEnfantProfession(acte.mereEnfantProfession);
+        
+        dto.setEnfantDateActe(acte.enfant.dateActe);
+        dto.setEnfantDateNaissance(acte.enfant.dateNaissance);
+        dto.setEnfantLieuNaissance(acte.enfant.lieuNaissance);
+        dto.setEnfantNom(acte.enfant.nom);
+        dto.setEnfantNumeroActe(acte.enfant.numeroActe);
+        dto.setEnfantPrenoms(acte.enfant.prenoms);
+        dto.setEnfantSexe(acte.enfant.sexe.name());
+        
+        dto.setReconnaissanceDate(acte.reconnaissance.date);
+        dto.setReconnaissanceLieu(acte.reconnaissance.lieu);
+        dto.setReconnaissanceNatureCirconscription(acte.reconnaissance.natureCirconscription);
+        dto.setReconnaissanceNomCirconscription(acte.reconnaissance.nomCirconscription);
+        
+        dto.setReconnaissantDateNaissance(acte.reconnaissant.dateNaissance);
+        dto.setReconnaissantDomicile(acte.reconnaissant.domicile);
+        dto.setReconnaissantNom(acte.reconnaissant.nom);
+        dto.setReconnaissantPrenoms(acte.reconnaissant.prenoms);
+        dto.setReconnaissantProfession(acte.reconnaissant.profession);
+                
+        dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
+        dto.setOfficierEtatCivilNom(acte.officierEtatCivil.nom);
+        dto.setOfficierEtatCivilPrenoms(acte.officierEtatCivil.prenoms);
+        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre.name());
+        
+        dto.setRegistreID(acte.registre.id);
+        dto.setRegistreNumero(acte.registre.reference.numero);
+        dto.setRegistreAnnee(acte.registre.reference.annee);
+        
+        
+        return dto;
+        
+    }
+    
+    public boolean supprimer(@NotBlank String id){
+        return ActeRecEnfantNaturel.deleteById(id);
     }
     
     public void validerActe(Registre registre,ActeRecEnfantNaturelDto acte,Operation operation){
@@ -247,51 +295,5 @@ public class ActeRecEnfantNaturelService {
       
     }
     
-    public ActeRecEnfantNaturelDto mapToDto(@NotNull ActeRecEnfantNaturel acte){
-        ActeRecEnfantNaturelDto dto = new ActeRecEnfantNaturelDto();
-        
-        dto.setId(acte.id);
-        dto.setCreated(acte.created);
-        dto.setUpdated(acte.updated);
-        dto.setNumero(acte.numero);
-        dto.setStatut(acte.statut.name());
-        
-        dto.setMereEnfantDateNaissance(acte.mereEnfantDateNaissance);
-        dto.setMereEnfantDomicile(acte.mereEnfantDomicile);
-        dto.setMereEnfantNom(acte.mereEnfantNom);
-        dto.setMereEnfantPrenoms(acte.mereEnfantPrenoms);
-        dto.setMereEnfantProfession(acte.mereEnfantProfession);
-        
-        dto.setEnfantDateActe(acte.enfant.dateActe);
-        dto.setEnfantDateNaissance(acte.enfant.dateNaissance);
-        dto.setEnfantLieuNaissance(acte.enfant.lieuNaissance);
-        dto.setEnfantNom(acte.enfant.nom);
-        dto.setEnfantNumeroActe(acte.enfant.numeroActe);
-        dto.setEnfantPrenoms(acte.enfant.prenoms);
-        dto.setEnfantSexe(acte.enfant.sexe.name());
-        
-        dto.setReconnaissanceDate(acte.reconnaissance.date);
-        dto.setReconnaissanceLieu(acte.reconnaissance.lieu);
-        dto.setReconnaissanceNatureCirconscription(acte.reconnaissance.natureCirconscription);
-        dto.setReconnaissanceNomCirconscription(acte.reconnaissance.nomCirconscription);
-        
-        dto.setReconnaissantDateNaissance(acte.reconnaissant.dateNaissance);
-        dto.setReconnaissantDomicile(acte.reconnaissant.nom);
-        dto.setReconnaissantNom(acte.reconnaissant.nom);
-        dto.setReconnaissantPrenoms(acte.reconnaissant.prenoms);
-        dto.setReconnaissantProfession(acte.reconnaissant.profession);
-                
-        dto.setOfficierEtatCivilID(acte.officierEtatCivil.id);
-        dto.setOfficierEtatCivilNom(acte.officierEtatCivil.nom);
-        dto.setOfficierEtatCivilPrenoms(acte.officierEtatCivil.prenoms);
-        dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre.name());
-        
-        dto.setRegistreID(acte.registre.id);
-        dto.setRegistreNumero(acte.registre.reference.numero);
-        dto.setRegistreAnnee(acte.registre.reference.annee);
-        
-        
-        return dto;
-        
-    }
+    
 }

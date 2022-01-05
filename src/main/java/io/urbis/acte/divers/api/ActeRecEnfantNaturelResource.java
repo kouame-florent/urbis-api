@@ -10,6 +10,7 @@ import io.urbis.acte.divers.service.ActeRecEnfantNaturelService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -44,6 +45,12 @@ public class ActeRecEnfantNaturelResource {
     @GET @Path("{id}")
     public ActeRecEnfantNaturelDto findById(@PathParam("id") String id){
         return acteRecEnfantNaturelService.findById(id);
+    }
+    
+    @Transactional
+    @DELETE @Path("{id}")
+    public boolean delete(@PathParam("id") String id){
+        return acteRecEnfantNaturelService.supprimer(id);
     }
     
     @GET

@@ -30,17 +30,17 @@ public enum TypeConsentement {
         return libelle;
     }
      
-    public static TypeConsentement fromString(String situation){
+    public static TypeConsentement fromString(String type){
         for(var t : TypeConsentement.values()){
-            if(t.name().equalsIgnoreCase(situation)){
+            if(t.name().equalsIgnoreCase(type)){
                 return TypeConsentement.valueOf(t.name());
             }
         }
        
         Logger log = Logger.getLogger(TypeConsentement.class.getName());
-        log.log(Level.SEVERE,"cannot get Enum 'SituationMatrimoniale' from: {0}", situation);
+        log.log(Level.SEVERE,"cannot get Enum 'SituationMatrimoniale' from: {0}", type);
         Response res = Response.status(Response.Status.BAD_REQUEST)
-                   .entity(new IllegalArgumentException(situation)).build();
+                   .entity(new IllegalArgumentException(type)).build();
         throw new WebApplicationException(res);
        
     }

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ActeRecEnfantAdulterinDto extends ActeDiversDto{
+public class ActeRecEnfantAdulterinDto{
     
     private LocalDateTime created; 
     private LocalDateTime updated; 

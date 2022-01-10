@@ -106,5 +106,16 @@ public class ActeRecEnfantAdulterin extends ActeDivers {
     @Column(name = "consentement_epouse_type")
     @Enumerated(EnumType.STRING)
     public TypeConsentement consentementEpouseType;
+
+    public ActeRecEnfantAdulterin() {
+    }
+
+    public ActeRecEnfantAdulterin(Reconnaissance reconnaissance, Enfant enfant, Reconnaissant reconnaissant) {
+        this.reconnaissance = reconnaissance;
+        this.enfant = enfant;
+        this.reconnaissant = reconnaissant;
+    }
+    
+    
     
 }

@@ -7,8 +7,6 @@ package io.urbis.acte.divers.domain;
 
 import io.urbis.acte.Acte;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 /**

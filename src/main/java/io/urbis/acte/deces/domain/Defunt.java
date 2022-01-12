@@ -3,37 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.mariage.domain;
+package io.urbis.acte.deces.domain;
 
+import io.urbis.common.domain.Sexe;
 import io.urbis.common.domain.SituationMatrimoniale;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author florent
  */
 @Embeddable
-public class Conjoint {
+public class Defunt implements Serializable{
     
-    @NotBlank
     public String nom;
-    @NotBlank
     public String prenoms;
-    @NotBlank
+    public LocalDateTime dateDeces;
     public String profession;
-    @NotBlank
-    public String lieuNaissance;
-    @NotBlank
-    public LocalDate dateNaissance;
-    @NotBlank
+    public String lieuDeces;
     public String domicile;
     
+    
+    public LocalDate dateNaissance;
+    public String lieuNaissance;
+    public String localite;
+         
     @Enumerated(EnumType.STRING)
-    @NotNull
-    public SituationMatrimoniale situationMatrimoniale;
+    public Sexe sexe;
+    
+    public SituationMatrimoniale situationMatrimoniale; 
+     
 }

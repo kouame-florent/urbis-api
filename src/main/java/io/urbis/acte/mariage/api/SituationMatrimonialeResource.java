@@ -5,8 +5,8 @@
  */
 package io.urbis.acte.mariage.api;
 
-import io.urbis.acte.mariage.dto.SituationMatrimonialeDto;
-import io.urbis.acte.mariage.service.SituationMatrimonialeService;
+import io.urbis.common.dto.SituationMatrimonialeDto;
+import io.urbis.common.service.SituationMatrimonialeService;
 import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.GET;

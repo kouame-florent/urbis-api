@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.domain;
+package io.urbis.acte.deces.domain;
 
 import io.urbis.acte.naissance.dto.LienDeclarantDto;
 import javax.ws.rs.WebApplicationException;

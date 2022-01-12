@@ -330,6 +330,9 @@ public class ActeNaissanceService {
     }
     
     public void creerMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+        
+        log.infof("-- MENTIONS MARIAGE SIZE: %d", acteNaissanceDto.getMentionMariageDtos().size());
+        
         acteNaissanceDto.getMentionMariageDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
             mentionMariageService.createMention(mm);
@@ -578,12 +581,15 @@ public class ActeNaissanceService {
         acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
         acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
        
-        
+        modifierMentions(acteNaissanceDto, acte);
     }
     
     
     
     public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+        
+        log.infof("-- MENTIONS MARIAGE SIZE: %d", acteNaissanceDto.getMentionMariageDtos().size());
+        
         //mariage
         Set<MentionMariageDto> dm = new HashSet<>(mentionMariageService.findByActeNaissance(acte.id));
         dm.removeAll(acteNaissanceDto.getMentionMariageDtos());

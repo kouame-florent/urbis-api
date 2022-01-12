@@ -64,11 +64,6 @@ public class ActeNaissance extends Acte{
     })
     public Enfant enfant;
     
-    @Column(name = "date_declaration")
-    public LocalDate dateDeclaration;
-    
-    @Column(name = "date_dressage")
-    public LocalDateTime dateDressage;
     
    // @Column(name = "date_enregistrement")
    // public LocalDateTime dateEnregistrement;
@@ -235,6 +230,12 @@ public class ActeNaissance extends Acte{
     @Enumerated(EnumType.STRING)
     public StatutActeNaissance statut;
     
+    @Column(name = "date_declaration")
+    public LocalDate dateDeclaration;
+    
+    @Column(name = "date_dressage")
+    public LocalDateTime dateDressage;
+        
     @Column(name = "motif_annulation")
     public String motifAnnulation;
     

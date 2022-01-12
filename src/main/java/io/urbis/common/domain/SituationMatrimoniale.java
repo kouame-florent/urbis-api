@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.mariage.domain;
+package io.urbis.common.domain;
 
-import io.urbis.acte.mariage.dto.SituationMatrimonialeDto;
+import io.urbis.common.dto.SituationMatrimonialeDto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.mariage.service;
+package io.urbis.common.service;
 
-import io.urbis.acte.mariage.domain.SituationMatrimoniale;
-import io.urbis.acte.mariage.dto.SituationMatrimonialeDto;
+
+import io.urbis.common.domain.SituationMatrimoniale;
+import io.urbis.common.dto.SituationMatrimonialeDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;

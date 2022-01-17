@@ -17,7 +17,7 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/types-naissance")
+@Path("/naissances/types-naissance")
 public class TypeNaissanceResource {
     
     @Inject

@@ -19,7 +19,7 @@ import javax.ws.rs.Path;
  *
  * @author florent
  */
-@Path("/modes-declaration")
+@Path("/naissances/modes-declaration")
 public class ModeDeclarationResource {
     
     @Inject

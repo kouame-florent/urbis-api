@@ -15,7 +15,8 @@ import javax.ws.rs.core.Response;
 public enum Operation {
     DECLARATION_JUGEMENT("Declaration jugement"),
     SAISIE_ACTE_EXISTANT("Saisie acte existant"),
-    MODIFICATION("Modification");
+    MODIFICATION("Modification"),
+    VALIDATION("Validation");
     
     private final String libelle;
     
@@ -29,7 +30,7 @@ public enum Operation {
                 return Operation.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM Operation FROM: %s", operation);
+        System.out.printf("CANNOT GET ENUM Operation FROM: %s\n", operation);
         Response res = Response.status(Response.Status.BAD_REQUEST)
                    .entity(new IllegalArgumentException(operation)).build();
         throw new WebApplicationException(res);

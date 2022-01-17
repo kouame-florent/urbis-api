@@ -5,7 +5,8 @@
  */
 package io.urbis.acte.deces.domain;
 
-import io.urbis.acte.naissance.dto.LienDeclarantDto;
+
+import io.urbis.acte.deces.dto.LienDeclarantDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -15,8 +16,8 @@ import javax.ws.rs.core.Response;
  */
 public enum LienDeclarant {
     
-    PERE("Père"),
-    MERE("Mère"),
+    FILS("Fils"),
+    FILLE("Fille"),
     AUTRES("Autres");
     
     private String libelle;

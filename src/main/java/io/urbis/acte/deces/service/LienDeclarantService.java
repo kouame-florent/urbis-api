@@ -5,12 +5,14 @@
  */
 package io.urbis.acte.deces.service;
 
-import io.urbis.acte.naissance.dto.LienDeclarantDto;
+
+import io.urbis.acte.deces.domain.LienDeclarant;
+import io.urbis.acte.deces.dto.LienDeclarantDto;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
-import io.urbis.acte.naissance.domain.LienDeclarant;
+
 /**
  *
  * @author florent

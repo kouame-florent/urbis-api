@@ -94,22 +94,16 @@ public class ActeDeces extends Acte{
                            column=@Column(name="pere_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="pere_date_naissance")),
-        @AttributeOverride(name="decedee",
-                           column=@Column(name="decedee")),
+        @AttributeOverride(name="dateNaissance",
+                           column=@Column(name="pere_date_naissance")),
+        @AttributeOverride(name="decede",
+                           column=@Column(name="pere_decede")),
         @AttributeOverride(name="dateDeces",
                            column=@Column(name="pere_date_deces")),
         @AttributeOverride(name="lieuDeces",
                            column=@Column(name="pere_lieu_deces")),
-        @AttributeOverride(name="localite",
-                           column=@Column(name="pere_localite")),
-        @AttributeOverride(name="typePiece",
-                           column=@Column(name="pere_type_piece")),
-        @AttributeOverride(name="numeroPiece",
-                           column=@Column(name="pere_numero_piece")),
-        @AttributeOverride(name="datePiece",
-                           column=@Column(name="pere_date_piece")),
-        @AttributeOverride(name="lieuPiece",
-                           column=@Column(name="pere_lieu_piece")),
+        
+        
     })
     public Pere pere;
     
@@ -129,22 +123,14 @@ public class ActeDeces extends Acte{
                            column=@Column(name="mere_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="mere_date_naissance")),
-        @AttributeOverride(name="decedee",
-                           column=@Column(name="decedee")),
+        @AttributeOverride(name="decede",
+                           column=@Column(name="mere_decede")),
         @AttributeOverride(name="dateDeces",
                            column=@Column(name="mere_date_deces")),
         @AttributeOverride(name="lieuDeces",
                            column=@Column(name="mere_lieu_deces")),
-        @AttributeOverride(name="localite",
-                           column=@Column(name="mere_localite")),
-        @AttributeOverride(name="typePiece",
-                           column=@Column(name="mere_type_piece")),
-        @AttributeOverride(name="numeroPiece",
-                           column=@Column(name="mere_numero_piece")),
-        @AttributeOverride(name="datePiece",
-                           column=@Column(name="mere_date_piece")),
-        @AttributeOverride(name="lieuPiece",
-                           column=@Column(name="mere_lieu_piece")),
+        
+        
     })
     public Mere mere;
     
@@ -158,67 +144,17 @@ public class ActeDeces extends Acte{
                            column=@Column(name="declarant_prenoms")),
         @AttributeOverride(name="profession",
                            column=@Column(name="declarant_profession")),
+        @AttributeOverride(name="domicile",
+                           column=@Column(name="declarant_domicile")),
         @AttributeOverride(name="lieuNaissance",
                            column=@Column(name="declarant_lieu_naissance")),
-        @AttributeOverride(name="nationalite",
-                           column=@Column(name="declarant_nationalite")),
         @AttributeOverride(name="dateNaissance",
                            column=@Column(name="declarant_date_naissance")),
-        @AttributeOverride(name="localite",
-                           column=@Column(name="declarant_localite")),
-        @AttributeOverride(name="typePiece",
-                           column=@Column(name="declarant_type_piece")),
-        @AttributeOverride(name="numeroPiece",
-                           column=@Column(name="declarant_numero_piece")),
-        @AttributeOverride(name="datePiece",
-                           column=@Column(name="declarant_date_piece")),
-        @AttributeOverride(name="lieuPiece",
-                           column=@Column(name="declarant_lieu_piece")),
+       
     })
     public Declarant declarant;
     
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name="nom",
-                           column=@Column(name="interprete_nom")),
-        @AttributeOverride(name="prenoms",
-                           column=@Column(name="interprete_prenoms")),
-        @AttributeOverride(name="profession",
-                           column=@Column(name="interprete_profession")),
-        @AttributeOverride(name="dateNaissance",
-                           column=@Column(name="interprete_date_naissance")),
-        @AttributeOverride(name="domicile",
-                           column=@Column(name="interprete_domicile")),
-        @AttributeOverride(name="langue",
-                           column=@Column(name="interprete_langue")),
-    })
-    public Interprete interprete;
-    
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name="premierNom",
-                           column=@Column(name="temoin_1_nom")),
-        @AttributeOverride(name="premierPrenoms",
-                           column=@Column(name="temoin_1_prenoms")),
-        @AttributeOverride(name="premierDateNaissance",
-                           column=@Column(name="temoin_1_date_naissance")),
-        @AttributeOverride(name="premierProfession",
-                           column=@Column(name="temoin_1_profession")),
-        @AttributeOverride(name="premierDomicile",
-                           column=@Column(name="temoin_1_domicile")),
-        @AttributeOverride(name="deuxiemeNom",
-                           column=@Column(name="temoin_2_nom")),
-        @AttributeOverride(name="deuxiemePrenoms",
-                           column=@Column(name="temoin_2_prenoms")),
-        @AttributeOverride(name="deuxiemeDateNaissance",
-                           column=@Column(name="temoin_2_date_naissance")),
-        @AttributeOverride(name="deuxiemeProfession",
-                           column=@Column(name="temoin_2_profession")),
-        @AttributeOverride(name="deuxiemeDomicile",
-                           column=@Column(name="temoin_2_domicile")),
-        
-    })
-    public Temoins temoins;
+  
     
     @Column(name = "statut")
     @Enumerated(EnumType.STRING)
@@ -245,14 +181,13 @@ public class ActeDeces extends Acte{
     }
 
     public ActeDeces(Defunt defunt, Jugement jugement, Pere pere, Mere mere,
-            Declarant declarant, Interprete interprete, Temoins temoins) {
+            Declarant declarant) {
         this.defunt = defunt;
         this.jugement = jugement;
         this.pere = pere;
         this.mere = mere;
         this.declarant = declarant;
-        this.interprete = interprete;
-        this.temoins = temoins;
+        
     }
     
 }

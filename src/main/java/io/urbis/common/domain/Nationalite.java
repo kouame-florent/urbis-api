@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.acte.naissance.domain;
+package io.urbis.common.domain;
 
 
-import io.urbis.acte.naissance.dto.NationaliteDto;
+import io.urbis.common.dto.NationaliteDto;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 

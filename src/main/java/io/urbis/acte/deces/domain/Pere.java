@@ -5,6 +5,8 @@
  */
 package io.urbis.acte.deces.domain;
 
+import io.urbis.common.domain.Nationalite;
+import io.urbis.common.domain.TypePiece;
 import io.urbis.acte.naissance.domain.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,20 +19,14 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Pere implements Serializable{
     
+    public boolean decede;
     public String nom;
     public String prenoms;
-    public String nomComplet;
-    public boolean decedee;
     public String profession;
     public String lieuNaissance;
-    public Nationalite nationalite; 
     public LocalDate dateNaissance;
     public LocalDate dateDeces;
     public String lieuDeces;
-    public String localite;
-    public TypePiece typePiece;
-    public String numeroPiece;
-    public LocalDate datePiece;
-    public String lieuPiece;
-    
+    public String localiteDeces;
+
 }

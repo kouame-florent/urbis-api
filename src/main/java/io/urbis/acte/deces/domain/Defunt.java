@@ -31,7 +31,7 @@ public class Defunt implements Serializable{
     
     public LocalDate dateNaissance;
     public String lieuNaissance;
-    public String localite;
+    public String localiteNaissance;
          
     @Enumerated(EnumType.STRING)
     public Sexe sexe;

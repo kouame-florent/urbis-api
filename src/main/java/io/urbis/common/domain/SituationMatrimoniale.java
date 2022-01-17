@@ -16,8 +16,9 @@ import javax.ws.rs.core.Response;
  * @author florent
  */
 public enum SituationMatrimoniale {
+    MAIRIE("Marié(e)"),
     CELIBATAIRE("Célibataire"),
-    DIVORCE("Divorcé");
+    DIVORCE("Divorcé(e)");
     
     private String libelle;
     

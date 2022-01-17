@@ -5,6 +5,8 @@
  */
 package io.urbis.acte.deces.domain;
 
+import io.urbis.common.domain.Nationalite;
+import io.urbis.common.domain.TypePiece;
 import io.urbis.acte.naissance.domain.*;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;
@@ -20,12 +22,7 @@ public class Declarant {
     public String nom;
     public String prenoms;
     public String profession;
-    public String lieuNaissance;
-    public Nationalite nationalite;
+    public String domicile;
     public LocalDate dateNaissance;
-    public String localite;
-    public TypePiece typePiece;
-    public String numeroPiece;
-    public LocalDate datePiece;
-    public String lieuPiece;
+    
 }

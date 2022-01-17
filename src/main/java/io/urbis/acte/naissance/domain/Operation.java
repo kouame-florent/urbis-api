@@ -15,7 +15,8 @@ import javax.ws.rs.core.Response;
 public enum Operation {
     DECLARATION_JUGEMENT("Declaration jugement"),
     SAISIE_ACTE_EXISTANT("Saisie acte existant"),
-    MODIFICATION("Modification");
+    MODIFICATION("Modification"),
+    VALIDATION("Validation");
     
     private final String libelle;
     

@@ -26,7 +26,7 @@ public abstract class MentionDto {
     
     @EqualsAndHashCode.Include
     @NotNull
-    private String id = UUID.randomUUID().toString();;
+    private String id = UUID.randomUUID().toString();
     
     @NotBlank(message = "Le champ 'Decision' ne peut être vide")
     private String decision;

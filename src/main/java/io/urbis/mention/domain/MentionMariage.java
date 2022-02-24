@@ -19,19 +19,22 @@ import javax.persistence.Table;
 @Table(name = "mention_mariage")
 public class MentionMariage extends Mention{
     
-    public String lieu;
-    public LocalDate date;
+    @Column(name = "mention_mariage_lieu")
+    public String lieuMariage;
+    
+    @Column(name = "mention_mariage_date")
+    public LocalDate dateMariage;
        
-    @Column(name = "conjoint_nom")
+    @Column(name = "mention_mariage_conjoint_nom")
     public String conjointNom;
     
-    @Column(name = "conjoint_prenoms")
+    @Column(name = "mention_mariage_conjoint_prenoms")
     public String conjointPrenoms;
     
-    @Column(name = "conjoint_domicile")
+    @Column(name = "mention_mariage_conjoint_domicile")
     public String conjointDomicile;
     
-    @Column(name = "conjoint_profession")
+    @Column(name = "mention_mariage_conjoint_profession")
     public String conjointProfession;
     
    

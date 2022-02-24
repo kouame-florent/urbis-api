@@ -81,6 +81,7 @@ public class RegistreService {
                  StatutRegistre.PROJET);
         
         registre.numeroProchainActe = registreDto.getNumeroPremierActe();
+        registre.dateOuverture = registreDto.getDateOuverture();
         
         verifierOrdreNumero(typeRegistre, reference);
         
@@ -93,19 +94,6 @@ public class RegistreService {
         }
         
        // return mapToDto(registre);
-    }
-    
-    /*
-    * verifier que le registre de numero n est précédé du registre de n-1
-    */
-    public void verifierOrdreNumero(TypeRegistre type,Reference ref){
-        if(ref.numero > 1){
-            Reference previousRegRef = new Reference(ref.localite, ref.centre, ref.annee, ref.numero - 1);
-            if(!exist(type, previousRegRef)){
-                String msg = String.format("le registre numéro %d doit précéder le registre numéro %d ",ref.numero - 1,ref.numero );
-                throw new ValidationException(msg);
-            }
-        }
     }
     
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
@@ -132,12 +120,28 @@ public class RegistreService {
         registre.numeroPremierActe = registreDto.getNumeroPremierActe();
         registre.numeroDernierActe = registreDto.getNumeroDernierActe();
         registre.nombreDeFeuillets = registreDto.getNombreDeFeuillets();
+        registre.dateOuverture = registreDto.getDateOuverture();
         registre.statut = statut;
         
         registre.updated = LocalDateTime.now();
         
         registre.persist();
         
+    }
+    
+   
+    
+    /*
+    * verifier que le registre de numero n est précédé du registre de n-1
+    */
+    public void verifierOrdreNumero(TypeRegistre type,Reference ref){
+        if(ref.numero > 1){
+            Reference previousRegRef = new Reference(ref.localite, ref.centre, ref.annee, ref.numero - 1);
+            if(!exist(type, previousRegRef)){
+                String msg = String.format("le registre numéro %d doit précéder le registre numéro %d ",ref.numero - 1,ref.numero );
+                throw new ValidationException(msg);
+            }
+        }
     }
     
     
@@ -280,13 +284,18 @@ public class RegistreService {
     */
     public int numeroRegistre(String typeRegistre, int annee){
    
-      TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroByType", Integer.class);
-      query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
-      query.setParameter("annee", annee);
-      
+        TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroByType", Integer.class);
+        query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
+        query.setParameter("annee", annee);
+          
         try{
-            var num = query.getSingleResult();
-            return num + 1;
+            Integer num = query.getSingleResult();
+            log.infof("-- NUM REGISTRE: %d", num);
+            if(num != null){
+                return num + 1;
+            }
+            log.infof("aucun registre trouvé...");
+            return 1;
         }catch(NoResultException ex){
             log.infof("aucun registre trouvé...");
             return 1;
@@ -323,12 +332,25 @@ public class RegistreService {
         query.setParameter("annee", annee);
         
         try{
+            Integer num = query.getSingleResult();
+            if(num != null){
+                return num + 1;
+            }
+            log.infof("aucun acte précédent...");
+            return 1;
+        }catch(NoResultException ex){
+            log.infof("aucun acte précédent...");
+            return 1;
+        }
+        /*
+        try{
             var num = query.getSingleResult();
             return num + 1;
         }catch(NoResultException ex){
             log.infof("aucun acte précédent...");
             return 1;
         }
+        */
         
     }
     
@@ -340,12 +362,26 @@ public class RegistreService {
         query.setParameter("numero", numero);
         
         try{
+            Integer num = query.getSingleResult();
+            if(num != null){
+                return num + 1;
+            }
+            log.infof("aucun acte précédent...");
+            return 1;
+        }catch(NoResultException ex){
+            log.infof("aucun acte précédent...");
+            return 1;
+        }
+        
+        /*
+        try{
             var num = query.getSingleResult();
             return num + 1;
         }catch(NoResultException ex){
             log.infof("aucun acte précédent...");
             return 1;
         }
+        */
                 
     }
     
@@ -357,12 +393,26 @@ public class RegistreService {
         query.setParameter("numero", numero);
         
         try{
+            Integer num = query.getSingleResult();
+            if(num != null){
+                return num - 1;
+            }
+            log.infof("aucun acte suivant...");
+            return numeroPremierActe + nombreFeuillet - 1;
+        }catch(NoResultException ex){
+            log.infof("aucun acte suivant...");
+            return numeroPremierActe + nombreFeuillet - 1;
+        }
+        
+        /*
+        try{
             var num = query.getSingleResult();
             return num - 1;
         }catch(NoResultException ex){
             log.infof("aucun acte suivant...");
             return numeroPremierActe + nombreFeuillet - 1;
         }
+        */
     }
     
     
@@ -433,6 +483,7 @@ public class RegistreService {
        reg.setNumeroPremierActe(registre.numeroPremierActe);
        reg.setNumeroDernierActe(registre.numeroDernierActe);
        reg.setNombreDeFeuillets(registre.nombreDeFeuillets);
+       reg.setDateOuverture(registre.dateOuverture);
        reg.setNombreActe(nombreActe(registre));
        reg.setStatut(registre.statut.name());
        reg.setDateAnnulation(registre.dateAnnulation);

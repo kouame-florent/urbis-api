@@ -9,6 +9,7 @@ package io.urbis.registre.domain;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.common.domain.BaseEntity;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -106,6 +107,9 @@ public class Registre extends BaseEntity{
     @NotNull
     @Embedded
     public Reference reference;
+    
+    @Column(name = "date_ouverture")
+    public LocalDateTime dateOuverture;
   
     
     @NotNull

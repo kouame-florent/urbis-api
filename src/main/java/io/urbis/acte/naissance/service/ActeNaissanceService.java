@@ -30,6 +30,7 @@ import io.urbis.acte.naissance.domain.Pere;
 import io.urbis.acte.naissance.domain.Enfant;
 import io.urbis.acte.naissance.domain.Jugement;
 import io.urbis.acte.naissance.domain.Declarant;
+import io.urbis.acte.naissance.domain.ActeNaissanceEtat;
 import io.urbis.acte.naissance.domain.Interprete;
 import io.urbis.acte.naissance.domain.Temoins;
 import io.urbis.acte.naissance.domain.Operation;
@@ -38,6 +39,8 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
+import io.urbis.acte.naissance.dto.ActeNaissanceEtatDto;
+import io.urbis.mention.domain.MentionMariage;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
@@ -93,8 +96,11 @@ public class ActeNaissanceService {
     MentionMariageService mentionMariageService;
     
     @Inject
-    LocaliteService localiteService;
+    ActeNaissanceEtatService acteNaissanceEtatService;
     
+    @Inject
+    LocaliteService localiteService;
+   
     
     public ActeNaissanceDto findById(@NotBlank String id){
         return Optional.ofNullable(ActeNaissance.findById(id))
@@ -150,8 +156,8 @@ public class ActeNaissanceService {
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
         if(acteNaissanceDto.getEnfantDateNaissance() != null){
             acte.enfant.dateNaissance = acteNaissanceDto.getEnfantDateNaissance() ;
-            //acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
-            //acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
+           // acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
+           // acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
         }      
         acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
         acte.enfant.localite = acteNaissanceDto.getEnfantLocalite();
@@ -292,8 +298,8 @@ public class ActeNaissanceService {
         }
         
         acte.motifAnnulation = acteNaissanceDto.getMotifAnnulation();
-        acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
-        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits(); 
+       // acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
+       // acte.nombreExtraits = acteNaissanceDto.getNombreExtraits(); 
                 
         
         if(acteNaissanceDto.getStatut() != null && !acteNaissanceDto.getStatut().isBlank()){
@@ -306,11 +312,11 @@ public class ActeNaissanceService {
         
         acte.statut = StatutActeNaissance.PROJET;
         
-        acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
-        acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
+        //acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleText(acte).toCharArray()));
         
         acte.persist();
-        
+       
         Operation operation = Operation.fromString(acteNaissanceDto.getOperation());
         
         if(operation == Operation.DECLARATION_JUGEMENT){
@@ -324,10 +330,224 @@ public class ActeNaissanceService {
         }
         
         creerMentions(acteNaissanceDto, acte);
-       
+        creerEtats(acte.id);
        
         return acte.id;
     }
+    
+    private void creerEtats(String acteID) throws SQLException{
+        ActeNaissanceEtat etat = new ActeNaissanceEtat();
+        ActeNaissance acte = ActeNaissance.findById(acteID);
+        etat.acteNaissance = acte;
+        
+        //get mentions mariage
+        Set<MentionMariageDto> mariages = mentionMariageService.findByActeNaissance(acteID);
+        if(!mariages.isEmpty()){
+           MentionMariageDto mMariage =  mariages.iterator().next();
+           etat.conjointNomComplet = mMariage.getConjointNom() + " " + mMariage.getConjointPrenoms();
+           etat.dateMariage = mMariage.getDate();
+           etat.lieuMariage = mMariage.getLieu();
+        
+        }
+        
+        Set<MentionDissolutionMariageDto> dissolutions = mentionDissolutionMariageService.findByActeNaissance(acteID);
+        if(!dissolutions.isEmpty()){
+           MentionDissolutionMariageDto mDiss =  dissolutions.iterator().next();
+           etat.mentionDissolutionMariageDecisionDate = mDiss.getDateJugement();
+        
+        }
+        
+        Set<MentionDecesDto> deces = mentionDecesService.findByActeNaissance(acteID);
+        if(!deces.isEmpty()){
+           MentionDecesDto mDeces = deces.iterator().next();
+           etat.dateDeces = mDeces.getDate();
+           etat.lieuDeces = mDeces.getLieu();
+        
+        }
+        
+        
+        etat.numeroActeTexte = numeroActeTexte(acte);
+        etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleText(acte).toCharArray());
+        etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        
+        etat.persist();
+        
+        //ActeNaissanceEtat etat = new ActeNaissanceEtat(acte);
+       // etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+       // etat.persist();
+    }
+    
+    
+    public String extraitTexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Le ");
+        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append("\n");
+        sb.append("à ");
+        sb.append(heureNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append("\n");
+        if(acte.enfant.sexe == Sexe.MASCULIN){
+            sb.append("est né ");
+        }else{
+            sb.append("est née ");
+        }
+        
+        sb.append(acte.enfant.nomComplet);
+        sb.append("\n");
+        sb.append(acte.enfant.lieuNaissance);
+        sb.append("\n");
+        sb.append("\n");
+        if(acte.enfant.sexe == Sexe.MASCULIN){
+            sb.append("fils de ");
+        }else{
+            sb.append("fille de ");
+        }
+        sb.append(acte.pere.nomComplet);
+        sb.append("\n");
+        sb.append("et de ");
+        sb.append(acte.mere.nomComplet);
+        
+        return sb.toString();
+    }
+    
+    public String copieIntegraleText(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append(" ");
+        sb.append(acte.enfant.lieuNaissance);
+        sb.append(", ");
+        sb.append("\n");
+        sb.append(localiteService.findActive().getType());
+        sb.append(" de ");
+        sb.append(localiteService.findActive().getLibelle());
+        sb.append(", ");
+        sb.append("l'enfant ");
+        sb.append(acte.enfant.nomComplet);
+        sb.append("\n");
+        sb.append("de sexe ");
+        sb.append(acte.enfant.sexe);
+        sb.append(",");
+        sb.append("ayant pour père ");
+        sb.append(acte.pere.nomComplet);
+        sb.append(", ");
+        sb.append("né à ");
+        sb.append("\n");
+        sb.append(acte.pere.lieuNaissance);
+        sb.append(", ");
+        sb.append(acte.pere.profession);
+        sb.append(", ");
+        sb.append("domicilié à ");
+        sb.append(acte.pere.localite);
+        sb.append(" et pour mère ");
+        sb.append("\n");
+        sb.append(acte.mere.nomComplet);
+        sb.append(", ");
+        sb.append("né à ");
+        sb.append(acte.mere.lieuNaissance);
+        sb.append(", ");
+        sb.append("\n");
+        sb.append(acte.mere.profession);
+        sb.append(" domicilié à ");
+        sb.append(acte.mere.localite);
+        
+        sb.append("\n");
+        sb.append("\n");
+        
+        sb.append("Dressé le, par nous, ");
+        sb.append(acte.officierEtatCivil.nom);
+        sb.append(" ");
+        sb.append(acte.officierEtatCivil.prenoms);
+        sb.append(", ");
+        sb.append("Officier ");
+        sb.append("\n");
+        sb.append("d'état civil, ");
+        sb.append(acte.officierEtatCivil.titre);
+        sb.append(" de la commune, après que le déclarant ");
+        sb.append("\n");
+        sb.append("est été averti des peines sanctionnant les fausses ");
+        sb.append("déclarations. ");
+        sb.append("\n");
+        sb.append("\n");
+        sb.append("Lecture faite et le déclarant invité à lire l'acte.");
+        sb.append(" Nous avons signé avec le déclarant.");
+        
+        return sb.toString();
+    }
+    
+    public String numeroActeTexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("N° ");
+        sb.append(acte.numero);
+        sb.append(" ");
+        sb.append("DU ");
+        sb.append(acte.dateDressage);
+        sb.append(" ");
+        sb.append("DU REGISTRE");
+        
+        return sb.toString();
+    
+    }
+    
+     public String dateNaissanceEnLettre(LocalDateTime localDateTime){
+      
+        int dayOfMonth = localDateTime.getDayOfMonth();
+        String month = localDateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
+        int year = localDateTime.getYear();
+        
+       String laDate = "";
+        
+        if(dayOfMonth == 1){
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth,"%spellout-ordinal-masculine") + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        
+        }else{
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth) + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        }
+      
+        
+        return laDate;
+        
+    }
+    
+    public String heureNaissanceEnLettre(LocalDateTime localDateTime){
+        
+        int hour = localDateTime.getHour();
+        int minute = localDateTime.getMinute();
+        String temps = "";
+        
+        if(hour != 0 && minute != 0){
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );    
+            
+            if(hour > 1){
+                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
+                    + "heures" + " ";
+                    
+            }else{
+                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
+                    + "heure" + " ";
+            }
+            
+            if(minute > 1 ){
+                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
+                        + " " + "minutes";
+            }else{
+                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
+                        + " " + "minute";
+            }
+             return temps;
+        }
+        return temps;
+    }
+   
+   
+     
+    
     
     public void creerMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         
@@ -565,8 +785,8 @@ public class ActeNaissanceService {
         }
         
         acte.motifAnnulation = acteNaissanceDto.getMotifAnnulation();
-        acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
-        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
+       // acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
+       // acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
                 
         
         if(acteNaissanceDto.getStatut() != null && !acteNaissanceDto.getStatut().isBlank()){
@@ -578,8 +798,8 @@ public class ActeNaissanceService {
         }
         
              
-        acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
-        acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
+        //acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleText(acte).toCharArray()));
        
         modifierMentions(acteNaissanceDto, acte);
     }
@@ -685,159 +905,7 @@ public class ActeNaissanceService {
        
     }
     
-    
-    public String dateNaissanceEnLettre(LocalDateTime localDateTime){
-      
-        int dayOfMonth = localDateTime.getDayOfMonth();
-        String month = localDateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
-        int year = localDateTime.getYear();
-        
-       String laDate = "";
-        
-        if(dayOfMonth == 1){
-            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
-                RuleBasedNumberFormat.SPELLOUT );  
-            laDate = ruleBasedNumberFormat.format(dayOfMonth,"%spellout-ordinal-masculine") + " " 
-                 + month + " " + ruleBasedNumberFormat.format(year);
-        
-        }else{
-            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
-                RuleBasedNumberFormat.SPELLOUT );  
-            laDate = ruleBasedNumberFormat.format(dayOfMonth) + " " 
-                 + month + " " + ruleBasedNumberFormat.format(year);
-        }
-      
-        
-        return laDate;
-        
-    }
-    
-    public String heureNaissanceEnLettre(LocalDateTime localDateTime){
-        
-        int hour = localDateTime.getHour();
-        int minute = localDateTime.getMinute();
-        String temps = "";
-        
-        if(hour != 0 && minute != 0){
-            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("fr", "FR"),
-                RuleBasedNumberFormat.SPELLOUT );    
-            
-            if(hour > 1){
-                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
-                    + "heures" + " ";
-                    
-            }else{
-                temps = ruleBasedNumberFormat.format(hour,"%spellout-cardinal-feminine") + " " 
-                    + "heure" + " ";
-            }
-            
-            if(minute > 1 ){
-                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
-                        + " " + "minutes";
-            }else{
-                temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
-                        + " " + "minute";
-            }
-             return temps;
-        }
-        return temps;
-    }
-    
-    public String extraitTexte(ActeNaissance acte){
-        StringBuilder sb = new StringBuilder();
-        sb.append("Le ");
-        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
-        sb.append("\n");
-        sb.append("à ");
-        sb.append(heureNaissanceEnLettre(acte.enfant.dateNaissance));
-        sb.append("\n");
-        if(acte.enfant.sexe == Sexe.MASCULIN){
-            sb.append("est né ");
-        }else{
-            sb.append("est née ");
-        }
-        
-        sb.append(acte.enfant.nomComplet);
-        sb.append("\n");
-        sb.append(acte.enfant.lieuNaissance);
-        sb.append("\n");
-        sb.append("\n");
-        if(acte.enfant.sexe == Sexe.MASCULIN){
-            sb.append("fils de ");
-        }else{
-            sb.append("fille de ");
-        }
-        sb.append(acte.pere.nomComplet);
-        sb.append("\n");
-        sb.append("et de ");
-        sb.append(acte.mere.nomComplet);
-        
-        return sb.toString();
-    }
-    
-    public String copieText(ActeNaissance acte){
-        StringBuilder sb = new StringBuilder();
-        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
-        sb.append(" ");
-        sb.append(acte.enfant.lieuNaissance);
-        sb.append(", ");
-        sb.append("\n");
-        sb.append(localiteService.findActive().getType());
-        sb.append(" de ");
-        sb.append(localiteService.findActive().getLibelle());
-        sb.append(", ");
-        sb.append("l'enfant ");
-        sb.append(acte.enfant.nomComplet);
-        sb.append("\n");
-        sb.append("de sexe ");
-        sb.append(acte.enfant.sexe);
-        sb.append(",");
-        sb.append("ayant pour père ");
-        sb.append(acte.pere.nomComplet);
-        sb.append(", ");
-        sb.append("né à ");
-        sb.append("\n");
-        sb.append(acte.pere.lieuNaissance);
-        sb.append(", ");
-        sb.append(acte.pere.profession);
-        sb.append(", ");
-        sb.append("domicilié à ");
-        sb.append(acte.pere.localite);
-        sb.append(" et pour mère ");
-        sb.append("\n");
-        sb.append(acte.mere.nomComplet);
-        sb.append(", ");
-        sb.append("né à ");
-        sb.append(acte.mere.lieuNaissance);
-        sb.append(", ");
-        sb.append("\n");
-        sb.append(acte.mere.profession);
-        sb.append(" domicilié à ");
-        sb.append(acte.mere.localite);
-        
-        sb.append("\n");
-        sb.append("\n");
-        
-        sb.append("Dressé le, par nous, ");
-        sb.append(acte.officierEtatCivil.nom);
-        sb.append(" ");
-        sb.append(acte.officierEtatCivil.prenoms);
-        sb.append(", ");
-        sb.append("Officier ");
-        sb.append("\n");
-        sb.append("d'état civil, ");
-        sb.append(acte.officierEtatCivil.titre);
-        sb.append(" de la commune, après que le déclarant ");
-        sb.append("\n");
-        sb.append("est été averti des peines sanctionnant les fausses ");
-        sb.append("déclarations. ");
-        sb.append("\n");
-        sb.append("\n");
-        sb.append("Lecture faite et le déclarant invité à lire l'acte.");
-        sb.append(" Nous avons signé avec le déclarant.");
-        
-        return sb.toString();
-    }
+  
     
     public void validerActe(Registre registre,ActeNaissanceDto acte,Operation operation){
         if(operation == Operation.DECLARATION_JUGEMENT){
@@ -1106,8 +1174,8 @@ public class ActeNaissanceService {
         });
         
         dto.setMotifAnnulation(acte.motifAnnulation);
-        dto.setNombreCopiesIntegrales(acte.nombreCopiesIntegrales);
-        dto.setNombreExtraits(acte.nombreExtraits);
+       // dto.setNombreCopiesIntegrales(acte.nombreCopiesIntegrales);
+       // dto.setNombreExtraits(acte.nombreExtraits);
         
         dto.setNumero(acte.numero);
         dto.setRegistreID(acte.registre.id);
@@ -1129,6 +1197,18 @@ public class ActeNaissanceService {
         dto.setMentionLegitimationDtos(mentionLegitimationService.findByActeNaissance(acte.id));
         dto.setMentionReconnaissanceDtos(mentionReconnaissanceService.findByActeNaissance(acte.id));
         dto.setMentionRectificationDtos(mentionRectificationService.findByActeNaissance(acte.id));
+        
+        //etat
+        /*
+        ActeNaissanceEtat etat = acteNaissanceEtatService.findByActeNaissance(acte);
+        dto.getActeNaissanceEtatDto().setId(etat.id);
+        dto.getActeNaissanceEtatDto().setActeNaissanceID(etat.acteNaissance.id);
+        dto.getActeNaissanceEtatDto().setCopieTexte(etat.copieTexte.toString());
+        dto.getActeNaissanceEtatDto().setExtraitTexte(etat.extraitTexte.toString());
+        dto.getActeNaissanceEtatDto().setMentionMariageConjointNomComplet(etat.conjointNomComplet);
+        dto.getActeNaissanceEtatDto().setMentionMariageDate(etat.date);
+        dto.getActeNaissanceEtatDto().setMentionMariageLieu(etat.lieuMariage);
+        */
         
         return dto;
     }

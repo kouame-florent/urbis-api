@@ -5,6 +5,7 @@
  */
 package io.urbis.mention.service;
 
+import io.quarkus.panache.common.Sort;
 import io.urbis.mention.domain.MentionDeces;
 import io.urbis.mention.dto.MentionDecesDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
@@ -71,7 +72,7 @@ public class MentionDecesService {
     
     public Set<MentionDecesDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionDeces> mentions = MentionDeces.list("acteNaissance", acte);
+        List<MentionDeces> mentions = MentionDeces.list("acteNaissance",Sort.descending("dateDressage"), acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
     }

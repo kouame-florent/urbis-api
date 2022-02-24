@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "mention_dissolution_mariage")
 public class MentionDissolutionMariage extends Mention{
   
-    @Column(name = "date_jugement")
+    @Column(name = "mention_dissolution_mariage_date_jugement")
     public LocalDate dateJugement;
     
 }

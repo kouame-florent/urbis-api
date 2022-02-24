@@ -8,7 +8,6 @@ package io.urbis.acte.naissance.domain;
 import io.urbis.acte.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
-import java.sql.Clob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
@@ -19,7 +18,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -52,7 +50,9 @@ public class ActeNaissance extends Acte{
         @AttributeOverride(name="prenoms",
                            column=@Column(name="enfant_prenoms")),
         @AttributeOverride(name="nomComplet",
-                           column=@Column(name="nom_complet")),
+                           column=@Column(name="enfant_nom_complet")),
+        @AttributeOverride(name="sexe",
+                           column=@Column(name="enfant_sexe")),
         @AttributeOverride(name="lieuNaissance",
                            column=@Column(name="enfant_lieu_naissance")),
         @AttributeOverride(name="nationalite",
@@ -245,6 +245,7 @@ public class ActeNaissance extends Acte{
     @Column(name = "nombre_extraits")
     public int nombreExtraits;
     
+    /*
     @Lob
     @Column(name = "extrait_texte")
     public Clob extraitTexte;
@@ -252,6 +253,7 @@ public class ActeNaissance extends Acte{
     @Lob
     @Column(name = "copie_texte")
     public Clob copieTexte;
+*/
     
     @NotNull
     @ManyToOne

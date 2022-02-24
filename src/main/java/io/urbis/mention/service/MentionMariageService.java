@@ -5,6 +5,7 @@
  */
 package io.urbis.mention.service;
 
+import io.quarkus.panache.common.Sort;
 import io.urbis.mention.domain.MentionMariage;
 import io.urbis.mention.dto.MentionMariageDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
@@ -41,8 +42,8 @@ public class MentionMariageService {
         if(mention != null){
             mention.decision = dto.getDecision();
 
-            mention.lieu = dto.getLieu();
-            mention.date = dto.getDate();
+            mention.lieuMariage = dto.getLieu();
+            mention.dateMariage = dto.getDate();
             mention.dateDressage = dto.getDateDressage();
 
             mention.conjointNom = dto.getConjointNom();
@@ -58,8 +59,8 @@ public class MentionMariageService {
             mention.officierEtatCivil = officier;
             
             mention.decision = dto.getDecision();
-            mention.lieu = dto.getLieu();
-            mention.date = dto.getDate();
+            mention.lieuMariage = dto.getLieu();
+            mention.dateMariage = dto.getDate();
             mention.dateDressage = dto.getDateDressage();
 
             mention.conjointNom = dto.getConjointNom();
@@ -79,7 +80,7 @@ public class MentionMariageService {
     
     public Set<MentionMariageDto> findByActeNaissance(@NotBlank String acteNaissanceID){
         ActeNaissance acte = ActeNaissance.findById(acteNaissanceID);
-        List<MentionMariage> mentions = MentionMariage.list("acteNaissance", acte);
+        List<MentionMariage> mentions = MentionMariage.list("acteNaissance",Sort.descending("dateDressage"), acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
     }
@@ -88,12 +89,12 @@ public class MentionMariageService {
         MentionMariageDto dto = new MentionMariageDto();
         
         dto.setId(mention.id);
-        dto.setDate(mention.date);
+        dto.setDate(mention.dateMariage);
         dto.setDateDressage(mention.dateDressage);
         dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
         dto.setDecision(mention.decision);
-        dto.setLieu(mention.lieu);
+        dto.setLieu(mention.lieuMariage);
         dto.setConjointNom(mention.conjointNom);
         dto.setConjointPrenoms(mention.conjointPrenoms);
         dto.setConjointProfession(mention.conjointProfession);

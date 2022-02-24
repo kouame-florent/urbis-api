@@ -126,8 +126,8 @@ public class ActeNaissanceDto {
   
     private String statut;
     private String motifAnnulation;
-    private int nombreCopiesIntegrales;
-    private int nombreExtraits;
+    //private int nombreCopiesIntegrales;
+    //private int nombreExtraits;
     
     private String officierEtatCivilID;
     private String officierEtatCivilNom;
@@ -138,6 +138,7 @@ public class ActeNaissanceDto {
     private int registreAnnee;
     private int registreNumero;
     
+        
     private Set<MentionMariageDto> mentionMariageDtos = new HashSet<>();
     private Set<MentionAdoptionDto> mentionAdoptionDtos = new HashSet<>();
     private Set<MentionDecesDto> mentionDecesDtos = new HashSet<>();
@@ -145,5 +146,7 @@ public class ActeNaissanceDto {
     private Set<MentionLegitimationDto> mentionLegitimationDtos = new HashSet<>();
     private Set<MentionReconnaissanceDto> mentionReconnaissanceDtos = new HashSet<>();
     private Set<MentionRectificationDto> mentionRectificationDtos = new HashSet<>();
+    
+    //private ActeNaissanceEtatDto acteNaissanceEtatDto = new ActeNaissanceEtatDto();
     
 }

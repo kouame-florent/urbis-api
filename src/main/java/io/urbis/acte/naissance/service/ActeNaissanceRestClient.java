@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.service;
+package io.urbis.acte.naissance.service;
 
 
+import io.urbis.registre.service.*;
 import java.io.File;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -20,14 +22,10 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient
 @RegisterClientHeaders(JasperAuthHeaderFactory.class)
-public interface EtatService {
-    
+public interface ActeNaissanceRestClient {
+   
     @GET
-    @Path("/urbis/registres.pdf")
-    public File downloadRegistre();
-    
-    @GET
-    @Path("/urbis/acte_naissance.pdf")
-    public File downloadActeNaissance(@QueryParam("ACTE_NAISSANCE_ID") String acteNaissanceID);
+    @Path("/urbis/{tenant}/acte_naissance.pdf")
+    public File downloadActeNaissance(@PathParam("tenant") String tenant,@QueryParam("ACTE_NAISSANCE_ID") String acteNaissanceID);
     
 }

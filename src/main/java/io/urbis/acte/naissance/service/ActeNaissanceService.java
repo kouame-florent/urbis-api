@@ -47,6 +47,7 @@ import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.HashSet;
 import java.util.List;
@@ -480,7 +481,7 @@ public class ActeNaissanceService {
         sb.append(acte.numero);
         sb.append(" ");
         sb.append("DU ");
-        sb.append(acte.dateDressage);
+        sb.append(acte.dateDressage.format(DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.FRANCE)));
         sb.append(" ");
         sb.append("DU REGISTRE");
         

@@ -41,7 +41,7 @@ public class RegistreResource {
         return this.registreService.count(typeRegistre,annee,numero);
     }
     
-    @PermitAll
+    //@PermitAll
     @Transactional
     @GET
     public List<RegistreDto> findWithFilters(@QueryParam("offset") int offset, @QueryParam("pageSize") int pageSize,
@@ -64,7 +64,7 @@ public class RegistreResource {
       StatutRegistre statutRegistre = StatutRegistre.fromString(patchDto.getStatut());
       switch(statutRegistre){
           case VALIDE:
-             registreService.validerRegistre(id);
+             registreService.validerRegistre(id,patchDto);
              break;
           case ANNULE:
              registreService.annulerRegistre(id, patchDto.getMotifAnnulation());

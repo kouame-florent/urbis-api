@@ -38,7 +38,7 @@ public class LocaliteResource {
     //@Inject
     //JsonWebToken token;
     
-    @RolesAllowed("USER")
+   // @RolesAllowed("USER")
     @Transactional
     @POST
     public void create(LocaliteDto dto){

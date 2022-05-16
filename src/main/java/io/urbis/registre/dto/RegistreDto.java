@@ -5,6 +5,7 @@
  */
 package io.urbis.registre.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -39,7 +40,7 @@ public class RegistreDto {
     @Min(value = 1, message = "valeur minimale 1")
     private int numero;
     
-    private LocalDateTime dateOuverture;
+    private LocalDate dateOuverture;
     
     private String tribunal;
     private String tribunalID;

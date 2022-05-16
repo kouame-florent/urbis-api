@@ -481,7 +481,7 @@ public class ActeNaissanceService {
         sb.append(acte.numero);
         sb.append(" ");
         sb.append("DU ");
-        sb.append(acte.dateDressage.format(DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.FRANCE)));
+        sb.append(acte.dateDressage.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.FRANCE)));
         sb.append(" ");
         sb.append("DU REGISTRE");
         

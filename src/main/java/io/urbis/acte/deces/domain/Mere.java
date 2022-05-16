@@ -5,9 +5,6 @@
  */
 package io.urbis.acte.deces.domain;
 
-import io.urbis.common.domain.Nationalite;
-import io.urbis.common.domain.TypePiece;
-import io.urbis.acte.naissance.domain.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Embeddable;

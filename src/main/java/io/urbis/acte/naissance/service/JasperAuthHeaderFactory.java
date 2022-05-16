@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.registre.service;
+package io.urbis.acte.naissance.service;
 
 import java.util.Base64;
 import javax.enterprise.context.ApplicationScoped;

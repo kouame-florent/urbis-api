@@ -6,6 +6,7 @@
 package io.urbis.registre.domain;
 
 
+import io.urbis.common.domain.TypeRegistre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.common.domain.BaseEntity;
@@ -68,7 +69,10 @@ import org.hibernate.annotations.ParamDef;
             + " AND r.reference.annee = :annee)"
     ),
     
-    
+    @NamedQuery(name = "Registre.findByTypeAndDateOuverture",
+    query = "SELECT r FROM Registre r WHERE r.typeRegistre = :typeRegistre"
+            + " AND r.dateOuverture = :dateOuverture"
+    ),
 })
 
 @FilterDef(
@@ -92,7 +96,6 @@ import org.hibernate.annotations.ParamDef;
 )
 @Entity
 public class Registre extends BaseEntity{
-   
         
     @NotNull
     @Column(name = "type_registre",nullable = false)
@@ -109,7 +112,7 @@ public class Registre extends BaseEntity{
     public Reference reference;
     
     @Column(name = "date_ouverture")
-    public LocalDateTime dateOuverture;
+    public LocalDate dateOuverture;
   
     
     @NotNull

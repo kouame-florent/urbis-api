@@ -14,12 +14,13 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class AuthenticationContext {
     
+    
     //@Context SecurityContext securityCtx;
     
     private String userLogin;
 
     public String getUserLogin() {
-        if(userLogin.isBlank()){
+        if (userLogin.isBlank()){
             return "anonymous";
         }
         return userLogin;

@@ -5,6 +5,7 @@
  */
 package io.urbis.registre.dto;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,5 +18,6 @@ import lombok.Data;
 public class RegistrePatchDto {
     
     private String statut;
+    private LocalDate dataOuverture;
     private String motifAnnulation;
 }

@@ -16,8 +16,10 @@ import io.urbis.registre.domain.Reference;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.Tribunal;
-import io.urbis.registre.domain.TypeRegistre;
+import io.urbis.common.domain.TypeRegistre;
 import io.urbis.registre.dto.RegistreDto;
+import io.urbis.registre.dto.RegistrePatchDto;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +80,7 @@ public class RegistreService {
                 tribunal, officier, registreDto.getNumeroPremierActe(),
                 registreDto.getNumeroDernierActe(), 
                 registreDto.getNombreDeFeuillets(),
-                 StatutRegistre.PROJET);
+                StatutRegistre.PROJET);
         
         registre.numeroProchainActe = registreDto.getNumeroPremierActe();
         registre.dateOuverture = registreDto.getDateOuverture();
@@ -145,7 +147,7 @@ public class RegistreService {
     }
     
     
-    public void validerRegistre(@NotBlank String registreID){
+    public void validerRegistre(@NotBlank String registreID,@NotNull RegistrePatchDto patchDTO){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
            throw  new EntityNotFoundException("registre not found");
@@ -156,6 +158,10 @@ public class RegistreService {
             registre.statut = StatutRegistre.VALIDE;
         }else{
             throw new IllegalStateException("cannot validate, 'registre' is not in 'PROJECT' status");
+        }
+        
+        if(patchDTO.getDataOuverture() != null){
+            registre.dateOuverture = patchDTO.getDataOuverture();
         }
     }
     
@@ -444,6 +450,20 @@ public class RegistreService {
                    .entity("aucun registre validé n'a été trouvé").build();
            throw new WebApplicationException(res);
        }
+    
+    }
+    
+    public List<RegistreDto> findByTypeAndDateOuverture(String typeString, LocalDate dateOuverture){
+        TypeRegistre typeRegistre = TypeRegistre.fromString(typeString);
+        int annee = LocalDateTime.now().getYear();
+        TypedQuery<Registre> query =  em.createNamedQuery("Registre.findByTypeAndDateOuverture", Registre.class);
+        query.setParameter("typeRegistre", typeRegistre);
+        query.setParameter("dateOuverture", dateOuverture);
+        
+        
+        List<Registre> rs = query.getResultList();
+        return rs.stream().map(r -> mapToDto(r)).collect(Collectors.toList());
+       
     
     }
     

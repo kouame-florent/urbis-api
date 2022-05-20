@@ -234,9 +234,9 @@ public class RegistreService {
            query.filter("numeroFilter", Map.of("numeroLimit",numero));
        }
        
-       query.range(offset, offset + (pageSize-1));
+       PanacheQuery<Registre> rq =  query.range(offset, offset + (pageSize-1));
        //log.infof("OFFSET: %d PAGESIZE: %d", offset,offset + pageSize);
-       return query.stream().map(this::mapToDto).collect(Collectors.toList());
+       return rq.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
  

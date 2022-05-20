@@ -7,7 +7,6 @@ package io.urbis.demande.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +16,16 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class DemandeurDto {
+public class DemandeDto {
+    
+    private LocalDateTime created; 
+    private LocalDateTime updated; 
+    
+    private String operation;
+   
+    private String id;
+    
+    private int numero;
     
     private String demandeurNom;
     
@@ -33,8 +41,6 @@ public class DemandeurDto {
     
     private String demandeurQualite;
     
-    
-    private String numero;
 
     private String typeRegistre;
 

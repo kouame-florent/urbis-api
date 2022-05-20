@@ -19,13 +19,16 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author florent
  */
-@Table(name = "demande")
+@Table(name = "demande",
+        uniqueConstraints = { @UniqueConstraint(columnNames = {"numero"})}
+)
 @Entity
 public class Demande extends BaseEntity{
     
@@ -49,7 +52,8 @@ public class Demande extends BaseEntity{
     })
     public Demandeur demandeur;
     
-    public String numero;
+    @NotNull
+    public int numero; 
 
     @NotNull
     @Column(name = "type_registre",nullable = false)

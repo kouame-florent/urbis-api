@@ -5,19 +5,19 @@
  */
 package io.urbis.demande.service;
 
-import io.urbis.acte.Acte;
-import io.urbis.acte.deces.domain.ActeDeces;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.acte.divers.service.ActeDiversService;
+import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.common.domain.TypePiece;
 import io.urbis.common.domain.TypeRegistre;
 import io.urbis.demande.domain.Demande;
 import io.urbis.demande.domain.Demandeur;
-import io.urbis.demande.dto.DemandeurDto;
+import io.urbis.demande.dto.DemandeDto;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -40,7 +40,7 @@ public class DemandeService {
     ActeNaissanceService acteNaissanceService;
     
         
-    public void creer(@NotNull DemandeurDto dto){
+    public void creer(@NotNull DemandeDto dto){
         
         TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
         
@@ -85,6 +85,42 @@ public class DemandeService {
         demande.numeroActe = dto.getNumeroActe();
         demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
         
+        demande.persist();
     
+    }
+    
+    public DemandeDto findById(@NotBlank String id){
+       Demande d = Demande.findById(id);
+       return mapToDto(d);
+    }
+    
+    public void modifier(@NotBlank String id,@NotNull DemandeDto demande){
+    
+    }
+    
+    private DemandeDto mapToDto(@NotNull Demande demande){
+        
+        DemandeDto dto = new DemandeDto();
+        
+        dto.setCreated(demande.created);
+        dto.setDateHeureDemande(demande.dateHeureDemande);
+        dto.setDateHeureRdvRetrait(demande.dateHeureRdvRetrait);
+        dto.setDateOuvertureRegistre(demande.dateOuvertureRegistre);
+        dto.setDemandeurEmail(demande.demandeur.email);
+        dto.setDemandeurNom(demande.demandeur.nom);
+        dto.setDemandeurNumero(demande.demandeur.numero);
+        dto.setDemandeurNumeroPiece(demande.demandeur.numeroPiece);
+        dto.setDemandeurPrenoms(demande.demandeur.prenoms);
+        dto.setDemandeurQualite(demande.demandeur.qualite);
+        dto.setDemandeurTypePiece(demande.demandeur.typePiece.name());
+        dto.setId(demande.id);
+        dto.setNombreCopies(demande.nombreCopies);
+        dto.setNombreExtraits(demande.nombreExtraits);
+        dto.setNumero(demande.numero);
+        dto.setNumeroActe(demande.numeroActe);
+        dto.setTypeRegistre(demande.typeRegistre.name());
+        dto.setUpdated(demande.updated);
+        
+        return dto;
     }
 }

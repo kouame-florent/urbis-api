@@ -20,7 +20,7 @@ public class AuthenticationContext {
     private String userLogin;
 
     public String getUserLogin() {
-        if (userLogin.isBlank()){
+        if (userLogin == null){
             return "anonymous";
         }
         return userLogin;

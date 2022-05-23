@@ -20,7 +20,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class LienDeclarantService {
     
-    public List<LienDeclarantDto> findAllLienDeclarant(){ 
+    public List<LienDeclarantDto> findAll(){ 
         EnumSet<LienDeclarant> liens = EnumSet.allOf(LienDeclarant.class);
         return liens.stream().map(LienDeclarant::mapToDto).collect(Collectors.toList());
     }

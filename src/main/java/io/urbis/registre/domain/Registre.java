@@ -6,7 +6,6 @@
 package io.urbis.registre.domain;
 
 
-import io.urbis.common.domain.TypeRegistre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.common.domain.BaseEntity;

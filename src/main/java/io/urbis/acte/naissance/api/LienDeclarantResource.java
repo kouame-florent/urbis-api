@@ -24,7 +24,7 @@ public class LienDeclarantResource {
     
     @GET
     public List<LienDeclarantDto> findAll(){
-        return lienDeclarantService.findAllLienDeclarant();
+        return lienDeclarantService.findAll();
     }
     
 }

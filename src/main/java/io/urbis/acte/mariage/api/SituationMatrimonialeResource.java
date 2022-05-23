@@ -26,6 +26,6 @@ public class SituationMatrimonialeResource {
     
     @GET
     public List<SituationMatrimonialeDto> findAll(){
-      return  situationMatrimonialeService.findAllSituation();
+      return  situationMatrimonialeService.findAll();
     }
 }

@@ -11,10 +11,11 @@ import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.common.domain.TypePiece;
-import io.urbis.common.domain.TypeRegistre;
+
 import io.urbis.demande.domain.Demande;
 import io.urbis.demande.domain.Demandeur;
 import io.urbis.demande.dto.DemandeDto;
+import io.urbis.registre.domain.TypeRegistre;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.constraints.NotBlank;

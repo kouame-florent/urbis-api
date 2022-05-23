@@ -25,6 +25,6 @@ public class NationaliteResource {
     
     @GET
     public List<NationaliteDto> findAll(){
-      return nationaliteService.findAllNationalite();
+      return nationaliteService.findAll();
     }
 }

@@ -33,6 +33,6 @@ public class TypeLocaliteResource {
     public List<TypeLocaliteDto> findAll(){
         //LOG.log(Level.INFO, "---USER: {0}", );
        // log.infof("-- USER: %s", sec.getUserPrincipal().getName());
-        return this.typeLocaliteService.findAllTypeLocalite();
+        return this.typeLocaliteService.findAll();
     }
 }

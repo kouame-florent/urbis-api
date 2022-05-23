@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.urbis.common.domain;
+package io.urbis.registre.domain;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
  *
  * @author florent
  */
-public enum TypeRegistre {
+public enum TypeRegistre { 
     
     NAISSANCE("Naissance"),
     MARIAGE("Mariage"),

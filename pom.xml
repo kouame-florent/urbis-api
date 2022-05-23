@@ -16,6 +16,11 @@
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>2.9.0.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+    <primefaces.version>11.0.0</primefaces.version>
+    <primefaces-extensions.version>11.0.2</primefaces-extensions.version>
+    <myfaces.version>2.3-next-M6</myfaces.version>
+    <omnifaces-quarkus.version>1.4.0</omnifaces-quarkus.version>
+    <omnifaces.version>3.13</omnifaces.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -94,6 +99,48 @@
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-keycloak-authorization</artifactId>
+    </dependency>
+
+     <dependency>
+        <groupId>org.primefaces</groupId>
+        <artifactId>primefaces</artifactId>
+        <version>${primefaces.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.primefaces.extensions</groupId>
+        <artifactId>primefaces-extensions</artifactId>
+        <version>${primefaces-extensions.version}</version>
+        <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.omnifaces</groupId>
+        <artifactId>omnifaces</artifactId>
+        <version>${omnifaces.version}</version>
+        <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.github.adminfaces</groupId>
+        <artifactId>quarkus-omnifaces</artifactId>
+        <version>${omnifaces-quarkus.version}</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
+        <artifactId>myfaces-quarkus</artifactId>
+        <version>${myfaces.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
+        <artifactId>myfaces-quarkus-deployment</artifactId>
+        <version>${myfaces.version}</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.webjars.npm</groupId>
+        <artifactId>primeflex</artifactId>
+        <version>2.0.0</version>
     </dependency>
 
 

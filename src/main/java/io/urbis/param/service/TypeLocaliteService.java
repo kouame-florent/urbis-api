@@ -19,7 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class TypeLocaliteService {
     
-    public List<TypeLocaliteDto> findAllTypeLocalite(){
+    public List<TypeLocaliteDto> findAll(){
         EnumSet<TypeLocalite> types = EnumSet.allOf(TypeLocalite.class);
         return types.stream().map(TypeLocaliteService::mapToDto).collect(Collectors.toList());
     }

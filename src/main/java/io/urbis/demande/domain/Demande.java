@@ -7,7 +7,8 @@ package io.urbis.demande.domain;
 
 import io.urbis.acte.Acte;
 import io.urbis.common.domain.BaseEntity;
-import io.urbis.common.domain.TypeRegistre;
+import io.urbis.registre.domain.TypeRegistre;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;

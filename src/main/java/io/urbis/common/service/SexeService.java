@@ -18,7 +18,7 @@ import io.urbis.common.domain.Sexe;
  */
 @ApplicationScoped
 public class SexeService {
-    public List<SexeDto> findAllSexe(){
+    public List<SexeDto> findAll(){
         EnumSet<Sexe> types = EnumSet.allOf(Sexe.class);
         return types.stream().map(Sexe::mapToDto).collect(Collectors.toList()); 
     }

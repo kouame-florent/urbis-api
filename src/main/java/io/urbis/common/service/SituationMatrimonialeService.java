@@ -20,7 +20,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class SituationMatrimonialeService {
     
-    public List<SituationMatrimonialeDto> findAllSituation(){
+    public List<SituationMatrimonialeDto> findAll(){
         EnumSet<SituationMatrimoniale> types = EnumSet.allOf(SituationMatrimoniale.class);
         return types.stream().map(SituationMatrimoniale::mapToDto).collect(Collectors.toList()); 
     }

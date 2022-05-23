@@ -19,7 +19,7 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 @ApplicationScoped
 public class TypeNaissanceService {
     
-    public List<TypeNaissanceDto> findAllTypeNaissance(){
+    public List<TypeNaissanceDto> findAll(){
         EnumSet<TypeNaissance> types = EnumSet.allOf(TypeNaissance.class);
         return types.stream().map(TypeNaissance::mapToDto).collect(Collectors.toList());
     }

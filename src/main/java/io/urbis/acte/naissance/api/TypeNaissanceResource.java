@@ -25,6 +25,6 @@ public class TypeNaissanceResource {
     
     @GET
     public List<TypeNaissanceDto> findAll(){
-        return typeNaissanceService.findAllTypeNaissance();
+        return typeNaissanceService.findAll();
     }
 }

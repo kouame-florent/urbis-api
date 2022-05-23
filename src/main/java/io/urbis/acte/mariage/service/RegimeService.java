@@ -18,7 +18,7 @@ import javax.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class RegimeService {
-    public List<RegimeDto> findAllRegimes(){
+    public List<RegimeDto> findAll(){
         EnumSet<Regime> types = EnumSet.allOf(Regime.class);
         return types.stream().map(Regime::mapToDto).collect(Collectors.toList()); 
     }

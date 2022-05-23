@@ -22,7 +22,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ModeDeclarationService {
     
-    public List<ModeDeclarationDto> findAllModeDeclaration(){
+    public List<ModeDeclarationDto> findAll(){
         EnumSet<ModeDeclaration> types = EnumSet.allOf(ModeDeclaration.class);
         return types.stream().map(ModeDeclaration::mapToDto).collect(Collectors.toList()); 
     }

@@ -25,6 +25,6 @@ public class SexeResource {
     
     @GET
     public List<SexeDto> findAll(){
-      return  sexeService.findAllSexe();
+      return  sexeService.findAll();
     }
 }

@@ -19,7 +19,7 @@ import io.urbis.common.domain.TypePiece;
  */
 @ApplicationScoped
 public class TypePieceService {
-    public List<TypePieceDto> findAllTypePiece(){
+    public List<TypePieceDto> findAll(){
         EnumSet<TypePiece> types = EnumSet.allOf(TypePiece.class);
         return types.stream().map(TypePiece::mapToDto).collect(Collectors.toList()); 
     }

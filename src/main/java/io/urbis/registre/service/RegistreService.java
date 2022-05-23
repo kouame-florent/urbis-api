@@ -14,9 +14,9 @@ import io.urbis.param.domain.Localite;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Reference;
 import io.urbis.registre.domain.Registre;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.Tribunal;
-import io.urbis.common.domain.TypeRegistre;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.dto.RegistrePatchDto;
 import java.time.LocalDate;
@@ -31,6 +31,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -56,9 +57,10 @@ public class RegistreService {
     
     private final int PAGE_SIZE = 25;
     
-    public void creerRegistre(@NotNull RegistreDto registreDto){
+    @Transactional
+    public void creer(@NotNull RegistreDto registreDto){
         
-        var typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
+        TypeRegistre typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocaliteID());
         Centre centre = Centre.findById(registreDto.getCentreID());
         Tribunal tribunal = Tribunal.findById(registreDto.getTribunalID());
@@ -76,9 +78,9 @@ public class RegistreService {
         log.infof("-- NUM DERNIER ACTE: %s", registreDto.getNumeroDernierActe());
         log.infof("-- NOMBRE FEUILLETS: %s", registreDto.getNombreDeFeuillets());
         
-        Registre registre = new Registre(typeRegistre, registreDto.getLibelle(), reference,
+        Registre registre = new Registre(typeRegistre,registreDto.getLibelle(), reference,
                 tribunal, officier, registreDto.getNumeroPremierActe(),
-                registreDto.getNumeroDernierActe(), 
+                registreDto.getNumeroDernierActe(),
                 registreDto.getNombreDeFeuillets(),
                 StatutRegistre.PROJET);
         
@@ -98,6 +100,8 @@ public class RegistreService {
        // return mapToDto(registre);
     }
     
+    
+    @Transactional
     public void modifierRegistre(@NotBlank String registreID,@NotNull RegistreDto registreDto){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
@@ -146,7 +150,7 @@ public class RegistreService {
         }
     }
     
-    
+    @Transactional
     public void validerRegistre(@NotBlank String registreID,@NotNull RegistrePatchDto patchDTO){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
@@ -165,7 +169,7 @@ public class RegistreService {
         }
     }
     
-    
+    @Transactional
     public void annulerRegistre(@NotBlank String registreID, String motifAnnulation){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
@@ -176,6 +180,7 @@ public class RegistreService {
         registre.dateAnnulation = LocalDateTime.now();
     }
     
+    @Transactional
     public void cloturerRegistre(@NotBlank String registreID){
         Registre registre = Registre.findById(registreID);
         if(registre == null){
@@ -198,6 +203,7 @@ public class RegistreService {
     
     public void deplacerRegistre(){}
     
+    @Transactional
     public void supprimer(@NotBlank String id){
         Registre.deleteById(id);
     }
@@ -221,6 +227,7 @@ public class RegistreService {
        return mapToDto(reg);
     }
     
+    @Transactional
     public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero){
        
        PanacheQuery<Registre> query = Registre.find("typeRegistre", 

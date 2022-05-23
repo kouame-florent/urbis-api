@@ -25,6 +25,6 @@ public class RegimeResource {
     
     @GET
     public List<RegimeDto> findAll(){
-      return  regimeService.findAllRegimes();
+      return  regimeService.findAll();
     }
 }

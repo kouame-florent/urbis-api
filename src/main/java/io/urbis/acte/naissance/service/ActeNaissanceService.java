@@ -590,7 +590,7 @@ public class ActeNaissanceService {
         });
     }
     
-    public void modifier(@NotBlank String id,@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
+    public void modifier(@NotBlank String id, @NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         ActeNaissance acte = ActeNaissance.findById(id);
         acte.enfant =  new Enfant();

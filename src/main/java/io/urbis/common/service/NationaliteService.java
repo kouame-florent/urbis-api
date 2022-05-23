@@ -19,7 +19,7 @@ import io.urbis.common.domain.Nationalite;
  */ 
 @ApplicationScoped
 public class NationaliteService {
-     public List<NationaliteDto> findAllNationalite(){
+     public List<NationaliteDto> findAll(){
         EnumSet<Nationalite> types = EnumSet.allOf(Nationalite.class);
         return types.stream().map(Nationalite::mapToDto).collect(Collectors.toList());
     }

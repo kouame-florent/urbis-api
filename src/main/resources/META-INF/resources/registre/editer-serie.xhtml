@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/dialog-tpl.xhtml">
+     
+     <ui:define name="title">
+         Création de series de registres
+     </ui:define>
+    
+    <ui:define name="content">
+               
+        <h:form id="messageForm">
+                <p:growl globalOnly="true" life="15000"/>        
+        </h:form>
+             
+        <h:form id="contentForm">
+     
+            <p:fieldset legend="Type de registres">
+                <p:selectOneRadio id="console" value="#{registreEditerSerieBacking.selectedType}" 
+                                  converter="omnifaces.SelectItemsConverter"
+                                  required="true">
+                    <p:ajax listener="#{registreEditerSerieBacking.onTypeRgistreSelect}" 
+                            update="contentForm:commune contentForm:centre contentForm:tribunal 
+                             contentForm:libelleOutputPanel messageForm"/>
+                    <f:selectItems value="#{registreEditerSerieBacking.typesRegistre}" var="type" 
+                                   itemLabel="#{type.libelle}" itemValue="#{type}"/>
+                </p:selectOneRadio>
+                
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <p:fieldset legend="Information des registres">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                    <p:outputLabel for="commune" styleClass="p-d-block">Commune</p:outputLabel>
+                    <p:inputText id="commune" value="#{registreEditerSerieBacking.currentLocalite.libelle}"
+                                 disabled="true" required="true" styleClass="p-d-block"/>
+
+                    </div>
+                    <div class="p-field p-col">
+                        <p:outputLabel for="centre" styleClass="p-d-block">Centre</p:outputLabel>
+                        <p:inputText id="centre" value="#{registreEditerSerieBacking.currentCentre.libelle}"
+                                     disabled="true"  required="true" styleClass="p-d-block"/>
+
+                    </div>
+                    <div class="p-field p-col">
+                        <p:outputLabel for="tribunal" styleClass="p-d-block">Tribunal</p:outputLabel>
+                        <p:inputText id="tribunal" value="#{registreEditerSerieBacking.currentTribunal.libelle}" disabled="true"
+                                   required="true"  styleClass="p-d-block"/>
+
+                    </div>
+              
+                </div>
+
+            </p:fieldset>
+            <p:outputPanel id="libelleOutputPanel">
+                <p:outputPanel  rendered="#{registreEditerSerieBacking.renderedLibelle()}">
+                    <p:fieldset>
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-lg-6">
+
+                                <p:outputLabel for="libelle" styleClass="p-d-block" 
+                                               style="color: #ffffff">Libellé du registre</p:outputLabel>
+                                <p:inputText id="libelle" value="#{registreEditerSerieBacking.libelle}" 
+                                             required="#{registreEditerSerieBacking.requiredLibelle()}"/>
+                            </div>
+
+                        </div>
+                    </p:fieldset>
+                  </p:outputPanel>
+            </p:outputPanel>
+             <p:spacer height="2"/>
+            <p:fieldset legend="Officier d'état civil">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="officier" styleClass="p-d-block">Officier</p:outputLabel>
+                        <p:selectOneMenu id="officier" value="#{registreEditerSerieBacking.selectedOfficierId}"          
+                                         label="Selectionnez" required="true">
+
+                            <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                            <f:selectItems value="#{registreEditerSerieBacking.officiers}" var="officier" 
+                                           itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                           itemValue="#{officier.id}"/>
+                        </p:selectOneMenu>
+                       
+
+                    </div>
+                    
+
+                </div>
+
+            </p:fieldset>
+            <p:spacer height="2"/>
+             <p:fieldset legend="Informations de la serie">
+                 <div class="ui-fluid p-formgrid p-grid">
+                     <div class="p-field p-col">
+                        <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
+                        <p:inputMask id="annee" value="#{registreEditerSerieBacking.annee}" mask="9999" maxlength="4"
+                                     required="true" styleClass="p-d-block"/>
+                        
+                    </div>
+                     <div class="p-field p-col">
+                        <p:outputLabel for="premier"  styleClass="p-d-block">Numero du premier registre</p:outputLabel>
+                        <p:inputNumber id="premier" value="#{registreEditerSerieBacking.premier}"  maxlength="5" 
+                                     required="true" styleClass="p-d-block"/>
+
+                    </div>
+                    <div class="p-field p-col">
+                            <p:outputLabel for="dernier"  styleClass="p-d-block">Numero du dernier registre</p:outputLabel>
+                            <p:inputNumber id="dernier" value="#{registreEditerSerieBacking.dernier}"  maxlength="5" 
+                                         required="true" styleClass="p-d-block"/>
+
+                    </div>
+                     <div class="p-field p-col">
+                        <p:outputLabel for="nombreFeuillets" styleClass="p-d-block">Nombre de feuillets</p:outputLabel>
+                        <p:inputNumber id="nombreFeuillets" value="#{registreEditerSerieBacking.nombreDeFeuillets}" maxlength="5" 
+                                     required="true" styleClass="p-d-block"/>
+
+                    </div>
+                 </div>
+                
+            </p:fieldset>
+           <p:spacer height="2"/>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <p:commandButton id="creer" value="Créer la serie" process="@form" 
+                                     action="#{registreEditerSerieBacking.creer()}"
+                                     update="@form messageForm"  icon="pi pi-check" styleClass="ui-button-outlined"/>
+                </div>
+              
+            </div>
+
+
+        </h:form>
+          
+        
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

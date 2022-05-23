@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/dialog-tpl.xhtml">
+     
+     <ui:define name="title">
+         Annulation de registre
+     </ui:define>
+     
+     <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="id" value="#{registreAnnulerBacking.registreID}" />
+            <f:viewAction action="#{registreAnnulerBacking.onload}" />
+        </f:metadata>
+     </ui:define>
+    
+    <ui:define name="content">
+        
+        <h:form id="messageForm">
+                <p:growl globalOnly="true" life="15000"/>        
+        </h:form>
+             
+        <h:form id="contentForm">
+            <p:panel header="Information du registre">
+                
+              <div class="ui-fluid" style="font-size: large">
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="localite" class="p-lg-3">Localité:</p:outputLabel>     
+                    <p:outputLabel id="localite" value="#{registreAnnulerBacking.registreDto.localite}" class="p-lg-9"/>
+                 
+                </div>
+                
+                <div class="p-field p-grid">
+                    <p:outputLabel for="centre" class="p-lg-3">Centre:</p:outputLabel>
+                    <p:outputLabel id="centre" value="#{registreAnnulerBacking.registreDto.centre}" class="p-lg-9"/>
+                 
+                    
+                </div>
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="tribunal" class="p-lg-3">Tribunal:</p:outputLabel>
+                    <p:outputLabel id="tribunal" value="#{registreAnnulerBacking.registreDto.tribunal}" class="p-lg-9"/>
+                
+                    
+                </div>
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="annee" class="p-lg-3">Année:</p:outputLabel>
+                    <p:outputLabel id="annee" value="#{registreAnnulerBacking.registreDto.annee}" class="p-lg-9"/>
+                
+                    
+                </div>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="numero" class="p-lg-3">Numéro:</p:outputLabel>
+                     <p:outputLabel id="numero" value="#{registreAnnulerBacking.registreDto.numero}" class="p-lg-9"/>
+             
+                    
+                </div>
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="numeroPremierActe" class="p-lg-3">Numéro premier acte: </p:outputLabel>
+                    <p:outputLabel id="numeroPremierActe" value="#{registreAnnulerBacking.registreDto.numeroPremierActe}" class="p-lg-9"/>
+                 
+                </div>
+                
+                <div class="p-field p-grid">
+                    <p:outputLabel for="numeroDernierActe" class="p-lg-3">Numéro dernier acte:
+                    </p:outputLabel>
+                    <p:outputLabel id="numeroDernierActe" value="#{registreAnnulerBacking.registreDto.numeroDernierActe}" class="p-lg-9"/>
+                
+                    
+                </div>
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="nombreFeuillets" class="p-lg-3">Nombre de feuillets:</p:outputLabel>
+                    <p:outputLabel id="nombreFeuillets" value="#{registreAnnulerBacking.registreDto.nombreDeFeuillets}" class="p-lg-9"/>
+               
+                    
+                </div>
+                <div class="p-field p-grid">
+                    <p:outputLabel for="officier" class="p-lg-3">Officier:</p:outputLabel>
+                    <p:outputLabel id="officier" value="#{registreAnnulerBacking.registreDto.officierEtatCivilNomComplet}" class="p-lg-9"/>
+             
+                    
+                </div>
+                  
+                <div class="p-field p-grid">
+                    <p:outputLabel for="motif" class="p-lg-3">Motif annulation:</p:outputLabel>
+                    <p:inputTextarea id="motif" required="true" value="#{registreAnnulerBacking.registreDto.motifAnnulation}" class="p-lg-9"/>
+                    <p:message for="motif"/>
+                   
+                </div>
+
+                </div>
+                
+                
+            </p:panel>
+            <div class="ui-fluid p-formgrid p-grid">
+                 <div class="p-field p-col">
+                     <p:commandButton value="Annuler"  action="#{registreAnnulerBacking.annuler()}" styleClass="ui-button-outlined"
+                                      update="@form"/>
+                </div>
+            </div>
+      
+        </h:form>
+          
+        
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

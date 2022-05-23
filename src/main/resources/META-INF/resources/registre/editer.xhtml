@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/dialog-tpl.xhtml">
+     
+     <ui:define name="title">
+         #{registreEditerBacking.operation.libelle}
+     </ui:define>
+     
+     <ui:define name="metadata">
+         <f:metadata>
+            <f:viewParam name="reg-id" value="#{registreEditerBacking.registreID}"/>
+            <f:viewParam name="operation" value="#{registreEditerBacking.operationParam}" />
+            <f:viewAction action="#{registreEditerBacking.onload}" />
+        </f:metadata>
+     </ui:define>
+    
+    <ui:define name="content">
+         
+        <h:form id="messageForm">
+                <p:growl globalOnly="true" life="15000"/>        
+        </h:form>
+             
+        <h:form id="contentForm">
+     
+            <p:fieldset legend="Type de registres">
+                <p:selectOneRadio id="typeRegistre" value="#{registreEditerBacking.registreDto.typeRegistre}" 
+                                  converter="omnifaces.SelectItemsConverter"
+                                  required="true">
+                    <p:ajax listener="#{registreEditerBacking.onTypeRgistreSelect}" update="@form"/>
+                    <f:selectItems value="#{registreEditerBacking.typesRegistre}" var="type" 
+                                   itemLabel="#{type.libelle}" itemValue="#{type.code}"/>
+                </p:selectOneRadio>
+                
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <p:fieldset legend="Référence registre">
+                <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-col">
+                <p:outputLabel for="commune" styleClass="p-d-block">Commune</p:outputLabel>
+                <p:inputText id="commune" value="#{registreEditerBacking.currentLocalite.libelle}"
+                             disabled="true" required="true" styleClass="p-d-block"/>
+
+                </div>
+                <div class="p-field p-col">
+                    <p:outputLabel for="centre" styleClass="p-d-block">Centre</p:outputLabel>
+                    <p:inputText id="centre" value="#{registreEditerBacking.currentCentre.libelle}"
+                                 disabled="true"  required="true" styleClass="p-d-block"/>
+
+                </div>
+                <div class="p-field p-col">
+                    <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
+                    <p:inputText id="annee" value="#{registreEditerBacking.registreDto.annee}" required="true" maxlength="5" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                <div class="p-field p-col">
+                    <p:outputLabel for="numero" styleClass="p-d-block">Numéro</p:outputLabel>
+                    <p:inputText id="numero" value="#{registreEditerBacking.registreDto.numero}" required="true" maxlength="5" 
+                                    styleClass="p-d-block"/>
+
+                </div>
+                    
+                
+
+                </div>
+
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <p:fieldset legend="Actes">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="numeroPremierActe"  styleClass="p-d-block">Numéro premier acte</p:outputLabel>
+                        <p:inputText id="numeroPremierActe" value="#{registreEditerBacking.registreDto.numeroPremierActe}" 
+                                     maxlength="5" required="true" disabled="true" styleClass="p-d-block"/>
+
+                    </div>
+                    <div class="p-field p-col">
+                        <p:outputLabel for="nombreFeuillets" styleClass="p-d-block">Nombre de feuillets</p:outputLabel>
+                        <p:inputText id="nombreFeuillets" value="#{registreEditerBacking.registreDto.nombreDeFeuillets}" required="true"
+                                     maxlength="5" styleClass="p-d-block">
+                          
+                        </p:inputText>
+
+                    </div>
+                    
+                    <div class="p-field p-col">
+                        <p:outputLabel for="dateOuverture" styleClass="p-d-block">Date d'ouverture</p:outputLabel>
+                        <p:inputMask id="dateOuverture" value="#{registreEditerBacking.registreDto.dateOuverture}"
+                                     mask="99/99/9999" required="true">
+                                <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        </p:inputMask>
+                        <p:message for="dateOuverture" />
+
+                    </div>
+
+                </div>
+
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <p:fieldset legend="Tribunal">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="tribunal" styleClass="p-d-block">Tribunal</p:outputLabel>
+                        <p:inputText id="tribunal" value="#{registreEditerBacking.currentTribunal.libelle}" disabled="true"
+                                   required="true"  styleClass="p-d-block"/>
+
+                    </div>
+
+                </div>
+
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <p:fieldset legend="Officier d'état civil">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="officier" styleClass="p-d-block">Officier</p:outputLabel>
+                        <p:selectOneMenu id="officier" value="#{registreEditerBacking.registreDto.officierEtatCivilID}"          
+                                         label="Selectionnez" required="true">
+                            <p:ajax listener="#{registreEditerBacking.onOfficierSelect}"/>
+                            <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                            <f:selectItems value="#{registreEditerBacking.officiers}" var="officier" 
+                                           itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                           itemValue="#{officier.id}"/>
+                        </p:selectOneMenu>
+                       
+
+                    </div>
+                    
+
+                </div>
+
+            </p:fieldset>
+            <p:spacer height="2"/>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <p:commandButton value="Creer" process="@form" action="#{registreEditerBacking.creer()}"
+                                     rendered="#{registreEditerBacking.renderedCreerButton()}"
+                                     update="@form"  icon="pi pi-check" styleClass="ui-button-outlined"/>
+                    <p:commandButton value="Valider" process="@form" action="#{registreEditerBacking.valider()}"
+                                     rendered="#{registreEditerBacking.renderedValiderButton()}"
+                                     update="@form"  icon="pi pi-check" styleClass="ui-button-outlined"/>
+                
+                </div>
+                
+            </div>
+
+
+        </h:form>
+          
+        
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

@@ -53,7 +53,7 @@ public class RegistreResource {
     @Transactional
     @POST
     public void create(RegistreDto registreDto){
-         registreService.creerRegistre(registreDto);
+         registreService.creer(registreDto);
     }
     
     

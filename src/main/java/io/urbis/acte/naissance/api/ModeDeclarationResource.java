@@ -27,6 +27,6 @@ public class ModeDeclarationResource {
     
     @GET
     public List<ModeDeclarationDto> findAll(){
-        return modeDeclarationService.findAllModeDeclaration();
+        return modeDeclarationService.findAll();
     }
 }

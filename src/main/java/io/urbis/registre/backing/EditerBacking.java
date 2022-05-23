@@ -94,12 +94,15 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     @PostConstruct
     public void init(){
+        
        typesRegistre = typeRegistreService.findAll();
        officiers = officierService.findAll();
+        
        //registreDto = new RegistreDto();
     }
     
     public void onload(){
+        
         if(registreID != null && !registreID.isBlank()){
             LOG.log(Level.INFO,"--- ON LOAD REGISTRE ID: {0}",registreID);
             registreDto = registreService.findById(registreID);

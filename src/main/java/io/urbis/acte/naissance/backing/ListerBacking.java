@@ -54,11 +54,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     LazyActeNaissanceDataModel lazyActeNaissanceDataModel;
      
     @Inject 
-    @RestClient
     RegistreService registreService;
     
     @Inject
-    @RestClient
     ActeNaissanceService acteNaissanceService;
     
     @Inject 

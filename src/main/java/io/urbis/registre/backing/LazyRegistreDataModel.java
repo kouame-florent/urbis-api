@@ -14,18 +14,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
+
+
+
 
 /**
  *
  * @author florent
  */
-@RequestScoped
+@Dependent
 public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     
    // private List<RegistreDto> datasource;
@@ -35,7 +36,6 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     
     @Inject 
     RegistreService registreService;
-
     
     private String typeRegistre;
     private int annee;

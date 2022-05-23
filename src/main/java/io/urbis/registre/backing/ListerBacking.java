@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -270,10 +272,20 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("editer-serie", options, null);
     }
     
+    /*
+    public String openConsulterView(RegistreDto registreDto){
+        
+        //return "editer";
+        
+        return "editer?faces-redirect=true&reg-id="+registreDto.getId()+"&operation="+Operation.CONSULTATION.name();
+    
+    }
+    */
     
     
     public void openConsulterView(RegistreDto registreDto){
-        LOG.log(Level.INFO, "REGISTRE ID: {0}", registreDto.getId());
+        LOG.log(Level.INFO, "--- CALL OPEN CONSULTER");
+        LOG.log(Level.INFO, "--- REGISTRE ID: {0}", registreDto.getId());
         var operations = List.of(Operation.CONSULTATION.name());
         var values = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
@@ -281,8 +293,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     }
     
+    
     public void openValiderView(RegistreDto registreDto){
-        LOG.log(Level.INFO, "REGISTRE ID: {0}", registreDto.getId());
+        LOG.log(Level.INFO, "--- REGISTRE ID: {0}", registreDto.getId());
         var operations = List.of(Operation.VALIDATION.name());
         var values = List.of(registreDto.getId());
 

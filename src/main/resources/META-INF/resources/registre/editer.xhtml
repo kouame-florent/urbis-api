@@ -27,17 +27,18 @@ xmlns:p="http://primefaces.org/ui">
         </h:form>
              
         <h:form id="contentForm">
-     
+            
             <p:fieldset legend="Type de registres">
                 <p:selectOneRadio id="typeRegistre" value="#{registreEditerBacking.registreDto.typeRegistre}" 
-                                  converter="omnifaces.SelectItemsConverter"
-                                  required="true">
+                        converter="omnifaces.SelectItemsConverter"
+                        required="true">
                     <p:ajax listener="#{registreEditerBacking.onTypeRgistreSelect}" update="@form"/>
                     <f:selectItems value="#{registreEditerBacking.typesRegistre}" var="type" 
                                    itemLabel="#{type.libelle}" itemValue="#{type.code}"/>
                 </p:selectOneRadio>
-                
+
             </p:fieldset>
+           
             <p:spacer height="2"/>
             <p:fieldset legend="Référence registre">
                 <div class="ui-fluid p-formgrid p-grid">

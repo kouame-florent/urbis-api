@@ -249,6 +249,7 @@ public class RegistreService {
  
     
     public int count(String type, int annee,int numero){
+        log.infof("--- Count TypeRegistre: %s ",type);
         PanacheQuery<Registre> query = Registre.find("typeRegistre", TypeRegistre.fromString(type));
         if(annee != 0){
            query.filter("anneeFilter", Map.of("anneeLimit",annee));

@@ -78,39 +78,30 @@ public class EditerBacking extends BaseBacking implements Serializable{
     private static final Logger LOG = Logger.getLogger(EditerBacking.class.getName());
     
     @Inject 
-    @RestClient
     RegistreService registreService;
     
     @Inject
-    @RestClient
     ModeDeclarationService modeDeclarationService;
     
     @Inject
-    @RestClient
     TypeNaissanceService typeNaissanceService;
     
     @Inject
-    @RestClient
     SexeService sexeService;
     
     @Inject
-    @RestClient
     NationaliteService nationaliteService;
     
     @Inject
-    @RestClient
     TypePieceService  typePieceService;
     
     @Inject
-    @RestClient
     LienDeclarantService lienDeclarantService;
     
     @Inject
-    @RestClient
     ActeNaissanceService acteNaissanceService;
     
     @Inject 
-    @RestClient
     OfficierService officierService;
     
     @Inject
@@ -123,19 +114,15 @@ public class EditerBacking extends BaseBacking implements Serializable{
     MentionDissolutionMariageService mentionDissolutionService;
     
     @Inject
-    @RestClient
     MentionLegitimationService mentionLegitimationService;
     
     @Inject
-    @RestClient
     MentionMariageService mentionMariageService;
     
     @Inject
-    @RestClient
     MentionReconnaissanceService mentionReconnaissanceService;
     
     @Inject
-    @RestClient
     MentionRectificationService mentionRectificationService;
     
     @Inject

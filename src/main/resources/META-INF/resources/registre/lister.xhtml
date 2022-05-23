@@ -86,7 +86,7 @@ xmlns:p="http://primefaces.org/ui">
                                      icon="pi pi-cog" title="paramètres" style="margin-right: .5rem"/>
                     <p:commandButton action="#{registreListerBacking.openDemandeView()}" 
                                      icon="pi pi-book" title="demandes"/>
-                
+                 
                 </p:toolbarGroup>
             </p:toolbar>
                  
@@ -134,27 +134,19 @@ xmlns:p="http://primefaces.org/ui">
              
                 </p:column>
                 
-                <p:column width="10%" rendered="false">
-                    <p:commandButton  value="Valider" action="#{registreListerBacking.openConsulterView(registre)}"
-                                      styleClass="ui-button-outlined" process="@this" 
-                                      update="contentForm:registre" >
-                    <p:ajax event="dialogReturn" 
-                            listener="#{registreListerBacking.onActeValidated}" 
-                                        update=":contentForm:registre"/>
-                    <f:setPropertyActionListener value="#{registre}" target="#{registreListerBacking.selectedRegistre}"/>
-                
-                </p:commandButton>
-             
-                </p:column>
+              
                 <p:column width="5%">
                     
+                   
                     <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;">
-                        <p:menuitem value="Consulter" process="@this" action="#{registreListerBacking.openConsulterView(registre)}" 
+                        <p:menuitem value="Consulter" process="@this"
+                                    action="#{registreListerBacking.openConsulterView(registre)}"
+                                     
                                     icon="pi pi-book" />
                         
                         <p:menuitem value="Valider" process="@this" action="#{registreListerBacking.openValiderView(registre)}" 
                                     update="contentForm:registre" icon="pi pi-ticket" 
-                                    disabled="#{registreListerBacking.disableMenuActiver(registre)}">
+                                    disabled="#{registreListerBacking.disableMenuActiver(registre)}" >
                             <p:ajax event="dialogReturn" listener="#{registreListerBacking.onRegistreValidated}" 
                                     update=":contentForm:registre messageForm"/>
                             <f:setPropertyActionListener value="#{registre}" target="#{registreListerBacking.selectedRegistre}"/>

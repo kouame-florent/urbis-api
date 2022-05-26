@@ -8,7 +8,6 @@ package io.urbis.acte.naissance.backing;
 import io.urbis.acte.naissance.domain.Operation;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
-import io.urbis.acte.naissance.service.ActeNaissanceEtatService;
 import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.common.util.BaseBacking;
@@ -39,6 +38,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.service.RegistreService;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -76,6 +76,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void onload(){
         LOG.log(Level.INFO,"----- URBIS TENANT: {0}",tenant);
         LOG.log(Level.INFO,"----- REGISTRE ID: {0}",registreID);
+        
+        if(registreID == null || registreID.isBlank()){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        
         registreDto = registreService.findById(registreID);
         lazyActeNaissanceDataModel.setRegistreID(registreID);
     }
@@ -156,6 +161,15 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer", getDialogOptions(98,98,true), params);
     }
     
+    public void openConsulterActeView(ActeNaissanceDto dto){
+        LOG.log(Level.INFO, "ACTE ID: {0}", dto.getId());
+        var ids = List.of(registreID);
+        var operations = List.of(Operation.CONULTATION.name());
+        var acteIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer", getDialogOptions(98,98,true), params);
+    }
+    
     public void supprimer(@NotNull String id){
        boolean result = acteNaissanceService.supprimer(id);
        if(!result){
@@ -165,6 +179,10 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public boolean disableMenuValiderActe(ActeNaissanceDto dto){
        return !dto.getStatut().equals(StatutActeNaissance.PROJET.name());
+    }
+    
+    public boolean disableMenuConsulterActe(ActeNaissanceDto dto){
+       return dto.getStatut().equals(StatutActeNaissance.VALIDE.name());
     }
     
     public void openNewActeExistant(){
@@ -180,13 +198,17 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var ids = List.of(registreID);
         var operations = List.of(Operation.DECLARATION_JUGEMENT.name());
         Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations);
-        Map<String,Object> options = getDialogOptions(100, 100, false);
+        Map<String,Object> options = getDialogOptions(100, 100, true);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }
     
+    public String returnToRegistresList(){
+        return "/registre/lister.xhtml";
+    }
+    
     public boolean disableButtonsOpenNew(){
-        LOG.log(Level.INFO, "REGISTRE DTO STATUT: {0}",registreDto.getStatut());
+        
         if(registreDto != null){
             return !registreDto.getStatut().equals(StatutRegistre.VALIDE.name());
           

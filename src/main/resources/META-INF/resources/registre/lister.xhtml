@@ -72,11 +72,11 @@ xmlns:p="http://primefaces.org/ui">
            <p:toolbar>
                  <p:toolbarGroup>
                      <p:commandButton  value="Créer le registre courant" action="#{registreListerBacking.openCreerView()}" icon="pi pi-plus" 
-                                       process="@this" style="margin-right: .5rem" styleClass="ui-button-outlined">   
+                                       process="@this" style="margin-right: .5rem" styleClass="ui-button-success">   
                          <p:ajax event="dialogReturn" listener="#{registreListerBacking.onSerieCreated}" update="messageForm @form"/>
                     </p:commandButton>
                      <p:commandButton value="Créer une serie de registres" action="#{registreListerBacking.openCreerSerieView()}" icon="pi pi-plus" 
-                                      process="@this" style="margin-right: .5rem" styleClass="ui-button-outlined"> 
+                                      process="@this" style="margin-right: .5rem" styleClass="ui-button-success"> 
                          <p:ajax event="dialogReturn" listener="#{registreListerBacking.onCreate}" update="messageForm @form"/>
                     </p:commandButton>
                      
@@ -172,10 +172,13 @@ xmlns:p="http://primefaces.org/ui">
                         </p:menuitem>
                         <p:divider/>
                           
-                        <p:menuitem value="Gerer les actes" process="@this" 
-                                    action="#{registreListerBacking.openListActes(registre)}" icon="pi pi-folder"
+                        <p:menuitem value="Gerer les actes " process="@this" ajax="false"
+                                    outcome="#{registreListerBacking.openListActes(registre)}"
+                                    icon="pi pi-folder"
                                     disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
-                                    rendered="#{registreListerBacking.renderGererActesMenu(registre)}"/>
+                                    rendered="#{registreListerBacking.renderGererActesMenu(registre)}">
+                        
+                        </p:menuitem>
                         
                         <p:menuitem value="Gérer les reconnaissances d'enfant naturel" process="@this"
                                     

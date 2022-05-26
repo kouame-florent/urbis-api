@@ -362,29 +362,34 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     */
     
-    public void openListActes(RegistreDto registreDto){
+    public String openListActes(RegistreDto registreDto){
         TypeRegistre typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
+        LOG.log(Level.INFO, "--- TYPE REGISTRE: {0}", typeRegistre);   
+        String uri = "";
         switch(typeRegistre){
             case NAISSANCE:
-                openListActesNaissance(registreDto);
+                uri = openListActesNaissance(registreDto);
                 break;
             case MARIAGE:
-                openListActesMariage(registreDto);
+                uri = openListActesMariage(registreDto);
                 break;
             case DECES:
-                openListActesDeces(registreDto);
+                uri = openListActesDeces(registreDto);
                 break;
         }
+        
+        LOG.log(Level.INFO, "--- URI FROM OPEN LIST ACTES {0}", uri);   
+        return uri;
     }
     
-    public void openListActesDecRecEnfNaturel(RegistreDto registreDto) {
-        
+    public String openListActesDecRecEnfNaturel(RegistreDto registreDto) {
+        /*
         var ids = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids);
         PrimeFaces.current().dialog().openDynamic("/acte/divers/lister-reconnaissance-enfant-naturel", 
                 getDialogOptions(100,100,true), params);
+        */
         
-        /*
         LOG.log(Level.INFO, "REC REC REGISTRE: {0}", registreDto.getId());
         
         String url  = "/acte/divers/lister-reconnaissance-enfant-naturel.xhtml?reg-id="
@@ -395,31 +400,47 @@ public class ListerBacking extends BaseBacking implements Serializable{
         LOG.log(Level.INFO, "DEC REC URL: {0}", url);
         
         return url;
-        */
+        
     
     }
     
-    public void openListActesDecRecEnfAdulterin(RegistreDto registreDto) {
-        
+    public String openListActesDecRecEnfAdulterin(RegistreDto registreDto) {
+        /*
         var ids = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids);
         PrimeFaces.current().dialog().openDynamic("/acte/divers/lister-reconnaissance-enfant-adulterin", 
                 getDialogOptions(100,100,true), params);
+        */
+        String url = "/acte/divers/lister-reconnaissance-enfant-adulterin.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
+        
+        return  url;
     }
     
-    public void openListActesConsReconnaissance(RegistreDto registreDto) {
+    public String openListActesConsReconnaissance(RegistreDto registreDto) {
+        /*
         var ids = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids);
         PrimeFaces.current().dialog().openDynamic("/acte/divers/lister-consentement-reconnaissance", 
                 getDialogOptions(100,100,true), params);
+        */
+        String url = "/acte/deces/lister-consentement-reconnaissance.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
+        
+        return  url;
     }
     
-    public void openListActesDeces(RegistreDto registreDto) {
-        
+    public String openListActesDeces(RegistreDto registreDto) {
+        /*
         var ids = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids);
         PrimeFaces.current().dialog().openDynamic("/acte/deces/lister", 
                 getDialogOptions(100,100,true), params);
+        */
+        String url = "/acte/deces/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
+        
+        return  url;
     }
     
     public boolean renderGererActesMenu(RegistreDto registreDto){
@@ -430,19 +451,29 @@ public class ListerBacking extends BaseBacking implements Serializable{
         return registreDto.getTypeRegistre().equals(TypeRegistre.DIVERS.name());
     }
     
-    private void openListActesNaissance(RegistreDto registreDto){
-        var ids = List.of(registreDto.getId());
+    private String openListActesNaissance(RegistreDto registreDto){
+        //var ids = List.of(registreDto.getId());
         //var operations = List.of(Operation.SAISIE_ACTE_EXISTANT.name());
         //Map<String, List<String>> params = Map.of("id", ids,"operation",operations);
-        Map<String, List<String>> params = Map.of("id", ids);
-        PrimeFaces.current().dialog().openDynamic("/acte/naissance/lister", getDialogOptions(98,98,true), params);
+        //Map<String, List<String>> params = Map.of("id", ids);
+        //PrimeFaces.current().dialog().openDynamic("/acte/naissance/lister", getDialogOptions(98,98,true), params);
+        
+        String url = "/acte/naissance/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
+        
+        return  url;
+        
     }
     
-    private void openListActesMariage(RegistreDto registreDto){
-        var ids = List.of(registreDto.getId());
+    private String openListActesMariage(RegistreDto registreDto){
+        //var ids = List.of(registreDto.getId());
         //var operations = List.of(Operation.SAISIE_ACTE_EXISTANT.name());
-        Map<String, List<String>> params = Map.of("reg-id", ids);
-        PrimeFaces.current().dialog().openDynamic("/acte/mariage/lister", getDialogOptions(98,98,true), params);
+        //Map<String, List<String>> params = Map.of("reg-id", ids);
+        //PrimeFaces.current().dialog().openDynamic("/acte/mariage/lister", getDialogOptions(98,98,true), params);
+        String url = "/acte/mariage/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
+        
+        return  url;
     }
     
     /*

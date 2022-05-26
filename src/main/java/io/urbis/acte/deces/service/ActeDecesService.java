@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -45,6 +46,7 @@ import javax.ws.rs.core.Response;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class ActeDecesService {
     
     @Inject

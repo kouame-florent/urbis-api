@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
  *
  * @author florent
  */
-@Data
-@NoArgsConstructor
+
 @EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
 public class MentionDecesDto extends MentionDto {
     
@@ -24,5 +23,39 @@ public class MentionDecesDto extends MentionDto {
 
     private String localite;
     private LocalDate dateDressage;
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    public String getLocalite() {
+        return localite;
+    }
+
+    public void setLocalite(String localite) {
+        this.localite = localite;
+    }
+
+    public LocalDate getDateDressage() {
+        return dateDressage;
+    }
+
+    public void setDateDressage(LocalDate dateDressage) {
+        this.dateDressage = dateDressage;
+    }
+    
+    
 
 }

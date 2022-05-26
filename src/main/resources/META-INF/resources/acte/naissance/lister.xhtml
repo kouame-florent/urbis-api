@@ -6,7 +6,7 @@ xmlns:h="http://xmlns.jcp.org/jsf/html"
 xmlns:f="http://xmlns.jcp.org/jsf/core"
 xmlns:p="http://primefaces.org/ui">
     
- <ui:composition template="../../templates/dialog-tpl.xhtml">
+ <ui:composition template="../../templates/default-tpl.xhtml">
      
      <ui:define name="title">
          ACTES DE NAISSANCE
@@ -14,7 +14,7 @@ xmlns:p="http://primefaces.org/ui">
      
      <ui:define name="metadata">
          <f:metadata>
-            <f:viewParam name="id" value="#{acteNaissanceListerBacking.registreID}" />
+            <f:viewParam name="reg-id" value="#{acteNaissanceListerBacking.registreID}" />
             <f:viewAction action="#{acteNaissanceListerBacking.onload}" />
         </f:metadata>
      </ui:define>
@@ -71,6 +71,7 @@ xmlns:p="http://primefaces.org/ui">
             
             <p:toolbar>
                 <p:toolbarGroup>
+                    
                     <p:commandButton value="Acte existant" icon="pi pi-plus"
                          actionListener="#{acteNaissanceListerBacking.openNewActeExistant()}"
                          disabled="#{acteNaissanceListerBacking.disableButtonsOpenNew()}"
@@ -88,6 +89,15 @@ xmlns:p="http://primefaces.org/ui">
 
                     </p:commandButton>
                   
+                </p:toolbarGroup>
+                    
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Registres" icon="pi pi-arrow-left" process="@this"
+                                     action="#{acteNaissanceListerBacking.returnToRegistresList()}"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                        
+
+                    </p:commandButton>
                 </p:toolbarGroup>
             </p:toolbar>
                 
@@ -144,7 +154,11 @@ xmlns:p="http://primefaces.org/ui">
                 <p:column  style="width: 2%">
                     <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;"
                                   title="options">
-                        <p:menuitem value="Consulter" process="@this"  icon="pi pi-book"/>
+                        
+                        <p:menuitem value="Consulter" process="@this"  icon="pi pi-book"
+                                    action="#{acteNaissanceListerBacking.openConsulterActeView(acte)}"
+                                    disabled="#{acteNaissanceListerBacking.disableMenuConsulterActe(acte)}"/>
+                        
                         <p:menuitem value="Valider" action="#{acteNaissanceListerBacking.openValiderActeView(acte)}" 
                                     process="@this" disabled="#{acteNaissanceListerBacking.disableMenuValiderActe(acte)}" 
                                     icon="pi pi-book">
@@ -174,6 +188,7 @@ xmlns:p="http://primefaces.org/ui">
                 <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
                 <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" />
             </p:confirmDialog>
+          
 
         </h:form>
          

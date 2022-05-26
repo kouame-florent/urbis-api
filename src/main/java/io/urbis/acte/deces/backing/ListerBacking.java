@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
@@ -59,6 +60,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public void onload(){
         LOG.log(Level.INFO,"REGISTRE ID: {0}",registreID);
+        
+        if(registreID == null || registreID.isBlank()){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        
         registreDto = registreService.findById(registreID);
         lazyActeDecesDataModel.setRegistreID(registreID);
     }

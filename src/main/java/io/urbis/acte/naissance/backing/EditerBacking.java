@@ -56,12 +56,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 
@@ -226,6 +226,9 @@ public class EditerBacking extends BaseBacking implements Serializable{
         operation = Operation.fromString(operationParam);
         LOG.log(Level.INFO,"--- CURRENT OPERATION : {0}",operation.name());
         
+        initActeDto();
+        
+        /*
         switch(operation){
             case DECLARATION_JUGEMENT:
                 acteNaissanceDto = new ActeNaissanceDto();
@@ -248,21 +251,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
         
         acteNaissanceDto.setOperation(operation.name());
         lazyActeNaissanceDataModel.setRegistreID(registreID);
+        */
        
-        /*
-        if(operation == Operation.DECLARATION_JUGEMENT){
-            int numeroActe = acteNaissanceService.numeroActe(registreID);
-            acteNaissanceDto.setNumero(numeroActe);
-        }
-        */
-        
-        /*
-        if(operation == Operation.MODIFICATION){
-            acteNaissanceDto = acteNaissanceService.findById(acteID);
-            viewMode = ViewMode.UPDATE;
-            selectedActe = acteNaissanceDto;
-        }
-        */
     }
     
     public void onRowSelect(SelectEvent<ActeNaissanceDto> event){
@@ -355,8 +345,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         
     }
     
-    
-    
+        
     public void creer(){
         LOG.log(Level.INFO,"Creating acte naissance...");
          
@@ -369,12 +358,15 @@ public class EditerBacking extends BaseBacking implements Serializable{
             String id = acteNaissanceService.creer(acteNaissanceDto);
             LOG.log(Level.INFO,"--- ACTE NAISSANCE ID: {0}",id);
             //creerMentions(id);
-            resetActeDto();
+            initActeDto();
             addGlobalMessage("Déclaration enregistrée avec succès", FacesMessage.SEVERITY_INFO);
         }catch(ValidationException | SQLException ex){
             Logger.getLogger(EditerBacking.class.getName()).log(Level.SEVERE, null, ex);
             addGlobalMessage(ex.getLocalizedMessage(), FacesMessage.SEVERITY_ERROR);
         } 
+        
+        
+       // PrimeFaces.current().dialog().closeDynamic(null);
         
         //numeroActe = acteNaissanceService.numeroActe(registreID);
         
@@ -392,7 +384,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
             //acteNaissanceService.update(acteNaissanceDto.getId(),acteNaissanceDto);
             acteNaissanceService.modifier(acteNaissanceDto.getId(), acteNaissanceDto);
             //creerMentions(acteNaissanceDto.getId());
-            resetActeDto();
+            initActeDto();
             addGlobalMessage("L'acte a été modifié avec succès", FacesMessage.SEVERITY_INFO);
         }catch(ValidationException | SQLException ex){
             Logger.getLogger(EditerBacking.class.getName()).log(Level.SEVERE, null, ex);
@@ -404,10 +396,59 @@ public class EditerBacking extends BaseBacking implements Serializable{
         
     }
     
+    public void valider(){
+   
+        acteNaissanceService.valider(acteNaissanceDto.getId(), acteNaissanceDto);
+        initActeDto();
+        addGlobalMessage("L'acte a été validé avec succès", FacesMessage.SEVERITY_INFO);
+        PrimeFaces.current().dialog().closeDynamic(null);
+        
+    }
+    
+    private void initActeDto(){
+        
+        switch(operation){
+            case DECLARATION_JUGEMENT:
+                acteNaissanceDto = new ActeNaissanceDto();
+                acteNaissanceDto.setRegistreID(registreID);
+                int numeroActe = acteNaissanceService.numeroActe(registreID);
+                acteNaissanceDto.setNumero(numeroActe);
+                
+                break;
+            case SAISIE_ACTE_EXISTANT:
+                acteNaissanceDto = new ActeNaissanceDto();
+                acteNaissanceDto.setRegistreID(registreID);
+                break;
+            case MODIFICATION:
+                acteNaissanceDto = acteNaissanceService.findById(acteID);
+                break;
+            case VALIDATION:
+                acteNaissanceDto = acteNaissanceService.findById(acteID);
+                break;
+            case CONULTATION:
+                acteNaissanceDto = acteNaissanceService.findById(acteID);
+                break;
+        }
+        
+        acteNaissanceDto.setOperation(operation.name());
+        lazyActeNaissanceDataModel.setRegistreID(registreID);
+       
+        //selectedActe = null;
+    
+    }
+    
     public boolean renderCreateButton(){
         if(operation != null){
             return operation == Operation.DECLARATION_JUGEMENT || 
                     operation == Operation.SAISIE_ACTE_EXISTANT;
+        }
+        return false;
+    }
+    
+    public boolean renderValidateButton(){
+        if(operation != null){
+            return operation == Operation.VALIDATION ;
+                    
         }
         return false;
     }
@@ -428,15 +469,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
     }
     */
     
-    private void resetActeDto(){
-        acteNaissanceDto = new ActeNaissanceDto();
-        if(operation == Operation.DECLARATION_JUGEMENT){
-            int numeroActe = acteNaissanceService.numeroActe(registreID);
-            acteNaissanceDto.setNumero(numeroActe);
-        }
-        selectedActe = null;
     
-    }
     
     private void resetMentions(){
     
@@ -465,6 +498,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         }
     }
     
+    
     public void ajouterMentionDissolution(){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -481,6 +515,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
         }
     }
     
+    
+  
     public void ajouterMentionReconnaissance(){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -536,6 +572,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
        Set<ConstraintViolation<MentionDecesDto>> violations = validator.validate(decesDto);
        if(violations.isEmpty()){
            LOG.log(Level.INFO,"--MENTION DECES DTO OFFICIER ID {0}",decesDto.getOfficierEtatCivilID());
+           
            //var dcs = new MentionDecesDto(decesDto);
           // decesDtos.add(decesDto);
           // LOG.log(Level.INFO,"--DECES DTO SIZE {0}",decesDtos.size());
@@ -608,9 +645,11 @@ public class EditerBacking extends BaseBacking implements Serializable{
        
     }
     
+    
     public void closeView(){
-        PrimeFaces.current().dialog().closeDynamic(null);
+        PrimeFaces.current().dialog().closeDynamic("");
     }
+
 
     public String getRegistreID() {
         return registreID;

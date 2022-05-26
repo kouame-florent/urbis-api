@@ -102,28 +102,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         situations = situationMatrimonialeService.findAll();
         regimes = regimeService.findAll();
         
-        switch(operation){
-            case DECLARATION:
-                acteDto = new ActeMariageDto();
-                acteDto.setRegistreID(registreID);
-                int numeroActe = acteMariageService.numeroActe(registreID);
-                acteDto.setNumero(numeroActe);
-                
-                break;
-            case SAISIE_ACTE_EXISTANT:
-                acteDto = new ActeMariageDto();
-                acteDto.setRegistreID(registreID);
-                break;
-            case MODIFICATION:
-                acteDto = acteMariageService.findById(acteMariageID);
-                break;
-            case VALIDATION:
-                acteDto = acteMariageService.findById(acteMariageID);
-                break;
-        }
-        
-        acteDto.setOperation(operation.name());
-        lazyActeMariageDataModel.setRegistreID(registreID);
+        initActeDto();
         
     }
     
@@ -131,7 +110,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         try{
            // acteMariageService.create(acteDto);
             acteMariageService.creer(acteDto);
-            resetActeDto();
+            initActeDto();
             addGlobalMessage("Déclaration enregistrée avec succès", FacesMessage.SEVERITY_INFO);
         }catch(ValidationException ex){
             LOG.log(Level.SEVERE,ex.getMessage());
@@ -199,13 +178,38 @@ public class EditerBacking extends BaseBacking implements Serializable{
         return false;
     }
     
-    private void resetActeDto(){
+    private void initActeDto(){
+        /*
         acteDto = new ActeMariageDto();
         if(operation == Operation.DECLARATION){
             int numeroActe = acteMariageService.numeroActe(registreID);
             acteDto.setNumero(numeroActe);
         }
+        */
        // selectedActe = null;
+       
+        switch(operation){
+            case DECLARATION:
+                acteDto = new ActeMariageDto();
+                acteDto.setRegistreID(registreID);
+                int numeroActe = acteMariageService.numeroActe(registreID);
+                acteDto.setNumero(numeroActe);
+                
+                break;
+            case SAISIE_ACTE_EXISTANT:
+                acteDto = new ActeMariageDto();
+                acteDto.setRegistreID(registreID);
+                break;
+            case MODIFICATION:
+                acteDto = acteMariageService.findById(acteMariageID);
+                break;
+            case VALIDATION:
+                acteDto = acteMariageService.findById(acteMariageID);
+                break;
+        }
+        
+        acteDto.setOperation(operation.name());
+        lazyActeMariageDataModel.setRegistreID(registreID);
     
     }
     

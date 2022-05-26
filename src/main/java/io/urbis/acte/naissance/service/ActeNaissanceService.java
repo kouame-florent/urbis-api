@@ -1,4 +1,4 @@
-/*
+/**
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -39,8 +39,6 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
-import io.urbis.acte.naissance.dto.ActeNaissanceEtatDto;
-import io.urbis.mention.domain.MentionMariage;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
@@ -58,6 +56,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -70,6 +69,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class ActeNaissanceService {
     
     @Inject
@@ -111,7 +111,7 @@ public class ActeNaissanceService {
        
     }
     
-    
+   
     public String creer(@NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
@@ -336,6 +336,7 @@ public class ActeNaissanceService {
         return acte.id;
     }
     
+ 
     private void creerEtats(String acteID) throws SQLException{
         ActeNaissanceEtat etat = new ActeNaissanceEtat();
         ActeNaissance acte = ActeNaissance.findById(acteID);
@@ -489,7 +490,8 @@ public class ActeNaissanceService {
     
     }
     
-     public String dateNaissanceEnLettre(LocalDateTime localDateTime){
+
+    public String dateNaissanceEnLettre(LocalDateTime localDateTime){
       
         int dayOfMonth = localDateTime.getDayOfMonth();
         String month = localDateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
@@ -514,6 +516,7 @@ public class ActeNaissanceService {
         return laDate;
         
     }
+    
     
     public String heureNaissanceEnLettre(LocalDateTime localDateTime){
         
@@ -546,10 +549,7 @@ public class ActeNaissanceService {
         return temps;
     }
    
-   
-     
-    
-    
+
     public void creerMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         
         log.infof("-- MENTIONS MARIAGE SIZE: %d", acteNaissanceDto.getMentionMariageDtos().size());
@@ -590,6 +590,13 @@ public class ActeNaissanceService {
         });
     }
     
+    
+    public void valider(@NotBlank String id, @NotNull ActeNaissanceDto acteNaissanceDto){
+    
+        ActeNaissance acte = ActeNaissance.findById(id);
+        acte.statut = StatutActeNaissance.VALIDE;
+    }
+
     public void modifier(@NotBlank String id, @NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         ActeNaissance acte = ActeNaissance.findById(id);
@@ -806,8 +813,7 @@ public class ActeNaissanceService {
     }
     
     
-    
-    public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+     public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         
         log.infof("-- MENTIONS MARIAGE SIZE: %d", acteNaissanceDto.getMentionMariageDtos().size());
         
@@ -907,7 +913,7 @@ public class ActeNaissanceService {
     }
     
   
-    
+   
     public void validerActe(Registre registre,ActeNaissanceDto acte,Operation operation){
         if(operation == Operation.DECLARATION_JUGEMENT){
             verifierNumero(registre, acte);
@@ -918,7 +924,7 @@ public class ActeNaissanceService {
         //validerNombreDefeuillets(registre);
     }
     
-    
+   
     public void verifierNumero(Registre registre,ActeNaissanceDto acte){
         while(numeroExist(registre, acte.getNumero())){
             acte.setNumero(acte.getNumero() + 1);
@@ -967,7 +973,7 @@ public class ActeNaissanceService {
     }
     
     
-    public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize,@NotBlank String registreID){
+    public List<ActeNaissanceDto> findWithFilters(int offset,int pageSize,@NotNull String registreID){
         log.infof("||-- REGISTRE ID : %s", registreID);
         Registre registre = Registre.findById(registreID);
         
@@ -1235,7 +1241,7 @@ public class ActeNaissanceService {
       
     }
     
-    
+
     public boolean supprimer(String id){
         return ActeNaissance.deleteById(id);
     }

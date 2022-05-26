@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -41,6 +42,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class ActeMariageService {
     
     @Inject

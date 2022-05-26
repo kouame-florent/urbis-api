@@ -26,6 +26,6 @@ public class TypeConsentementResource {
     
     @GET
     public List<TypeConsentementDto> findAll(){
-      return  typeConsentementService.findAllSituation();
+      return  typeConsentementService.findAll();
     }
 }

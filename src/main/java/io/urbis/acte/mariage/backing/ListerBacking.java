@@ -31,6 +31,7 @@ import org.primefaces.PrimeFaces;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
@@ -65,6 +66,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void onload(){
         LOG.log(Level.INFO,"---- URBIS TENANT: {0}",tenant);
         LOG.log(Level.INFO,"---- REGISTRE ID: {0}",registreID);
+        
+        if(registreID == null || registreID.isBlank()){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        
         registreDto = registreService.findById(registreID);
         lazyActeMariageDataModele.setRegistreID(registreID);
     }

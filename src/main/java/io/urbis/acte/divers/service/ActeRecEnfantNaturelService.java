@@ -29,6 +29,7 @@ import io.urbis.acte.divers.domain.StatutActeDivers;
 import io.urbis.registre.domain.StatutRegistre;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 /**
@@ -36,6 +37,7 @@ import javax.validation.ValidationException;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class ActeRecEnfantNaturelService {
     
     @Inject

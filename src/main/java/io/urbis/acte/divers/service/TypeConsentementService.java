@@ -19,7 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class TypeConsentementService {
     
-    public List<TypeConsentementDto> findAllSituation(){
+    public List<TypeConsentementDto> findAll(){
         EnumSet<TypeConsentement> types = EnumSet.allOf(TypeConsentement.class);
         return types.stream().map(TypeConsentement::mapToDto).collect(Collectors.toList()); 
     }

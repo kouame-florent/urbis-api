@@ -638,20 +638,17 @@ xmlns:p="http://primefaces.org/ui">
                         <p:commandButton value="Enregistrer l'acte de mariage" process="@form" 
                                          action="#{acteMariageEditerBacking.creer()}"
                                          rendered="#{acteMariageEditerBacking.renderedCreerButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check" />
 
                         <p:commandButton value="Valider l'acte de mariage" process="@form" 
                                          action="#{acteMariageEditerBacking.valider()}"
                                          rendered="#{acteMariageEditerBacking.renderedValiderButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check" />
                         
                          <p:commandButton value="Modifier l'acte mariage" process="@form" 
                                          action="#{acteMariageEditerBacking.modifier()}"
                                          rendered="#{acteMariageEditerBacking.renderedModifierButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check" />
                     </div>
 
 

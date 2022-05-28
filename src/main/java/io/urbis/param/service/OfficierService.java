@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
 
@@ -24,6 +25,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class OfficierService {
     
     @Inject

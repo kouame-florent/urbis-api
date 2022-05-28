@@ -5,6 +5,9 @@
  */
 package io.urbis.demande.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Sort;
+import io.urbis.acte.Acte;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.acte.divers.service.ActeDiversService;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
@@ -16,16 +19,26 @@ import io.urbis.demande.domain.Demande;
 import io.urbis.demande.domain.Demandeur;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.registre.domain.TypeRegistre;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class DemandeService {
     
     @Inject
@@ -41,52 +54,78 @@ public class DemandeService {
     ActeNaissanceService acteNaissanceService;
     
         
+    @Inject
+    EntityManager em;
+    
+    @Inject
+    Logger log;
+    
+        
     public void creer(@NotNull DemandeDto dto){
         
         TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
         
-        //Acte acte = Acte.findById(dto.getActeID());
-        /*
-        switch(typeRegistre){
-            case DECES:
-                
-                break;
-            case DIVERS:
-                break;
-            case MARIAGE:
-                break;
-            case NAISSANCE:
-                break;
-            case SPECIAL_DECES:
-                break;
-            case SPECIAL_NAISSANCE:
-                break;
+        Acte acte = null;
+        
+        try{
+            switch(typeRegistre){
+                case DECES:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+                case DIVERS:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+                case MARIAGE:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+                case NAISSANCE:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+                case SPECIAL_DECES:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+                case SPECIAL_NAISSANCE:
+                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+                            dto.getDateOuvertureRegistre());
+                    break;
+            }
+        }catch(EntityNotFoundException ex){
+            throw  ex;
         }
-        */
+       
+        if(acte != null){
+            Demandeur demandeur = new Demandeur();
         
-        Demandeur demandeur = new Demandeur();
+            Demande demande = new Demande(demandeur);
+
+            demande.acte = acte;
+            demande.dateHeureDemande = dto.getDateHeureDemande();
+            demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
+            demande.dateOuvertureRegistre = dto.getDateOuvertureRegistre();
+            demande.demandeur.email = dto.getDemandeurEmail();
+            demande.demandeur.nom = dto.getDemandeurNom();
+            demande.demandeur.numeroTelephone = dto.getDemandeurNumeroTelephone();
+            demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
+            demande.demandeur.prenoms = dto.getDemandeurPrenoms();
+            demande.demandeur.qualite = dto.getDemandeurQualite();
+            demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
+
+            demande.nombreCopies = dto.getNombreCopies();
+            demande.nombreExtraits = dto.getNombreExtraits();
+            demande.numero = dto.getNumero();
+            demande.numeroActe = dto.getNumeroActe();
+            demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+
+            demande.persist();
         
-        Demande demande = new Demande(demandeur);
+        }
         
-       // demande.acte = acte;
-        demande.dateHeureDemande = dto.getDateHeureDemande();
-        demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
-        demande.dateOuvertureRegistre = dto.getDateOuvertureRegistre();
-        demande.demandeur.email = dto.getDemandeurEmail();
-        demande.demandeur.nom = dto.getDemandeurNom();
-        demande.demandeur.numero = dto.getDemandeurNumero();
-        demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
-        demande.demandeur.prenoms = dto.getDemandeurPrenoms();
-        demande.demandeur.qualite = dto.getDemandeurQualite();
-        demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
-        
-        demande.nombreCopies = dto.getNombreCopies();
-        demande.nombreExtraits = dto.getNombreExtraits();
-        demande.numero = dto.getNumero();
-        demande.numeroActe = dto.getNumeroActe();
-        demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
-        
-        demande.persist();
+       
     
     }
     
@@ -99,6 +138,45 @@ public class DemandeService {
     
     }
     
+    
+    public List<DemandeDto> findWithFilters(int offset,int pageSize){
+        
+        
+        PanacheQuery<Demande>  query = Demande.findAll(Sort.by("numero").descending());
+        
+        PanacheQuery<Demande> rq =  query.range(offset, offset + (pageSize-1));
+        
+        return rq.stream().map(this::mapToDto).collect(Collectors.toList());
+      
+    }
+    
+    
+    public int count(){
+        return (int)Demande.count();
+    }
+    
+     public int numeroDemande(){
+   
+        TypedQuery<Integer> query =  em.createNamedQuery("Demande.findMaxNumero", Integer.class);   
+          
+        try{
+            Integer num = query.getSingleResult();
+            log.infof("-- NUM DEMANDE: %d", num);
+            if(num != null){
+                return num + 1;
+            }
+            log.infof("aucune demande trouvée...");
+            return 1;
+        }catch(NoResultException ex){
+            log.infof("aucune demande trouvée...");
+            return 1;
+        }
+      
+      
+    }
+    
+
+
     private DemandeDto mapToDto(@NotNull Demande demande){
         
         DemandeDto dto = new DemandeDto();
@@ -109,7 +187,7 @@ public class DemandeService {
         dto.setDateOuvertureRegistre(demande.dateOuvertureRegistre);
         dto.setDemandeurEmail(demande.demandeur.email);
         dto.setDemandeurNom(demande.demandeur.nom);
-        dto.setDemandeurNumero(demande.demandeur.numero);
+        dto.setDemandeurNumeroTelephone(demande.demandeur.numeroTelephone);
         dto.setDemandeurNumeroPiece(demande.demandeur.numeroPiece);
         dto.setDemandeurPrenoms(demande.demandeur.prenoms);
         dto.setDemandeurQualite(demande.demandeur.qualite);

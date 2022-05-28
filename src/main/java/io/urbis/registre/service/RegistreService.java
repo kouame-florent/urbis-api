@@ -50,8 +50,6 @@ public class RegistreService {
     @Inject
     Logger log;
     
-    
-    
     @Inject
     EntityManager em;
     

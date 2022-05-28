@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.jboss.logging.Logger;
@@ -26,6 +27,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
+@Transactional
 public class TribunalService {
     
     @Inject

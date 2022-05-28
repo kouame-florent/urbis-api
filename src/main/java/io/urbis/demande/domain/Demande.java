@@ -19,6 +19,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -27,6 +29,12 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
+@NamedQueries({
+    @NamedQuery(name = "Demande.findMaxNumero",
+            query = "Select max(d.numero) FROM Demande d "
+    ),
+    
+})
 @Table(name = "demande",
         uniqueConstraints = { @UniqueConstraint(columnNames = {"numero"})}
 )
@@ -39,8 +47,8 @@ public class Demande extends BaseEntity{
                            column=@Column(name="demandeur_nom")),
         @AttributeOverride(name="prenoms",
                            column=@Column(name="demandeur_prenoms")),
-        @AttributeOverride(name="numero",
-                           column=@Column(name="demandeur_numero")),
+        @AttributeOverride(name="numeroTelephone",
+                           column=@Column(name="demandeur_numero_telephone")),
         @AttributeOverride(name="email",
                            column=@Column(name="demandeur_email")),
         @AttributeOverride(name="typePiece",

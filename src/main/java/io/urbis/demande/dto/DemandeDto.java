@@ -31,7 +31,7 @@ public class DemandeDto {
     
     private String demandeurPrenoms;
     
-    private String demandeurNumero;
+    private String demandeurNumeroTelephone;
     
     private String demandeurEmail;
     

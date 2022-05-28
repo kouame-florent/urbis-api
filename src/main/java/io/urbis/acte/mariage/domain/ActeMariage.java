@@ -14,6 +14,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -22,7 +24,12 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
-
+@NamedQueries({
+    @NamedQuery(name = "ActeMariage.findByNumeroAndDateOuvertureRegistre",
+            query = "Select a FROM ActeMariage a WHERE a.numero = :numero AND a.registre.dateOuverture = :dateOuvertureRegistre"
+    ),
+    
+})
 @Table(name = "acte_mariage",uniqueConstraints = { 
     @UniqueConstraint(columnNames = {"registre_id","numero"})
 })

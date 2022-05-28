@@ -228,30 +228,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         
         initActeDto();
         
-        /*
-        switch(operation){
-            case DECLARATION_JUGEMENT:
-                acteNaissanceDto = new ActeNaissanceDto();
-                acteNaissanceDto.setRegistreID(registreID);
-                int numeroActe = acteNaissanceService.numeroActe(registreID);
-                acteNaissanceDto.setNumero(numeroActe);
-                
-                break;
-            case SAISIE_ACTE_EXISTANT:
-                acteNaissanceDto = new ActeNaissanceDto();
-                acteNaissanceDto.setRegistreID(registreID);
-                break;
-            case MODIFICATION:
-                acteNaissanceDto = acteNaissanceService.findById(acteID);
-                break;
-            case VALIDATION:
-                acteNaissanceDto = acteNaissanceService.findById(acteID);
-                break;
-        }
-        
-        acteNaissanceDto.setOperation(operation.name());
-        lazyActeNaissanceDataModel.setRegistreID(registreID);
-        */
+       
        
     }
     

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/default-tpl.xhtml">
+     
+     <ui:define name="title">
+         GESTION DES DEMANDES
+     </ui:define>
+     
+     <ui:define name="metadata">
+         <f:metadata>
+            
+            <f:viewAction action="#{demandeListerBacking.onload}" />
+        </f:metadata>
+     </ui:define>
+    
+    <ui:define name="content">
+        
+        <h:form id="messageForm">
+            <p:growl globalOnly="true" life="15000" showDetail="true"/>        
+        </h:form>
+       
+        <h:form id="contentForm">
+             
+             <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Nouvelle demande" icon="pi pi-plus"
+                                     actionListener="#{demandeListerBacking.openCreerView()}"
+                         styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:ajax event="dialogReturn" listener="#{demandeListerBacking.onDemandeCreated}"
+                                 update="messageForm :contentForm:demandesDatatable"/>
+                    </p:commandButton>
+                  
+                </p:toolbarGroup>
+            </p:toolbar>
+            
+                
+            <p:dataTable id="demandesDatatable"  var="demande" 
+                         value="#{demandeListerBacking.lazyDemandeDataModel}"
+                         selection="#{demandeListerBacking.selectedDemande}" rowKey="#{demande.id}" paginator="true"
+                        rows="25" rowSelectMode="add" paginatorPosition="bottom">
+                
+                
+                <p:column headerText="Nom"  >
+                    <h:outputText value="#{demande.demandeurNom}"/>
+                </p:column>
+                <p:column headerText="Prénoms"  >
+                    <h:outputText value="#{demande.demandeurPrenoms}"/>
+                </p:column>
+                
+                 <p:column headerText="Numéro demande"  >
+                    <h:outputText value="#{demande.numero}"/>
+                </p:column>
+                
+                <p:column headerText="Type registre" >
+                    <h:outputText value="#{demande.typeRegistre}"/>
+                </p:column>
+              
+                
+             
+            </p:dataTable>
+            
+             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" />
+            </p:confirmDialog>
+
+        </h:form>
+         
+        <script>
+            function start() {
+                    PF('statusDialog').show();
+            }
+            function stop() {
+                    PF('statusDialog').hide();
+            }
+	</script>
+        
+       
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

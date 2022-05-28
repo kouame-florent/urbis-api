@@ -22,7 +22,7 @@ public class Demandeur {
     
     public String prenoms;
     
-    public String numero;
+    public String numeroTelephone;
     
     public String email;
     

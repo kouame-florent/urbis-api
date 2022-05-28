@@ -310,10 +310,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("/parametre/parametres", options, null);
     }
     
-    public void openDemandeView(){
-        Map<String,Object> options = getDialogOptions(96, 96, true);
-        options.put("resizable", false);
-        PrimeFaces.current().dialog().openDynamic("/demande/lister", options, null);
+    public String openDemandeView(){
+        String url = "/demande/lister.xhtml?faces-redrect=true";
+        LOG.log(Level.INFO, "--- DEMANDE URL: {0}", url);   
+        
+        return  url;
     }
     
     /*

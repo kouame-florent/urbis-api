@@ -22,12 +22,17 @@ import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.StatutRegistre;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
@@ -47,6 +52,10 @@ public class ActeMariageService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    EntityManager em;
+    
     
     public ActeMariageDto findById(@NotBlank String id){
         return ActeMariage.findByIdOptional(id)
@@ -305,8 +314,9 @@ public class ActeMariageService {
         }
         
         PanacheQuery<ActeMariage>  query = ActeMariage.find("registre",Sort.by("numero").descending(),registre);
+        PanacheQuery<ActeMariage> rq =  query.range(offset, offset + (pageSize-1));
         
-        return query.stream().map(this::mapToDto).collect(Collectors.toList());
+        return rq.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
     
@@ -355,6 +365,23 @@ public class ActeMariageService {
                registre,numeroActe).firstResultOptional();
        
        return optActe.isPresent();
+    }
+    
+    public ActeMariage findByNumeroAndDateOuvertureRegistre(int numero, LocalDate dateOuvertureRegistre){
+        TypedQuery<ActeMariage> query =  em.createNamedQuery("ActeMariage.findByNumeroAndDateOuvertureRegistre", ActeMariage.class);
+        query.setParameter("numero",numero);
+        query.setParameter("dateOuvertureRegistre", dateOuvertureRegistre);
+        
+        ActeMariage acte = null;
+        
+        try{
+             acte = query.getSingleResult();
+        }catch(NoResultException | NonUniqueResultException ex){
+            throw new EntityNotFoundException("cannot find ActeNaissance");
+        }
+       
+        
+        return acte;
     }
     
     public ActeMariageDto mapToDto(@NotNull ActeMariage acte){

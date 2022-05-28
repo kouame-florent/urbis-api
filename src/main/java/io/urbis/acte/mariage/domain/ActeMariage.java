@@ -5,7 +5,7 @@
  */
 package io.urbis.acte.mariage.domain;
 
-import io.urbis.acte.Acte;
+import io.urbis.acte.common.domain.Acte;
 import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.time.LocalDateTime;
@@ -24,18 +24,12 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
-@NamedQueries({
-    @NamedQuery(name = "ActeMariage.findByNumeroAndDateOuvertureRegistre",
-            query = "Select a FROM ActeMariage a WHERE a.numero = :numero AND a.registre.dateOuverture = :dateOuvertureRegistre"
-    ),
-    
-})
-@Table(name = "acte_mariage",uniqueConstraints = { 
-    @UniqueConstraint(columnNames = {"registre_id","numero"})
-})
+
+@Table(name = "acte_mariage")
 @Entity
 public class ActeMariage extends Acte{
-        
+      
+    /*
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
@@ -43,7 +37,7 @@ public class ActeMariage extends Acte{
     
     @Column(name = "numero")
     public int numero;
-
+    */
     
     @Column(name = "date_mariage",nullable = false)
     public LocalDateTime dateMariage;

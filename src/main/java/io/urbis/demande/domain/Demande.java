@@ -5,7 +5,7 @@
  */
 package io.urbis.demande.domain;
 
-import io.urbis.acte.Acte;
+import io.urbis.acte.common.domain.Acte;
 import io.urbis.common.domain.BaseEntity;
 import io.urbis.registre.domain.TypeRegistre;
 

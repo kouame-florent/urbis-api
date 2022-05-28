@@ -5,9 +5,8 @@
  */
 package io.urbis.acte.deces.domain;
 
-import io.urbis.acte.Acte;
+import io.urbis.acte.common.domain.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
-import io.urbis.registre.domain.Registre;
 import java.sql.Clob;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
@@ -21,19 +20,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author florent
  */
-@Table(name = "acte_deces",uniqueConstraints = { 
-    @UniqueConstraint(columnNames = {"registre_id","numero"})
-})
+
+@Table(name = "acte_deces")
 @Entity
 public class ActeDeces extends Acte{
     
+    /*
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
@@ -41,23 +39,39 @@ public class ActeDeces extends Acte{
     
     @Column(name = "numero")
     public int numero;
+    */
     
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name="nom",
-                           column=@Column(name="enfant_nom")),
+                           column=@Column(name="defunt_nom")),
         @AttributeOverride(name="prenoms",
-                           column=@Column(name="enfant_prenoms")),
+                           column=@Column(name="defunt_prenoms")),
         @AttributeOverride(name="nomComplet",
-                           column=@Column(name="nom_complet")),
+                           column=@Column(name="defunt_nom_complet")),
         @AttributeOverride(name="lieuNaissance",
-                           column=@Column(name="enfant_lieu_naissance")),
+                           column=@Column(name="defunt_lieu_naissance")),
         @AttributeOverride(name="nationalite",
-                           column=@Column(name="enfant_nationalite")),
+                           column=@Column(name="defunt_nationalite")),
         @AttributeOverride(name="dateNaissance",
-                           column=@Column(name="enfant_date_naissance")),
+                           column=@Column(name="defunt_date_naissance")),
         @AttributeOverride(name="localite",
-                           column=@Column(name="enfant_localite")),
+                           column=@Column(name="defunt_localite")),
+        @AttributeOverride(name="dateDeces",
+                           column=@Column(name="defunt_date_deces")),
+        @AttributeOverride(name="lieuDeces",
+                           column=@Column(name="defunt_lieu_deces")),
+        @AttributeOverride(name="localiteNaissance",
+                           column=@Column(name="defunt_localite_naissance")),
+        @AttributeOverride(name="situationMatrimoniale",
+                           column=@Column(name="defunt_situation_matrimoniale")),
+        
+        @AttributeOverride(name="domicile",
+                           column=@Column(name="defunt_domicile")),
+        @AttributeOverride(name="profession",
+                           column=@Column(name="defunt_profession")),
+        @AttributeOverride(name="sexe",
+                           column=@Column(name="defunt_sexe")),
     })
     public Defunt defunt;
     

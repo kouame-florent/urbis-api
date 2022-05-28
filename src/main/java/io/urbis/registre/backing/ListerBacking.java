@@ -6,6 +6,7 @@
 package io.urbis.registre.backing;
 
 
+import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.param.service.CentreService;
@@ -85,6 +86,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     @Inject
     FacesContext facesContext;
+    
+   @Inject
+   SecurityIdentity identity;
     
    
     
@@ -172,6 +176,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public void onLoad(){
+        LOG.log(Level.INFO, "--- SECURITY IDENTITY: {0}", identity);   
+        LOG.log(Level.INFO, "--- PRINCIPAL IDENTITY: {0}", identity.getPrincipal().getName());   
         checkRequiredParams();
     }
     

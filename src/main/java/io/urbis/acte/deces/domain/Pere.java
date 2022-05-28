@@ -27,6 +27,6 @@ public class Pere implements Serializable{
     public LocalDate dateNaissance;
     public LocalDate dateDeces;
     public String lieuDeces;
-    public String localiteDeces;
+
 
 }

@@ -5,14 +5,12 @@
  */
 package io.urbis.security.service;
 
-import io.quarkus.oidc.OidcConfigurationMetadata;
 import io.quarkus.security.identity.SecurityIdentity;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 /**
@@ -25,12 +23,7 @@ public class SecurityFilter implements ContainerRequestFilter{
     @Inject
     Logger log;
     
-    @Inject
-    OidcConfigurationMetadata configMetadata;   
-    
-    @Inject
-    JsonWebToken jwt;    
-    
+        
     @Inject
     SecurityIdentity identity;
     

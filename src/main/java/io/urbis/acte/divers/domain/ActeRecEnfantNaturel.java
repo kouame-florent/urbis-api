@@ -6,7 +6,6 @@
 package io.urbis.acte.divers.domain;
 
 import io.urbis.param.domain.OfficierEtatCivil;
-import io.urbis.registre.domain.Registre;
 import java.time.LocalDate;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -18,7 +17,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -26,12 +24,11 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 
-@Table(name = "acte_divers_reconnaissance_enfant_naturel",uniqueConstraints = { 
-    @UniqueConstraint(columnNames = {"registre_id","numero"})
-}) 
+@Table(name = "acte_divers_reconnaissance_enfant_naturel") 
 @Entity
 public class ActeRecEnfantNaturel extends ActeDivers{ 
     
+    /*
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
@@ -39,6 +36,7 @@ public class ActeRecEnfantNaturel extends ActeDivers{
     
     @Column(name = "numero")
     public int numero;
+    */
     
     @Embedded
     @AttributeOverrides({

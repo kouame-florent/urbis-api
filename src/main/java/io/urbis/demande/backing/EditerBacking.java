@@ -71,7 +71,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
             addGlobalMessage("Demande enregistrée avec succès", FacesMessage.SEVERITY_INFO);
         }catch(EntityNotFoundException ex){
             LOG.log(Level.SEVERE,ex.getMessage());
-            String msg = MessageFormat.format("L'acte avec le numéro {0} n'existe pas", demandeDto.getNumeroActe()) ;
+            String msg = String.format("L'acte avec le numéro %s du %s n'existe pas", 
+                    demandeDto.getNumeroActe(),demandeDto.getDateOuvertureRegistre()) ;
             addGlobalMessage(msg, FacesMessage.SEVERITY_ERROR);
         }
     }

@@ -5,7 +5,7 @@
  */
 package io.urbis.acte.naissance.domain;
 
-import io.urbis.acte.Acte;
+import io.urbis.acte.common.domain.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import java.time.LocalDate;
@@ -19,6 +19,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -28,20 +30,12 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 
-@Table(name = "acte_naissance",uniqueConstraints = { 
-    @UniqueConstraint(columnNames = {"registre_id","numero"})
-})
+@Table(name = "acte_naissance")
 
 @Entity
 public class ActeNaissance extends Acte{
     
-    @NotNull
-    @ManyToOne
-    @JoinColumn(nullable = false,name = "registre_id")
-    public Registre registre;
     
-    @Column(name = "numero")
-    public int numero;
     
     @Embedded
     @AttributeOverrides({

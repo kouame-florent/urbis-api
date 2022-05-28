@@ -367,22 +367,7 @@ public class ActeMariageService {
        return optActe.isPresent();
     }
     
-    public ActeMariage findByNumeroAndDateOuvertureRegistre(int numero, LocalDate dateOuvertureRegistre){
-        TypedQuery<ActeMariage> query =  em.createNamedQuery("ActeMariage.findByNumeroAndDateOuvertureRegistre", ActeMariage.class);
-        query.setParameter("numero",numero);
-        query.setParameter("dateOuvertureRegistre", dateOuvertureRegistre);
-        
-        ActeMariage acte = null;
-        
-        try{
-             acte = query.getSingleResult();
-        }catch(NoResultException | NonUniqueResultException ex){
-            throw new EntityNotFoundException("cannot find ActeNaissance");
-        }
-       
-        
-        return acte;
-    }
+    
     
     public ActeMariageDto mapToDto(@NotNull ActeMariage acte){
         ActeMariageDto dto = new ActeMariageDto();

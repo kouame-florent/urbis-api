@@ -159,7 +159,7 @@ public class ActeDecesService {
    
         acte.pere.lieuDeces = acteDecesDto.getPereLieuDeces();
         acte.pere.lieuNaissance = acteDecesDto.getPereLieuNaissance();
-        acte.pere.localiteDeces = acteDecesDto.getPereLocaliteDeces();
+       // acte.pere.localiteDeces = acteDecesDto.getPereLocaliteDeces();
         acte.pere.nom = acteDecesDto.getPereNom();
         acte.pere.prenoms = acteDecesDto.getPerePrenoms();
         acte.pere.profession = acteDecesDto.getPereProfession();
@@ -303,7 +303,7 @@ public class ActeDecesService {
         
         acte.pere.lieuDeces = acteDecesDto.getPereLieuDeces();
         acte.pere.lieuNaissance = acteDecesDto.getPereLieuNaissance();
-        acte.pere.localiteDeces = acteDecesDto.getPereLocaliteDeces();
+        //acte.pere.localiteDeces = acteDecesDto.getPereLocaliteDeces();
         
        
         acte.pere.nom = acteDecesDto.getPereNom();
@@ -573,7 +573,7 @@ public class ActeDecesService {
         Optional.ofNullable(acte.pere).ifPresent(p -> {
             dto.setPereLieuDeces(p.lieuDeces);
             dto.setPereLieuNaissance(p.lieuNaissance);
-            dto.setPereLocaliteDeces(p.localiteDeces);
+            //dto.setPereLocaliteDeces(p.localiteDeces);
             dto.setPereNom(p.nom);
             dto.setPerePrenoms(p.prenoms);
             dto.setPereProfession(p.profession);

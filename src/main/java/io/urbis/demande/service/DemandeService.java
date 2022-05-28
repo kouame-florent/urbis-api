@@ -7,12 +7,13 @@ package io.urbis.demande.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
-import io.urbis.acte.Acte;
+import io.urbis.acte.common.domain.Acte;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.acte.divers.service.ActeDiversService;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
+import io.urbis.acte.common.service.ActeService;
 import io.urbis.common.domain.TypePiece;
 
 import io.urbis.demande.domain.Demande;
@@ -53,6 +54,9 @@ public class DemandeService {
     @Inject
     ActeNaissanceService acteNaissanceService;
     
+    @Inject
+    ActeService acteService;
+    
         
     @Inject
     EntityManager em;
@@ -68,32 +72,10 @@ public class DemandeService {
         Acte acte = null;
         
         try{
-            switch(typeRegistre){
-                case DECES:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
+            
+            acte = acteService.findByDemandeCreteria(dto.getNumeroActe(),typeRegistre,
                             dto.getDateOuvertureRegistre());
-                    break;
-                case DIVERS:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
-                            dto.getDateOuvertureRegistre());
-                    break;
-                case MARIAGE:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
-                            dto.getDateOuvertureRegistre());
-                    break;
-                case NAISSANCE:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
-                            dto.getDateOuvertureRegistre());
-                    break;
-                case SPECIAL_DECES:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
-                            dto.getDateOuvertureRegistre());
-                    break;
-                case SPECIAL_NAISSANCE:
-                    acte = acteMariageService.findByNumeroAndDateOuvertureRegistre(dto.getNumero(),
-                            dto.getDateOuvertureRegistre());
-                    break;
-            }
+           
         }catch(EntityNotFoundException ex){
             throw  ex;
         }

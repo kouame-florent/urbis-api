@@ -22,13 +22,11 @@ import javax.validation.constraints.NotNull;
  *
  * @author florent
  */
-@Table(name = "acte_divers_consentement_reconnaissance",uniqueConstraints = { 
-    @UniqueConstraint(columnNames = {"registre_id","numero"})
-}) 
+@Table(name = "acte_divers_consentement_reconnaissance") 
 @Entity
 public class ActeConsReconnaissance extends ActeDivers{
     
-    
+    /*
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false,name = "registre_id")
@@ -36,7 +34,7 @@ public class ActeConsReconnaissance extends ActeDivers{
     
     @Column(name = "numero")
     public int numero;
-    
+    */
     
     
     @Enumerated(EnumType.STRING)

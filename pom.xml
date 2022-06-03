@@ -107,7 +107,7 @@
     </dependency>
     -->
 
-     <dependency>
+    <dependency>
         <groupId>org.primefaces</groupId>
         <artifactId>primefaces</artifactId>
         <version>${primefaces.version}</version>
@@ -168,6 +168,12 @@
         <groupId>com.ibm.icu</groupId>
         <artifactId>icu4j</artifactId>
         <version>69.1</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>net.sf.jasperreports</groupId>
+        <artifactId>jasperreports</artifactId>
+        <version>6.19.1</version>
     </dependency>
     
   </dependencies>

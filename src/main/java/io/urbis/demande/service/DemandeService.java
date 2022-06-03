@@ -122,8 +122,6 @@ public class DemandeService {
     
     
     public List<DemandeDto> findWithFilters(int offset,int pageSize){
-        
-        
         PanacheQuery<Demande>  query = Demande.findAll(Sort.by("numero").descending());
         
         PanacheQuery<Demande> rq =  query.range(offset, offset + (pageSize-1));

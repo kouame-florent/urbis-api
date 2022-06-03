@@ -8,6 +8,7 @@ package io.urbis.acte.naissance.backing;
 import io.urbis.acte.naissance.domain.Operation;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
+import io.urbis.acte.naissance.service.ActeNaissanceEtatService;
 import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.common.util.BaseBacking;
@@ -38,7 +39,14 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.service.RegistreService;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -59,6 +67,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @Inject
     ActeNaissanceService acteNaissanceService;
     
+    @Inject
+    ActeNaissanceEtatService acteNaissanceEtatService;
+    
     @Inject 
     @RestClient
     ActeNaissanceRestClient acteNaissanceRestClient;
@@ -67,11 +78,14 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @ConfigProperty(name = "URBIS_TENANT", defaultValue = "standard")
     String tenant;
     
+    private String selectedActeID;
     
     private String registreID;
     private RegistreDto registreDto;
     
-    String selectedActeID;
+    public String pageTitle(){
+        return "Naissances";
+    }
     
     public void onload(){
         LOG.log(Level.INFO,"----- URBIS TENANT: {0}",tenant);
@@ -93,22 +107,36 @@ public class ListerBacking extends BaseBacking implements Serializable{
         
     }
     
+    public void print() throws SQLException, JRException, FileNotFoundException{
+        //ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        //URL url = loader.getResource("/report/acte_naissance.jasper");
+        //LOG.log(Level.INFO,"----- REPORT URL: {0}",url);
+        //acteNaissanceEtatService.print();
+    }
+    
     public StreamedContent download(){
-       File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
-       LOG.log(Level.INFO, "TENANT: {0}", tenant);
-       LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
-       LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
-       LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
+       LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+      // File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
+      // LOG.log(Level.INFO, "TENANT: {0}", tenant);
+      // LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
+      // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
+      // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
+      
+       
        
        StreamedContent content = null;
         try {
-            InputStream input = new FileInputStream(file);
+            String pathString = acteNaissanceService.print(selectedActeID);
+            Path path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
-                .name("acte_naissance.pdf")
+                .name(path.getFileName().toString())
                 .contentType("application/pdf")
                 .stream(() -> input).build();
                 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
         }
        
@@ -204,7 +232,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public String returnToRegistresList(){
-        return "/registre/lister.xhtml";
+        return "/registre/lister.xhtml?faces-redirect=true";
     }
     
     public boolean disableButtonsOpenNew(){

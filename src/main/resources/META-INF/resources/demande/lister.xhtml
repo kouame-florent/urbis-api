@@ -37,6 +37,16 @@ xmlns:p="http://primefaces.org/ui">
                     </p:commandButton>
                   
                 </p:toolbarGroup>
+                 
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Registres" icon="pi pi-arrow-left" process="@this"
+                                     action="#{demandeListerBacking.returnToRegistresList()}"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                        
+
+                    </p:commandButton>
+                </p:toolbarGroup>
+                 
             </p:toolbar>
             
                 
@@ -53,7 +63,7 @@ xmlns:p="http://primefaces.org/ui">
                     <h:outputText value="#{demande.demandeurPrenoms}"/>
                 </p:column>
                 
-                 <p:column headerText="Numéro demande"  >
+                 <p:column headerText="N° demande"  >
                     <h:outputText value="#{demande.numero}"/>
                 </p:column>
                 
@@ -61,7 +71,39 @@ xmlns:p="http://primefaces.org/ui">
                     <h:outputText value="#{demande.typeRegistre}"/>
                 </p:column>
               
+                <p:column headerText="N° acte" >
+                    <h:outputText value="#{demande.numeroActe}"/>
+                </p:column>
                 
+                <p:column headerText="Date demande" >
+                    <h:outputText value="#{demande.dateHeureDemande}">
+
+                        <f:convertDateTime locale="fr_FR" type="localDateTime" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Date retrait" >
+                    <h:outputText value="#{demande.dateHeureRdvRetrait}">
+                        <f:convertDateTime locale="fr_FR" type="localDateTime" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Nbre extraits" >
+                    <h:outputText value="#{demande.nombreExtraits}"/>
+                </p:column>
+                
+                <p:column headerText="Nbre copie" >
+                    <h:outputText value="#{demande.nombreCopies}"/>
+                </p:column>
+                
+                <p:column style="width: 2%" >
+                    <p:commandButton ajax="false" process="@this" title="Imprimer"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
+                                     styleClass="edit-button rounded-button">
+                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
+                        <p:fileDownload value="#{demandeListerBacking.download()}"/>
+                    </p:commandButton>
+                </p:column>
              
             </p:dataTable>
             

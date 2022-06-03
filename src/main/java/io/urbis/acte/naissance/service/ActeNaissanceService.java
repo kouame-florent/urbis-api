@@ -6,6 +6,7 @@
 package io.urbis.acte.naissance.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.urbis.mention.dto.MentionAdoptionDto;
@@ -43,13 +44,18 @@ import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,6 +68,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.jboss.logging.Logger;
 
 /**
@@ -101,6 +113,9 @@ public class ActeNaissanceService {
     
     @Inject
     LocaliteService localiteService;
+    
+    @Inject
+    AgroalDataSource defaultDataSource;
    
     
     public ActeNaissanceDto findById(@NotBlank String id){
@@ -1245,4 +1260,45 @@ public class ActeNaissanceService {
     public boolean supprimer(String id){
         return ActeNaissance.deleteById(id);
     }
+    
+    public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+       // InputStream reportStream = getClass().getResourceAsStream("/report/acte_naissance.jasper");
+       // InputStream reportStream = QuarkusClassLoader.getSystemResourceAsStream("/report/acte_naissance.jasper");
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        
+        //URL url = loader.getResource("/acte_naissance.jasper");
+       
+        //log.infof("-- REPORT URL: %s", url);
+        //InputStream reportStream = loader.getResourceAsStream("/report/acte_naissance.jasper");
+        InputStream reportStream = loader.getResourceAsStream("/META-INF/resources/report/acte_naissance.jasper");
+        log.infof("-- REPORT INPUT: %s", reportStream);
+        
+      //  InputStream in = new FileInputStream("/home/florent/project-icens/reports/acte_naissance.jasper");
+        
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("ACTE_NAISSANCE_ID", acteID);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
+       
+        JRPdfExporter exporter = new JRPdfExporter();
+
+        String reportFilePath = filePath(acteID);
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput( new SimpleOutputStreamExporterOutput(reportFilePath));
+        
+        exporter.exportReport();
+        
+        return reportFilePath;
+       
+   }
+   
+   
+   private String filePath(String acteID){
+      ActeNaissance acte = ActeNaissance.findById(acteID);
+      if( acte == null){
+          throw new EntityNotFoundException("ActeNaissance not found");
+      }
+      String name = acte.enfant.nom + " " + acte.enfant.prenoms +"-"+ LocalDateTime.now().toString() + ".pdf";
+      
+      return "/tmp/" + name.replaceAll(" ", "-");
+   }
 }

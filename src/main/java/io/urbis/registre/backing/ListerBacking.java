@@ -87,9 +87,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @Inject
     FacesContext facesContext;
     
-   @Inject
-   SecurityIdentity identity;
-    
+    @Inject
+    SecurityIdentity identity;
    
     
    // private LazyDataModel<RegistreDto> lazyModel;
@@ -103,9 +102,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
    // private int annee;
     
+    public String pageTitle(){
+        return "Registres";
+    }
+    
     @PostConstruct
     public void init(){
-        
         
         
        // Principal pr = facesContext.getExternalContext().getUserPrincipal();
@@ -317,7 +319,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public String openDemandeView(){
-        String url = "/demande/lister.xhtml?faces-redrect=true";
+        String url = "/demande/lister.xhtml?faces-redirect=true";
         LOG.log(Level.INFO, "--- DEMANDE URL: {0}", url);   
         
         return  url;
@@ -418,7 +420,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("/acte/divers/lister-reconnaissance-enfant-adulterin", 
                 getDialogOptions(100,100,true), params);
         */
-        String url = "/acte/divers/lister-reconnaissance-enfant-adulterin.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        String url = "/acte/divers/lister-reconnaissance-enfant-adulterin.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;
@@ -431,7 +433,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("/acte/divers/lister-consentement-reconnaissance", 
                 getDialogOptions(100,100,true), params);
         */
-        String url = "/acte/deces/lister-consentement-reconnaissance.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        String url = "/acte/deces/lister-consentement-reconnaissance.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;
@@ -444,7 +446,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("/acte/deces/lister", 
                 getDialogOptions(100,100,true), params);
         */
-        String url = "/acte/deces/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        String url = "/acte/deces/lister.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;
@@ -465,7 +467,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         //Map<String, List<String>> params = Map.of("id", ids);
         //PrimeFaces.current().dialog().openDynamic("/acte/naissance/lister", getDialogOptions(98,98,true), params);
         
-        String url = "/acte/naissance/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        String url = "/acte/naissance/lister.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;
@@ -477,7 +479,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         //var operations = List.of(Operation.SAISIE_ACTE_EXISTANT.name());
         //Map<String, List<String>> params = Map.of("reg-id", ids);
         //PrimeFaces.current().dialog().openDynamic("/acte/mariage/lister", getDialogOptions(98,98,true), params);
-        String url = "/acte/mariage/lister.xhtml?faces-redrect=true"+"&reg-id=" + registreDto.getId();
+        String url = "/acte/mariage/lister.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;

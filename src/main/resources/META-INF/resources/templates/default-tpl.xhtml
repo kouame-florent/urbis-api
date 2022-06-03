@@ -19,8 +19,10 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
 
             <div class="p-grid">
                 <div class="p-lg-12" style="background: #007AD9;">
-                    <ui:insert name="header">
-                        <ui:include src="header.xhtml"/> 
+                    <ui:insert name="header" >
+                        <ui:include src="header.xhtml" >
+                            <ui:param name="headerText" value="#{bean.pageTitle()}"/>
+                        </ui:include> 
                      </ui:insert>
                 </div>
                 <div class="p-lg-12">
@@ -36,14 +38,14 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
             <!-- shows ajax task dialog -->
            <p:ajaxStatus onstart="PF('statusDialog').show()" 
                          onsuccess="PF('statusDialog').hide()" rendered="true"/>
-           <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
                      closable="false" resizable="false" 
                      showHeader="false" appendTo="@(body)">
                 <div class="p-text-center" >
                     <i class="pi pi-spin pi-spinner loading-icon" aria-hidden="true" style="margin-top: 25px"></i>
                 </div>
 
-         </p:dialog>
+            </p:dialog>
 
 
         </h:body>

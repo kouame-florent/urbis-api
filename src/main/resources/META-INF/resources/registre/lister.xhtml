@@ -8,13 +8,15 @@ xmlns:p="http://primefaces.org/ui">
     
  <ui:composition template="../templates/default-tpl.xhtml">
      
-    
-     <ui:define name="metadata">
+     <ui:param name="bean" value="#{registreListerBacking}"/>
+         
+    <ui:define name="metadata">
         <f:metadata>
             <f:viewAction action="#{registreListerBacking.onLoad}" />
         </f:metadata>
-     </ui:define>
-    
+    </ui:define>
+     
+        
     <ui:define name="content">
         
         <h:form id="messageForm">
@@ -58,14 +60,13 @@ xmlns:p="http://primefaces.org/ui">
                         <p:commandButton id="rechercher" value="Appliquer les filtres" 
                                          process="@this contentForm:annee contentForm:numero"
                                          action="#{registreListerBacking.filtrer()}"
-                                         update="contentForm:registre"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="contentForm:registre"  icon="pi pi-check"/>
                     </div>
                     <div class="p-field p-col">
                         <p:commandButton value="Effacer les filtres" icon="pi pi-times" process="@this contentForm:annee"
                                          action="#{registreListerBacking.effacerFiltres()}"
                                          update="contentForm:registre contentForm:annee contentForm:numero"  
-                                         styleClass="ui-button-outlined ui-button-warning" />
+                                         styleClass="ui-button-warning" />
                     </div>
                 </div>
             </p:fieldset>
@@ -85,8 +86,8 @@ xmlns:p="http://primefaces.org/ui">
                 <p:toolbarGroup align="right">
                     <p:commandButton action="#{registreListerBacking.showParamsView()}" 
                                      icon="pi pi-cog" title="paramètres" style="margin-right: .5rem"/>
-                    <p:commandButton action="#{registreListerBacking.openDemandeView()}" 
-                                     icon="pi pi-book" title="demandes"/>
+                    <p:commandButton action="#{registreListerBacking.openDemandeView()}" process="@this" ajax="false"
+                                     icon="pi pi-book" title="demandes" />
                  
                 </p:toolbarGroup>
             </p:toolbar>

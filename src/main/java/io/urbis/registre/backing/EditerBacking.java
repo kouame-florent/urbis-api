@@ -22,6 +22,7 @@ import io.urbis.param.service.LocaliteService;
 import io.urbis.param.service.OfficierService;
 import io.urbis.param.service.TribunalService;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.dto.RegistrePatchDto;
 import io.urbis.registre.dto.TypeRegistreDto;
@@ -69,6 +70,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     private String operationParam;
     private String registreID;
+    private String typeRegistre;
     private Operation operation;
     
     private List<TypeRegistreDto> typesRegistre;
@@ -95,112 +97,106 @@ public class EditerBacking extends BaseBacking implements Serializable{
     @PostConstruct
     public void init(){
         
-       typesRegistre = typeRegistreService.findAll();
+      // typesRegistre = typeRegistreService.findAll();
        officiers = officierService.findAll();
         
-       //registreDto = new RegistreDto();
+       
     }
     
+    
+    
     public void onload(){
-        
-        if(registreID != null && !registreID.isBlank()){
-            LOG.log(Level.INFO,"--- ON LOAD REGISTRE ID: {0}",registreID);
-            registreDto = registreService.findById(registreID);
-            LOG.log(Level.INFO,"-- ON LOAD REGISTRE LIBELLE: {0}",registreDto.getLibelle());
-        }
        
         if(operationParam != null && !operationParam.isBlank()){
             operation = Operation.fromString(operationParam);
             LOG.log(Level.INFO,"---ON LOAD CURRENT OPERATION : {0}",operation.name());
         
+        }else{
+            throw new IllegalStateException("Operation cannot be null or blank");
         }
-        
+               
         switch(operation){
             case CREATION:
-                registreDto = new RegistreDto();    
+                registreDto = initDto();
                 break;
             case MODIFICATION:
+                defaultParams();
                 registreDto = registreService.findById(registreID);
                 break;
             case VALIDATION:
+                defaultParams();
                 registreDto = registreService.findById(registreID);
-                retrieveDefaultConfigs();
-
+                break;
+            case CONSULTATION:
+                defaultParams();
+                registreDto = registreService.findById(registreID);
                 break;
         }
-        
-        //registreDto.setOperation(operation.name());
-        
-        
+     
     }
-    
-    /*
-    TypeRegistreDto getTypeRegistreFromCode(String code){
-        return typesRegistre.stream().filter(t -> t.getCode().equals(code))
-                .findFirst().orElseThrow(() -> new IllegalStateException("cannot get TypeRegistre"));
-    }
-    */
-    /*
-    OfficierEtatCivilDto getOfficierFromId(String officierID){
-        return officiers.stream().filter(o -> o.getId().equals(officierID))
-                .findFirst().orElseThrow(() -> new IllegalStateException("cannot get officier"));
-    }
-    */
-    /*
-    public void onload(){
-        LOG.log(Level.INFO, "REGISTRE ID: {0}", registreID);
-        LOG.log(Level.INFO, "VIEW MODE: {0}", modeParam);
-        
-        if(modeParam != null && !modeParam.isEmpty()){
-            viewMode = ViewMode.valueOf(modeParam);
-            registreDto = registreService.findById(registreID);
+   
+    public String pageTitle(){
+        if(operation != null && typeRegistre != null){
+            var type = TypeRegistre.fromString(typeRegistre);
+            switch(operation){
+                case CREATION:
+                    return type.getLibelle()+ ": Création";
+
+                case MODIFICATION:
+                    return type.getLibelle()+ ": Modification";
+               
+                case VALIDATION:
+                    return type.getLibelle()+ ": Validation";
+                   
+            }
         }
         
+        return "";
     }
-    */
     
-    
-    public void onTypeRgistreSelect(){
+    public void onTypeRegistreSelect(){
         LOG.log(Level.INFO, "SELECTED TYPE: {0}", registreDto.getTypeRegistre());
-        retrieveDefaultConfigs();
-        retrieveAutoValues();
+        initDto();
+    }
+   
+    
+    private RegistreDto initDto(){
+        LOG.log(Level.INFO, "--> SELECTED OPERATION: {0}", operation.name());
+        LOG.log(Level.INFO, "--> TYPE REGISTRE STRING VALUE: {0}", typeRegistre);
+        
+        defaultParams();
+        RegistreDto dto = new RegistreDto();
+        
+        TypeRegistre type = TypeRegistre.fromString(typeRegistre);
+        
+        dto.setLibelle(type.getLibelle());
+        dto.setLocalite(currentLocalite.getLibelle());
+        dto.setLocaliteID(currentLocalite.getId());
+        dto.setCentre(currentCentre.getLibelle());
+        dto.setCentreID(currentCentre.getId());
+        dto.setTribunal(currentTribunal.getLibelle());
+        dto.setTribunalID(currentTribunal.getId());
+        
+        int annee = registreService.anneeCourante();
+        dto.setAnnee(annee);
+        dto.setTypeRegistre(typeRegistre);
+        dto.setNumero(registreService.numeroRegistre(typeRegistre,annee));
+        int numPremier = registreService.numeroPremierActeCourant(typeRegistre,annee);
+        LOG.log(Level.INFO, "-- NUMERO PREMIER ACTE: {0}", numPremier);
+        dto.setNumeroPremierActe(numPremier);
+        dto.setDateOuverture(LocalDate.now());
+        
+        return dto;
     }
     
-    private void retrieveDefaultConfigs(){
-        try{
-            currentLocalite = localiteService.findActive();
-            currentCentre = centreService.findActive();
-            currentTribunal = tribunalService.findActive();
-            
-        }catch(EntityNotFoundException e){
-            LOG.log(Level.SEVERE, e.getMessage());
-            addGlobalMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        
-        
-    }
-    
-    private void retrieveAutoValues(){
-        LOG.log(Level.INFO, "-- SELECTED OPERATION: {0}", operation.name());
-        if(operation == Operation.CREATION){
-            int annee = registreService.anneeCourante();
-            registreDto.setAnnee(annee);
-            //numeroRegistre = registreService.numeroRegistre(selectedType.getCode(),annee);
-            registreDto.setNumero(registreService.numeroRegistre(registreDto.getTypeRegistre(),annee));
-            //numeroPremierActe = registreService.numeroPremierActeCourant(selectedType.getCode(),annee);
-            registreDto.setNumeroPremierActe(registreService.numeroPremierActeCourant(registreDto.getTypeRegistre(),annee));
-            registreDto.setDateOuverture(LocalDate.now());
-            //dateOuverture = LocalDateTime.now();
-        }
-        
+    private void defaultParams(){
+        currentLocalite = localiteService.findActive();
+        currentCentre = centreService.findActive();
+        currentTribunal = tribunalService.findActive();
+      
     }
 
-    /*
-    public void onOfficierSelect(){
-        LOG.log(Level.INFO, "SELECTED OFFICIER: {0}", selectedOfficierId);
-    }
-    */
-    
+       
     public void valider(){
         if(registreDto != null && registreDto.getDateOuverture() == null){
             addGlobalMessage("La date d'ouverture du registre doit être renseignée avant validation",
@@ -247,21 +243,9 @@ public class EditerBacking extends BaseBacking implements Serializable{
         LOG.log(Level.INFO, "CREATING REGISTRE ...");
      
         if(registreDto != null){
-           // registreDto.setTypeRegistre(selectedType.getCode());
-           // registreDto.setLibelle(selectedType.getLibelle());
-            registreDto.setLocalite(currentLocalite.getLibelle());
-            registreDto.setLocaliteID(currentLocalite.getId());
-            registreDto.setCentre(currentCentre.getLibelle());
-            registreDto.setCentreID(currentCentre.getId());
-          //  registreDto.setAnnee(annee);
-          //  registreDto.setNumero(numeroRegistre);
-           // registreDto.setDateOuverture(dateOuverture);
-            registreDto.setTribunal(currentTribunal.getLibelle());
-            registreDto.setTribunalID(currentTribunal.getId());
-           // registreDto.setOfficierEtatCivilID(selectedOfficierId);
-           // registreDto.setNumeroPremierActe(numeroPremierActe);
-           // registreDto.setNumeroDernierActe(nombreDeFeuillets + numeroPremierActe - 1);
-          //  registreDto.setNombreDeFeuillets(nombreDeFeuillets);
+        
+            int numDernier = registreDto.getNumeroPremierActe() + registreDto.getNombreDeFeuillets() -1;
+            registreDto.setNumeroDernierActe(numDernier);
             registreDto.setNombreActe(0);
             registreDto.setStatut("");
             registreDto.setDateAnnulation(null);
@@ -269,12 +253,11 @@ public class EditerBacking extends BaseBacking implements Serializable{
             
             try{
                   registreService.creer(registreDto);
+                  PrimeFaces.current().dialog().closeDynamic("");
             }catch(EntityExistsException | ValidationException  e){
                   LOG.log(Level.SEVERE, e.getMessage());
                   addGlobalMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
             }
-            
-            PrimeFaces.current().dialog().closeDynamic("");
             
         }else{
             IllegalStateException ex = new IllegalStateException("registre dto cannot be null");
@@ -347,6 +330,14 @@ public class EditerBacking extends BaseBacking implements Serializable{
 
     public void setOperation(Operation operation) {
         this.operation = operation;
+    }
+
+    public String getTypeRegistre() {
+        return typeRegistre;
+    }
+
+    public void setTypeRegistre(String typeRegistre) {
+        this.typeRegistre = typeRegistre;
     }
 
     

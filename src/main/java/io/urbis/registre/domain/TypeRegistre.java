@@ -18,8 +18,8 @@ public enum TypeRegistre {
     MARIAGE("Mariage"),
     DIVERS("Divers"),
     DECES("Décès"),
-    SPECIAL_NAISSANCE("Spécial de naissance"),
-    SPECIAL_DECES("Spécial de décès");
+    SPECIAL_NAISSANCE("Spécial naissance"),
+    SPECIAL_DECES("Spécial décès");
     
     private final String libelle;
     
@@ -37,10 +37,9 @@ public enum TypeRegistre {
                 return TypeRegistre.valueOf(t.name());
             }
         }
-        System.out.printf("CANNOT GET ENUM TYPE REGISTRE FROM: %s", typeString);
-        Response res = Response.status(Response.Status.BAD_REQUEST)
-                   .entity(new IllegalArgumentException(typeString)).build();
-        throw new WebApplicationException(res);
+
+        throw new IllegalStateException("cannot get enum type registre");
+       
          
     }
     

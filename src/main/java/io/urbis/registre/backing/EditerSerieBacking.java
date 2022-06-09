@@ -75,16 +75,18 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
     
     private List<TypeRegistreDto> typesRegistre;
     private TypeRegistreDto selectedType;
+    private String typeRegistre;  //initialized from GET params
     
     private int premier;
     private int dernier;
     
-    private int nombreDeFeuillets;
+    private int nombreDeFeuillets = 50;
     private int annee;
     private String libelle;
     private LocaliteDto currentLocalite;
     private CentreDto currentCentre;
     private TribunalDto currentTribunal;
+    
     
     private List<OfficierEtatCivilDto> officiers = new ArrayList<>();
     private String selectedOfficierId;
@@ -93,11 +95,29 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
     
     @PostConstruct
     public void init(){
-       typesRegistre = typeRegistreService.findAll();
-       officiers = officierService.findAll();
-      // registreDto = new RegistreDto();
+       // typesRegistre = typeRegistreService.findAll();
+        
+        officiers = officierService.findAll();
+        currentLocalite = localiteService.findActive();
+        currentCentre = centreService.findActive();
+        currentTribunal = tribunalService.findActive();
     }
     
+    public void onload(){
+        LOG.log(Level.INFO, "--> PARAM TYPE REGISTRE: {0}", typeRegistre);
+        TypeRegistre tr = TypeRegistre.fromString(typeRegistre);
+        selectedType = new TypeRegistreDto(tr.name(), tr.getLibelle());
+    
+    }
+    
+    public String pageTitle(){
+        if(typeRegistre != null){
+            var type = TypeRegistre.fromString(typeRegistre);
+            return type.getLibelle()+ ": Création en serie";
+        }
+        
+        return "";
+    }
    
     public void onTypeRgistreSelect(){
         LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
@@ -113,6 +133,8 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
         }
       
     }
+    
+    
     
     public boolean renderedLibelle(){
         if(selectedType != null){
@@ -134,11 +156,15 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
     
     public void creer(){
         if(dernier < premier){
-            FacesMessage message = new FacesMessage("le numero du dernier registre doit etre inférieur au premier");
+            FacesMessage message = new FacesMessage("le numéro du dernier registre doit etre inférieur au premier");
             facesContext.addMessage("contentForm:creer",message);
         }
-        if(dernier == 0){
-            FacesMessage message = new FacesMessage("le numero du premier registre ne peut être '0'");
+        if(premier <= 0 ){
+            FacesMessage message = new FacesMessage("le numéro du premier registre ne peut être inférieur ou égal à '0' ");
+            facesContext.addMessage("contentForm:creer",message);
+        }
+        if(dernier <= 0){
+            FacesMessage message = new FacesMessage("le numéro du dernier registre ne peut être inférieur ou égal à '0' ");
             facesContext.addMessage("contentForm:creer",message);
         }
         for (int i = premier; i <= dernier; i++ ){
@@ -291,6 +317,14 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
 
     public void setLibelle(String libelle) {
         this.libelle = libelle;
+    }
+
+    public String getTypeRegistre() {
+        return typeRegistre;
+    }
+
+    public void setTypeRegistre(String typeRegistre) {
+        this.typeRegistre = typeRegistre;
     }
 
     

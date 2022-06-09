@@ -70,9 +70,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @Inject
     ActeNaissanceEtatService acteNaissanceEtatService;
     
+    /*
     @Inject 
     @RestClient
     ActeNaissanceRestClient acteNaissanceRestClient;
+*/
     
     @Inject
     @ConfigProperty(name = "URBIS_TENANT", defaultValue = "standard")
@@ -107,12 +109,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         
     }
     
-    public void print() throws SQLException, JRException, FileNotFoundException{
-        //ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        //URL url = loader.getResource("/report/acte_naissance.jasper");
-        //LOG.log(Level.INFO,"----- REPORT URL: {0}",url);
-        //acteNaissanceEtatService.print();
-    }
+   
     
     public StreamedContent download(){
        LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
@@ -124,10 +121,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
       
        
        
-       StreamedContent content = null;
+        StreamedContent content = null;
+        Path path = null;
         try {
             String pathString = acteNaissanceService.print(selectedActeID);
-            Path path = Paths.get(pathString);
+            path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
                 .name(path.getFileName().toString())
@@ -136,8 +134,19 @@ public class ListerBacking extends BaseBacking implements Serializable{
                 
         } catch (FileNotFoundException | SQLException | JRException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (IOException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
         }
        
        return content;

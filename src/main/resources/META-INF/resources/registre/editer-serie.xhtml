@@ -9,7 +9,14 @@ xmlns:p="http://primefaces.org/ui">
  <ui:composition template="../templates/dialog-tpl.xhtml">
      
      <ui:define name="title">
-         Création de series de registres
+         #{registreEditerSerieBacking.pageTitle()}
+     </ui:define>
+     
+     <ui:define name="metadata">
+         <f:metadata>
+            <f:viewParam name="type" value="#{registreEditerSerieBacking.typeRegistre}" />
+            <f:viewAction action="#{registreEditerSerieBacking.onload}" />
+        </f:metadata>
      </ui:define>
     
     <ui:define name="content">
@@ -20,7 +27,7 @@ xmlns:p="http://primefaces.org/ui">
              
         <h:form id="contentForm">
      
-            <p:fieldset legend="Type de registres">
+            <p:fieldset legend="Type de registres" rendered="false">
                 <p:selectOneRadio id="console" value="#{registreEditerSerieBacking.selectedType}" 
                                   converter="omnifaces.SelectItemsConverter"
                                   required="true">

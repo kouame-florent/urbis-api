@@ -23,6 +23,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.Filter;
@@ -124,19 +125,19 @@ public class Registre extends BaseEntity{
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)
     public OfficierEtatCivil officierEtatCivil;
     
-    @DecimalMin("1")
+    @Min(1)
     @NotNull
     @Column(name = "numero_premier_acte",nullable = false)
     public int numeroPremierActe; 
     
-    @DecimalMin("1")
+    @Min(1)
     @Column(name = "numero_dernier_acte",nullable = false)
     public int numeroDernierActe;
     
     @Column(name = "numero_prochain_acte")
     public int numeroProchainActe;
     
-    @DecimalMin("1")
+    @Min(1)
     @NotNull
     @Column(name = "nombre_de_feuillets",nullable = false)
     public int nombreDeFeuillets;

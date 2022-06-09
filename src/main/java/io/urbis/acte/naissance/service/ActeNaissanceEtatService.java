@@ -37,7 +37,7 @@ import org.jboss.logging.Logger;
 @ApplicationScoped
 public class ActeNaissanceEtatService {
     
-    
+    /*
     
     @Inject
     Logger log;
@@ -59,6 +59,6 @@ public class ActeNaissanceEtatService {
    }
    
    
-   
+   */
     
 }

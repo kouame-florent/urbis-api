@@ -65,16 +65,23 @@ public class RegistreService {
         OfficierEtatCivil officier = OfficierEtatCivil.findById(registreDto.getOfficierEtatCivilID());
         //var statut = getStatutRegistre(registreDto.getStatut());
         
+        if(registreDto.getNombreDeFeuillets() < 1){
+            throw new ValidationException("Le nombre de feuillets est inférieur à 1");
+        }
+       
+        
+        log.infof("--> TYPE REGISTRE: %s", typeRegistre);
+        log.infof("--> LOCALITE: %s", localite);
+        log.infof("--> CENTRE: %s", centre);
+        log.infof("--> TRIBUNAL: %s", tribunal);
+        log.infof("--> NUMERO REGOSTRE: %d", registreDto.getNumero());
+        log.infof("--> LIBELLE REGISTRE: %s", registreDto.getLibelle());
+        log.infof("--> NOMBRE FEUILLETS: %s", registreDto.getNombreDeFeuillets());
+        log.infof("--> NUM DERNIER ACTE: %s", registreDto.getNumeroDernierActe());
+        
         Reference reference = new Reference(localite, centre, registreDto.getAnnee(),
                 registreDto.getNumero());
         
-        log.infof("-- TYPE REGISTRE: %s", typeRegistre);
-        log.infof("-- LOCALITE: %s", localite);
-        log.infof("-- CENTRE: %s", centre);
-        log.infof("-- TRIBUNAL: %s", tribunal);
-        log.infof("-- LIBELLE REGISTRE: %s", registreDto.getLibelle());
-        log.infof("-- NUM DERNIER ACTE: %s", registreDto.getNumeroDernierActe());
-        log.infof("-- NOMBRE FEUILLETS: %s", registreDto.getNombreDeFeuillets());
         
         Registre registre = new Registre(typeRegistre,registreDto.getLibelle(), reference,
                 tribunal, officier, registreDto.getNumeroPremierActe(),
@@ -339,7 +346,7 @@ public class RegistreService {
     */
     public int numeroPremierActeCourant(String typeRegistre,int annee){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroDernierActe", Integer.class);
-        log.infof("NUM PREMIER QUERY: %s", query);
+        log.infof("-- NUM PREMIER QUERY: %s", query);
         query.setParameter("typeRegistre",TypeRegistre.fromString(typeRegistre));
         query.setParameter("annee", annee);
         

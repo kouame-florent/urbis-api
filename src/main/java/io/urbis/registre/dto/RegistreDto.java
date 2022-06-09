@@ -51,7 +51,8 @@ public class RegistreDto {
     
     private int numeroDernierActe;
     
-    private int nombreDeFeuillets;
+    @Min(value = 1, message = "valeur minimale 50")
+    private int nombreDeFeuillets = 50;
     
     private int nombreActe;
     

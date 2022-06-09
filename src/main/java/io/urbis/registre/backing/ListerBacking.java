@@ -268,7 +268,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void openCreerView(){
         List<String> ids = List.of();
         var operations = List.of(Operation.CREATION.name());
-        Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations);
+        List<String> type = List.of(selectedType.getCode());
+        Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations,"type",type);
         Map<String,Object> options = getDialogOptions(98, 98, true);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
@@ -276,8 +277,10 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public void openCreerSerieView(){
         Map<String,Object> options = getDialogOptions(98, 98, true);
+        List<String> type = List.of(selectedType.getCode());
+        Map<String, List<String>> params = Map.of("type",type);
         options.put("resizable", false);
-        PrimeFaces.current().dialog().openDynamic("editer-serie", options, null);
+        PrimeFaces.current().dialog().openDynamic("editer-serie", options, params);
     }
     
     /*
@@ -573,7 +576,6 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public void onSerieCreated(SelectEvent event){
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de registre", "Serie créee avec succès");
-        
         FacesContext.getCurrentInstance().addMessage(null, message);
     
     }

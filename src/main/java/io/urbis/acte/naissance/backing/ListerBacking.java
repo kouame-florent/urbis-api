@@ -195,7 +195,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.VALIDATION.name());
         var acteIds = List.of(dto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
-        PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer", getDialogOptions(98,98,true), params);
+        PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer", getDialogOptions(98,98,false), params);
     }
     
     public void openConsulterActeView(ActeNaissanceDto dto){

@@ -842,7 +842,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionMariageDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionMariageService.createMention(mm);
+            mentionMariageService.modifierMention(mm);
         });
         
         //adoption
@@ -855,7 +855,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionAdoptionDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionAdoptionService.createMention(mm);
+            mentionAdoptionService.modifierMention(mm);
         });
         
         //dissolution
@@ -868,7 +868,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionDissolutionMariageDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionDissolutionMariageService.createMention(mm);
+            mentionDissolutionMariageService.modifierMention(mm);
         });
         
         //legitimation
@@ -881,7 +881,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionLegitimationDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionLegitimationService.createMention(mm);
+            mentionLegitimationService.modifierMention(mm);
         });
         
         //reconnaissance
@@ -894,7 +894,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionReconnaissanceDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionReconnaissanceService.createMention(mm);
+            mentionReconnaissanceService.modifierMention(mm);
         });
         
         //rectification
@@ -907,7 +907,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionRectificationDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionRectificationService.createMention(mm);
+            mentionRectificationService.modifierMention(mm);
         });
         
         //décès
@@ -920,7 +920,7 @@ public class ActeNaissanceService {
         
         acteNaissanceDto.getMentionDecesDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
-            mentionDecesService.createMention(mm);
+            mentionDecesService.modifierMention(mm);
         });
         
         

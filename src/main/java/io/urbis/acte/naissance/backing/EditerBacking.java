@@ -286,7 +286,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
       
     }
     
-    public void deleteMentionAdoptionMariage(MentionAdoptionDto dto){
+    public void deleteMentionAdoption(MentionAdoptionDto dto){
         LOG.log(Level.INFO,"Deleting mention mariage...");
         acteNaissanceDto.getMentionAdoptionDtos().remove(dto);
       

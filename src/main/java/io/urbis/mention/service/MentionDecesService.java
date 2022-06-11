@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.jboss.logging.Logger;
@@ -29,12 +30,17 @@ public class MentionDecesService {
     @Inject
     Logger log;
     
-     public void createMention(@NotNull MentionDecesDto dto){
+    public void createMention(@NotNull MentionDecesDto dto){
         
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
-        log.infof("-- MENTION DECES OFFICIER ID: %s",dto.getOfficierEtatCivilID());
-        log.infof("-- MENTION DECES LIEU: %s",dto.getLieu());
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
+        }
+        
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
        
         MentionDeces mention = MentionDeces.findById(dto.getId());
         
@@ -64,6 +70,22 @@ public class MentionDecesService {
         
        
  
+    }
+    
+    public void modifierMention(@NotNull MentionDecesDto dto){
+            
+       
+        MentionDeces mention = MentionDeces.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionDeces not found");
+        }
+             
+        mention.decision = dto.getDecision();
+        mention.date = dto.getDate();
+        mention.lieu = dto.getLieu();
+        mention.localite = dto.getLocalite();
+        mention.dateDressage = dto.getDateDressage();
+
     }
      
     public void deleteMention(String mentionID){

@@ -94,7 +94,7 @@ xmlns:p="http://primefaces.org/ui">
                 </p:toolbarGroup>
                     
                 <p:toolbarGroup align="right">
-                    <p:commandButton value="Registres" icon="pi pi-arrow-left" process="@this"
+                    <p:commandButton value="Registres" icon="pi pi-th-large" process="@this"
                                      action="#{acteNaissanceListerBacking.returnToRegistresList()}"
                                    styleClass="ui-button-success" style="margin-right: .5rem">
                         
@@ -163,14 +163,14 @@ xmlns:p="http://primefaces.org/ui">
                         
                         <p:menuitem value="Valider" action="#{acteNaissanceListerBacking.openValiderActeView(acte)}" 
                                     process="@this" disabled="#{acteNaissanceListerBacking.disableMenuValiderActe(acte)}" 
-                                    icon="pi pi-book">
+                                    icon="pi pi-ticket">
                             <p:ajax event="dialogReturn" listener="#{acteNaissanceListerBacking.onActeValidated}" 
                                         update=":contentForm:actesDatatable"/>
                         </p:menuitem>
                         
                         <p:menuitem value="Supprimer" action="#{acteNaissanceListerBacking.supprimer(acte.id)}" 
                                     process="@this" disabled="#{acteNaissanceListerBacking.disableMenuValiderActe(acte)}" 
-                                    icon="pi pi-book">
+                                    icon="pi pi-times">
                              
                              <p:confirm header="Confirmation" 
                                            message="Voulez-vous vraiment supprimer l'acte #{acte.numero} du registre

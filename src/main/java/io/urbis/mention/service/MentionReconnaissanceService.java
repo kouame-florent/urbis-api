@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,32 +24,40 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionReconnaissanceService {
     
-     public void createMention(@NotNull MentionReconnaissanceDto dto){
+    public void createMention(@NotNull MentionReconnaissanceDto dto){
         
-         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
-        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
-        
-        MentionReconnaissance mention = MentionReconnaissance.findById(dto.getId());
-        
-        if(mention != null){
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-        
-        }else{
-            mention = new MentionReconnaissance();
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-
-            mention.persist();
+        ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
         }
+        
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
+        
+        MentionReconnaissance mention = new MentionReconnaissance();
+
+        mention.acteNaissance = acte;
+        mention.officierEtatCivil = officier;
+
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+
+        mention.persist();
+        
+    }
+    
+    public void modifierMention(@NotNull MentionReconnaissanceDto dto){
+         
+        MentionReconnaissance mention = MentionReconnaissance.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionReconnaissance not found");
+        }
+        
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+        
     }
      
     public void deleteMention(String mentionID){

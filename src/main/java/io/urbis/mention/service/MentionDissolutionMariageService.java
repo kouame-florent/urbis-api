@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -24,15 +25,37 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionDissolutionMariageService {
     
-     public void createMention(@NotNull MentionDissolutionMariageDto dto){
+    public void createMention(@NotNull MentionDissolutionMariageDto dto){
+       
+        ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
+        }
+        
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
         
         MentionDissolutionMariage mention = new MentionDissolutionMariage();
-        ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
-        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         
         mention.acteNaissance = acte;
         mention.officierEtatCivil = officier;
         
+        mention.decision = dto.getDecision();
+        mention.dateJugement = dto.getDateJugement();
+        mention.dateDressage = dto.getDateDressage();
+        
+        mention.persist();
+    }
+    
+    public void modifierMention(@NotNull MentionDissolutionMariageDto dto){
+        
+        MentionDissolutionMariage mention = MentionDissolutionMariage.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionDissolutionMariage not found");
+        }
+         
         mention.decision = dto.getDecision();
         mention.dateJugement = dto.getDateJugement();
         mention.dateDressage = dto.getDateDressage();

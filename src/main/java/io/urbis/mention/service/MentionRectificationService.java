@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -23,33 +24,42 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionRectificationService {
     
-     public void createMention(@NotNull MentionRectificationDto dto){
+    public void createMention(@NotNull MentionRectificationDto dto){
+        
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
-        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
-        
-        MentionRectification mention = MentionRectification.findById(dto.getId());
-        
-        if(mention != null){
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-        
-        }else{
-            mention = new MentionRectification();
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-
-            mention.persist();
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
         }
+        
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
+         
+        MentionRectification mention = new MentionRectification();
+
+        mention.acteNaissance = acte;
+        mention.officierEtatCivil = officier;
+
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+
+        mention.persist();
+        
     }
      
+    public void modifierMention(@NotNull MentionRectificationDto dto){
+         
+        MentionRectification mention = MentionRectification.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionRectification not found");
+        }
+        
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+        
+    }
+    
     public void deleteMention(String mentionID){
         MentionRectification.deleteById(mentionID);
     }

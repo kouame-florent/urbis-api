@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -24,32 +25,40 @@ import javax.validation.constraints.NotNull;
 public class MentionAdoptionService {
     
     public void createMention(@NotNull MentionAdoptionDto dto){
-        
+       
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
-        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
-        
-        MentionAdoption mention = MentionAdoption.findById(dto.getId());
-        
-        if(mention != null){
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-        
-        }else{
-            mention = new MentionAdoption();
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.dateDressage = dto.getDateDressage();
-            mention.decision = dto.getDecision();
-
-            mention.persist();
+        if(acte == null){
+            throw new EntityNotFoundException("ActeNaissance not found");
         }
         
+        OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
+        if(officier == null){
+            throw new EntityNotFoundException("OfficierEtatCivil not found");
+        }
+           
+        var mention = new MentionAdoption();
+            
+        mention.acteNaissance = acte;
+        mention.officierEtatCivil = officier;
+
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+
+        mention.persist();
+   
+        
+    }
+    
+    public void modifierMention(@NotNull MentionAdoptionDto dto){
+        
+        MentionAdoption mention = MentionAdoption.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionAdoption not found");
+        }
+      
+        mention.dateDressage = dto.getDateDressage();
+        mention.decision = dto.getDecision();
+     
         
     }
     

@@ -10,8 +10,271 @@ xmlns:p="http://primefaces.org/ui">
   
      <p:tabView id="mentionsTabView">
          <p:tab title="Mariage">
-           <p:fieldset>
-            <div class="ui-fluid p-formgrid p-grid">
+           
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageMariageDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-mariage-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+               <p:dataTable id="mentionMariageTable" 
+                            value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionMariageDtos}" 
+                            var="mariage"
+                            selectionMode="single"
+                            selection="#{acteNaissanceEditerBacking.selectedMentionMariage}" 
+                            rowKey="#{mariage.id}">
+                
+                <p:ajax event="rowSelect" listener="#{acteNaissanceEditerBacking.onMentionMariageRowSelect}"
+                            update=":contentForm:mentionsTabView"/>
+               
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{mariage.dateDressage}"/>
+               </p:column>
+                <p:column headerText="Nom conjoint" >
+                    <h:outputText value="#{mariage.conjointNom}"/>
+               </p:column>
+                <p:column headerText="Prénoms conjoint" >
+                    <h:outputText value="#{mariage.conjointPrenoms}"/>
+               </p:column>
+                <p:column headerText="décision" >
+                   <h:outputText value="#{mariage.decision}"/>
+               </p:column>
+                <p:column style="width: 5%">
+                    <p:commandButton  class="ui-button-warning rounded-button" process="@this" 
+                                      action="#{acteNaissanceEditerBacking.deleteMentionMariage(mariage)}"  
+                                      update="mentionMariageTable"
+                                      icon="pi pi-trash">
+                        <p:confirm header="Confirmation" message="Voulez-vous vraiment retirer la mention ?" 
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    
+                      
+               </p:column>
+            </p:dataTable> 
+            
+            
+         </p:tab>
+         
+         
+         <p:tab title="Adoption">
+             
+            <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageAdoptionDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-adoption-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionAdoptionTable" 
+                              value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionAdoptionDtos}" 
+                              var="adoption">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{adoption.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{adoption.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                    <p:commandButton  class="ui-button-warning rounded-button" process="@this" 
+                                      action="#{acteNaissanceEditerBacking.deleteMentionAdoption(adoption)}"  
+                                      update="mentionMariageTable"
+                                      icon="pi pi-trash">
+                        <p:confirm header="Confirmation" message="Voulez-vous vraiment retirer la mention ?" 
+                                   icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+               </p:column>
+
+            </p:dataTable>
+            
+         </p:tab>
+         
+         <p:tab title="Décès">
+           
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageDecesDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-deces-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+           
+            <p:dataTable id="mentionDecesTable" 
+                             value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionDecesDtos}" 
+                             var="deces">
+                
+               <p:column headerText="date de naissance" >
+                   <h:outputText value="#{deces.date}"/>
+               </p:column>
+               <p:column headerText="lieu de décès" >
+                   <h:outputText value="#{deces.lieu}"/>
+               </p:column>
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{deces.dateDressage}"/>
+               </p:column>
+               <p:column headerText="décision" >
+                   <h:outputText value="#{deces.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                   <p:commandButton  icon="pi pi-times"/>
+               </p:column>
+
+            </p:dataTable>
+           
+         </p:tab>
+         
+         <p:tab title="Dissolution de mariage">
+             
+             
+            <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageDissolutionMariageDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-dissolution-mariage-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+
+             
+             
+            <p:dataTable id="mentionDissolutionTable" 
+                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionDissolutionMariageDtos}" 
+                         var="dissolution">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{dissolution.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{dissolution.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
+               </p:column>
+
+            </p:dataTable>
+            
+         </p:tab>
+         
+         <p:tab title="Légitimation">
+            
+            <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageLegitimationDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-legitimation-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionLegitimationTable" 
+                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionLegitimationDtos}" 
+                         var="legitimation">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{legitimation.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{legitimation.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                   <p:commandButton  icon="pi pi-times"/>
+               </p:column>
+
+            </p:dataTable>
+           
+         </p:tab>
+         
+         <p:tab title="Reconnaissance">
+            
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageReconnaissanceDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-reconnaissance-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionReconnaissanceTable" 
+                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionReconnaissanceDtos}" 
+                         var="reconnaissance">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{reconnaissance.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{reconnaissance.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                   <p:commandButton  icon="pi pi-times"/>
+               </p:column>
+
+            </p:dataTable>
+      
+         </p:tab>
+         
+         <p:tab title="Rectification">
+            
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageRectificationDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-rectification-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionRectificationTable" 
+                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionRectificationDtos}" 
+                         var="adoption">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{rectification.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{rectification.decision}"/>
+               </p:column>
+               <p:column style="width: 5%">
+                   <p:commandButton  icon="pi pi-times"/>
+               </p:column>
+
+            </p:dataTable>
+        
+         </p:tab>
+         
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="450">
+                <p:commandButton value="Non"  styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Oui"  styleClass="ui-confirmdialog-yes" />
+        </p:confirmDialog>
+         
+     </p:tabView>
+     
+     
+     <p:dialog header="Mention mariage" showEffect="fade" modal="true"
+               widgetVar="manageMariageDialog" responsive="true" fitViewport="true" >
+          <p:outputPanel id="manage-mariage-content" class="ui-fluid">
+               <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-6">
                     <p:outputLabel for="mariageDate" styleClass="p-d-block">Date du mariage</p:outputLabel>
                     <p:inputMask id="mariageDate" value="#{acteNaissanceEditerBacking.mariageDto.date}"
@@ -97,48 +360,23 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de mariage" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de mariage" process="manage-mariage-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionMariage()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check-square" />
+                                     oncomplete="PF('manageMariageDialog').hide()"
+                                     update="mentionsTabView:mentionMariageTable messageForm"  icon="pi pi-check-square" />
                 </div>
                 
             </div>
-               <p:dataTable id="mentionMariageTable" 
-                            value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionMariageDtos}" 
-                            var="mariage"
-                            selectionMode="single"
-                            selection="#{acteNaissanceEditerBacking.selectedMentionMariage}" 
-                            rowKey="#{mariage.id}">
-                
-                <p:ajax event="rowSelect" listener="#{acteNaissanceEditerBacking.onMentionMariageRowSelect}"
-                            update=":contentForm:mentionsTabView"/>
-               
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{mariage.dateDressage}"/>
-               </p:column>
-                <p:column headerText="décision" style="width: 80%" >
-                   <h:outputText value="#{mariage.decision}"/>
-               </p:column>
-                <p:column style="width: 5%">
-                    <p:commandButton  process="@this" 
-                                      action="#{acteNaissanceEditerBacking.deleteMentionMariage(mariage)}"  
-                                      update="mentionMariageTable"
-                                      class="ui-button-outlined ui-button-warning" icon="pi pi-times">
-                        <p:confirm header="Confirmation" message="Voulez-vous vraiment retirer la mention ?" 
-                                   icon="pi pi-exclamation-triangle"/>
-                    </p:commandButton>
-               </p:column>
-            </p:dataTable> 
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="450">
-                <p:commandButton value="Non"  styleClass="ui-confirmdialog-no ui-button-flat"/>
-                <p:commandButton value="Oui"  styleClass="ui-confirmdialog-yes" />
-            </p:confirmDialog>
-            </p:fieldset>
-         </p:tab>
+             
+         </p:outputPanel>         
          
-         <p:tab title="Adoption">
-             <p:fieldset>
-             <div class="ui-fluid p-formgrid p-grid">
+     </p:dialog>
+        
+     <p:dialog header="Mention adoption" showEffect="fade" modal="true"
+               widgetVar="manageAdoptionDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-adoption-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
                  <div class="p-field p-lg-12">
                     <p:outputLabel for="adoptionDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
                     <p:inputMask id="adoptionDateDressage" value="#{acteNaissanceEditerBacking.adoptionDto.dateDressage}"
@@ -168,34 +406,25 @@ xmlns:p="http://primefaces.org/ui">
                     </p:selectOneMenu>
                 </div>
             </div>
+                
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention d'adoption" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention d'adoption" process="manage-adoption-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionAdoption()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" />
+                                     oncomplete="PF('manageAdoptionDialog').hide()"
+                                     update="mentionsTabView:mentionAdoptionTable messageForm"  icon="pi pi-check" />
                 </div>
                 
             </div>
-                 <p:dataTable id="mentionAdoptionTable" 
-                              value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionAdoptionDtos}" 
-                              var="adoption">
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{adoption.dateDressage}"/>
-               </p:column>
-               <p:column headerText="Décision">
-                   <h:outputText value="#{adoption.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
-         
-         <p:tab title="Decès">
-            <p:fieldset>
-            <div class="ui-fluid p-formgrid p-grid">
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     <p:dialog header="Mention décès" showEffect="fade" modal="true"
+               widgetVar="manageDecesDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-deces-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-6">
                     <p:outputLabel for="decesDate" styleClass="p-d-block">Date de naissance</p:outputLabel>
                     <p:inputMask id="decesDate" value="#{acteNaissanceEditerBacking.decesDto.date}"
@@ -254,39 +483,23 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de décès" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de décès" process="manage-deces-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionDeces()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" />
+                                     oncomplete="PF('manageDecesDialog').hide()"
+                                     update="mentionsTabView:mentionDecesTable messageForm"
+                                     icon="pi pi-check" />
                 </div>
                
             </div>
-                <p:dataTable id="mentionDecesTable" 
-                             value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionDecesDtos}" 
-                             var="deces">
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     <p:dialog header="Mention dissolution mariage" showEffect="fade" modal="true"
+               widgetVar="manageDissolutionMariageDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-dissolution-mariage-content" class="ui-fluid">
                 
-               <p:column headerText="date de naissance" >
-                   <h:outputText value="#{deces.date}"/>
-               </p:column>
-               <p:column headerText="lieu de décès" >
-                   <h:outputText value="#{deces.lieu}"/>
-               </p:column>
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{deces.dateDressage}"/>
-               </p:column>
-               <p:column headerText="décision" >
-                   <h:outputText value="#{deces.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
-         
-         <p:tab title="Dissolution de mariage">
-             <p:fieldset>
-             <div class="ui-fluid p-formgrid p-grid">
+                <div class="ui-fluid p-formgrid p-grid">
                  <div class="p-field p-lg-12">
                     <p:outputLabel for="dissolutionDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
                     <p:inputMask id="dissolutionDateDressage" value="#{acteNaissanceEditerBacking.dissolutionMariageDto.dateDressage}"
@@ -318,32 +531,23 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de dissolution de mariage" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de dissolution de mariage" process="manage-dissolution-mariage-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionDissolution()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" />
+                                     oncomplete="PF('manageDissolutionMariageDialog').hide()"
+                                     update="mentionsTabView:mentionDissolutionTable messageForm"
+                                     icon="pi pi-check" />
                 </div>
                 
             </div>
-            <p:dataTable id="mentionDissolutionTable" 
-                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionDissolutionMariageDtos}" 
-                         var="dissolution">
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{dissolution.dateDressage}"/>
-               </p:column>
-               <p:column headerText="Décision">
-                   <h:outputText value="#{dissolution.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
-         
-         <p:tab title="Légitimation">
-             <p:fieldset>
-             <div class="ui-fluid p-formgrid p-grid">
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     <p:dialog header="Mention légitimation" showEffect="fade" modal="true"
+               widgetVar="manageLegitimationDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-legitimation-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
                  <div class="p-field p-lg-12">
                     <p:outputLabel for="legitimationDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
                     <p:inputMask id="legitimationDateDressage" value="#{acteNaissanceEditerBacking.legitimationDto.dateDressage}"
@@ -375,32 +579,23 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de légitimation" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de légitimation" process="manage-legitimation-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionLegitimation()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" />
+                                     oncomplete="PF('manageLegitimationDialog').hide()"
+                                     update="mentionsTabView:mentionLegitimationTable messageForm"  icon="pi pi-check" />
                 </div>
                 
             </div>
-            <p:dataTable id="mentionLegitimationTable" 
-                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionLegitimationDtos}" 
-                         var="legitimation">
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{legitimation.dateDressage}"/>
-               </p:column>
-               <p:column headerText="Décision">
-                   <h:outputText value="#{legitimation.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
-         
-         <p:tab title="Reconnaissance">
-             <p:fieldset>
-             <div class="ui-fluid p-formgrid p-grid">
+                
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     <p:dialog header="Mention reconnaissance" showEffect="fade" modal="true"
+               widgetVar="manageReconnaissanceDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-reconnaissance-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
                  <div class="p-field p-lg-12">
                     <p:outputLabel for="reconnaissanceDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
                     <p:inputMask id="reconnaissanceDateDressage" value="#{acteNaissanceEditerBacking.reconnaissanceDto.dateDressage}"
@@ -432,33 +627,24 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de reconnaissance" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de reconnaissance" process="manage-reconnaissance-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionReconnaissance()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" 
+                                     oncomplete="PF('manageReconnaissanceDialog').hide()"
+                                     update="mentionsTabView:mentionReconnaissanceTable messageForm"  icon="pi pi-check" 
                                      />
                 </div>
                 
             </div>
-            <p:dataTable id="mentionReconnaissanceTable" 
-                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionReconnaissanceDtos}" 
-                         var="reconnaissance">
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{reconnaissance.dateDressage}"/>
-               </p:column>
-               <p:column headerText="Décision">
-                   <h:outputText value="#{reconnaissance.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
-         
-         <p:tab title="Rectification">
-             <p:fieldset>
-             <div class="ui-fluid p-formgrid p-grid">
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     
+     <p:dialog header="Mention rectification" showEffect="fade" modal="true"
+               widgetVar="manageRectificationDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-rectification-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
                  <div class="p-field p-lg-12">
                     <p:outputLabel for="rectificationDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
                     <p:inputMask id="rectificationDateDressage" value="#{acteNaissanceEditerBacking.rectificationDto.dateDressage}"
@@ -490,33 +676,20 @@ xmlns:p="http://primefaces.org/ui">
             </div>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-lg-12">
-                    <p:commandButton value="Ajouter la mention de rectification" process="mentionsTabView" 
+                    <p:commandButton value="Ajouter la mention de rectification" process="manage-rectification-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionRectification()}"
-                                     update="mentionsTabView messageForm"  icon="pi pi-check" 
+                                     oncomplete="PF('manageRectificationDialog').hide()"
+                                     update="mentionsTabView:mentionRectificationTable messageForm"  icon="pi pi-check" 
                                      />
                 </div>
                 
             </div>
-            <p:dataTable id="mentionRectificationTable" 
-                         value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionRectificationDtos}" 
-                         var="adoption">
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{rectification.dateDressage}"/>
-               </p:column>
-               <p:column headerText="Décision">
-                   <h:outputText value="#{rectification.decision}"/>
-               </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
-               </p:column>
-
-            </p:dataTable>
-            </p:fieldset>
-         </p:tab>
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+    
          
-         
-         
-     </p:tabView>
 
 </ui:composition>  
  

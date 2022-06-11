@@ -36,41 +36,46 @@ public class MentionMariageService {
         if(officier == null){
             throw new EntityNotFoundException("OfficierEtatCivil not found");
         }
-
-        MentionMariage mention = MentionMariage.findById(dto.getId());
+  
         
-        if(mention != null){
-            mention.decision = dto.getDecision();
-
-            mention.lieuMariage = dto.getLieu();
-            mention.dateMariage = dto.getDate();
-            mention.dateDressage = dto.getDateDressage();
-
-            mention.conjointNom = dto.getConjointNom();
-            mention.conjointPrenoms = dto.getConjointPrenoms();
-            mention.conjointProfession = dto.getConjointProfession();
-            mention.conjointDomicile = dto.getConjointDomicile();
-
+        MentionMariage mention = new MentionMariage();
             
-        }else{
-            mention = new MentionMariage();
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-            
-            mention.decision = dto.getDecision();
-            mention.lieuMariage = dto.getLieu();
-            mention.dateMariage = dto.getDate();
-            mention.dateDressage = dto.getDateDressage();
+        mention.acteNaissance = acte;
+        mention.officierEtatCivil = officier;
 
-            mention.conjointNom = dto.getConjointNom();
-            mention.conjointPrenoms = dto.getConjointPrenoms();
-            mention.conjointProfession = dto.getConjointProfession();
-            mention.conjointDomicile = dto.getConjointDomicile();
-            
-            mention.persist();
+        mention.decision = dto.getDecision();
+        mention.lieuMariage = dto.getLieu();
+        mention.dateMariage = dto.getDate();
+        mention.dateDressage = dto.getDateDressage();
 
+        mention.conjointNom = dto.getConjointNom();
+        mention.conjointPrenoms = dto.getConjointPrenoms();
+        mention.conjointProfession = dto.getConjointProfession();
+        mention.conjointDomicile = dto.getConjointDomicile();
+
+        mention.persist();
+
+    }
+    
+    public void modifierMention(@NotNull MentionMariageDto dto){
+      
+        MentionMariage mention = MentionMariage.findById(dto.getId());
+        if(mention == null){
+            throw new EntityNotFoundException("MentionMariage not found");
         }
+        
+        
+        mention.decision = dto.getDecision();
+
+        mention.lieuMariage = dto.getLieu();
+        mention.dateMariage = dto.getDate();
+        mention.dateDressage = dto.getDateDressage();
+
+        mention.conjointNom = dto.getConjointNom();
+        mention.conjointPrenoms = dto.getConjointPrenoms();
+        mention.conjointProfession = dto.getConjointProfession();
+        mention.conjointDomicile = dto.getConjointDomicile();
+
      
     }
      

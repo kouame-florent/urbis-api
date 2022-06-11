@@ -32,34 +32,43 @@ xmlns:p="http://primefaces.org/ui">
                 <p:ajax event="rowSelect" listener="#{acteNaissanceEditerBacking.onMentionMariageRowSelect}"
                             update=":contentForm:mentionsTabView"/>
                
-               <p:column headerText="date dressage" >
-                   <h:outputText value="#{mariage.dateDressage}"/>
-               </p:column>
-                <p:column headerText="Nom conjoint" >
-                    <h:outputText value="#{mariage.conjointNom}"/>
-               </p:column>
-                <p:column headerText="Prénoms conjoint" >
-                    <h:outputText value="#{mariage.conjointPrenoms}"/>
-               </p:column>
-                <p:column headerText="décision" >
-                   <h:outputText value="#{mariage.decision}"/>
-               </p:column>
-                <p:column style="width: 5%">
-                    <p:commandButton  class="ui-button-warning rounded-button" process="@this" 
-                                      action="#{acteNaissanceEditerBacking.deleteMentionMariage(mariage)}"  
-                                      update="mentionMariageTable"
-                                      icon="pi pi-trash">
-                        <p:confirm header="Confirmation" message="Voulez-vous vraiment retirer la mention ?" 
-                                   icon="pi pi-exclamation-triangle"/>
+                <p:column headerText="date dressage" >
+                    <h:outputText value="#{mariage.dateDressage}"/>
+                </p:column>
+                 <p:column headerText="Nom conjoint" >
+                     <h:outputText value="#{mariage.conjointNom}"/>
+                </p:column>
+                 <p:column headerText="Prénoms conjoint" >
+                     <h:outputText value="#{mariage.conjointPrenoms}"/>
+                </p:column>
+                <p:column headerText="Date mariage" >
+                    <h:outputText value="#{mariage.date}"/>
+                </p:column>
+                 <p:column headerText="décision" >
+                    <h:outputText value="#{mariage.decision}"/>
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-mariage-content"
+                         oncomplete="PF('manageMariageDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{mariage}" target="#{acteNaissanceEditerBacking.mariageDto}"/>
+                        <p:resetInput target=":contentForm:manage-mariage-content"/>
                     </p:commandButton>
-                    
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteMariageDialog').show()">
+                                <f:setPropertyActionListener value="#{mariage}" 
+                                                             target="#{acteNaissanceEditerBacking.mariageDto}"/>
+                    </p:commandButton>
                       
-               </p:column>
+                </p:column>
             </p:dataTable> 
-            
-            
+           
+           
+             
          </p:tab>
-         
          
          <p:tab title="Adoption">
              
@@ -84,15 +93,24 @@ xmlns:p="http://primefaces.org/ui">
                <p:column headerText="Décision">
                    <h:outputText value="#{adoption.decision}"/>
                </p:column>
-               <p:column style="width: 5%">
-                    <p:commandButton  class="ui-button-warning rounded-button" process="@this" 
-                                      action="#{acteNaissanceEditerBacking.deleteMentionAdoption(adoption)}"  
-                                      update="mentionMariageTable"
-                                      icon="pi pi-trash">
-                        <p:confirm header="Confirmation" message="Voulez-vous vraiment retirer la mention ?" 
-                                   icon="pi pi-exclamation-triangle"/>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-adoption-content"
+                         oncomplete="PF('manageAdoptionDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{adoption}" target="#{acteNaissanceEditerBacking.adoptionDto}"/>
+                        <p:resetInput target=":contentForm:manage-adoption-content"/>
                     </p:commandButton>
-               </p:column>
+                            
+                </p:column>
+               
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteAdoptionDialog').show()">
+                                <f:setPropertyActionListener value="#{adoption}" 
+                                                             target="#{acteNaissanceEditerBacking.adoptionDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
             
@@ -128,9 +146,23 @@ xmlns:p="http://primefaces.org/ui">
                <p:column headerText="décision" >
                    <h:outputText value="#{deces.decision}"/>
                </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton  icon="pi pi-times"/>
-               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-deces-content"
+                         oncomplete="PF('manageDecesDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{deces}" target="#{acteNaissanceEditerBacking.decesDto}"/>
+                        <p:resetInput target=":contentForm:manage-deces-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteDecesDialog').show()">
+                                <f:setPropertyActionListener value="#{deces}" 
+                                                             target="#{acteNaissanceEditerBacking.decesDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
            
@@ -165,6 +197,24 @@ xmlns:p="http://primefaces.org/ui">
                <p:column style="width: 5%">
                    <p:commandButton class="ui-button-outlined ui-button-warning" icon="pi pi-times"/>
                </p:column>
+                
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-dissolution-mariage-content"
+                         oncomplete="PF('manageDissolutionMariageDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{dissolution}" target="#{acteNaissanceEditerBacking.dissolutionMariageDto}"/>
+                        <p:resetInput target=":contentForm:manage-dissolution-mariage-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteDissolutionMariageDialog').show()">
+                                <f:setPropertyActionListener value="#{dissolution}" 
+                                                             target="#{acteNaissanceEditerBacking.dissolutionMariageDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
             
@@ -193,9 +243,23 @@ xmlns:p="http://primefaces.org/ui">
                <p:column headerText="Décision">
                    <h:outputText value="#{legitimation.decision}"/>
                </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton  icon="pi pi-times"/>
-               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-legitimation-content"
+                         oncomplete="PF('manageLegitimationDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{legitimation}" target="#{acteNaissanceEditerBacking.legitimationDto}"/>
+                        <p:resetInput target=":contentForm:manage-legitimation-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteLegitimationDialog').show()">
+                                <f:setPropertyActionListener value="#{legitimation}" 
+                                                             target="#{acteNaissanceEditerBacking.legitimationDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
            
@@ -224,9 +288,23 @@ xmlns:p="http://primefaces.org/ui">
                <p:column headerText="Décision">
                    <h:outputText value="#{reconnaissance.decision}"/>
                </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton  icon="pi pi-times"/>
-               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-reconnaissance-content"
+                         oncomplete="PF('manageReconnaissanceDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{reconnaissance}" target="#{acteNaissanceEditerBacking.reconnaissanceDto}"/>
+                        <p:resetInput target=":contentForm:manage-reconnaissance-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteReconnaissanceDialog').show()">
+                                <f:setPropertyActionListener value="#{reconnaissance}" 
+                                                             target="#{acteNaissanceEditerBacking.reconnaissanceDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
       
@@ -255,21 +333,32 @@ xmlns:p="http://primefaces.org/ui">
                <p:column headerText="Décision">
                    <h:outputText value="#{rectification.decision}"/>
                </p:column>
-               <p:column style="width: 5%">
-                   <p:commandButton  icon="pi pi-times"/>
-               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-rectification-content"
+                         oncomplete="PF('manageRectificationDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{rectification}" 
+                                                     target="#{acteNaissanceEditerBacking.rectificationDto}"/>
+                        <p:resetInput target=":contentForm:manage-rectification-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteRectificationDialog').show()">
+                                <f:setPropertyActionListener value="#{rectification}" 
+                                                             target="#{acteNaissanceEditerBacking.rectificationDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
 
             </p:dataTable>
         
          </p:tab>
          
-        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="450">
-                <p:commandButton value="Non"  styleClass="ui-confirmdialog-no ui-button-flat"/>
-                <p:commandButton value="Oui"  styleClass="ui-confirmdialog-yes" />
-        </p:confirmDialog>
+        
          
      </p:tabView>
-     
      
      <p:dialog header="Mention mariage" showEffect="fade" modal="true"
                widgetVar="manageMariageDialog" responsive="true" fitViewport="true" >
@@ -371,6 +460,16 @@ xmlns:p="http://primefaces.org/ui">
          </p:outputPanel>         
          
      </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteMariageDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionMariage()}"
+                             process="@this" update="mentionsTabView:mentionMariageTable messageForm" 
+                             oncomplete="PF('deleteMariageDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteMariageDialog').hide()"/>
+    </p:confirmDialog>
         
      <p:dialog header="Mention adoption" showEffect="fade" modal="true"
                widgetVar="manageAdoptionDialog" responsive="true" fitViewport="true" >
@@ -419,6 +518,18 @@ xmlns:p="http://primefaces.org/ui">
              
             </p:outputPanel>
      </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteAdoptionDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+        <p:commandButton value="Oui" icon="pi pi-check" 
+                         actionListener="#{acteNaissanceEditerBacking.deleteMentionAdoption()}"
+                         process="@this" update="mentionsTabView:mentionAdoptionTable messageForm" 
+                         oncomplete="PF('deleteAdoptionDialog').hide()"/>
+        <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                         onclick="PF('deleteAdoptionDialog').hide()"/>
+    </p:confirmDialog>
+     
+   
      
      <p:dialog header="Mention décès" showEffect="fade" modal="true"
                widgetVar="manageDecesDialog" responsive="true" fitViewport="true" >
@@ -495,6 +606,16 @@ xmlns:p="http://primefaces.org/ui">
             </p:outputPanel>
      </p:dialog>
      
+     <p:confirmDialog widgetVar="deleteDecesDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionDeces()}"
+                             process="@this" update="mentionsTabView:mentionDecesTable messageForm" 
+                             oncomplete="PF('deleteDecesDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteDecesDialog').hide()"/>
+    </p:confirmDialog>
+     
      <p:dialog header="Mention dissolution mariage" showEffect="fade" modal="true"
                widgetVar="manageDissolutionMariageDialog" responsive="true" fitViewport="true" >
             <p:outputPanel id="manage-dissolution-mariage-content" class="ui-fluid">
@@ -542,6 +663,16 @@ xmlns:p="http://primefaces.org/ui">
              
             </p:outputPanel>
      </p:dialog>
+     
+     <p:confirmDialog widgetVar="deleteDissolutionMariageDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionDissolutionMariage()}"
+                             process="@this" update="mentionsTabView:mentionDissolutionMariageTable messageForm" 
+                             oncomplete="PF('deleteDissolutionMariageDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteDissolutionMariageDialog').hide()"/>
+    </p:confirmDialog>
      
      <p:dialog header="Mention légitimation" showEffect="fade" modal="true"
                widgetVar="manageLegitimationDialog" responsive="true" fitViewport="true" >
@@ -591,6 +722,16 @@ xmlns:p="http://primefaces.org/ui">
             </p:outputPanel>
      </p:dialog>
      
+     <p:confirmDialog widgetVar="deleteLegitimationDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionLegitimation()}"
+                             process="@this" update="mentionsTabView:mentionLegitimationTable messageForm" 
+                             oncomplete="PF('deleteLegitimationDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteLegitimationDialog').hide()"/>
+    </p:confirmDialog>
+     
      <p:dialog header="Mention reconnaissance" showEffect="fade" modal="true"
                widgetVar="manageReconnaissanceDialog" responsive="true" fitViewport="true" >
             <p:outputPanel id="manage-reconnaissance-content" class="ui-fluid">
@@ -638,6 +779,16 @@ xmlns:p="http://primefaces.org/ui">
              
             </p:outputPanel>
      </p:dialog>
+     
+     <p:confirmDialog widgetVar="deleteReconnaissanceDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionReconnaisance()}"
+                             process="@this" update="mentionsTabView:mentionReconnaissanceTable messageForm" 
+                             oncomplete="PF('deleteReconnaissanceDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteReconnaissanceDialog').hide()"/>
+    </p:confirmDialog>
      
      
      <p:dialog header="Mention rectification" showEffect="fade" modal="true"
@@ -688,7 +839,15 @@ xmlns:p="http://primefaces.org/ui">
             </p:outputPanel>
      </p:dialog>
      
-    
+    <p:confirmDialog widgetVar="deleteRectificationDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteNaissanceEditerBacking.deleteMentionRectification()}"
+                             process="@this" update="mentionsTabView:mentionRectificationTable messageForm" 
+                             oncomplete="PF('deleteRectificationDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteRectificationDialog').hide()"/>
+    </p:confirmDialog>
          
 
 </ui:composition>  

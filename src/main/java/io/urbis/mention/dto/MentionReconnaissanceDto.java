@@ -5,15 +5,11 @@
  */
 package io.urbis.mention.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
  *
  * @author florent
  */
-@Data
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+
 public class MentionReconnaissanceDto extends MentionDto{
     
 }

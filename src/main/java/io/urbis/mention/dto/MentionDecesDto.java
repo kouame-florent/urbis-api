@@ -6,16 +6,13 @@
 package io.urbis.mention.dto;
 
 import java.time.LocalDate;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author florent
  */
 
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+
 public class MentionDecesDto extends MentionDto {
     
     private LocalDate date;
@@ -48,14 +45,6 @@ public class MentionDecesDto extends MentionDto {
         this.localite = localite;
     }
 
-    public LocalDate getDateDressage() {
-        return dateDressage;
-    }
-
-    public void setDateDressage(LocalDate dateDressage) {
-        this.dateDressage = dateDressage;
-    }
-    
-    
+  
 
 }

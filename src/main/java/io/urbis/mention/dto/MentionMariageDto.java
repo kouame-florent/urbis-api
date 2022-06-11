@@ -13,8 +13,7 @@ import lombok.EqualsAndHashCode;
  *
  * @author florent
  */
-@Data
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+
 public class MentionMariageDto extends MentionDto{
     
     
@@ -24,4 +23,54 @@ public class MentionMariageDto extends MentionDto{
     private String conjointPrenoms;
     private String conjointDomicile;
     private String conjointProfession;
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getConjointNom() {
+        return conjointNom;
+    }
+
+    public void setConjointNom(String conjointNom) {
+        this.conjointNom = conjointNom;
+    }
+
+    public String getConjointPrenoms() {
+        return conjointPrenoms;
+    }
+
+    public void setConjointPrenoms(String conjointPrenoms) {
+        this.conjointPrenoms = conjointPrenoms;
+    }
+
+    public String getConjointDomicile() {
+        return conjointDomicile;
+    }
+
+    public void setConjointDomicile(String conjointDomicile) {
+        this.conjointDomicile = conjointDomicile;
+    }
+
+    public String getConjointProfession() {
+        return conjointProfession;
+    }
+
+    public void setConjointProfession(String conjointProfession) {
+        this.conjointProfession = conjointProfession;
+    }
+    
+    
 }

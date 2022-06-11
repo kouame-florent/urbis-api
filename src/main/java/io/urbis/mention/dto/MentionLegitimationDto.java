@@ -12,8 +12,7 @@ import lombok.EqualsAndHashCode;
  *
  * @author florent
  */
-@Data
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+
 public class MentionLegitimationDto extends MentionDto{
     
 }

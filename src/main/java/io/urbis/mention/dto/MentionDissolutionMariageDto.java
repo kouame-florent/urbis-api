@@ -6,17 +6,22 @@
 package io.urbis.mention.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  *
  * @author florent
  */
-@Data
-@EqualsAndHashCode(callSuper = true,onlyExplicitlyIncluded = true)
+
 public class MentionDissolutionMariageDto extends MentionDto{
     private LocalDate dateJugement;
+
+    public LocalDate getDateJugement() {
+        return dateJugement;
+    }
+
+    public void setDateJugement(LocalDate dateJugement) {
+        this.dateJugement = dateJugement;
+    }
+    
     
 }

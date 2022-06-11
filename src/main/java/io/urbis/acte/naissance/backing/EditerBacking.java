@@ -280,45 +280,45 @@ public class EditerBacking extends BaseBacking implements Serializable{
         mariageDto = selectedMentionMariage;
     }
     
-    public void deleteMentionMariage(MentionMariageDto dto){
+    public void deleteMentionMariage(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionMariageDtos().remove(dto);
+        acteNaissanceDto.getMentionMariageDtos().remove(mariageDto);
       
     }
     
-    public void deleteMentionAdoption(MentionAdoptionDto dto){
+    public void deleteMentionAdoption(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionAdoptionDtos().remove(dto);
+        acteNaissanceDto.getMentionAdoptionDtos().remove(adoptionDto);
       
     }
     
-    public void deleteMentionDeces(MentionDecesDto dto){
+    public void deleteMentionDeces(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionDecesDtos().remove(dto);
+        acteNaissanceDto.getMentionDecesDtos().remove(decesDto);
        
     }
     
-    public void deleteMentionDissolutionMariage(MentionDissolutionMariageDto dto){
+    public void deleteMentionDissolutionMariage(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionDissolutionMariageDtos().remove(dto);
+        acteNaissanceDto.getMentionDissolutionMariageDtos().remove(dissolutionMariageDto);
         
     }
     
-    public void deleteMentionLegitimation(MentionLegitimationDto dto){
+    public void deleteMentionLegitimation(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionLegitimationDtos().remove(dto);
+        acteNaissanceDto.getMentionLegitimationDtos().remove(legitimationDto);
         
     }
     
-    public void deleteMentionReconnaisance(MentionReconnaissanceDto dto){
+    public void deleteMentionReconnaisance(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionReconnaissanceDtos().remove(dto);
+        acteNaissanceDto.getMentionReconnaissanceDtos().remove(reconnaissanceDto);
         
     }
         
-    public void deleteMentionRectification(MentionRectificationDto dto){
+    public void deleteMentionRectification(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteNaissanceDto.getMentionRectificationDtos().remove(dto);
+        acteNaissanceDto.getMentionRectificationDtos().remove(rectificationDto);
         
     }
     
@@ -569,9 +569,13 @@ public class EditerBacking extends BaseBacking implements Serializable{
         Set<ConstraintViolation<MentionMariageDto>> violations = validator.validate(mariageDto);
         if(violations.isEmpty()){
             
-           // mariageDtos.add(mariageDto);
-           // mariageDto.setActeNaissanceID(selectedActe.getId());
-            acteNaissanceDto.getMentionMariageDtos().add(mariageDto);
+            if(acteNaissanceDto.getMentionMariageDtos().contains(mariageDto)){
+                acteNaissanceDto.getMentionMariageDtos().remove(mariageDto);
+                acteNaissanceDto.getMentionMariageDtos().add(mariageDto);
+            }else{
+                acteNaissanceDto.getMentionMariageDtos().add(mariageDto);
+            }
+            
             mariageDto = new MentionMariageDto();
         }else{
             violations.stream().forEach(v -> {

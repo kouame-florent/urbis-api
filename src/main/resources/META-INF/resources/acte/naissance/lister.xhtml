@@ -169,8 +169,7 @@ xmlns:p="http://primefaces.org/ui">
                         </p:menuitem>
                         
                         <p:menuitem value="Supprimer" action="#{acteNaissanceListerBacking.supprimer(acte.id)}" 
-                                    process="@this" disabled="#{acteNaissanceListerBacking.disableMenuValiderActe(acte)}" 
-                                    icon="pi pi-times">
+                                    process="@this" icon="pi pi-times">
                              
                              <p:confirm header="Confirmation" 
                                            message="Voulez-vous vraiment supprimer l'acte #{acte.numero} du registre

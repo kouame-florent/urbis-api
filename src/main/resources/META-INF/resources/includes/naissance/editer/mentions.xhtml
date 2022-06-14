@@ -185,7 +185,7 @@ xmlns:p="http://primefaces.org/ui">
 
              
              
-            <p:dataTable id="mentionDissolutionTable" 
+            <p:dataTable id="mentionDissolutionMariageTable" 
                          value="#{acteNaissanceEditerBacking.acteNaissanceDto.mentionDissolutionMariageDtos}" 
                          var="dissolution">
                <p:column headerText="date dressage" >
@@ -427,7 +427,7 @@ xmlns:p="http://primefaces.org/ui">
                  </div>  
             </p:fieldset>
             <div class="ui-fluid p-formgrid p-grid">
-                <div class="p-field p-lg-6">
+                <div class="p-field p-lg-12">
                      <p:outputLabel for="mariageDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="mariageDecision" value="#{acteNaissanceEditerBacking.mariageDto.decision}" 
                                       rows="10">
@@ -435,7 +435,7 @@ xmlns:p="http://primefaces.org/ui">
                      </p:inputTextarea>
                      <p:message for="mariageDecision"/>
                  </div>
-                <div class="p-field p-lg-6">
+                <div class="p-field p-lg-12">
                     <p:outputLabel for="mariageOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="mariageOfficier" value="#{acteNaissanceEditerBacking.mariageDto.officierEtatCivilID}">
                         <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
@@ -486,14 +486,14 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="adoptionDateDressage"/>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                      <p:outputLabel for="adoptionDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="adoptionDecision" value="#{acteNaissanceEditerBacking.adoptionDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                     <p:outputLabel for="adoptionOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="adoptionOfficier" value="#{acteNaissanceEditerBacking.adoptionDto.officierEtatCivilID}"          
                                      label="Selectionnez">
@@ -571,7 +571,7 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="deceslieuDateDressage"/>
                 </div>
-                <div class="p-field p-lg-6">
+                <div class="p-field p-lg-12">
                      <p:outputLabel for="decesDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="decesDecision" value="#{acteNaissanceEditerBacking.decesDto.decision}" 
                                       rows="10">
@@ -579,7 +579,7 @@ xmlns:p="http://primefaces.org/ui">
                      </p:inputTextarea>
                      <p:message for="decesDecision"/>
                  </div>
-                <div class="p-field p-lg-6">
+                <div class="p-field p-lg-12">
                     <p:outputLabel for="decesOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="decesOfficier" value="#{acteNaissanceEditerBacking.decesDto.officierEtatCivilID}">
                         <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
@@ -631,14 +631,14 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="dissolutionDateDressage"/>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                      <p:outputLabel for="dissolutionDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="dissolutionDecision" value="#{acteNaissanceEditerBacking.dissolutionMariageDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                     <p:outputLabel for="dissolutionOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="dissolutionOfficier" value="#{acteNaissanceEditerBacking.dissolutionMariageDto.officierEtatCivilID}"          
                                      label="Selectionnez">
@@ -655,7 +655,7 @@ xmlns:p="http://primefaces.org/ui">
                     <p:commandButton value="Ajouter la mention de dissolution de mariage" process="manage-dissolution-mariage-content" 
                                      action="#{acteNaissanceEditerBacking.ajouterMentionDissolution()}"
                                      oncomplete="PF('manageDissolutionMariageDialog').hide()"
-                                     update="mentionsTabView:mentionDissolutionTable messageForm"
+                                     update="mentionsTabView:mentionDissolutionMariageTable messageForm"
                                      icon="pi pi-check" />
                 </div>
                 
@@ -689,14 +689,14 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="legitimationDateDressage"/>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                      <p:outputLabel for="legitimationDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="legitimationDecision" value="#{acteNaissanceEditerBacking.legitimationDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                     <p:outputLabel for="legitimationOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="legitimationOfficier" value="#{acteNaissanceEditerBacking.legitimationDto.officierEtatCivilID}"          
                                      label="Selectionnez">
@@ -747,14 +747,14 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="reconnaissanceDateDressage"/>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                      <p:outputLabel for="reconnaissanceDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="reconnaissanceDecision" value="#{acteNaissanceEditerBacking.reconnaissanceDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                     <p:outputLabel for="reconnaissanceOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="reconnaissanceOfficier" value="#{acteNaissanceEditerBacking.reconnaissanceDto.officierEtatCivilID}"          
                                      label="Selectionnez">
@@ -806,14 +806,14 @@ xmlns:p="http://primefaces.org/ui">
                     
                     <p:message for="rectificationDateDressage"/>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                      <p:outputLabel for="rectificationDecision" styleClass="p-d-block">Décision</p:outputLabel>
                      <p:inputTextarea id="rectificationDecision" value="#{acteNaissanceEditerBacking.rectificationDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>
                  </div>
-                 <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-12">
                     <p:outputLabel for="rectificationOfficier" styleClass="p-d-block">Officier</p:outputLabel>
                     <p:selectOneMenu id="rectificationOfficier" value="#{acteNaissanceEditerBacking.rectificationDto.officierEtatCivilID}"          
                                      label="Selectionnez">

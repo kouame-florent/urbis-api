@@ -19,7 +19,8 @@ public enum Operation {
     DECLARATION("Declaration"), 
     SAISIE_ACTE_EXISTANT("Saisie acte existant"),
     MODIFICATION("Modification"),
-    VALIDATION("Validation");
+    VALIDATION("Validation"),
+    CONSULTATION("Consultation");
     
     private final String libelle;
     

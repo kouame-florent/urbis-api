@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -24,12 +26,16 @@ import javax.validation.constraints.NotNull;
 @ApplicationScoped
 public class MentionAdoptionService {
     
+    @Inject
+    Logger log;
+    
     public void createMention(@NotNull MentionAdoptionDto dto){
        
         ActeNaissance acte = ActeNaissance.findById(dto.getActeNaissanceID());
         if(acte == null){
             throw new EntityNotFoundException("ActeNaissance not found");
         }
+        
         
         OfficierEtatCivil officier = OfficierEtatCivil.findById(dto.getOfficierEtatCivilID());
         if(officier == null){
@@ -52,14 +58,15 @@ public class MentionAdoptionService {
     public void modifierMention(@NotNull MentionAdoptionDto dto){
         
         MentionAdoption mention = MentionAdoption.findById(dto.getId());
-        if(mention == null){
-            throw new EntityNotFoundException("MentionAdoption not found");
+        if(mention == null){ 
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         }
-      
-        mention.dateDressage = dto.getDateDressage();
-        mention.decision = dto.getDecision();
-     
-        
+    
     }
     
     public void deleteMention(String mentionID){
@@ -76,8 +83,9 @@ public class MentionAdoptionService {
     public MentionAdoptionDto mapToDto(@NotNull MentionAdoption mention){
         MentionAdoptionDto dto = new MentionAdoptionDto();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

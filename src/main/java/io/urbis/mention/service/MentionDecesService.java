@@ -43,48 +43,38 @@ public class MentionDecesService {
         }
        
         MentionDeces mention = MentionDeces.findById(dto.getId());
-        
-        if(mention != null){
-            
-            mention.decision = dto.getDecision();
-            mention.date = dto.getDate();
-            mention.lieu = dto.getLieu();
-            mention.localite = dto.getLocalite();
-            mention.dateDressage = dto.getDateDressage();
-
-        }else{
-            mention = new MentionDeces();
-            
-            mention.acteNaissance = acte;
-            mention.officierEtatCivil = officier;
-                        
-            mention.decision = dto.getDecision();
-            mention.date = dto.getDate();
-            mention.lieu = dto.getLieu();
-            mention.localite = dto.getLocalite();
-            mention.dateDressage = dto.getDateDressage();
-            
-            mention.persist();
-        }
-        
-        
        
- 
+        mention = new MentionDeces();
+
+        mention.acteNaissance = acte;
+        mention.officierEtatCivil = officier;
+
+        mention.decision = dto.getDecision();
+        mention.date = dto.getDate();
+        mention.lieu = dto.getLieu();
+        mention.localite = dto.getLocalite();
+        mention.dateDressage = dto.getDateDressage();
+
+        mention.persist();
+      
     }
     
     public void modifierMention(@NotNull MentionDecesDto dto){
             
        
         MentionDeces mention = MentionDeces.findById(dto.getId());
-        if(mention == null){
-            throw new EntityNotFoundException("MentionDeces not found");
+        if(mention == null){ 
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+            mention.decision = dto.getDecision();
+            mention.date = dto.getDate();
+            mention.lieu = dto.getLieu();
+            mention.localite = dto.getLocalite();
+            mention.dateDressage = dto.getDateDressage();
         }
              
-        mention.decision = dto.getDecision();
-        mention.date = dto.getDate();
-        mention.lieu = dto.getLieu();
-        mention.localite = dto.getLocalite();
-        mention.dateDressage = dto.getDateDressage();
+        
 
     }
      
@@ -102,8 +92,9 @@ public class MentionDecesService {
     public MentionDecesDto mapToDto(@NotNull MentionDeces mention){
         MentionDecesDto dto = new MentionDecesDto();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

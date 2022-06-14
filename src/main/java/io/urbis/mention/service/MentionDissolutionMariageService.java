@@ -52,15 +52,16 @@ public class MentionDissolutionMariageService {
     public void modifierMention(@NotNull MentionDissolutionMariageDto dto){
         
         MentionDissolutionMariage mention = MentionDissolutionMariage.findById(dto.getId());
-        if(mention == null){
-            throw new EntityNotFoundException("MentionDissolutionMariage not found");
+        if(mention == null){ 
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+            mention.decision = dto.getDecision();
+            mention.dateJugement = dto.getDateJugement();
+            mention.dateDressage = dto.getDateDressage();
         }
-         
-        mention.decision = dto.getDecision();
-        mention.dateJugement = dto.getDateJugement();
-        mention.dateDressage = dto.getDateDressage();
-        
-        mention.persist();
+    
+       
     }
      
     public void deleteMention(String mentionID){
@@ -78,8 +79,9 @@ public class MentionDissolutionMariageService {
     public MentionDissolutionMariageDto mapToDto(@NotNull MentionDissolutionMariage mention){
         MentionDissolutionMariageDto dto = new MentionDissolutionMariageDto();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

@@ -52,12 +52,15 @@ public class MentionRectificationService {
          
         MentionRectification mention = MentionRectification.findById(dto.getId());
         if(mention == null){
-            throw new EntityNotFoundException("MentionRectification not found");
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+             
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
+        
         }
-        
-        mention.dateDressage = dto.getDateDressage();
-        mention.decision = dto.getDecision();
-        
+       
     }
     
     public void deleteMention(String mentionID){
@@ -74,8 +77,9 @@ public class MentionRectificationService {
     public MentionRectificationDto mapToDto(@NotNull MentionRectification mention){
         MentionRectificationDto dto = new MentionRectificationDto();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

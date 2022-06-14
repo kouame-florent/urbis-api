@@ -52,11 +52,14 @@ public class MentionReconnaissanceService {
          
         MentionReconnaissance mention = MentionReconnaissance.findById(dto.getId());
         if(mention == null){
-            throw new EntityNotFoundException("MentionReconnaissance not found");
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+            
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         }
         
-        mention.dateDressage = dto.getDateDressage();
-        mention.decision = dto.getDecision();
         
     }
      
@@ -74,8 +77,9 @@ public class MentionReconnaissanceService {
     public MentionReconnaissanceDto mapToDto(@NotNull MentionReconnaissance mention){
         MentionReconnaissanceDto dto = new MentionReconnaissanceDto();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

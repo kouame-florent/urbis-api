@@ -179,6 +179,15 @@ public class ListerBacking extends BaseBacking implements Serializable{
         Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
         PrimeFaces.current().dialog().openDynamic("/acte/mariage/editer", getDialogOptions(98,98,true), params);
     }
+    
+    public void openConsulterActeView(ActeMariageDto dto){
+        LOG.log(Level.INFO, "ACTE ID: {0}", dto.getId());
+        var ids = List.of(registreID);
+        var operations = List.of(Operation.CONSULTATION.name());
+        var acteIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/acte/mariage/editer", getDialogOptions(98,98,true), params);
+    }
 
     public boolean disableButtonsOpenNew(){
         LOG.log(Level.INFO, "REGISTRE DTO STATUT: {0}",registreDto.getStatut());

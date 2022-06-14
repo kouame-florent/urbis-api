@@ -49,16 +49,18 @@ public class MentionLegitimationService {
     }
     
     public void modifierMention(@NotNull MentionLegitimationDto dto){
-        
          
         MentionLegitimation mention = MentionLegitimation.findById(dto.getId());
         if(mention == null){
-            throw new EntityNotFoundException("MentionLegitimation  not found");
-        }
-            
-        mention.dateDressage = dto.getDateDressage();
-        mention.decision = dto.getDecision();
+            //creer les mentions rajoutées à la modification de l'acte
+            createMention(dto);
+        }else{
+                 
+            mention.dateDressage = dto.getDateDressage();
+            mention.decision = dto.getDecision();
         
+        }
+       
         
     }
      
@@ -76,8 +78,9 @@ public class MentionLegitimationService {
     public MentionLegitimationDto  mapToDto(@NotNull MentionLegitimation mention){
         MentionLegitimationDto  dto = new MentionLegitimationDto ();
         
-        dto.setActeNaissanceID(mention.officierEtatCivil.id);
+        dto.setId(mention.id);
         dto.setActeNaissanceID(mention.acteNaissance.id);
+        dto.setOfficierEtatCivilID(mention.officierEtatCivil.id);
         dto.setDecision(mention.decision);
         dto.setDateDressage(mention.dateDressage);
         

@@ -836,6 +836,8 @@ public class ActeNaissanceService {
         Set<MentionMariageDto> dm = new HashSet<>(mentionMariageService.findByActeNaissance(acte.id));
         dm.removeAll(acteNaissanceDto.getMentionMariageDtos());
         
+        log.infof("-- DIFFERENCE SET SIZE: %d", dm.size());
+        
         dm.forEach(mm -> {
             mentionMariageService.deleteMention(mm.getId());
         });

@@ -219,7 +219,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public boolean disableMenuConsulterActe(ActeNaissanceDto dto){
-       return dto.getStatut().equals(StatutActeNaissance.VALIDE.name());
+       return dto.getStatut().equals(StatutActeNaissance.PROJET.name());
     }
     
     public void openNewActeExistant(){

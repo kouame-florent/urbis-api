@@ -5,31 +5,30 @@
  */
 package io.urbis.security.service;
 
+import io.quarkus.security.identity.SecurityIdentity;
+import java.io.Serializable;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 
 /**
  *
  * @author florent
  */
 @RequestScoped
-public class AuthenticationContext {
+public class AuthenticationContext implements Serializable{
     
+    @Inject
+    SecurityIdentity securityIdentity;
     
-    //@Context SecurityContext securityCtx;
-    
-    private String userLogin;
-
-    public String getUserLogin() {
-        if (userLogin == null){
-            return "anonymous";
+    public String userLogin(){
+        
+        if(securityIdentity != null){
+            return securityIdentity.getPrincipal().getName();
         }
-        return userLogin;
+        
+        return "anonymous";
     }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
-
-   
     
 }

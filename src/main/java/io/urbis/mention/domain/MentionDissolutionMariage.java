@@ -8,12 +8,21 @@ package io.urbis.mention.domain;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * @author florent
  */
+@NamedQueries({
+    @NamedQuery(name = "MentionDissolutionMariage.findMostRecent",
+    query = "Select m FROM MentionDissolutionMariage m WHERE m.dateDressage = (Select Max(ma.dateDressage) FROM MentionDissolutionMariage ma) "
+            + " WHERE m.acteNaissance = :acteNaissance"
+            
+    ),
+})
 @Entity
 @Table(name = "mention_dissolution_mariage")
 public class MentionDissolutionMariage extends Mention{

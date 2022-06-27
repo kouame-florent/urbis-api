@@ -33,6 +33,7 @@ import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +56,10 @@ public class ActeDecesService {
     
     @Inject
     LocaliteService localiteService;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
     
     
     public ActeDecesDto findById(@NotBlank String id){
@@ -97,8 +102,8 @@ public class ActeDecesService {
         acte.officierEtatCivil = officier;
         acte.registre = registre;
         acte.numero = acteDecesDto.getNumero();
-       
-        
+        acte.updatedBy = authenticationContext.userLogin();
+               
         if(acteDecesDto.getDateDressage() != null ){
             acte.dateDressage = acteDecesDto.getDateDressage();
         }
@@ -208,7 +213,7 @@ public class ActeDecesService {
         acte.pere = new Pere(); 
         acte.mere =  new Mere();
         acte.declarant = new Declarant();
-        
+        acte.updatedBy = authenticationContext.userLogin();
         
         
         Registre registre = Registre.findById(acteDecesDto.getRegistreID());

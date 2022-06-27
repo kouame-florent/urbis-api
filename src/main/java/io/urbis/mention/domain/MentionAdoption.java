@@ -6,12 +6,21 @@
 package io.urbis.mention.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * @author florent
  */
+@NamedQueries({
+    @NamedQuery(name = "MentionAdoption.findMostRecent",
+    query = "Select m FROM MentionAdoption m WHERE m.dateDressage = (Select Max(ma.dateDressage) FROM MentionAdoption ma) "
+            + " WHERE m.acteNaissance = :acteNaissance"
+            
+    ),
+})
 @Entity
 @Table(name = "mention_adoption")
 public class MentionAdoption extends Mention{

@@ -5,43 +5,46 @@
  */
 package io.urbis.common.domain;
 
-import io.quarkus.security.identity.SecurityIdentity;
-import io.urbis.security.service.AuthenticationContext;
 import java.time.LocalDateTime;
-import java.util.UUID;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import java.util.logging.Logger;
+import javax.enterprise.context.control.ActivateRequestContext;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.ws.rs.core.SecurityContext;
 
 /**
  *
  * @author florent
  */
-@Dependent
-public class AuditingEntityListener {
+
+public class AuditingEntityListener{
+
+    private static final Logger LOG = Logger.getLogger(AuditingEntityListener.class.getName());
+   
+   //@Inject
+   //AuthenticationContext authCtx;
     
-    //@Inject
-    //SecurityContext  securityContext;
+    //@Inject @io.quarkus.arc.Unremovable
+    //SecurityIdentity authCtx;
     
-    //@Inject
-    //SecurityIdentity secId;
-    
-    @Inject
-    AuthenticationContext authCtx;
-    
+    @ActivateRequestContext
     @PrePersist
     public void preCreate(BaseEntity auditable){
-        auditable.id = UUID.randomUUID().toString();
+        //auditable.id = UUID.randomUUID().toString();
+       //SecurityIdentity authCtx = CDI.current().select(SecurityIdentity.class).get();
+       // AuthenticationContext authCtx = CDI.current().select(AuthenticationContext.class).get();
+        //LOG.log(Level.INFO, "--> SECID: {0}", authCtx);
         auditable.created = LocalDateTime.now();
-        auditable.updatedBy = authCtx.getUserLogin();
+        //auditable.updatedBy = authCtx.getPrincipal().getName();
+        //auditable.updatedBy = authCtx.userLogin();
+        //updatedBy = "lisa";
+       
     }
     
     @PreUpdate
     public void preUpdate(BaseEntity auditable){
         auditable.updated = LocalDateTime.now();
-        auditable.updatedBy = authCtx.getUserLogin();
+       // auditable.updatedBy = authCtx.userLogin();
+       //updatedBy = "lisa";
     }
+    
 }

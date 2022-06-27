@@ -14,6 +14,7 @@ import io.urbis.acte.divers.dto.ActeConsReconnaissanceDto;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +39,9 @@ public class ActeConsReconnaissanceService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
     
     public ActeConsReconnaissanceDto findById(@NotBlank String id){
         return ActeConsReconnaissance.findByIdOptional(id)
@@ -67,6 +71,7 @@ public class ActeConsReconnaissanceService {
         acte.registre = registre;
         acte.officierEtatCivil = officier;
         acte.statut = StatutActeDivers.PROJET;
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.consentementDate = dto.getConsentementDate();
         acte.consentementDomicile = dto.getConsentementDomicile();
@@ -132,6 +137,7 @@ public class ActeConsReconnaissanceService {
         acte.registre = registre;
         acte.officierEtatCivil = officier;
         acte.statut = StatutActeDivers.fromString(dto.getStatut());
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.consentementDate = dto.getConsentementDate();
         acte.consentementDomicile = dto.getConsentementDomicile();

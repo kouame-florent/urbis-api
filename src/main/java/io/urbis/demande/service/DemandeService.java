@@ -20,6 +20,7 @@ import io.urbis.demande.domain.Demande;
 import io.urbis.demande.domain.Demandeur;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.registre.domain.TypeRegistre;
+import io.urbis.security.service.AuthenticationContext;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +65,9 @@ public class DemandeService {
     @Inject
     Logger log;
     
+    @Inject
+    AuthenticationContext authenticationContext;
+    
         
     public void creer(@NotNull DemandeDto dto){
         
@@ -102,6 +106,7 @@ public class DemandeService {
             demande.numero = dto.getNumero();
             demande.numeroActe = dto.getNumeroActe();
             demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+            demande.updatedBy = authenticationContext.userLogin();
 
             demande.persist();
         

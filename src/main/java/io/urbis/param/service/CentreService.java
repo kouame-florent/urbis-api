@@ -6,9 +6,11 @@
 package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.param.domain.Centre;
 import io.urbis.param.domain.Localite;
 import io.urbis.param.dto.CentreDto;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,6 +42,11 @@ public class CentreService {
     @Inject
     EntityManager em;
     
+  
+    @Inject
+    AuthenticationContext authenticationContext;
+
+    
     public void create(CentreDto dto){
         
         Localite localite = Localite.findById(dto.getLocaliteID());
@@ -49,6 +56,7 @@ public class CentreService {
         
         if(Centre.count() == 0){
             Centre centre = new Centre(dto.getCode(), dto.getLibelle(), localite);
+            centre.updatedBy = authenticationContext.userLogin();
             centre.persist();
         }else{
             throw new IllegalStateException("un centre 'actif' existe déjà");
@@ -63,7 +71,7 @@ public class CentreService {
         if(cen != null){
             cen.code = dto.getCode();
             cen.libelle = dto.getLibelle();
-                       
+            cen.updatedBy = authenticationContext.userLogin();          
             //cen.statut = StatutParametre.fromString(dto.getStatut());
             
         }

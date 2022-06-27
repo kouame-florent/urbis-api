@@ -19,6 +19,7 @@ import io.urbis.acte.divers.dto.ActeRecEnfantAdulterinDto;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,6 +44,9 @@ public class ActeRecEnfantAdulterinService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
     
     public ActeRecEnfantAdulterinDto findById(@NotBlank String id){
         return ActeRecEnfantAdulterin.findByIdOptional(id)
@@ -73,6 +77,7 @@ public class ActeRecEnfantAdulterinService {
         acte.registre = registre;
         acte.officierEtatCivil = officier;
         acte.statut = StatutActeDivers.PROJET;
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.consentementEpouseNom = dto.getConsentementEpouseNom();
         acte.consentementEpousePrenoms = dto.getConsentementEpousePrenoms();
@@ -144,6 +149,7 @@ public class ActeRecEnfantAdulterinService {
         acte.registre = registre;
         acte.officierEtatCivil = officier;
         acte.statut = StatutActeDivers.fromString(dto.getStatut());
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.consentementEpouseNom = dto.getConsentementEpouseNom();
         acte.consentementEpousePrenoms = dto.getConsentementEpousePrenoms();

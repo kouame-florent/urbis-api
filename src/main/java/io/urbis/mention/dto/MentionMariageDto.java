@@ -6,8 +6,6 @@
 package io.urbis.mention.dto;
 
 import java.time.LocalDate;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  *

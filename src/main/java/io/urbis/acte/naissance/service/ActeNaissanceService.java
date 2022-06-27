@@ -40,10 +40,13 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
+import io.urbis.mention.domain.MentionAdoption;
+import io.urbis.mention.domain.MentionDeces;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -51,6 +54,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,10 +62,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
@@ -116,6 +124,12 @@ public class ActeNaissanceService {
     
     @Inject
     AgroalDataSource defaultDataSource;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    EntityManager em;
    
     
     public ActeNaissanceDto findById(@NotBlank String id){
@@ -135,6 +149,7 @@ public class ActeNaissanceService {
         
         ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
+        acte.updatedBy = authenticationContext.userLogin();
         
         Registre registre = Registre.findById(acteNaissanceDto.getRegistreID());
         if(registre == null){
@@ -359,28 +374,92 @@ public class ActeNaissanceService {
         
         //get mentions mariage
         Set<MentionMariageDto> mariages = mentionMariageService.findByActeNaissance(acteID);
-        if(!mariages.isEmpty()){
-           MentionMariageDto mMariage =  mariages.iterator().next();
-           etat.conjointNomComplet = mMariage.getConjointNom() + " " + mMariage.getConjointPrenoms();
-           etat.dateMariage = mMariage.getDate();
-           etat.lieuMariage = mMariage.getLieu();
+        Optional<MentionMariageDto> optMariage = mariages.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optMariage.ifPresent(mMariage -> { 
+            etat.conjointNomComplet = mMariage.getConjointNom() + " " + mMariage.getConjointPrenoms();
+            etat.dateMariage = mMariage.getDate();
+            etat.lieuMariage = mMariage.getLieu();
+            try {
+                etat.mentionMarigeTexte = new javax.sql.rowset.serial.SerialClob(mMariage.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
-        }
+        });
+        
+        
+        Set<MentionAdoptionDto> adoptions = mentionAdoptionService.findByActeNaissance(acteID);
+        Optional<MentionAdoptionDto> optAdoption = adoptions.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optAdoption.ifPresent(mAdoption -> { 
+            try {
+                etat.mentionAdoptionTexte = new javax.sql.rowset.serial.SerialClob(mAdoption.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        });
+      
         
         Set<MentionDissolutionMariageDto> dissolutions = mentionDissolutionMariageService.findByActeNaissance(acteID);
-        if(!dissolutions.isEmpty()){
-           MentionDissolutionMariageDto mDiss =  dissolutions.iterator().next();
-           etat.mentionDissolutionMariageDecisionDate = mDiss.getDateJugement();
-        
-        }
+        Optional<MentionDissolutionMariageDto> optDiss = dissolutions.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optDiss.ifPresent(mDiss -> { 
+            etat.mentionDissolutionMariageDecisionDate = mDiss.getDateJugement();
+            try {
+                etat.mentionDissolutionMarigeTexte = new javax.sql.rowset.serial.SerialClob(mDiss.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+      
         
         Set<MentionDecesDto> deces = mentionDecesService.findByActeNaissance(acteID);
-        if(!deces.isEmpty()){
-           MentionDecesDto mDeces = deces.iterator().next();
-           etat.dateDeces = mDeces.getDate();
-           etat.lieuDeces = mDeces.getLieu();
+        Optional<MentionDecesDto> optDeces = deces.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optDeces.ifPresent(mDeces -> { 
+            etat.dateDeces = mDeces.getDate();
+            etat.lieuDeces = mDeces.getLieu();
+            try {
+                etat.mentionDecesTexte = new javax.sql.rowset.serial.SerialClob(mDeces.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+     
+        });
+      
         
-        }
+        Set<MentionLegitimationDto> ligitimations = mentionLegitimationService.findByActeNaissance(acteID);
+        Optional<MentionLegitimationDto> optLegitimation = ligitimations.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optLegitimation.ifPresent(mLegitimation -> { 
+            try {
+                etat.mentionLegitimationTexte = new javax.sql.rowset.serial.SerialClob(mLegitimation.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       
+        });
+        
+        
+        Set<MentionReconnaissanceDto> reconnaissances = mentionReconnaissanceService.findByActeNaissance(acteID);
+        Optional<MentionReconnaissanceDto> optReconnaissance = reconnaissances.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optReconnaissance.ifPresent(mReconnaissance -> { 
+            try {
+                etat.mentionReconnaissanceTexte = new javax.sql.rowset.serial.SerialClob(mReconnaissance.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       
+        });
+     
+        
+        Set<MentionRectificationDto> rectifications = mentionRectificationService.findByActeNaissance(acteID);
+        Optional<MentionRectificationDto> optRectification = rectifications.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optRectification.ifPresent(mRectification -> { 
+            try {
+                etat.mentionRectificationTexte = new javax.sql.rowset.serial.SerialClob(mRectification.getDecision().toCharArray());
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+       
+        });
         
         
         etat.numeroActeTexte = numeroActeTexte(acte);
@@ -392,6 +471,35 @@ public class ActeNaissanceService {
         //ActeNaissanceEtat etat = new ActeNaissanceEtat(acte);
        // etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
        // etat.persist();
+    }
+    
+    private void modifierEtats(String acteID) throws SQLException{
+        ActeNaissance acte = ActeNaissance.findById(acteID);
+        PanacheQuery<ActeNaissanceEtat> query = ActeNaissanceEtat.find("acteNaissance", acte);
+        ActeNaissanceEtat etat = query.singleResult();
+        if(etat != null){
+            etat.mentionAdoptionTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionDecesTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionDecesService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionDissolutionMarigeTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionDissolutionMariageService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionLegitimationTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionLegitimationService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionMarigeTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionReconnaissanceTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.mentionRectificationTexte = new javax.sql.rowset.serial
+                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+        }
+    
     }
     
     
@@ -505,6 +613,8 @@ public class ActeNaissanceService {
     
     }
     
+    
+  
 
     public String dateNaissanceEnLettre(LocalDateTime localDateTime){
       
@@ -615,6 +725,7 @@ public class ActeNaissanceService {
     public void modifier(@NotBlank String id, @NotNull ActeNaissanceDto acteNaissanceDto) throws SQLException{
         
         ActeNaissance acte = ActeNaissance.findById(id);
+        acte.updatedBy = authenticationContext.userLogin();
         acte.enfant =  new Enfant();
         acte.jugement = new Jugement(); 
         acte.pere = new Pere(); 
@@ -825,16 +936,17 @@ public class ActeNaissanceService {
         //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleText(acte).toCharArray()));
        
         modifierMentions(acteNaissanceDto, acte);
+        modifierEtats(acte.id);
     }
     
     
-     public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
+    public void modifierMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         
         log.infof("-- MENTIONS MARIAGE SIZE: %d", acteNaissanceDto.getMentionMariageDtos().size());
         
         //mariage
         Set<MentionMariageDto> dm = new HashSet<>(mentionMariageService.findByActeNaissance(acte.id));
-        dm.removeAll(acteNaissanceDto.getMentionMariageDtos());
+        dm.removeAll(acteNaissanceDto.getMentionMariageDtos()); //différence entre le Set de la BD et le Set envoyé qui donne les elements supprimés
         
         log.infof("-- DIFFERENCE SET SIZE: %d", dm.size());
         

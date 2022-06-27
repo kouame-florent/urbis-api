@@ -8,6 +8,7 @@ package io.urbis.param.service;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.param.dto.TribunalDto;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,9 +40,14 @@ public class TribunalService {
     //@ConfigProperty(name = "URBIS_TRIBUNAL")
    // String codeTribunal;
     
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    
     public void create(TribunalDto dto){
  
         Tribunal tribunal = new Tribunal(dto.getCode(), dto.getLibelle());
+        tribunal.updatedBy = authenticationContext.userLogin();
         tribunal.persist();
        
     }
@@ -51,6 +57,7 @@ public class TribunalService {
         if(tribunal != null){
             tribunal.code = dto.getCode();
             tribunal.libelle = dto.getLibelle();
+            tribunal.updatedBy = authenticationContext.userLogin();
         }
         else{
             throw new EntityNotFoundException("cannot find entity 'tribunal'");

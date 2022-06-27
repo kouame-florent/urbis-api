@@ -22,7 +22,7 @@ import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.StatutRegistre;
-import java.time.LocalDate;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,9 +30,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
@@ -55,6 +52,9 @@ public class ActeMariageService {
     
     @Inject
     EntityManager em;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
     
     
     public ActeMariageDto findById(@NotBlank String id){
@@ -91,6 +91,7 @@ public class ActeMariageService {
         acte.registre = registre;
         acte.numero = acteMariageDto.getNumero();
         acte.statut = StatutActeMariage.PROJET;
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.epoux.conjoint.dateNaissance = acteMariageDto.getEpouxConjointDateNaissance();
         acte.epoux.conjoint.nom = acteMariageDto.getEpouxConjointNom();
@@ -206,6 +207,7 @@ public class ActeMariageService {
         acte.lieuMariage = acteMariageDto.getLieuMariage();
         acte.statut = StatutActeMariage.fromString(acteMariageDto.getStatut());
         acte.dateMariage = acteMariageDto.getDateMariage();
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.epoux.conjoint.dateNaissance = acteMariageDto.getEpouxConjointDateNaissance();
         acte.epoux.conjoint.lieuNaissance = acteMariageDto.getEpouxConjointLieuNaissance();

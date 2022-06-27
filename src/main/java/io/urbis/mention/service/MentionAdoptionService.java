@@ -9,12 +9,16 @@ import io.urbis.mention.domain.MentionAdoption;
 import io.urbis.mention.dto.MentionAdoptionDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.jboss.logging.Logger;
@@ -28,6 +32,13 @@ public class MentionAdoptionService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    EntityManager em;
+   
     
     public void createMention(@NotNull MentionAdoptionDto dto){
        
@@ -44,11 +55,13 @@ public class MentionAdoptionService {
            
         var mention = new MentionAdoption();
             
+        mention.updatedBy = authenticationContext.userLogin();
         mention.acteNaissance = acte;
         mention.officierEtatCivil = officier;
 
         mention.dateDressage = dto.getDateDressage();
         mention.decision = dto.getDecision();
+        mention.updatedBy = authenticationContext.userLogin();
 
         mention.persist();
    
@@ -58,13 +71,16 @@ public class MentionAdoptionService {
     public void modifierMention(@NotNull MentionAdoptionDto dto){
         
         MentionAdoption mention = MentionAdoption.findById(dto.getId());
+        
         if(mention == null){ 
+            
             //creer les mentions rajoutées à la modification de l'acte
             createMention(dto);
         }else{
             
             mention.dateDressage = dto.getDateDressage();
             mention.decision = dto.getDecision();
+            mention.updatedBy = authenticationContext.userLogin();
         }
     
     }
@@ -79,6 +95,27 @@ public class MentionAdoptionService {
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
     }
+    
+    public String mentionRecenteTexte(ActeNaissance acte){
+        
+        TypedQuery<MentionAdoption> query =  em.createNamedQuery("MentionAdoption.findMostRecent", MentionAdoption.class);
+        query.setParameter("acteNaissance",acte);
+          
+        try{
+            MentionAdoption mention = query.getSingleResult();
+
+            if(mention != null){
+                return mention.decision;
+            }
+            log.infof("aucune mention trouvée...");
+            return "";
+        }catch(NoResultException ex){
+            log.infof("aucune mention trouvée...");
+            return "";
+        }
+        
+    }
+    
     
     public MentionAdoptionDto mapToDto(@NotNull MentionAdoption mention){
         MentionAdoptionDto dto = new MentionAdoptionDto();

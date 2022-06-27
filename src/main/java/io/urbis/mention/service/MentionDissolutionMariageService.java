@@ -10,13 +10,19 @@ import io.urbis.mention.domain.MentionDissolutionMariage;
 import io.urbis.mention.dto.MentionDissolutionMariageDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -24,6 +30,15 @@ import javax.validation.constraints.NotNull;
  */
 @ApplicationScoped
 public class MentionDissolutionMariageService {
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
     
     public void createMention(@NotNull MentionDissolutionMariageDto dto){
        
@@ -45,6 +60,7 @@ public class MentionDissolutionMariageService {
         mention.decision = dto.getDecision();
         mention.dateJugement = dto.getDateJugement();
         mention.dateDressage = dto.getDateDressage();
+        mention.updatedBy = authenticationContext.userLogin();
         
         mention.persist();
     }
@@ -59,6 +75,7 @@ public class MentionDissolutionMariageService {
             mention.decision = dto.getDecision();
             mention.dateJugement = dto.getDateJugement();
             mention.dateDressage = dto.getDateDressage();
+            mention.updatedBy = authenticationContext.userLogin();
         }
     
        
@@ -74,6 +91,27 @@ public class MentionDissolutionMariageService {
                 MentionDissolutionMariage.list("acteNaissance",Sort.descending("dateDressage"), acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
+    }
+    
+    public String mentionRecenteTexte(ActeNaissance acte){
+        
+        TypedQuery<MentionDissolutionMariage> query =  em.createNamedQuery("MentionDissolutionMariage.findMostRecent",
+                MentionDissolutionMariage.class);
+        query.setParameter("acteNaissance",acte);
+          
+        try{
+            MentionDissolutionMariage mention = query.getSingleResult();
+
+            if(mention != null){
+                return mention.decision;
+            }
+            log.infof("aucun registre trouvé...");
+            return "";
+        }catch(NoResultException ex){
+            log.infof("aucun registre trouvé...");
+            return "";
+        }
+        
     }
     
     public MentionDissolutionMariageDto mapToDto(@NotNull MentionDissolutionMariage mention){

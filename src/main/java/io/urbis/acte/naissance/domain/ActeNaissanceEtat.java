@@ -35,9 +35,33 @@ public class ActeNaissanceEtat extends BaseEntity{
     @Column(name = "copie_texte")
     public Clob copieTexte;
     
+    @Column(name = "mention_mariage_texte")
+    public Clob mentionMarigeTexte;
+    
+    @Column(name = "mention_dissolution_mariage_texte")
+    public Clob mentionDissolutionMarigeTexte;
+    
+    @Column(name = "mention_adoption_texte")
+    public Clob mentionAdoptionTexte;
+    
+    @Column(name = "mention_deces_texte")
+    public Clob mentionDecesTexte;
+    
+    @Column(name = "mention_legitimation_texte")
+    public Clob mentionLegitimationTexte;
+    
+    @Column(name = "mention_reconnaissance_texte")
+    public Clob mentionReconnaissanceTexte;
+    
+    @Column(name = "mention_rectification_texte")
+    public Clob mentionRectificationTexte;
+    
+    
+    
     @Column(name = "mention_mariage_date")
     public LocalDate dateMariage;
     
+   
     @Column(name = "mention_mariage_lieu")
     public String lieuMariage;
     

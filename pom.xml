@@ -66,8 +66,7 @@
         <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
     
-    
-
+   
     <dependency>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-smallrye-openapi</artifactId>
@@ -154,7 +153,11 @@
         <version>2.0.0</version>
     </dependency>
 
-
+    <dependency>
+        <groupId>io.quarkus</groupId>
+        <artifactId>quarkus-test-security</artifactId>
+        <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>io.rest-assured</groupId>

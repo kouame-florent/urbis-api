@@ -27,6 +27,7 @@ import io.urbis.acte.divers.domain.Reconnaissant;
 import io.urbis.acte.divers.domain.Sexe;
 import io.urbis.acte.divers.domain.StatutActeDivers;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -42,6 +43,9 @@ public class ActeRecEnfantNaturelService {
     
     @Inject
     Logger log;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
     
     public ActeRecEnfantNaturelDto findById(@NotBlank String id){
         return ActeRecEnfantNaturel.findByIdOptional(id)
@@ -72,6 +76,7 @@ public class ActeRecEnfantNaturelService {
         acte.registre = registre;
         acte.officierEtatCivil = officier;
         acte.statut = StatutActeDivers.PROJET;
+        acte.updatedBy = authenticationContext.userLogin();
         
         acte.mereEnfantDateNaissance = dto.getMereEnfantDateNaissance();
         acte.mereEnfantDomicile = dto.getMereEnfantDomicile();

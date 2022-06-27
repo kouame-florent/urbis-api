@@ -19,6 +19,7 @@ import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.Tribunal;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.dto.RegistrePatchDto;
+import io.urbis.security.service.AuthenticationContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,10 +54,13 @@ public class RegistreService {
     @Inject
     EntityManager em;
     
-    private final int PAGE_SIZE = 25;
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+   // private final int PAGE_SIZE = 25;
     
     @Transactional
-    public void creer(@NotNull RegistreDto registreDto){
+    public String creer(@NotNull RegistreDto registreDto){
         
         TypeRegistre typeRegistre = TypeRegistre.fromString(registreDto.getTypeRegistre());
         Localite localite = Localite.findById(registreDto.getLocaliteID());
@@ -84,10 +88,12 @@ public class RegistreService {
         
         
         Registre registre = new Registre(typeRegistre,registreDto.getLibelle(), reference,
-                tribunal, officier, registreDto.getNumeroPremierActe(),
+                tribunal, officier, 
+                registreDto.getNumeroPremierActe(),
                 registreDto.getNumeroDernierActe(),
                 registreDto.getNombreDeFeuillets(),
                 StatutRegistre.PROJET);
+        registre.updatedBy = authenticationContext.userLogin();
         
         registre.numeroProchainActe = registreDto.getNumeroPremierActe();
         registre.dateOuverture = registreDto.getDateOuverture();
@@ -102,7 +108,7 @@ public class RegistreService {
             throw new EntityExistsException(msg);
         }
         
-       // return mapToDto(registre);
+        return registre.id;
     }
     
     
@@ -135,8 +141,10 @@ public class RegistreService {
         registre.statut = statut;
         
         registre.updated = LocalDateTime.now();
+        registre.updatedBy = authenticationContext.userLogin();
         
         registre.persist();
+        
         
     }
     
@@ -344,6 +352,7 @@ public class RegistreService {
     /*
     * propose une valeur pour le champ numeroPremierActe
     */
+    
     public int numeroPremierActeCourant(String typeRegistre,int annee){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findMaxNumeroDernierActe", Integer.class);
         log.infof("-- NUM PREMIER QUERY: %s", query);
@@ -361,17 +370,9 @@ public class RegistreService {
             log.infof("aucun acte précédent...");
             return 1;
         }
-        /*
-        try{
-            var num = query.getSingleResult();
-            return num + 1;
-        }catch(NoResultException ex){
-            log.infof("aucun acte précédent...");
-            return 1;
-        }
-        */
-        
+       
     }
+    
     
     public int numeroPremierActe(String typeRegistre,int annee,int numero){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroDernierActe", Integer.class);

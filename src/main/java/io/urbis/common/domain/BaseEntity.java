@@ -23,8 +23,9 @@ import javax.persistence.Version;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity extends PanacheEntityBase implements Serializable{
     
+   
     @Id
-    public String id;
+    public String id = UUID.randomUUID().toString();
     
     @Version
     public long version;
@@ -34,4 +35,28 @@ public abstract class BaseEntity extends PanacheEntityBase implements Serializab
     
     @Column(nullable = false, name = "updated_by")
     public String updatedBy;
+    
+    /*
+    @PrePersist
+    public void preCreate(){
+        //auditable.id = UUID.randomUUID().toString();
+       SecurityIdentity authCtx = CDI.current().select(SecurityIdentity.class).get();
+        //AuthenticationContext authCtx = CDI.current().select(AuthenticationContext.class).get();
+        //LOG.log(Level.INFO, "--> SECID: {0}", authCtx);
+        created = LocalDateTime.now();
+        updatedBy = authCtx.getPrincipal().getName();
+        //updatedBy = authCtx.userLogin();
+        //updatedBy = "lisa";
+       
+    }
+    
+    @PreUpdate
+    public void preUpdate(){
+        updated = LocalDateTime.now();
+       // auditable.updatedBy = authCtx.userLogin();
+       //updatedBy = "lisa";
+    }
+    */
+    
+    
 }

@@ -10,13 +10,19 @@ import io.urbis.mention.domain.MentionMariage;
 import io.urbis.mention.dto.MentionMariageDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -24,6 +30,15 @@ import javax.validation.constraints.NotNull;
  */
 @ApplicationScoped
 public class MentionMariageService {
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
   
     public void createMention(@NotNull MentionMariageDto dto){
         
@@ -52,6 +67,7 @@ public class MentionMariageService {
         mention.conjointPrenoms = dto.getConjointPrenoms();
         mention.conjointProfession = dto.getConjointProfession();
         mention.conjointDomicile = dto.getConjointDomicile();
+        mention.updatedBy = authenticationContext.userLogin();
 
         mention.persist();
 
@@ -75,6 +91,7 @@ public class MentionMariageService {
             mention.conjointPrenoms = dto.getConjointPrenoms();
             mention.conjointProfession = dto.getConjointProfession();
             mention.conjointDomicile = dto.getConjointDomicile();
+            mention.updatedBy = authenticationContext.userLogin();
         }
     
      
@@ -89,6 +106,26 @@ public class MentionMariageService {
         List<MentionMariage> mentions = MentionMariage.list("acteNaissance",Sort.descending("dateDressage"), acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
+    }
+    
+    public String mentionRecenteTexte(ActeNaissance acte){
+        
+        TypedQuery<MentionMariage> query =  em.createNamedQuery("MentionMariage.findMostRecent", MentionMariage.class);
+        query.setParameter("acteNaissance",acte);
+          
+        try{
+            MentionMariage mention = query.getSingleResult();
+
+            if(mention != null){
+                return mention.decision;
+            }
+            log.infof("aucune mention trouvée...");
+            return "";
+        }catch(NoResultException ex){
+            log.infof("aucune mention trouvée...");
+            return "";
+        }
+        
     }
     
     public MentionMariageDto mapToDto(@NotNull MentionMariage mention){

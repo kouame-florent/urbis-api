@@ -6,9 +6,11 @@
 package io.urbis.param.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.urbis.param.domain.Localite;
 import io.urbis.param.domain.TypeLocalite;
 import io.urbis.param.dto.LocaliteDto;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
@@ -36,8 +38,11 @@ public class LocaliteService {
     @Inject
     EntityManager em;
     
-   // @Inject
-   // SecurityIdentity securityIdentity;
+    @Inject
+    SecurityIdentity securityIdentity;
+    
+    @Inject
+    AuthenticationContext authenticationContext;
     
     //@ConfigProperty(name = "URBIS_LOCALITE")
     //String codeLocalite;
@@ -49,6 +54,7 @@ public class LocaliteService {
             Localite localite = new Localite(dto.getCode(), 
                 dto.getLibelle(),
                 TypeLocalite.fromString(dto.getType()) );
+            localite.updatedBy = authenticationContext.userLogin();
         
             localite.persist();
         }else{
@@ -63,6 +69,7 @@ public class LocaliteService {
             loc.code = dto.getCode();
             loc.libelle = dto.getLibelle();
             loc.typeLocalite = TypeLocalite.fromString(dto.getType());
+            loc.updatedBy = authenticationContext.userLogin();
            // loc.statut = StatutParametre.fromString(dto.getStatut());
             
         }

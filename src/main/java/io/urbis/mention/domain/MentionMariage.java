@@ -9,12 +9,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
  *
  * @author florent
  */
+@NamedQueries({
+    @NamedQuery(name = "MentionMariage.findMostRecent",
+    query = "Select m FROM MentionMariage m WHERE m.dateDressage = (Select Max(ma.dateDressage) FROM MentionMariage ma) "
+            + " WHERE m.acteNaissance = :acteNaissance"
+            
+    ),
+})
 @Entity
 @Table(name = "mention_mariage")
 public class MentionMariage extends Mention{

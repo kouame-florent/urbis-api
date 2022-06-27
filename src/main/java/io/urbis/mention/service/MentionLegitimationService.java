@@ -9,13 +9,19 @@ import io.urbis.mention.domain.MentionLegitimation;
 import io.urbis.mention.dto.MentionLegitimationDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -23,6 +29,15 @@ import javax.validation.constraints.NotNull;
  */
 @ApplicationScoped
 public class MentionLegitimationService {
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
     
     public void createMention(@NotNull MentionLegitimationDto dto){
         
@@ -43,6 +58,7 @@ public class MentionLegitimationService {
 
         mention.dateDressage = dto.getDateDressage();
         mention.decision = dto.getDecision();
+        mention.updatedBy = authenticationContext.userLogin();
 
         mention.persist();
         
@@ -58,6 +74,7 @@ public class MentionLegitimationService {
                  
             mention.dateDressage = dto.getDateDressage();
             mention.decision = dto.getDecision();
+            mention.updatedBy = authenticationContext.userLogin();
         
         }
        
@@ -73,6 +90,26 @@ public class MentionLegitimationService {
         List<MentionLegitimation> mentions = MentionLegitimation.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
+    }
+    
+    public String mentionRecenteTexte(ActeNaissance acte){
+        
+        TypedQuery<MentionLegitimation> query =  em.createNamedQuery("MentionLegitimation.findMostRecent", MentionLegitimation.class);
+        query.setParameter("acteNaissance",acte);
+          
+        try{
+            MentionLegitimation mention = query.getSingleResult();
+
+            if(mention != null){
+                return mention.decision;
+            }
+            log.infof("aucune mention trouvée...");
+            return "";
+        }catch(NoResultException ex){
+            log.infof("aucune mention trouvée...");
+            return "";
+        }
+        
     }
     
     public MentionLegitimationDto  mapToDto(@NotNull MentionLegitimation mention){

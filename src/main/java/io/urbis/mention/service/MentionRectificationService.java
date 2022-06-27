@@ -9,13 +9,19 @@ import io.urbis.mention.domain.MentionRectification;
 import io.urbis.mention.dto.MentionRectificationDto;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.param.domain.OfficierEtatCivil;
+import io.urbis.security.service.AuthenticationContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -23,6 +29,15 @@ import javax.validation.constraints.NotNull;
  */
 @ApplicationScoped
 public class MentionRectificationService {
+    
+    @Inject
+    AuthenticationContext authenticationContext;
+    
+    @Inject
+    Logger log;
+    
+    @Inject
+    EntityManager em;
     
     public void createMention(@NotNull MentionRectificationDto dto){
         
@@ -43,6 +58,7 @@ public class MentionRectificationService {
 
         mention.dateDressage = dto.getDateDressage();
         mention.decision = dto.getDecision();
+        mention.updatedBy = authenticationContext.userLogin();
 
         mention.persist();
         
@@ -58,6 +74,7 @@ public class MentionRectificationService {
              
             mention.dateDressage = dto.getDateDressage();
             mention.decision = dto.getDecision();
+            mention.updatedBy = authenticationContext.userLogin();
         
         }
        
@@ -72,6 +89,26 @@ public class MentionRectificationService {
         List<MentionRectification> mentions = MentionRectification.list("acteNaissance", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());
                 
+    }
+    
+    public String mentionRecenteTexte(ActeNaissance acte){
+        
+        TypedQuery<MentionRectification> query =  em.createNamedQuery("MentionRectification.findMostRecent", MentionRectification.class);
+        query.setParameter("acteNaissance",acte);
+          
+        try{
+            MentionRectification mention = query.getSingleResult();
+
+            if(mention != null){
+                return mention.decision;
+            }
+            log.infof("aucune mention trouvée...");
+            return "";
+        }catch(NoResultException ex){
+            log.infof("aucune mention trouvée...");
+            return "";
+        }
+        
     }
     
     public MentionRectificationDto mapToDto(@NotNull MentionRectification mention){

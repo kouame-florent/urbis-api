@@ -26,6 +26,9 @@ public class ActeNaissanceEtat extends BaseEntity{
     @JoinColumn(name = "acte_naissance_id")
     @OneToOne
     public ActeNaissance acteNaissance;
+    
+    @Column(name = "nom_complet_texte")
+    public String nomCompletTexte;
         
     @Lob
     @Column(name = "extrait_texte")
@@ -56,11 +59,11 @@ public class ActeNaissanceEtat extends BaseEntity{
     @Column(name = "mention_rectification_texte")
     public Clob mentionRectificationTexte;
     
-    
+    @Column(name = "copie_mentions_textes")
+    public Clob copieMentionsTextes;
     
     @Column(name = "mention_mariage_date")
     public LocalDate dateMariage;
-    
    
     @Column(name = "mention_mariage_lieu")
     public String lieuMariage;
@@ -77,8 +80,19 @@ public class ActeNaissanceEtat extends BaseEntity{
     @Column(name = "mention_deces_lieu")
     public String lieuDeces;
     
+    
+    
     @Column(name = "numero_acte_texte")
     public String numeroActeTexte;
+    
+    @Column(name = "copie_numero_acte_texte")
+    public String copieNumeroActeTexte;
+    
+    @Column(name = "titre_texte")
+    public String titreTexte;
+    
+    @Column(name = "copie_titre_texte")
+    public String copieTitreTexte;
     
     
     public ActeNaissanceEtat() {

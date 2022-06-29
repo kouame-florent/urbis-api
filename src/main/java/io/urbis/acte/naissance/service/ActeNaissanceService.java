@@ -40,8 +40,6 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
-import io.urbis.mention.domain.MentionAdoption;
-import io.urbis.mention.domain.MentionDeces;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.registre.domain.Registre;
@@ -50,7 +48,6 @@ import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -68,8 +65,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
@@ -344,7 +339,7 @@ public class ActeNaissanceService {
         acte.statut = StatutActeNaissance.PROJET;
         
         //acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
-        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleText(acte).toCharArray()));
+        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleTexte(acte).toCharArray()));
         
         acte.persist();
        
@@ -371,6 +366,8 @@ public class ActeNaissanceService {
         ActeNaissanceEtat etat = new ActeNaissanceEtat();
         ActeNaissance acte = ActeNaissance.findById(acteID);
         etat.acteNaissance = acte;
+        etat.updatedBy = authenticationContext.userLogin();
+        etat.nomCompletTexte = acte.enfant.nom + " " + acte.enfant.prenoms;
         
         //get mentions mariage
         Set<MentionMariageDto> mariages = mentionMariageService.findByActeNaissance(acteID);
@@ -463,14 +460,16 @@ public class ActeNaissanceService {
         
         
         etat.numeroActeTexte = numeroActeTexte(acte);
-        etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleText(acte).toCharArray());
+        etat.titreTexte = titretexte(acte);
         etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
+        etat.copieTitreTexte = copieTitretexte(acte);
+        etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleTexte(acte).toCharArray());
+        etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
         
         etat.persist();
         
-        //ActeNaissanceEtat etat = new ActeNaissanceEtat(acte);
-       // etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
-       // etat.persist();
+        
     }
     
     private void modifierEtats(String acteID) throws SQLException{
@@ -478,6 +477,18 @@ public class ActeNaissanceService {
         PanacheQuery<ActeNaissanceEtat> query = ActeNaissanceEtat.find("acteNaissance", acte);
         ActeNaissanceEtat etat = query.singleResult();
         if(etat != null){
+            
+            etat.updatedBy = authenticationContext.userLogin();
+            
+            etat.nomCompletTexte = acte.enfant.nom + " " + acte.enfant.prenoms;
+            etat.titreTexte = titretexte(acte);
+            etat.numeroActeTexte = numeroActeTexte(acte);
+            etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+            etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
+            etat.copieTitreTexte = copieTitretexte(acte);
+            etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleTexte(acte).toCharArray());
+            etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
+            
             etat.mentionAdoptionTexte = new javax.sql.rowset.serial
                     .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
             
@@ -491,17 +502,26 @@ public class ActeNaissanceService {
                     .SerialClob(mentionLegitimationService.mentionRecenteTexte(acte).toCharArray());
             
             etat.mentionMarigeTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+                    .SerialClob(mentionMariageService.mentionRecenteTexte(acte).toCharArray());
             
             etat.mentionReconnaissanceTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+                    .SerialClob(mentionReconnaissanceService.mentionRecenteTexte(acte).toCharArray());
             
             etat.mentionRectificationTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+                    .SerialClob(mentionRectificationService.mentionRecenteTexte(acte).toCharArray());
+            
+            etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
         }
     
     }
     
+    public String titretexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pour l'année ");
+        sb.append(acte.registre.reference.annee);
+        
+        return sb.toString();
+    }
     
     public String extraitTexte(ActeNaissance acte){
         StringBuilder sb = new StringBuilder();
@@ -535,7 +555,15 @@ public class ActeNaissanceService {
         return sb.toString();
     }
     
-    public String copieIntegraleText(ActeNaissance acte){
+    public String copieTitretexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pour l'année ");
+        sb.append(acte.registre.reference.annee);
+        
+        return sb.toString();
+    }
+    
+    public String copieIntegraleTexte(ActeNaissance acte){
         StringBuilder sb = new StringBuilder();
         sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
         sb.append(" ");
@@ -613,7 +641,45 @@ public class ActeNaissanceService {
     
     }
     
+    public String copieNumeroActeTexte(ActeNaissance acte){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Acte N° ");
+        sb.append(acte.numero);
+        sb.append(" ");
+        sb.append("DU ");
+        sb.append(acte.dateDressage.format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.FRANCE)));
+       
+        return sb.toString();
     
+    }
+    
+    public String copieMentionsTextes(ActeNaissance acte) throws SQLException{
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(mentionMariageService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionAdoptionService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionDissolutionMariageService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionLegitimationService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionReconnaissanceService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionRectificationService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionDecesService.mentionRecenteTexte(acte));
+        
+        
+        return sb.toString();
+    
+    }
   
 
     public String dateNaissanceEnLettre(LocalDateTime localDateTime){
@@ -933,7 +999,7 @@ public class ActeNaissanceService {
         
              
         //acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
-        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleText(acte).toCharArray()));
+        //acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieIntegraleTexte(acte).toCharArray()));
        
         modifierMentions(acteNaissanceDto, acte);
         modifierEtats(acte.id);

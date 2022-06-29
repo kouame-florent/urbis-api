@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "MentionDeces.findMostRecent",
     query = "Select m FROM MentionDeces m WHERE m.dateDressage = (Select Max(ma.dateDressage) FROM MentionDeces ma) "
-            + " WHERE m.acteNaissance = :acteNaissance"
+            + " AND m.acteNaissance = :acteNaissance"
             
     ),
 })

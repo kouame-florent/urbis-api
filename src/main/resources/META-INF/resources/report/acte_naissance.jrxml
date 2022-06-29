@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_naissance" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f1714bda-a84a-4f58-b420-15f4a10aedc9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbisAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="256"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="738"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="727"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="260"/>
+	<property name="ireport.jasperserver.url" value="http://127.0.0.1:8282/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.report.resource" value="/urbis/gagnoa/acte_naissance_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/urbis/gagnoa/acte_naissance"/>
+	<parameter name="ACTE_NAISSANCE_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["c8cde884-0e53-4fc3-930d-cdc5e8387105"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT mention_mariage_conjoint_nom_complet,
+	copie_texte,
+	mention_mariage_date,
+	extrait_texte,
+	mention_mariage_lieu,
+	numero_acte_texte,
+	mention_dissolution_mariage_decision_date,
+	mention_deces_date,
+	mention_deces_lieu,
+	acte_naissance_id
+FROM urbis.acte_naissance_etat
+WHERE 
+	 urbis.acte_naissance_etat.acte_naissance_id= $P{ACTE_NAISSANCE_ID}]]>
+	</queryString>
+	<field name="mention_mariage_conjoint_nom_complet" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_mariage_conjoint_nom_complet"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_mariage_conjoint_nom_complet"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="copie_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mention_mariage_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="mention_mariage_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_mariage_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="extrait_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mention_mariage_lieu" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_mariage_lieu"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_mariage_lieu"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero_acte_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mention_dissolution_mariage_decision_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="mention_dissolution_mariage_decision_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_dissolution_mariage_decision_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mention_deces_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="mention_deces_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_deces_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mention_deces_lieu" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_deces_lieu"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_deces_lieu"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="acte_naissance_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acte_naissance_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="acte_naissance_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_naissance_etat"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="mention_mariage_conjoint_nom_complet">
+		<groupExpression><![CDATA[$F{mention_mariage_conjoint_nom_complet}]]></groupExpression>
+	</group>
+	<group name="copie_texte">
+		<groupExpression><![CDATA[$F{copie_texte}]]></groupExpression>
+	</group>
+	<group name="mention_mariage_date">
+		<groupExpression><![CDATA[$F{mention_mariage_date}]]></groupExpression>
+	</group>
+	<group name="extrait_texte">
+		<groupExpression><![CDATA[$F{extrait_texte}]]></groupExpression>
+	</group>
+	<group name="mention_mariage_lieu">
+		<groupExpression><![CDATA[$F{mention_mariage_lieu}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="160" height="20" uuid="90c3b61c-13c7-49d1-b57e-1a147b7bf174"/>
+				<text><![CDATA[DEPARTEMENT DE GAGNOA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="0" width="205" height="30" uuid="a8b25a2a-910f-4628-b267-44683e42aff2"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[REPUBLIQUE DE COTE D'IVOIRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="76" width="100" height="13" uuid="055253dc-c76c-4c08-b592-e417cdde3d2e"/>
+				<text><![CDATA[ETAT CIVIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="96" width="117" height="24" uuid="2b998c1f-50c9-49e6-b234-8edfc7fc6b27"/>
+				<text><![CDATA[Centre de gagnoa]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="20" width="50" height="50" printWhenGroupChanges="mention_mariage_conjoint_nom_complet" uuid="5956213f-dc63-499c-a000-77075cb5dce7"/>
+				<imageExpression><![CDATA["http://localhost:8181/image/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="19" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="389" splitType="Stretch">
+			<textField>
+				<reportElement x="333" y="0" width="220" height="90" uuid="9254e8e9-8a2e-4eba-8bad-2b583ef0b86b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f55d34ca-a663-4de4-aa32-c8d8f7c78539"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{extrait_texte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="276" height="30" uuid="c443f1ab-083b-41ee-be50-65b41a1f141e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f79f7d3e-75c5-4967-8f4f-0614696cc423"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{numero_acte_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="150" width="180" height="30" uuid="e6f25ec7-5641-437b-9087-be2e80148867"/>
+				<text><![CDATA[MENTION (éventuellement)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="182" width="145" height="18" uuid="d5e64b17-4bd7-4914-935f-551b4392f041">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be70a9e7-d145-4662-ac5f-b228012d5f98"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mention_mariage_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="182" width="53" height="30" uuid="25698fe0-e3f7-47a6-9050-bf0cef05aac8"/>
+				<text><![CDATA[Marié le]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="182" width="27" height="30" uuid="60821f6d-ee26-42ae-bc99-fdd9b8f0061c"/>
+				<text><![CDATA[à]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="214" width="46" height="20" uuid="42eaa44c-77be-41f3-9c88-c8f45c7574e0"/>
+				<text><![CDATA[Avec]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="76" y="215" width="394" height="30" uuid="874d675b-ce11-4fe5-8dd0-ebf32c457b22">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8bdef2e8-f09f-4731-ac5f-39a8b6b78cb3"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mention_mariage_conjoint_nom_complet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="182" width="231" height="30" uuid="e6a62393-1ea3-4caa-a148-ea5d88cfb265">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="195ef489-fdd6-4c00-8cbe-52fc8ce2e6c2"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mention_mariage_lieu}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="248" width="274" height="20" uuid="c139fa7e-dca9-4259-b41d-5e698bcedc1f"/>
+				<text><![CDATA[Mariage dissous par décision de divorce en date du]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="283" y="248" width="267" height="15" uuid="8640f415-c856-4a4d-a4a3-fee65988d762">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="339f4479-781a-4f84-80e2-4dfb56403284"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mention_dissolution_mariage_decision_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="271" width="64" height="20" uuid="28b45bd5-9522-4213-b0a7-8155537cf0d5"/>
+				<text><![CDATA[Décédé le]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement x="76" y="271" width="151" height="20" uuid="4bca08d2-ccb6-4ee5-8d1f-a93e1540c434">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="39e3d198-9cd3-4570-a689-89facdc6e43d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[($F{mention_deces_date})==null ? "Néant": $F{mention_deces_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="271" width="20" height="20" uuid="318cbe21-65a2-495d-971c-82b18673b01a"/>
+				<text><![CDATA[à]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="256" y="271" width="294" height="25" uuid="29ef7c05-ba32-4905-93bc-cab5dfbaf3c6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8938dee7-4e47-405e-854f-75cf4e10c1f0"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mention_deces_lieu}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="298" width="373" height="30" uuid="16fd061b-a497-4421-a95e-5447c672e62a"/>
+				<text><![CDATA[Certifié le présent extrait conforme aux indications portées au registre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="336" width="125" height="20" uuid="5b8b82b9-954e-40bd-9a0f-707b2bd9a056"/>
+				<text><![CDATA[Délivré à GAGNOA, le le]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="420" y="336" width="128" height="30" uuid="061f834b-93e2-48fd-825b-9849d2a0ddfc"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="115" width="559" height="1" uuid="7b43a00a-37c1-4e01-ba06-3d158efefab0"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="47" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="80" splitType="Stretch"/>
+	</summary>
+</jasperReport>

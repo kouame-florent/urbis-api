@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
+import org.primefaces.model.filter.FilterConstraint;
 
 
 
@@ -45,6 +46,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     @Override
     public List<RegistreDto> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         LOG.log(Level.INFO,"Loading the lazy registre data between {0} and {1}", new Object[]{offset, offset+pageSize} );
+        handleFilter(filterBy);
         if(typeRegistre == null){
             throw new IllegalStateException("'typeRegistre' cannot be null");
         }
@@ -54,6 +56,40 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
         setRowCount(count);
        
         return regs;
+    }
+    
+    private void handleFilter(Map<String, FilterMeta> filterBy){
+         annee = 0;
+         numero = 0;
+        
+        for(FilterMeta filter : filterBy.values()) {
+            FilterConstraint constraint = filter.getConstraint();
+            Object filterValue = filter.getFilterValue();
+            String field = filter.getField();
+            
+            LOG.log(Level.INFO,"FILTER CONSTRAINT: {0}", constraint);
+            LOG.log(Level.INFO,"FILTER VALUE: {0}", filterValue);
+            LOG.log(Level.INFO,"FILTER FIELD: {0}", field);
+            
+            if(field.equals("annee")){
+                try{
+                    annee = Integer.parseInt(filterValue.toString());
+                }catch(NumberFormatException ex){
+                    LOG.log(Level.INFO,"value not a number: {0}", filterValue);
+                }
+            }
+            
+            if(field.equals("numero")){
+                try{
+                    numero = Integer.parseInt(filterValue.toString());
+                }catch(NumberFormatException ex){
+                    LOG.log(Level.INFO,"value not a number: {0}", filterValue);
+                }
+            }
+            
+            
+        }
+    
     }
 
     public void setTypeRegistre(String typeRegistre) {

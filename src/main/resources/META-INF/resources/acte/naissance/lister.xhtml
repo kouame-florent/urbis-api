@@ -71,6 +71,46 @@ xmlns:p="http://primefaces.org/ui">
 
             </p:fieldset>
             
+            <p:spacer height="2"/>
+            
+            <p:fieldset legend="Recherche">
+                <div class="ui-fluid p-formgrid p-grid">
+                        <div class="p-field p-col">
+                           <p:outputLabel for="nom" styleClass="p-d-block">Nom</p:outputLabel>
+                           <p:inputMask id="nom" value="#{acteNaissanceListerBacking.filterData.nom}"
+                                          styleClass="p-d-block"/>
+                           <p:message for="nom"/>
+                          
+
+                        </div>
+                        <div class="p-field p-col">
+                           <p:outputLabel for="prenoms" styleClass="p-d-block">Prénoms</p:outputLabel>
+                           <p:inputText id="prenoms" value="#{acteNaissanceListerBacking.filterData.prenoms}" styleClass="p-d-block"/>
+
+                        </div>
+                    
+                       <div class="p-field p-col">
+                           <p:outputLabel for="dateNaissance" styleClass="p-d-block">Date de naissance</p:outputLabel>
+                           <p:inputText id="dateNaissance" value="#{acteNaissanceListerBacking.filterData.dateNaissance}" styleClass="p-d-block"/>
+
+                        </div>
+                    </div>
+                    <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:commandButton id="rechercher" value="Rechercher" 
+                                         process="@this contentForm:nom contentForm:prenoms contentForm:dateNaissance"
+                                         action="#{acteNaissanceListerBacking.filtrer()}"
+                                         update="contentForm:actesDatatable"  icon="pi pi-check"/>
+                    </div>
+                    <div class="p-field p-col">
+                        <p:commandButton value="Effacer les critères" icon="pi pi-times" process="@this"
+                                         action="#{acteNaissanceListerBacking.effacerFiltres()}"
+                                         update="contentForm:actesDatatable contentForm:prenoms contentForm:dateNaissance"  
+                                         styleClass="ui-button-warning" />
+                    </div>
+                </div>
+            </p:fieldset>
+            
             <p:toolbar>
                 <p:toolbarGroup>
                     

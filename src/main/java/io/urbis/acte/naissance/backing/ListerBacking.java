@@ -9,14 +9,11 @@ import io.urbis.acte.naissance.domain.Operation;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.service.ActeNaissanceEtatService;
-import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.common.util.BaseBacking;
 
 import io.urbis.registre.dto.RegistreDto;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -32,7 +29,6 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -40,7 +36,6 @@ import org.primefaces.model.StreamedContent;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.service.RegistreService;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,6 +64,10 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     @Inject
     ActeNaissanceEtatService acteNaissanceEtatService;
+    
+    @Inject
+    FilterData filterData;
+    
     
     /*
     @Inject 
@@ -107,6 +106,31 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void init(){
         
         
+    }
+    
+    
+    public void filtrer(){
+        /*
+        LOG.log(Level.INFO, "FILTRER...");
+       
+        LOG.log(Level.INFO, "FILTRE ANNEE: {0}", filterData.getAnnee());   
+        LOG.log(Level.INFO, "FILTRE NUMERO: {0}", filterData.getNumero());
+        LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
+        lazyRegistreDataModel.setTypeRegistre(selectedType.getCode());
+        lazyRegistreDataModel.setAnnee(filterData.getAnnee());
+        lazyRegistreDataModel.setNumero(filterData.getNumero());
+        */
+    
+    }
+    
+    public void effacerFiltres(){
+        /*
+        filterData.setAnnee(0);
+        filterData.setNumero(0);
+        //lazyRegistreDataModel.setTypeRegistre("naissance");  
+        lazyRegistreDataModel.setAnnee(0);
+        lazyRegistreDataModel.setNumero(0);
+        */
     }
     
    
@@ -342,6 +366,16 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void setRegistreDto(RegistreDto registreDto) {
         this.registreDto = registreDto;
     }
+
+    public FilterData getFilterData() {
+        return filterData;
+    }
+
+    public void setFilterData(FilterData filterData) {
+        this.filterData = filterData;
+    }
+    
+    
     
     
 }

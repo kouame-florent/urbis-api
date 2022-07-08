@@ -39,7 +39,7 @@ xmlns:p="http://primefaces.org/ui">
                     
             </p:fieldset>
             <p:spacer height="2"/>
-            <p:fieldset legend="Filtres">
+            <p:fieldset legend="Recherche" rendered="false">
                 <div class="ui-fluid p-formgrid p-grid">
                         <div class="p-field p-col">
                            <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
@@ -57,13 +57,13 @@ xmlns:p="http://primefaces.org/ui">
                     </div>
                     <div class="ui-fluid p-formgrid p-grid">
                     <div class="p-field p-col">
-                        <p:commandButton id="rechercher" value="Appliquer les filtres" 
+                        <p:commandButton id="rechercher" value="Rechercher" 
                                          process="@this contentForm:annee contentForm:numero"
                                          action="#{registreListerBacking.filtrer()}"
                                          update="contentForm:registre"  icon="pi pi-check"/>
                     </div>
                     <div class="p-field p-col">
-                        <p:commandButton value="Effacer les filtres" icon="pi pi-times" process="@this contentForm:annee"
+                        <p:commandButton value="Effacer les critères" icon="pi pi-times" process="@this contentForm:annee"
                                          action="#{registreListerBacking.effacerFiltres()}"
                                          update="contentForm:registre contentForm:annee contentForm:numero"  
                                          styleClass="ui-button-warning" />
@@ -94,7 +94,7 @@ xmlns:p="http://primefaces.org/ui">
                  
             <p:dataTable id="registre" widgetVar="registreWidget" var="registre" value="#{registreListerBacking.lazyRegistreDataModel}"
                       selection="#{registreListerBacking.selectedRegistre}" rowKey="#{registre.id}" paginator="true"
-                      rows="4" rowSelectMode="add" paginatorPosition="bottom" stripedRows="true" stickyHeader="true">
+                      rows="50" rowSelectMode="add" paginatorPosition="bottom" stripedRows="true" stickyHeader="true">
                 
                 <f:facet name="header">
                     <div class="products-table-header">
@@ -105,10 +105,10 @@ xmlns:p="http://primefaces.org/ui">
                     </div>
                 </f:facet>
                 
-                <p:column headerText="Année" >
+                <p:column headerText="Année" filterBy="#{registre.annee}">
                     <h:outputText value="#{registre.annee}"/>
                 </p:column>
-                <p:column headerText="Numéro"  >
+                <p:column headerText="Numéro" filterBy="#{registre.numero}" >
                     <h:outputText value="#{registre.numero}"/>
                 </p:column>
                 <p:column headerText="Libellé" rendered="#{registreListerBacking.renderRegistreLibelle()}">

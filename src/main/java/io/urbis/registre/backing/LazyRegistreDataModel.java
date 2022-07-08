@@ -44,7 +44,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
 
     @Override
     public List<RegistreDto> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-        LOG.log(Level.INFO,"Loading the lazy car data between {0} and {1}", new Object[]{offset, offset+pageSize} );
+        LOG.log(Level.INFO,"Loading the lazy registre data between {0} and {1}", new Object[]{offset, offset+pageSize} );
         if(typeRegistre == null){
             throw new IllegalStateException("'typeRegistre' cannot be null");
         }

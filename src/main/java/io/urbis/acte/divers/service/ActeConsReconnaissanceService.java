@@ -277,8 +277,9 @@ public class ActeConsReconnaissanceService {
         }
         
         PanacheQuery<ActeConsReconnaissance>  query = ActeConsReconnaissance.find("registre",Sort.by("numero").descending(),registre);
+        PanacheQuery<ActeConsReconnaissance> rq =  query.range(offset, offset + (pageSize-1));
         
-        return query.stream().map(this::mapToDto).collect(Collectors.toList());
+        return rq.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
 }

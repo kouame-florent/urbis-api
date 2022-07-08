@@ -110,6 +110,46 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
    
+    public StreamedContent downloadCopie(){ 
+       LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+      // File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
+      // LOG.log(Level.INFO, "TENANT: {0}", tenant);
+      // LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
+      // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
+      // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
+      
+       
+       
+        StreamedContent content = null;
+        Path path = null;
+        try {
+            String pathString = acteNaissanceService.printCopie(selectedActeID);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
+            content = DefaultStreamedContent.builder() 
+                .name(path.getFileName().toString())
+                .contentType("application/pdf")
+                .stream(() -> input).build();
+                
+        } catch (FileNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
+        }
+       
+       return content;
+    }
     
     public StreamedContent download(){
        LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
@@ -196,6 +236,14 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var acteIds = List.of(dto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
         PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer", getDialogOptions(98,98,false), params);
+    }
+    
+    public void openUpdateTextView(ActeNaissanceDto dto){
+        LOG.log(Level.INFO, "ACTE ID: {0}", dto.getId());
+        
+        var acteIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("acte-id",acteIds);
+        PrimeFaces.current().dialog().openDynamic("/acte/naissance/editer-etat", getDialogOptions(98,98,false), params);
     }
     
     public void openConsulterActeView(ActeNaissanceDto dto){

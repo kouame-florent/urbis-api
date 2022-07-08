@@ -297,8 +297,9 @@ public class ActeRecEnfantNaturelService {
         }
         
         PanacheQuery<ActeRecEnfantNaturel>  query = ActeRecEnfantNaturel.find("registre",Sort.by("numero").descending(),registre);
+        PanacheQuery<ActeRecEnfantNaturel> rq =  query.range(offset, offset + (pageSize-1));
         
-        return query.stream().map(this::mapToDto).collect(Collectors.toList());
+        return rq.stream().map(this::mapToDto).collect(Collectors.toList());
       
     }
     

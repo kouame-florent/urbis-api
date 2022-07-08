@@ -75,6 +75,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.PdfExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.jboss.logging.Logger;
@@ -376,24 +377,16 @@ public class ActeNaissanceService {
             etat.conjointNomComplet = mMariage.getConjointNom() + " " + mMariage.getConjointPrenoms();
             etat.dateMariage = mMariage.getDate();
             etat.lieuMariage = mMariage.getLieu();
-            try {
-                etat.mentionMarigeTexte = new javax.sql.rowset.serial.SerialClob(mMariage.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
+            etat.mentionMarigeTexte = mMariage.getDecision();
+           
         });
         
         
         Set<MentionAdoptionDto> adoptions = mentionAdoptionService.findByActeNaissance(acteID);
         Optional<MentionAdoptionDto> optAdoption = adoptions.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optAdoption.ifPresent(mAdoption -> { 
-            try {
-                etat.mentionAdoptionTexte = new javax.sql.rowset.serial.SerialClob(mAdoption.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
+            etat.mentionAdoptionTexte = mAdoption.getDecision();
+           
         });
       
         
@@ -401,11 +394,8 @@ public class ActeNaissanceService {
         Optional<MentionDissolutionMariageDto> optDiss = dissolutions.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optDiss.ifPresent(mDiss -> { 
             etat.mentionDissolutionMariageDecisionDate = mDiss.getDateJugement();
-            try {
-                etat.mentionDissolutionMarigeTexte = new javax.sql.rowset.serial.SerialClob(mDiss.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            etat.mentionDissolutionMarigeTexte = mDiss.getDecision();
+            
         });
       
         
@@ -414,11 +404,8 @@ public class ActeNaissanceService {
         optDeces.ifPresent(mDeces -> { 
             etat.dateDeces = mDeces.getDate();
             etat.lieuDeces = mDeces.getLieu();
-            try {
-                etat.mentionDecesTexte = new javax.sql.rowset.serial.SerialClob(mDeces.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            etat.mentionDecesTexte = mDeces.getDecision();
+           
      
         });
       
@@ -426,11 +413,7 @@ public class ActeNaissanceService {
         Set<MentionLegitimationDto> ligitimations = mentionLegitimationService.findByActeNaissance(acteID);
         Optional<MentionLegitimationDto> optLegitimation = ligitimations.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optLegitimation.ifPresent(mLegitimation -> { 
-            try {
-                etat.mentionLegitimationTexte = new javax.sql.rowset.serial.SerialClob(mLegitimation.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            etat.mentionLegitimationTexte = mLegitimation.getDecision();
        
         });
         
@@ -438,34 +421,27 @@ public class ActeNaissanceService {
         Set<MentionReconnaissanceDto> reconnaissances = mentionReconnaissanceService.findByActeNaissance(acteID);
         Optional<MentionReconnaissanceDto> optReconnaissance = reconnaissances.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optReconnaissance.ifPresent(mReconnaissance -> { 
-            try {
-                etat.mentionReconnaissanceTexte = new javax.sql.rowset.serial.SerialClob(mReconnaissance.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-       
+           
+            etat.mentionReconnaissanceTexte = mReconnaissance.getDecision();
+            
         });
      
         
         Set<MentionRectificationDto> rectifications = mentionRectificationService.findByActeNaissance(acteID);
         Optional<MentionRectificationDto> optRectification = rectifications.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optRectification.ifPresent(mRectification -> { 
-            try {
-                etat.mentionRectificationTexte = new javax.sql.rowset.serial.SerialClob(mRectification.getDecision().toCharArray());
-            } catch (SQLException ex) {
-                java.util.logging.Logger.getLogger(ActeNaissanceService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-       
+            etat.mentionRectificationTexte = mRectification.getDecision();
+           
         });
         
         
         etat.numeroActeTexte = numeroActeTexte(acte);
         etat.titreTexte = titretexte(acte);
-        etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+        etat.extraitTexte = extraitTexte(acte);
         etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
         etat.copieTitreTexte = copieTitretexte(acte);
-        etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleTexte(acte).toCharArray());
-        etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
+        etat.copieTexte = copieIntegraleTexte(acte);
+        etat.copieMentionsTextes = copieMentionsTextes(acte);
         
         etat.persist();
         
@@ -483,34 +459,27 @@ public class ActeNaissanceService {
             etat.nomCompletTexte = acte.enfant.nom + " " + acte.enfant.prenoms;
             etat.titreTexte = titretexte(acte);
             etat.numeroActeTexte = numeroActeTexte(acte);
-            etat.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
+            etat.extraitTexte = extraitTexte(acte);
             etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
             etat.copieTitreTexte = copieTitretexte(acte);
-            etat.copieTexte = new javax.sql.rowset.serial.SerialClob(copieIntegraleTexte(acte).toCharArray());
-            etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
+            etat.copieTexte = copieIntegraleTexte(acte);
+            etat.copieMentionsTextes = copieMentionsTextes(acte);
             
-            etat.mentionAdoptionTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionAdoptionService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionAdoptionTexte = mentionAdoptionService.mentionRecenteTexte(acte);
             
-            etat.mentionDecesTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionDecesService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionDecesTexte = mentionDecesService.mentionRecenteTexte(acte);
             
-            etat.mentionDissolutionMarigeTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionDissolutionMariageService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionDissolutionMarigeTexte = mentionDissolutionMariageService.mentionRecenteTexte(acte);
             
-            etat.mentionLegitimationTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionLegitimationService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionLegitimationTexte = mentionLegitimationService.mentionRecenteTexte(acte);
             
-            etat.mentionMarigeTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionMariageService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionMarigeTexte = mentionMariageService.mentionRecenteTexte(acte);
             
-            etat.mentionReconnaissanceTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionReconnaissanceService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionReconnaissanceTexte = mentionReconnaissanceService.mentionRecenteTexte(acte);
             
-            etat.mentionRectificationTexte = new javax.sql.rowset.serial
-                    .SerialClob(mentionRectificationService.mentionRecenteTexte(acte).toCharArray());
+            etat.mentionRectificationTexte = mentionRectificationService.mentionRecenteTexte(acte);
             
-            etat.copieMentionsTextes = new javax.sql.rowset.serial.SerialClob(copieMentionsTextes(acte).toCharArray());
+            etat.copieMentionsTextes = copieMentionsTextes(acte);
         }
     
     }
@@ -1173,12 +1142,14 @@ public class ActeNaissanceService {
         Registre registre = Registre.findById(registreID);
         
         if(registre == null){
-            throw new WebApplicationException("Registre not found", Response.Status.NOT_FOUND);
+            throw new WebApplicationException("ActeNaissance not found", Response.Status.NOT_FOUND);
         }
         
-        PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre",Sort.by("numero").descending(),registre);
         
-        return query.stream().map(this::mapToDto).collect(Collectors.toList());
+        PanacheQuery<ActeNaissance>  query = ActeNaissance.find("registre",Sort.by("numero").descending(),registre);
+        PanacheQuery<ActeNaissance> rq =  query.range(offset, offset + (pageSize-1));
+        
+        return rq.stream().map(this::mapToDto).collect(Collectors.toList());
         
         //return List.of();
     }
@@ -1441,25 +1412,31 @@ public class ActeNaissanceService {
         return ActeNaissance.deleteById(id);
     }
     
-    public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
-       // InputStream reportStream = getClass().getResourceAsStream("/report/acte_naissance.jasper");
-       // InputStream reportStream = QuarkusClassLoader.getSystemResourceAsStream("/report/acte_naissance.jasper");
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        
-        //URL url = loader.getResource("/acte_naissance.jasper");
+    public String printCopie(String acteID) throws SQLException, JRException, FileNotFoundException{
+       return doPrint(acteID, "/META-INF/resources/report/copie_integrale.jasper");
        
-        //log.infof("-- REPORT URL: %s", url);
-        //InputStream reportStream = loader.getResourceAsStream("/report/acte_naissance.jasper");
-        InputStream reportStream = loader.getResourceAsStream("/META-INF/resources/report/acte_naissance.jasper");
+   }
+    
+    public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+        
+        return doPrint(acteID, "/META-INF/resources/report/acte_naissance.jasper");
+              
+   }
+    
+    
+   private String doPrint(String acteID,String resource) throws SQLException, JRException, FileNotFoundException{
+     
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = loader.getResourceAsStream(resource);
         log.infof("-- REPORT INPUT: %s", reportStream);
         
-      //  InputStream in = new FileInputStream("/home/florent/project-icens/reports/acte_naissance.jasper");
         
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ACTE_NAISSANCE_ID", acteID);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
        
         JRPdfExporter exporter = new JRPdfExporter();
+        
 
         String reportFilePath = filePath(acteID);
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -1468,7 +1445,7 @@ public class ActeNaissanceService {
         exporter.exportReport();
         
         return reportFilePath;
-       
+   
    }
    
    

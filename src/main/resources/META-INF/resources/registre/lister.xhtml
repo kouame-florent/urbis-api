@@ -94,7 +94,7 @@ xmlns:p="http://primefaces.org/ui">
                  
             <p:dataTable id="registre" widgetVar="registreWidget" var="registre" value="#{registreListerBacking.lazyRegistreDataModel}"
                       selection="#{registreListerBacking.selectedRegistre}" rowKey="#{registre.id}" paginator="true"
-                      rows="25" rowSelectMode="add" paginatorPosition="bottom" stripedRows="true">
+                      rows="4" rowSelectMode="add" paginatorPosition="bottom" stripedRows="true" stickyHeader="true">
                 
                 <f:facet name="header">
                     <div class="products-table-header">

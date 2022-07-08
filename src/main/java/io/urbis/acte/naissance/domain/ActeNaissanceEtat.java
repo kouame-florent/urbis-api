@@ -6,7 +6,6 @@
 package io.urbis.acte.naissance.domain;
 
 import io.urbis.common.domain.BaseEntity;
-import java.sql.Clob;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,35 +31,43 @@ public class ActeNaissanceEtat extends BaseEntity{
         
     @Lob
     @Column(name = "extrait_texte")
-    public Clob extraitTexte;
+    public String extraitTexte;
     
     @Lob
     @Column(name = "copie_texte")
-    public Clob copieTexte;
+    public String copieTexte;
     
+    @Lob
     @Column(name = "mention_mariage_texte")
-    public Clob mentionMarigeTexte;
+    public String mentionMarigeTexte;
     
+    @Lob
     @Column(name = "mention_dissolution_mariage_texte")
-    public Clob mentionDissolutionMarigeTexte;
+    public String mentionDissolutionMarigeTexte;
     
+    @Lob
     @Column(name = "mention_adoption_texte")
-    public Clob mentionAdoptionTexte;
+    public String mentionAdoptionTexte;
     
+    @Lob
     @Column(name = "mention_deces_texte")
-    public Clob mentionDecesTexte;
+    public String mentionDecesTexte;
     
+    @Lob
     @Column(name = "mention_legitimation_texte")
-    public Clob mentionLegitimationTexte;
+    public String mentionLegitimationTexte;
     
+    @Lob
     @Column(name = "mention_reconnaissance_texte")
-    public Clob mentionReconnaissanceTexte;
+    public String mentionReconnaissanceTexte;
     
+    @Lob
     @Column(name = "mention_rectification_texte")
-    public Clob mentionRectificationTexte;
+    public String mentionRectificationTexte;
     
+    @Lob
     @Column(name = "copie_mentions_textes")
-    public Clob copieMentionsTextes;
+    public String copieMentionsTextes;
     
     @Column(name = "mention_mariage_date")
     public LocalDate dateMariage;

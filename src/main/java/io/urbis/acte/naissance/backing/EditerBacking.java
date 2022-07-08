@@ -62,6 +62,8 @@ import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.SelectEvent;
 
@@ -219,6 +221,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
     }
     
      public void onload(){
+        if(registreID == null || registreID.isBlank()){
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        
         LOG.log(Level.INFO,"LOAD REGISTRE ID: {0}",registreID);
         registreDto = registreService.findById(registreID);
         LOG.log(Level.INFO,"REGISTRE LIBELLE: {0}",registreDto.getLibelle());

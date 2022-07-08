@@ -106,7 +106,7 @@ xmlns:p="http://primefaces.org/ui">
             <p:dataTable id="actesDatatable"  var="acte" 
                          value="#{acteNaissanceListerBacking.lazyActeNaissanceDataModel}"
                          selection="#{acteNaissanceListerBacking.selectedActe}" rowKey="#{acte.id}" paginator="true"
-                        rows="25" rowSelectMode="add" paginatorPosition="bottom">
+                         rows="3" rowSelectMode="add" paginatorPosition="bottom">
                 
                 
                 <p:column headerText="Nom"  >
@@ -137,11 +137,20 @@ xmlns:p="http://primefaces.org/ui">
                 </p:column>
               
                 <p:column style="width: 2%" >
-                    <p:commandButton ajax="false" process="@this" title="Imprimer"
+                    <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
-                                     styleClass="edit-button rounded-button">
+                                     styleClass="edit-button ui-button-secondary ui-button-outlined">
                         <f:setPropertyActionListener value="#{acte.id}" target="#{acteNaissanceListerBacking.selectedActeID}"/>
                         <p:fileDownload value="#{acteNaissanceListerBacking.download()}"/>
+                    </p:commandButton>
+                </p:column>
+                
+                <p:column style="width: 2%" >
+                    <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
+                                     styleClass="edit-button ui-button-success ui-button-outlined">
+                        <f:setPropertyActionListener value="#{acte.id}" target="#{acteNaissanceListerBacking.selectedActeID}"/>
+                        <p:fileDownload value="#{acteNaissanceListerBacking.downloadCopie()}"/>
                     </p:commandButton>
                 </p:column>
                 
@@ -149,6 +158,7 @@ xmlns:p="http://primefaces.org/ui">
                     <p:commandButton icon="pi pi-pencil" title="modifier"
                             action="#{acteNaissanceListerBacking.openModifierActeView(acte)}"            
                             styleClass="edit-button rounded-button" process="@this">
+                        <p:ajax event="dialogReturn" update="messageForm :contentForm:actesDatatable" />
                             
                     </p:commandButton>
                 </p:column>
@@ -168,6 +178,15 @@ xmlns:p="http://primefaces.org/ui">
                                         update=":contentForm:actesDatatable"/>
                         </p:menuitem>
                         
+                        <p:divider/>
+                        
+                        <p:menuitem value="Modifier les textes de l'acte" action="#{acteNaissanceListerBacking.openUpdateTextView(acte)}" 
+                                    process="@this"
+                                    icon="pi pi-ticket">
+                            <p:ajax event="dialogReturn"  update=":contentForm:actesDatatable"/>
+                        </p:menuitem>
+                        <p:divider/>
+                                               
                         <p:menuitem value="Supprimer" action="#{acteNaissanceListerBacking.supprimer(acte.id)}" 
                                     process="@this" icon="pi pi-times">
                              

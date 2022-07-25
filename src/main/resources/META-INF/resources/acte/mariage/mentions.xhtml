@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition>
+  
+     <p:tabView id="mentionsTabView">
+         <p:tab title="Divorce">
+           
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageDivorceDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-divorce-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+               <p:dataTable id="mentionDivorceTable" 
+                            value="#{acteMariageEditerBacking.acteDto.mentionDivorceDtos}" 
+                            var="divorce"
+                            selectionMode="single"
+                            selection="#{acteMariageEditerBacking.selectedMentionDivorce}" 
+                            rowKey="#{divorce.id}">
+                
+               
+                <p:column headerText="date dressage" >
+                    <h:outputText value="#{divorce.dateDressage}"/>
+                </p:column>
+                 
+                 <p:column headerText="décision" >
+                    <h:outputText value="#{divorce.decision}"/>
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-divorce-content"
+                         oncomplete="PF('manageDivorceDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{divorce}" target="#{acteMariageEditerBacking.divorceDto}"/>
+                        <p:resetInput target=":contentForm:manage-divorce-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteDivorceDialog').show()">
+                                <f:setPropertyActionListener value="#{divorce}" 
+                                                             target="#{acteMariageEditerBacking.divorceDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
+            </p:dataTable> 
+           
+           
+             
+         </p:tab>
+         
+         <p:tab title="Modification du régime des biens">
+             
+            <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageModifRegimeBiensDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-modif-regime-biens-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionModifRegimeBiensTable" 
+                              value="#{acteMariageEditerBacking.acteDto.mentionModifRegimeBiensDtos}" 
+                              var="modifRegime">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{modifRegime.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{modifRegime.decision}"/>
+               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-modif-regime-biens-content"
+                         oncomplete="PF('manageModifRegimeBiensDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{adoption}" target="#{acteMariageEditerBacking.modifRegimeBiensDto}"/>
+                        <p:resetInput target=":contentForm:manage-modif-regime-biens-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+               
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteModifRegimeBiensDialog').show()">
+                                <f:setPropertyActionListener value="#{modifRegime}" 
+                                                             target="#{acteMariageEditerBacking.modifRegimeBiensDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
+
+            </p:dataTable>
+            
+         </p:tab>
+         
+         <p:tab title="Ordonnances de retranscription">
+           
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageOrdonRetranscriptionDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-ordon-retranscription-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+           
+            <p:dataTable id="mentionOrdonRetranscriptionTable" 
+                             value="#{acteMariageEditerBacking.acteDto.mentionOrdonRetranscriptionDtos}" 
+                             var="ordonnance">
+                
+               
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{ordonnance.dateDressage}"/>
+               </p:column>
+               <p:column headerText="décision" >
+                   <h:outputText value="#{ordonnance.decision}"/>
+               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-ordon-retranscription-content"
+                         oncomplete="PF('manageOrdonRetranscriptionDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{ordonnance}" target="#{acteMariageEditerBacking.ordonRetranscriptionDto}"/>
+                        <p:resetInput target=":contentForm:manage-ordon-retranscription-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteOrdonRetranscriptionDialog').show()">
+                                <f:setPropertyActionListener value="#{ordonnance}" 
+                                                             target="#{acteMariageEditerBacking.ordonRetranscriptionDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
+
+            </p:dataTable>
+           
+         </p:tab>
+         
+        
+        
+         
+     </p:tabView>
+     
+     <p:dialog header="Mention divorce" showEffect="fade" modal="true"
+               widgetVar="manageDivorceDialog" responsive="true" fitViewport="true" >
+          <p:outputPanel id="manage-divorce-content" class="ui-fluid">
+               <div class="ui-fluid p-formgrid p-grid">
+                
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="divorceDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+                    <p:inputMask id="divorceDateDressage" value="#{acteMariageEditerBacking.divorceDto.dateDressage}"
+                                 mask="99/99/9999" >
+                        <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        <f:validateBean disabled="true" />
+                    </p:inputMask> 
+                    
+                    <p:message for="divorceDateDressage"/>
+                </div>
+            </div>
+             
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                     <p:outputLabel for="divorceDecision" styleClass="p-d-block">Décision</p:outputLabel>
+                     <p:inputTextarea id="divorceDecision" value="#{acteMariageEditerBacking.divorceDto.decision}" 
+                                      rows="10">
+                         <f:validateBean disabled="true" />
+                     </p:inputTextarea>
+                     <p:message for="divorceDecision"/>
+                 </div>
+                <div class="p-field p-lg-12">
+                    <p:outputLabel for="divorceOfficier" styleClass="p-d-block">Officier</p:outputLabel>
+                    <p:selectOneMenu id="divorceOfficier" value="#{acteMariageEditerBacking.divorceDto.officierEtatCivilID}">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                        <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
+                                       itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                       itemValue="#{officier.id}"/>
+                        <f:validateBean disabled="true" />
+                    </p:selectOneMenu>
+                  
+                </div>
+            </div>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                    <p:commandButton value="Ajouter la mention de divorce" process="manage-divorce-content" 
+                                     action="#{acteMariageEditerBacking.ajouterMentionDivorce()}"
+                                     oncomplete="PF('manageDivorceDialog').hide()"
+                                     update="mentionsTabView:mentionDivorceTable messageForm"  icon="pi pi-check-square" />
+                </div>
+                
+            </div>
+             
+         </p:outputPanel>         
+         
+     </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteDivorceDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteMariageEditerBacking.deleteMentionDivorce()}"
+                             process="@this" update="mentionsTabView:mentionDivorceTable messageForm" 
+                             oncomplete="PF('deleteDivorceDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteDivorceDialog').hide()"/>
+    </p:confirmDialog>
+     
+     
+     <p:dialog header="Mention modification du régime des biens" showEffect="fade" modal="true"
+               widgetVar="manageModifRegimeBiensDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-modif-regime-biens-content" class="ui-fluid">
+                
+                <div class="ui-fluid p-formgrid p-grid">
+                
+                
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="modifRegimeBiensDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+                    <p:inputMask id="modifRegimeBiensDtoDateDressage" value="#{acteMariageEditerBacking.modifRegimeBiensDto.dateDressage}"
+                                 mask="99/99/9999" >
+                        <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        <f:validateBean disabled="true" />
+                    </p:inputMask>
+                    
+                    <p:message for="modifRegimeBiensDateDressage"/>
+                </div>
+                <div class="p-field p-lg-12">
+                     <p:outputLabel for="modifRegimeBiensDecision" styleClass="p-d-block">Décision</p:outputLabel>
+                     <p:inputTextarea id="modifRegimeBiensDecision" value="#{acteMariageEditerBacking.modifRegimeBiensDto.decision}" 
+                                      rows="10">
+                         <f:validateBean disabled="true" />
+                     </p:inputTextarea>
+                     <p:message for="modifRegimeBiensDecision"/>
+                 </div>
+                <div class="p-field p-lg-12">
+                    <p:outputLabel for="modifRegimeBiensOfficier" styleClass="p-d-block">Officier</p:outputLabel>
+                    <p:selectOneMenu id="modifRegimeBiensOfficier" value="#{acteMariageEditerBacking.modifRegimeBiensDto.officierEtatCivilID}">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                        <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
+                                       itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                       itemValue="#{officier.id}"/>
+                        <f:validateBean disabled="true" />
+                    </p:selectOneMenu>
+                    <p:message for="modifRegimeBiensOfficier"/>
+                </div>
+
+            </div>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                    <p:commandButton value="Ajouter la mention modification du régime des biens"
+                                     process="manage-modif-regime-biens-content" 
+                                     action="#{acteMariageEditerBacking.ajouterMentionModifRegimeBiens()}"
+                                     oncomplete="PF('manageModifRegimeBiensDialog').hide()"
+                                     update="mentionsTabView:mentionModifRegimeBiensTable messageForm"
+                                     icon="pi pi-check" />
+                </div>
+               
+            </div>
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+     <p:confirmDialog widgetVar="deleteModifRegimeBiensDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteMariageEditerBacking.deleteMentionModifRegimeBiens()}"
+                             process="@this" update="mentionsTabView:mentionModifRegimeBiensTable messageForm" 
+                             oncomplete="PF('deleteModifRegimeBiensDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteModifRegimeBiensDialog').hide()"/>
+    </p:confirmDialog>
+     
+        
+     <p:dialog header="Mention ordonnance de retranscription" showEffect="fade" modal="true"
+               widgetVar="manageOrdonRetranscriptionDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-ordon-retranscription-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="ordonRetranscriptionDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+                    <p:inputMask id="ordonRetranscriptionDateDressage" value="#{acteMariageEditerBacking.ordonRetranscriptionDto.dateDressage}"
+                                 mask="99/99/9999" >
+                        <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        <f:validateBean disabled="true" />
+                    </p:inputMask>
+                    
+                    <p:message for="ordonRetranscriptionDateDressage"/>
+                 </div>
+                 <div class="p-field p-lg-12">
+                     <p:outputLabel for="ordonRetranscriptionDecision" styleClass="p-d-block">Décision</p:outputLabel>
+                     <p:inputTextarea id="ordonRetranscriptionDecision" value="#{acteMariageEditerBacking.ordonRetranscriptionDto.decision}" 
+                                      rows="10">
+                        <f:validateBean disabled="true" />
+                     </p:inputTextarea>
+                 </div>
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="ordonRetranscriptionOfficier" styleClass="p-d-block">Officier</p:outputLabel>
+                    <p:selectOneMenu id="ordonRetranscriptionOfficier" value="#{acteMariageEditerBacking.ordonRetranscriptionDto.officierEtatCivilID}"          
+                                     label="Selectionnez">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                        <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
+                                       itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                       itemValue="#{officier.id}"/>
+                        <f:validateBean disabled="true" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+                
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                    <p:commandButton value="Ajouter la mention ordonnance de retranscription" process="manage-ordon-retranscription-content" 
+                                     action="#{acteMariageEditerBacking.ajouterMentionOrdonRetranscription()}"
+                                     oncomplete="PF('manageOrdonRetranscriptionDialog').hide()"
+                                     update="mentionsTabView:mentionOrdonRetranscriptionTable messageForm"  icon="pi pi-check" />
+                </div>
+                
+            </div>
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteOrdonRetranscriptionDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+        <p:commandButton value="Oui" icon="pi pi-check" 
+                         actionListener="#{acteMariageEditerBacking.deleteMentionOrdonRetranscription()}"
+                         process="@this" update="mentionsTabView:mentionOrdonRetranscriptionTable messageForm" 
+                         oncomplete="PF('deleteOrdonRetranscriptionDialog').hide()"/>
+        <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                         onclick="PF('deleteOrdonRetranscriptionDialog').hide()"/>
+    </p:confirmDialog>
+     
+   
+    
+   
+</ui:composition>  
+ 
+</html>
+

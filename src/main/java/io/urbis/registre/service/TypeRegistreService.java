@@ -23,10 +23,10 @@ public class TypeRegistreService {
     
     public List<TypeRegistreDto> findAll(){
         EnumSet<TypeRegistre> types = EnumSet.allOf(TypeRegistre.class);
-        return types.stream().map(TypeRegistreService::mapToDto).collect(Collectors.toList());
+        return types.stream().map(t -> mapToDto(t)).collect(Collectors.toList());
     }
     
-    public static TypeRegistreDto mapToDto(TypeRegistre type){
+    public TypeRegistreDto mapToDto(TypeRegistre type){
         return new TypeRegistreDto(type.name(), type.getLibelle());
     }
     

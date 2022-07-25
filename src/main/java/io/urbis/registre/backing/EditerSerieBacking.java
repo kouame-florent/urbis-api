@@ -169,11 +169,17 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
         }
         for (int i = premier; i <= dernier; i++ ){
             LOG.log(Level.INFO, "CREATING REGISTRE ...");
-            //int numeroRegistre = registreService.numeroRegistre(selectedType.getCode(),anneeCourante);
+            
             int numeroPremierActe = registreService.numeroPremierActe(selectedType.getCode(),annee,i-1);
+            
+            /*  si il n'y a aucun acte qui suit l'acte courant, numDernier = numPremier + nbrFeuillet 
+             *  sinon numDernier = numPremier du suivant - 1
+             *  cela permet de gerer les suppressions au milieu d'une serie
+             */
             int numeroDernierActe = registreService.numeroDernierActe(selectedType.getCode(), annee,i+1,
-                    numeroPremierActe, nombreDeFeuillets);
+                    numeroPremierActe, nombreDeFeuillets); 
             LOG.log(Level.INFO, "NUMERO PREMIER ACTE: {0}", numeroPremierActe);
+            LOG.log(Level.INFO, "NUMERO DERNIER ACTE: {0}", numeroDernierActe);
             
            // LocalDateTime dateOuverture = LocalDateTime.of(annee, 1, 1, 12, 0);
                        

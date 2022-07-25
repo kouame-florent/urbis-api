@@ -6,13 +6,6 @@
 package io.urbis.acte.naissance.dto;
 
 
-import io.urbis.mention.dto.MentionAdoptionDto;
-import io.urbis.mention.dto.MentionDecesDto;
-import io.urbis.mention.dto.MentionDissolutionMariageDto;
-import io.urbis.mention.dto.MentionLegitimationDto;
-import io.urbis.mention.dto.MentionMariageDto;
-import io.urbis.mention.dto.MentionReconnaissanceDto;
-import io.urbis.mention.dto.MentionRectificationDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;

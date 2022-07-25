@@ -175,6 +175,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         
         lazyRegistreDataModel.setTypeRegistre("naissance");  
         selectedType = defaultSelectedType();
+        
     }
     
     public void onLoad(){
@@ -200,13 +201,24 @@ public class ListerBacking extends BaseBacking implements Serializable{
         }
     }
     
+    
     public TypeRegistreDto defaultSelectedType(){
+       for(TypeRegistreDto t : typesRegistre){
+           if(t.getCode().equals(TypeRegistre.NAISSANCE.name())){
+               return t;
+           }
+       }
+       
+       throw new IllegalStateException("cannot get type registre 'NAISSANCE'");
+       /*
        return typesRegistre.stream()
                 .peek(c -> LOG.log(Level.INFO, "TYPE NAME: {0}", c.getCode()))
-                //.filter(t -> t.getCode() == TypeRegistre.NAISSANCE.name())
+                .filter(t -> t.getCode().equals(TypeRegistre.NAISSANCE.name()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("cannot get type registre 'NAISSANCE'"));
+       */
     }
+    
     
     public void filtrer(){
         LOG.log(Level.INFO, "FILTRER...");

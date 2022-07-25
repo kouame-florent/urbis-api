@@ -7,7 +7,6 @@ package io.urbis.acte.naissance.domain;
 
 import io.urbis.acte.common.domain.Acte;
 import io.urbis.param.domain.OfficierEtatCivil;
-import io.urbis.registre.domain.Registre;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
@@ -19,10 +18,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -34,8 +30,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class ActeNaissance extends Acte{
-    
-    
     
     @Embedded
     @AttributeOverrides({

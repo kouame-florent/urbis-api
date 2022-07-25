@@ -6,7 +6,6 @@
 package io.urbis.acte.mariage.domain;
 
 import io.urbis.acte.common.domain.Acte;
-import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -14,10 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,16 +25,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class ActeMariage extends Acte{
       
-    /*
-    @NotNull
-    @ManyToOne
-    @JoinColumn(nullable = false,name = "registre_id")
-    public Registre registre;
-    
-    @Column(name = "numero")
-    public int numero;
-    */
-    
+   
     @Column(name = "date_mariage",nullable = false)
     public LocalDateTime dateMariage;
     

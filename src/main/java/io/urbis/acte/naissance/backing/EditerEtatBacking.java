@@ -63,7 +63,7 @@ public class EditerEtatBacking extends BaseBacking implements Serializable{
     
     
     public void modifier(){
-        acteNaissanceEtatService.modifier(acteNaissanceEtatDto);
+        acteNaissanceEtatService.patcher(acteNaissanceEtatDto);
         addGlobalMessage("Les textex ont été modifiés avec succès", FacesMessage.SEVERITY_INFO);
     }
     

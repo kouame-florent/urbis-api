@@ -78,9 +78,10 @@ public class RegistreService {
         log.infof("--> LOCALITE: %s", localite);
         log.infof("--> CENTRE: %s", centre);
         log.infof("--> TRIBUNAL: %s", tribunal);
-        log.infof("--> NUMERO REGOSTRE: %d", registreDto.getNumero());
+        log.infof("--> NUMERO REGISTRE: %d", registreDto.getNumero());
         log.infof("--> LIBELLE REGISTRE: %s", registreDto.getLibelle());
         log.infof("--> NOMBRE FEUILLETS: %s", registreDto.getNombreDeFeuillets());
+        log.infof("--> NUM PREMIER ACTE: %s", registreDto.getNumeroPremierActe());
         log.infof("--> NUM DERNIER ACTE: %s", registreDto.getNumeroDernierActe());
         
         Reference reference = new Reference(localite, centre, registreDto.getAnnee(),
@@ -405,6 +406,10 @@ public class RegistreService {
                 
     }
     
+    /*  si il n'y a aucun acte qui suit l'acte courant, numDernier = numPremier + nbrFeuillet 
+    *  sinon numDernier = numPremier du suivant - 1
+    *  cela permet de gerer les suppressions au milieu d'une serie
+    */
     public int numeroDernierActe(String typeRegistre,int annee,int numero,int numeroPremierActe, int nombreFeuillet){
         TypedQuery<Integer> query =  em.createNamedQuery("Registre.findNumeroPremierActe", Integer.class);
         log.infof("NUM PREMIER QUERY: %s", query);
@@ -424,15 +429,7 @@ public class RegistreService {
             return numeroPremierActe + nombreFeuillet - 1;
         }
         
-        /*
-        try{
-            var num = query.getSingleResult();
-            return num - 1;
-        }catch(NoResultException ex){
-            log.infof("aucun acte suivant...");
-            return numeroPremierActe + nombreFeuillet - 1;
-        }
-        */
+       
     }
     
     

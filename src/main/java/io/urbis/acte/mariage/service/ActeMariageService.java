@@ -18,13 +18,18 @@ import io.urbis.acte.mariage.domain.Regime;
 import io.urbis.acte.mariage.domain.StatutActeMariage;
 import io.urbis.acte.mariage.domain.Temoin;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
+import io.urbis.acte.mariage.dto.MentionDivorceDto;
+import io.urbis.acte.mariage.dto.MentionModifRegimeBiensDto;
+import io.urbis.acte.mariage.dto.MentionOrdonRetranscriptionDto;
 import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.security.service.AuthenticationContext;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -37,6 +42,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
+
 
 
 /**
@@ -55,6 +61,18 @@ public class ActeMariageService {
     
     @Inject
     AuthenticationContext authenticationContext;
+    
+    @Inject
+    ActeMariageEtatService acteMariageEtatService;
+    
+    @Inject
+    MentionDivorceService mentionDivorceService;
+    
+    @Inject
+    MentionModifRegimeBiensService mentionModifRegimeBiensService;
+    
+    @Inject
+    MentionOrdonRetranscriptionService mentionOrdonRetranscriptionService;
     
     
     public ActeMariageDto findById(@NotBlank String id){
@@ -176,6 +194,30 @@ public class ActeMariageService {
         
     }
     
+    
+    public void creerMentions(ActeMariageDto acteMariageDto, ActeMariage acte){
+        
+        log.infof("-- MENTIONS MARIAGE SIZE: %d", acteMariageDto.getMentionDivorceDtos().size());
+        
+        acteMariageDto.getMentionDivorceDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionDivorceService.createMention(mm);
+        });
+        
+        acteMariageDto.getMentionModifRegimeBiensDtos().forEach(ma -> {
+            ma.setActeMariageID(acte.id);
+            mentionModifRegimeBiensService.createMention(ma);
+        });
+        
+        acteMariageDto.getMentionOrdonRetranscriptionDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionOrdonRetranscriptionService.createMention(mm);
+        });
+       
+    }
+    
+   
+    
     public void modifier(@NotBlank String id,@NotNull ActeMariageDto acteMariageDto){
         
         ActeMariage acte = ActeMariage.findById(id);
@@ -275,6 +317,57 @@ public class ActeMariageService {
         
           
     }
+    
+    public void modifierMentions(ActeMariageDto acteMariageDto, ActeMariage acte){
+        
+        log.infof("-- MENTIONS MARIAGE SIZE: %d", acteMariageDto.getMentionDivorceDtos().size());
+        
+        //divorce
+        Set<MentionDivorceDto> dm = new HashSet<>(mentionDivorceService.findByActeMariage(acte.id));
+        dm.removeAll(acteMariageDto.getMentionDivorceDtos()); //différence entre le Set de la BD et le Set envoyé qui donne les elements supprimés
+        
+        log.infof("-- DIFFERENCE SET SIZE: %d", dm.size());
+        
+        dm.forEach(mm -> {
+            mentionDivorceService.deleteMention(mm.getId());
+        });
+        
+        acteMariageDto.getMentionDivorceDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionDivorceService.modifierMention(mm);
+        });
+        
+        //regime biens
+        Set<MentionModifRegimeBiensDto> da = new HashSet<>(mentionModifRegimeBiensService.findByActeMariage(acte.id));
+        da.removeAll(acteMariageDto.getMentionModifRegimeBiensDtos());
+        
+        da.forEach(mm -> {
+            mentionModifRegimeBiensService.deleteMention(mm.getId());
+        });
+        
+        acteMariageDto.getMentionModifRegimeBiensDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionModifRegimeBiensService.modifierMention(mm);
+        });
+        
+        //Ordonnance de retranscription
+        Set<MentionOrdonRetranscriptionDto> dd = new HashSet<>(mentionOrdonRetranscriptionService.findByActeMariage(acte.id));
+        dd.removeAll(acteMariageDto.getMentionOrdonRetranscriptionDtos());
+        
+        dd.forEach(mm -> {
+            mentionOrdonRetranscriptionService.deleteMention(mm.getId());
+        });
+        
+        acteMariageDto.getMentionOrdonRetranscriptionDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionOrdonRetranscriptionService.modifierMention(mm);
+        });
+        
+       
+       
+    }
+    
+  
     
     public void validerActe(Registre registre,ActeMariageDto acte,Operation operation){
         if(operation == Operation.DECLARATION){

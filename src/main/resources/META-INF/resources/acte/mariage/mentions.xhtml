@@ -230,7 +230,7 @@ xmlns:p="http://primefaces.org/ui">
                 
                 <div class="p-field p-lg-6">
                     <p:outputLabel for="modifRegimeBiensDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
-                    <p:inputMask id="modifRegimeBiensDtoDateDressage" value="#{acteMariageEditerBacking.modifRegimeBiensDto.dateDressage}"
+                    <p:inputMask id="modifRegimeBiensDateDressage" value="#{acteMariageEditerBacking.modifRegimeBiensDto.dateDressage}"
                                  mask="99/99/9999" >
                         <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
                         <f:validateBean disabled="true" />

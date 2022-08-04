@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 public class ActeMariageEtat extends BaseEntity{
     
-    @JoinColumn(name = "acte_naissance_id")
+    @JoinColumn(name = "acte_mariage_id")
     @OneToOne
     public ActeMariage acteMariage;
     
@@ -49,6 +49,18 @@ public class ActeMariageEtat extends BaseEntity{
     
     @Column(name = "copie_titre_texte")
     public String copieTitreTexte;
+    
+    @Lob
+    @Column(name = "mention_divorce_texte")
+    public String mentionDivorceTexte;
+    
+    @Lob
+    @Column(name = "mention_modification_regime_biens_texte")
+    public String mentionModifRegimeBiensTexte;
+    
+    @Lob
+    @Column(name = "mention_ordonnance_retranscription_texte")
+    public String mentionOrdonRetranscriptionTexte;
 
     public ActeMariageEtat() {
     }

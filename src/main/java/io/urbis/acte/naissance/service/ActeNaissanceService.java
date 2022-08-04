@@ -1049,7 +1049,7 @@ public class ActeNaissanceService {
     }
     
     public String printCopie(String acteID) throws SQLException, JRException, FileNotFoundException{
-       return doPrint(acteID, "/META-INF/resources/report/copie_integrale.jasper");
+       return doPrint(acteID, "/META-INF/resources/report/acte_naissance_ci.jasper");
        
    }
     

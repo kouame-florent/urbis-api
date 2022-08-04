@@ -6,6 +6,7 @@
 package io.urbis.acte.naissance.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.acte.naissance.domain.ActeNaissanceEtat;
@@ -20,13 +21,17 @@ import io.urbis.acte.naissance.dto.MentionReconnaissanceDto;
 import io.urbis.acte.naissance.dto.MentionRectificationDto;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.security.service.AuthenticationContext;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
@@ -34,6 +39,12 @@ import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.jboss.logging.Logger;
 
 /**
@@ -72,6 +83,9 @@ public class ActeNaissanceEtatService {
     
     @Inject
     LocaliteService localiteService;
+    
+    @Inject
+    AgroalDataSource defaultDataSource;
     
        
     public ActeNaissanceEtatDto findByActeNaissance(ActeNaissance acteNaissance) throws SQLException, IOException{
@@ -200,7 +214,7 @@ public class ActeNaissanceEtatService {
             
             etat.mentionRectificationTexte = mentionRectificationService.mentionRecenteTexte(acte);
             
-            etat.copieMentionsTextes = copieMentionsTextes(acte);
+            
         }
     
     }
@@ -479,5 +493,46 @@ public class ActeNaissanceEtatService {
         }
         return temps;
     }
+    
+     public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+        
+        return doPrint(acteID, "/META-INF/resources/report/acte_naissance.jasper");
+              
+   }
+    
+    
+   private String doPrint(String acteID,String resource) throws SQLException, JRException, FileNotFoundException{
+     
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = loader.getResourceAsStream(resource);
+        log.infof("-- REPORT INPUT: %s", reportStream);
+        
+        
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("ACTE_NAISSANCE_ID", acteID);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
+       
+        JRPdfExporter exporter = new JRPdfExporter();
+        
+
+        String reportFilePath = filePath(acteID);
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput( new SimpleOutputStreamExporterOutput(reportFilePath));
+        
+        exporter.exportReport();
+        
+        return reportFilePath;
+   
+   }
+   
+   private String filePath(String acteID){
+       ActeNaissance acte = ActeNaissance.findById(acteID);
+      if( acte == null){
+          throw new EntityNotFoundException("ActeNaissance not found");
+      }
+      String name = acte.enfant.nom + " " + acte.enfant.prenoms +"-"+ LocalDateTime.now().toString() + ".pdf";
+      
+      return "/tmp/" + name.replaceAll(" ", "-");
+   }
    
 }

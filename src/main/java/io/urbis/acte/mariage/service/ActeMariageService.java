@@ -83,7 +83,7 @@ public class ActeMariageService {
        
     }
     
-    public void creer(@NotNull ActeMariageDto acteMariageDto){
+    public String creer(@NotNull ActeMariageDto acteMariageDto) {
         
         Epouse eps = new Epouse(new Conjoint(), new Pere(), new Mere(), new Temoin());
         Epoux epx = new Epoux(new Conjoint(), new Pere(), new Mere(), new Temoin());
@@ -191,6 +191,11 @@ public class ActeMariageService {
             }
             
         }
+        
+        creerMentions(acteMariageDto, acte);
+        acteMariageEtatService.creer(acte.id);
+        
+        return acte.id;
         
     }
     
@@ -315,6 +320,8 @@ public class ActeMariageService {
         acte.epouse.temoin.prenoms = acteMariageDto.getEpouseTemoinPrenoms();
         acte.epouse.temoin.profession = acteMariageDto.getEpouseTemoinProfession();
         
+        modifierMentions(acteMariageDto, acte);
+        acteMariageEtatService.modifier(acte.id);
           
     }
     
@@ -546,6 +553,10 @@ public class ActeMariageService {
         dto.setEpouseTemoinPrenoms(acte.epouse.temoin.prenoms);
         dto.setEpouseTemoinProfession(acte.epouse.temoin.profession);
         dto.setEpouseTemoinDomicile(acte.epouse.temoin.domicile);
+        
+        dto.setMentionDivorceDtos(mentionDivorceService.findByActeMariage(acte.id));
+        dto.setMentionModifRegimeBiensDtos(mentionModifRegimeBiensService.findByActeMariage(acte.id));
+        dto.setMentionOrdonRetranscriptionDtos(mentionOrdonRetranscriptionService.findByActeMariage(acte.id));
         
         return dto;
     }

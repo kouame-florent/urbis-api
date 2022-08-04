@@ -9,6 +9,7 @@ import io.urbis.acte.mariage.domain.StatutActeMariage;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.mariage.domain.Operation;
+import io.urbis.acte.mariage.service.ActeMariageEtatService;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.registre.domain.StatutRegistre;
 import java.io.Serializable;
@@ -18,6 +19,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -32,7 +40,9 @@ import org.primefaces.PrimeFaces;
 
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -53,6 +63,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     @Inject 
     ActeMariageService acteMariageService;
+    
+    @Inject
+    ActeMariageEtatService acteMariageEtatService;
     
     @Inject
     @ConfigProperty(name = "URBIS_TENANT", defaultValue = "standard")
@@ -84,28 +97,44 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public StreamedContent download(){
-        /*
-       LOG.log(Level.INFO, "--------- CURRENT TENANT: {0}", tenant);
-       File file = etatService.downloadActeNaissance(tenant, selectedActeID);
-       LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
-       LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
-       LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
+        LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+      // File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
+      // LOG.log(Level.INFO, "TENANT: {0}", tenant);
+      // LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
+      // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
+      // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
+      
        
-       StreamedContent content = null;
+       
+        StreamedContent content = null;
+        Path path = null;
         try {
-            InputStream input = new FileInputStream(file);
+            String pathString = acteMariageEtatService.print(selectedActeID);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
-                .name("acte_naissance.pdf")
+                .name(path.getFileName().toString())
                 .contentType("application/pdf")
                 .stream(() -> input).build();
                 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException | SQLException | JRException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
         }
        
        return content;
-       */
-        return null;
     }
     
     public void onActeValidated(SelectEvent event){
@@ -205,6 +234,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
        }
     }
     
+    public String returnToRegistresList(){
+        return "/registre/lister.xhtml?faces-redirect=true";
+    }
     
 
     public String getRegistreID() {

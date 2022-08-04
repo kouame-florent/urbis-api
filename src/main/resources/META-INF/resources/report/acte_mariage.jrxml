@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_mariage" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2fbd4a3-0e20-43eb-b4c2-af662db493e4">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[dXJiaXMuYWN0ZV9tYXJpYWdlX2V0YXQgLDE1LDE1LDgyZDg1YzA1LTg1MjMtNDM0Zi1hYzhlLTli
+OWY0NzJhMDk4NDs=]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbis2"/>
+	<parameter name="ACTE_MARIAGE_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["fedc557a-476b-4732-9130-a59c4f67f6e4"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT id,
+	copie_numero_acte_texte,
+	copie_texte,
+	copie_titre_texte,
+	extrait_texte,
+	noms_maries_texte,
+	numero_acte_texte,
+	titre_texte,
+	acte_mariage_id,
+	mention_divorce_texte,
+	mention_modification_regime_biens_texte,
+	mention_ordonnance_retranscription_texte
+FROM urbis.acte_mariage_etat
+WHERE 
+	 urbis.acte_mariage_etat.acte_mariage_id = $P{ACTE_MARIAGE_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="copie_numero_acte_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="copie_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="copie_titre_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_titre_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_titre_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="extrait_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="noms_maries_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="noms_maries_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="noms_maries_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="numero_acte_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="titre_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titre_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="titre_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="acte_mariage_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acte_mariage_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="acte_mariage_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="mention_divorce_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_divorce_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_divorce_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="mention_modification_regime_biens_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_modification_regime_biens_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_modification_regime_biens_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<field name="mention_ordonnance_retranscription_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mention_ordonnance_retranscription_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="mention_ordonnance_retranscription_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_mariage_etat"/>
+	</field>
+	<group name="id">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
+	<group name="copie_numero_acte_texte">
+		<groupExpression><![CDATA[$F{copie_numero_acte_texte}]]></groupExpression>
+	</group>
+	<group name="copie_texte">
+		<groupExpression><![CDATA[$F{copie_texte}]]></groupExpression>
+	</group>
+	<group name="copie_titre_texte">
+		<groupExpression><![CDATA[$F{copie_titre_texte}]]></groupExpression>
+	</group>
+	<group name="extrait_texte">
+		<groupExpression><![CDATA[$F{extrait_texte}]]></groupExpression>
+	</group>
+	<group name="noms_maries_texte">
+		<groupExpression><![CDATA[$F{noms_maries_texte}]]></groupExpression>
+	</group>
+	<group name="numero_acte_texte">
+		<groupExpression><![CDATA[$F{numero_acte_texte}]]></groupExpression>
+	</group>
+	<group name="titre_texte">
+		<groupExpression><![CDATA[$F{titre_texte}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="184" splitType="Stretch">
+			<staticText>
+				<reportElement x="320" y="0" width="240" height="20" uuid="9744c509-2aa4-48bb-88e7-85f7d8a619eb"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DE COTE D'IVOIRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="20" width="100" height="20" uuid="e29162c5-8a14-4341-851c-40ff831bfd17"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[--------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="42" width="190" height="18" uuid="12915cf4-f0da-4488-bd6b-5ecf3aebae0c"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Union - Discipline - Travail]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="66" width="230" height="26" uuid="238a076d-0124-4dbb-9804-c52014ad5a04"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXTRAIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="93" width="236" height="15" uuid="730a0dc0-a56e-4eb9-a390-088d80a7c1ea"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Du registre des actes de l'Etat Civil ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="312" y="109" width="230" height="22" uuid="e9fa05a0-c786-42a4-b97b-163559753606">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83af0a6a-6e60-405c-827e-4b5652bd2e2b"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="styled">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titre_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="0" width="224" height="20" uuid="8b08c6d0-39a9-4734-af1b-095003a9c848"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEPARTEMENT DE GAGNOA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="21" width="100" height="15" uuid="1378e7bb-d217-4a9b-960a-98e030c2f80b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="42" width="138" height="21" uuid="dd48a319-c1c5-4e40-9194-7ebe0c3868ce"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[COMMUNE DE GAGNOA]]></text>
+			</staticText>
+			<image>
+				<reportElement x="42" y="67" width="50" height="50" uuid="68697760-1532-47d9-b57d-57827261286e"/>
+				<imageExpression><![CDATA["http://localhost:8181/image/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="15" y="119" width="100" height="17" uuid="795f8d7d-1b19-4b44-ba4b-7615a879af65"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ETAT CIVIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="136" width="100" height="15" uuid="6ee25402-e866-49a6-b2b4-4e07c0dc5e5b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="151" width="150" height="22" uuid="0ceb4e08-6b63-4b0f-ba1f-49362c44da1a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Centre de gagnoa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="169" width="100" height="15" uuid="6e09c1d3-3738-4986-8af7-9d8597a5fc0d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="387" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="10" width="237" height="20" uuid="0d0ffe81-66f5-49fa-95a4-c50eabd334cc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9adddc5-0c8e-4143-be2e-e4b8140af768"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_acte_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="33" width="180" height="20" uuid="b983e36a-76fb-46bc-9a8d-98db33c864bb"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MARIAGE ENTRE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="53" width="178" height="87" uuid="106249a5-244b-4053-a0a9-025f9103d4ab">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e348f30e-827d-4b09-b81f-923ccbb349b8"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="none">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noms_maries_texte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="10" width="310" height="220" uuid="a434c354-a74e-4862-96bd-a0aaa10293ef">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="640387a8-7442-4b52-8d0b-2018fef83594"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extrait_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="244" width="433" height="30" uuid="58daed87-d397-4f49-80ae-5773d58b1058"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Certifié le présent extrait conforme aux indications portées au registre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="297" width="100" height="30" uuid="e0ae386b-28bd-4778-ad05-24d7be5c9020"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Timbre fiscal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="303" width="100" height="25" uuid="a9f9d3e2-5914-4b7d-bac2-c580eb95d868"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Sceau]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="282" width="140" height="20" uuid="3abdfc23-0964-40a0-bb67-a4cd8b0b6b8e"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Délivré à GAGNOA, le ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="391" y="281" width="141" height="30" uuid="9defdde9-01df-41d4-a4c5-1a406def8630"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="322" width="170" height="20" uuid="9c9173b4-337a-48d9-bf98-29f5140ec062"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[L'Officier de l'Etat civil]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="344" width="100" height="18" uuid="6194b55a-87e9-4e93-8eef-8a1edf9209e8"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[(Signature)]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="25" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="18" splitType="Stretch"/>
+	</summary>
+</jasperReport>

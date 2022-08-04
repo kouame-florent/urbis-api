@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -34,10 +35,12 @@ public class ActeMariageDto {
     @Min(1)
     private int numero;
     
-    @NotBlank
+    @NotNull
     private LocalDateTime dateMariage;
+    
     @NotBlank
     private String lieuMariage;
+    
     @NotBlank
     private String regime;
     

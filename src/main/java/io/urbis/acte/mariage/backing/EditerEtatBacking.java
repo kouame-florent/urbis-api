@@ -1,18 +1,16 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package io.urbis.acte.naissance.backing;
+package io.urbis.acte.mariage.backing;
 
-import io.urbis.acte.naissance.domain.ActeNaissance;
-import io.urbis.acte.naissance.dto.ActeNaissanceEtatDto;
-import io.urbis.acte.naissance.service.ActeNaissanceEtatService;
+import io.urbis.acte.mariage.domain.ActeMariage;
+import io.urbis.acte.mariage.dto.ActeMariageEtatDto;
+import io.urbis.acte.mariage.service.ActeMariageEtatService;
 import io.urbis.common.util.BaseBacking;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -27,18 +25,18 @@ import org.primefaces.PrimeFaces;
  *
  * @author florent
  */
-@Named(value = "acteNaissanceEditerEtatBacking")
+@Named(value = "acteMariageEditerEtatBacking")
 @ViewScoped
 public class EditerEtatBacking extends BaseBacking implements Serializable{
 
     private static final Logger LOG = Logger.getLogger(EditerEtatBacking.class.getName());
     
     @Inject
-    ActeNaissanceEtatService acteNaissanceEtatService;
+    ActeMariageEtatService acteMariageEtatService;
     
         
     private String acteID;
-    private ActeNaissanceEtatDto acteNaissanceEtatDto ;
+    private ActeMariageEtatDto acteMariageEtatDto ;
     
     @PostConstruct
     public void init(){
@@ -50,20 +48,15 @@ public class EditerEtatBacking extends BaseBacking implements Serializable{
         if(acteID == null || acteID.isBlank()){
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
+       
+        ActeMariage acte = ActeMariage.findById(acteID);
+        acteMariageEtatDto = acteMariageEtatService.findByActeMariage(acte);
         
-        try {
-            ActeNaissance acte = ActeNaissance.findById(acteID);
-            acteNaissanceEtatDto = acteNaissanceEtatService.findByActeNaissance(acte);
-        } catch (SQLException | IOException ex) {
-            Logger.getLogger(EditerEtatBacking.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-       
     }
     
     
     public void modifier(){
-        acteNaissanceEtatService.patcher(acteNaissanceEtatDto);
+        acteMariageEtatService.patcher(acteMariageEtatDto);
         addGlobalMessage("Les textes ont été modifiés avec succès", FacesMessage.SEVERITY_INFO);
     }
     
@@ -79,12 +72,12 @@ public class EditerEtatBacking extends BaseBacking implements Serializable{
         this.acteID = acteID;
     }
 
-    public ActeNaissanceEtatDto getActeNaissanceEtatDto() {
-        return acteNaissanceEtatDto;
+    public ActeMariageEtatDto getActeMariageEtatDto() {
+        return acteMariageEtatDto;
     }
 
-    public void setActeNaissanceEtatDto(ActeNaissanceEtatDto acteNaissanceEtatDto) {
-        this.acteNaissanceEtatDto = acteNaissanceEtatDto;
+    public void setActeMariageEtatDto(ActeMariageEtatDto acteMariageEtatDto) {
+        this.acteMariageEtatDto = acteMariageEtatDto;
     }
     
     

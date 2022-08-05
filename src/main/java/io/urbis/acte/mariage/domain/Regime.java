@@ -17,8 +17,8 @@ import javax.ws.rs.core.Response;
  */
 public enum Regime {
      
-    COMMUNAUTE_DE_BIEN("Communauté de bien"),
-    SEPARATION_DE_BIEN("Séparation de bien");
+    COMMUNAUTE_DE_BIEN("Communauté de biens"),
+    SEPARATION_DE_BIEN("Séparation de biens");
     
     private String libelle;
     

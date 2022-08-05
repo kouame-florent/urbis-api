@@ -137,6 +137,40 @@ public class ListerBacking extends BaseBacking implements Serializable{
        return content;
     }
     
+     public StreamedContent downloadCopie(){ 
+       LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+         
+        StreamedContent content = null;
+        Path path = null;
+        try {
+            String pathString = acteMariageEtatService.printCopie(selectedActeID);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
+            content = DefaultStreamedContent.builder() 
+                .name(path.getFileName().toString())
+                .contentType("application/pdf")
+                .stream(() -> input).build();
+                
+        } catch (FileNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
+        }
+       
+       return content;
+    }
+    
     public void onActeValidated(SelectEvent event){
         if(event.getObject() != null){
             WebApplicationException ex = (WebApplicationException)event.getObject();
@@ -151,6 +185,14 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var acteIds = List.of(dto.getId());
         Map<String, List<String>> params = Map.of("reg-id", ids,"acte-id",acteIds,"operation",operations);
         PrimeFaces.current().dialog().openDynamic("/acte/mariage/editer", getDialogOptions(98,98,false), params);
+    }
+    
+    public void openUpdateTextView(ActeMariageDto dto){
+        LOG.log(Level.INFO, "ACTE ID: {0}", dto.getId());
+        
+        var acteIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("acte-id",acteIds);
+        PrimeFaces.current().dialog().openDynamic("/acte/mariage/editer-etat", getDialogOptions(98,98,false), params);
     }
     
     public String statutSeverity(String statut){

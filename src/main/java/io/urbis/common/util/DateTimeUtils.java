@@ -56,7 +56,7 @@ public class DateTimeUtils {
         int minute = localDateTime.getMinute();
         String temps = "";
         
-        if(hour != 0 && minute != 0){
+       // if(hour != 0 && minute != 0){
             RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(new Locale("fr", "FR"),
                 RuleBasedNumberFormat.SPELLOUT );    
             
@@ -76,8 +76,8 @@ public class DateTimeUtils {
                 temps += ruleBasedNumberFormat.format(minute,"%spellout-cardinal-feminine")
                         + " " + "minute";
             }
-             return temps;
-        }
+           //  return temps;
+       // }
         return temps;
     }
     

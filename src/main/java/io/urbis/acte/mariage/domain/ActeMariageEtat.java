@@ -61,6 +61,10 @@ public class ActeMariageEtat extends BaseEntity{
     @Lob
     @Column(name = "mention_ordonnance_retranscription_texte")
     public String mentionOrdonRetranscriptionTexte;
+    
+    @Lob
+    @Column(name = "copie_mentions_textes")
+    public String copieMentionsTextes;
 
     public ActeMariageEtat() {
     }

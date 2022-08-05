@@ -12,27 +12,29 @@ public class ActeMariageEtatDto {
      
     private String id;
     
-    public String acteMariageID;
+    private String acteMariageID;
     
-    public String nomsMariesTexte;
+    private String nomsMariesTexte;
     
-    public String extraitTexte;
+    private String extraitTexte;
    
-    public String copieTexte;
+    private String copieTexte;
           
-    public String numeroActeTexte;
+    private String numeroActeTexte;
     
-    public String copieNumeroActeTexte;
+    private String copieNumeroActeTexte;
     
-    public String titreTexte;
+    private String titreTexte;
     
-    public String copieTitreTexte;
+    private String copieTitreTexte;
     
-    public String mentionDivorceTexte;
+    private String mentionDivorceTexte;
     
-    public String mentionModifRegimeBiensTexte;
+    private String mentionModifRegimeBiensTexte;
    
-    public String mentionOrdonRetranscriptionTexte;
+    private String mentionOrdonRetranscriptionTexte;
+    
+    private String copieMentionsTextes;
     
 
     public String getId() {
@@ -129,6 +131,14 @@ public class ActeMariageEtatDto {
 
     public void setMentionOrdonRetranscriptionTexte(String mentionOrdonRetranscriptionTexte) {
         this.mentionOrdonRetranscriptionTexte = mentionOrdonRetranscriptionTexte;
+    }
+
+    public String getCopieMentionsTextes() {
+        return copieMentionsTextes;
+    }
+
+    public void setCopieMentionsTextes(String copieMentionsTextes) {
+        this.copieMentionsTextes = copieMentionsTextes;
     }
     
     

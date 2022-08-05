@@ -80,13 +80,6 @@ public class ActeMariageEtatService {
         etat.acteMariage = acte;
         etat.updatedBy = authenticationContext.userLogin();  
         
-        etat.nomsMariesTexte = nomsMaries(acte);
-        etat.numeroActeTexte = numeroActeTexte(acte);
-        etat.titreTexte = titreTexte(acte);
-        etat.extraitTexte = extraitTexte(acte);
-        etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
-        etat.copieTitreTexte = copieTitretexte(acte);
-        etat.copieTexte = copieIntegraleTexte(acte);
         
         Set<MentionDivorceDto> adoptions = mentionDivorceService.findByActeMariage(acteID);
         Optional<MentionDivorceDto> optAdoption = adoptions.stream().max(Comparator.comparing(m -> m.getDateDressage()));
@@ -110,6 +103,15 @@ public class ActeMariageEtatService {
         });
       
         
+        etat.nomsMariesTexte = nomsMaries(acte);
+        etat.numeroActeTexte = numeroActeTexte(acte);
+        etat.titreTexte = titreTexte(acte);
+        etat.extraitTexte = extraitTexte(acte);
+        etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
+        etat.copieTitreTexte = copieTitretexte(acte);
+        etat.copieTexte = copieIntegraleTexte(acte);
+        etat.copieMentionsTextes = copieMentionsTextes(acte);
+        
         etat.persist();
    
     }
@@ -130,7 +132,7 @@ public class ActeMariageEtatService {
             etat.copieNumeroActeTexte = copieNumeroActeTexte(acte);
             etat.copieTitreTexte = copieTitretexte(acte);
             etat.copieTexte = copieIntegraleTexte(acte);
-            
+            etat.copieMentionsTextes = copieMentionsTextes(acte);
             
             etat.mentionDivorceTexte = mentionDivorceService.mentionRecenteTexte(acte);
             etat.mentionModifRegimeBiensTexte = mentionModifRegimeBiensService.mentionRecenteTexte(acte);
@@ -218,6 +220,7 @@ public class ActeMariageEtatService {
         sb.append(DateTimeUtils.dateSpelling(acte.epouse.conjoint.dateNaissance));
         sb.append(" à ");
         sb.append(acte.epouse.conjoint.lieuNaissance);
+        sb.append("./.\n");
         sb.append("Fille de ");
         sb.append(acte.epouse.pere.nom.toUpperCase(Locale.FRENCH));
         sb.append(" ");
@@ -266,25 +269,25 @@ public class ActeMariageEtatService {
     
     public String copieIntegraleTexte(ActeMariage acte){
        
-        String text = "Le %s, à %s, devant\n"
-        + "Nous: %s, Officier d'état civil, %s de la\n" 
-        + "commune, ont comparu publiquement, à la mairie de %s,\n"
-        + "%s, %s, né le %s,"
-        + "à %s, fils de %s, et de %s,\n"
-        + "domicilié à %s,\n" 
-        + "Célibataire.\n"
-        + "%s, %s, née le %s\n"
-        + "à %s, fille de %s, et de %s,\n"
-        + "domicilié à %s,\n"
-        + "Célibataire.\n"
-        + "Lesquels ont déclaré sur notre interpellation opter pour le,\n"
-        + "regime %s,  et l'un après l'autre vouloir se prendre\n"
-        + "pour époux et nous avons prononcé, au nom de la loi, qu'ils\n"
-        + "sont unis pour le mariage, en présence de: %s,\n"
-        + "%s, domicilié(e) à %s et %s, %s,\n"
-        + "domicilié(e) à %s.\n"
+        String text = "Le %s, à %s, devant "
+        + "Nous: %s, Officier d'état civil, %s de la " 
+        + "commune, ont comparu publiquement, à la mairie de %s, "
+        + "%s, %s, né le %s, "
+        + "à %s, fils de %s, et de %s, "
+        + "domicilié à %s, " 
+        + "Célibataire.\n\n"
+        + "%s, %s, née le %s "
+        + "à %s, fille de %s, et de %s, "
+        + "domicilié à %s, "
+        + "Célibataire.\n\n"
+        + "Lesquels ont déclaré sur notre interpellation opter pour le "
+        + "regime de %s, et l'un après l'autre vouloir se prendre "
+        + "pour époux et nous avons prononcé, au nom de la loi, qu'ils "
+        + "sont unis pour le mariage, en présence de: %s, "
+        + "%s, domicilié(e) à %s et %s, %s, "
+        + "domicilié(e) à %s.\n\n"
         + "Lecture fait, et invité à lire l'acte.\n"
-        + "Nous avons signé avec les époux et les témoins.\n";
+        + "Nous avons signé avec les époux et les témoins.";
         
         
         Formatter formatter = new Formatter(Locale.FRENCH);
@@ -293,7 +296,7 @@ public class ActeMariageEtatService {
                 DateTimeUtils.hourSpelling(acte.dateMariage),
                 acte.officierEtatCivil.nom.toUpperCase(Locale.FRENCH) + " " + acte.officierEtatCivil.prenoms,
                 acte.officierEtatCivil.titre,
-                localiteService.findActive().getLibelle(),
+                localiteService.findActive().getLibelle().toUpperCase(Locale.FRENCH),
                 acte.epoux.conjoint.nom.toUpperCase(Locale.FRENCH) + " " + acte.epoux.conjoint.prenoms,
                 getEmploi(acte.epoux.conjoint.profession),
                 DateTimeUtils.dateSpelling(acte.epoux.conjoint.dateNaissance),
@@ -319,7 +322,22 @@ public class ActeMariageEtatService {
         
     }
     
+    public String copieMentionsTextes(ActeMariage acte) {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append(mentionDivorceService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionModifRegimeBiensService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionOrdonRetranscriptionService.mentionRecenteTexte(acte));
+        
+        
+        
+        return sb.toString();
     
+    }
     
     public void patcher(@NotNull ActeMariageEtatDto dto){
        ActeMariageEtat etat = ActeMariageEtat.findById(dto.getId());
@@ -338,17 +356,18 @@ public class ActeMariageEtatService {
     public ActeMariageEtatDto mapToDto(@NotNull ActeMariageEtat etat){
         ActeMariageEtatDto dto = new ActeMariageEtatDto();
         
-        dto.acteMariageID = etat.acteMariage.id;
-        dto.copieNumeroActeTexte = etat.copieNumeroActeTexte;
-        dto.copieTexte = etat.copieTexte;
-        dto.copieTitreTexte = etat.copieTitreTexte;
-        dto.extraitTexte = etat.extraitTexte;
-        dto.mentionDivorceTexte = etat.mentionDivorceTexte;
-        dto.mentionModifRegimeBiensTexte = etat.mentionModifRegimeBiensTexte;
-        dto.mentionOrdonRetranscriptionTexte = etat.mentionOrdonRetranscriptionTexte;
-        dto.nomsMariesTexte = etat.nomsMariesTexte;
-        dto.numeroActeTexte = etat.numeroActeTexte;
-        dto.titreTexte = etat.titreTexte;
+        dto.setId(etat.id);
+        dto.setActeMariageID(etat.acteMariage.id);
+        dto.setCopieNumeroActeTexte(etat.copieNumeroActeTexte);
+        dto.setCopieTexte(etat.copieTexte);
+        dto.setExtraitTexte(etat.extraitTexte);
+        dto.setMentionDivorceTexte(etat.mentionDivorceTexte);
+        dto.setMentionModifRegimeBiensTexte(etat.mentionModifRegimeBiensTexte);
+        dto.setMentionOrdonRetranscriptionTexte(etat.mentionOrdonRetranscriptionTexte);
+        dto.setCopieMentionsTextes(etat.copieMentionsTextes);
+        dto.setNomsMariesTexte(etat.nomsMariesTexte);
+        dto.setNumeroActeTexte(etat.numeroActeTexte);
+        dto.setTitreTexte(etat.titreTexte);
         
         return dto;
     
@@ -396,10 +415,20 @@ public class ActeMariageEtatService {
       if( acte == null){
           throw new EntityNotFoundException("ActeMariage not found");
       }
-      String name = acte.numero + " " + acte.registre.dateOuverture +"-"+ LocalDateTime.now().toString() + ".pdf";
+      String name = acte.numero + "_" + acte.registre.dateOuverture  +"-"+ LocalDateTime.now().toString() + ".pdf";
       
       return "/tmp/" + name.replaceAll(" ", "-");
    }
   
+   
+   public ActeMariageEtatDto findByActeMariage(ActeMariage acte) {
+        PanacheQuery<ActeMariageEtat> pq = ActeMariageEtat.find("acteMariage", acte);
+        ActeMariageEtat etat = pq.firstResult();
+        if(etat == null){
+            throw new EntityNotFoundException("ActeMariageEtat not found");
+        }
+        
+        return mapToDto(etat);
+    }
    
 }

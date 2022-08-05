@@ -145,8 +145,8 @@ xmlns:p="http://primefaces.org/ui">
                     <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
                                      styleClass="edit-button ui-button-success ui-button-outlined">
-                        <f:setPropertyActionListener value="#{acte.id}" target="#{acteNaissanceListerBacking.selectedActeID}"/>
-                        <p:fileDownload value="#{acteNaissanceListerBacking.downloadCopie()}"/>
+                        <f:setPropertyActionListener value="#{acte.id}" target="#{acteMariageListerBacking.selectedActeID}"/>
+                        <p:fileDownload value="#{acteMariageListerBacking.downloadCopie()}"/>
                     </p:commandButton>
                 </p:column>
                 
@@ -169,6 +169,16 @@ xmlns:p="http://primefaces.org/ui">
                                         update=":contentForm:actesDatatable"/>
                         </p:menuitem>
                         <p:divider/>
+                        
+                        
+                        <p:menuitem value="Modifier les textes de l'acte" action="#{acteMariageListerBacking.openUpdateTextView(acte)}" 
+                                    process="@this"
+                                    icon="pi pi-ticket">
+                            <p:ajax event="dialogReturn"  update=":contentForm:actesDatatable"/>
+                        </p:menuitem>
+                        <p:divider/>
+                        
+                        
                         <p:menuitem value="Supprimer" process="@this" action="#{acteMariageListerBacking.supprimer(acte.id)}"  
                                        icon="pi pi-times" update="contentForm:actesDatatable" >
 

@@ -91,6 +91,17 @@ xmlns:p="http://primefaces.org/ui">
                     </p:commandButton>
                   
                 </p:toolbarGroup>
+                
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Registres" icon="pi pi-th-large" process="@this"
+                                     action="#{acteDecesListerBacking.returnToRegistresList()}"
+                                   styleClass="ui-button-success" style="margin-right: .5rem">
+                        
+
+                    </p:commandButton>
+                </p:toolbarGroup>
+                
+                
             </p:toolbar>
                 
             <p:dataTable id="actesDatatable"  var="acte" 
@@ -126,13 +137,22 @@ xmlns:p="http://primefaces.org/ui">
                     <p:tag severity="#{acteDecesListerBacking.statutSeverity(acte.statut)}" value="#{acte.statut}"/>
                 </p:column>
               
-                <p:column style="width: 2%" >
-                    <p:commandButton process="@this" title="Imprimer"
-                                     ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
-                                     styleClass="edit-button rounded-button">
+                 <p:column style="width: 2%" >
+                    <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
+                                     styleClass="edit-button ui-button-secondary ui-button-outlined">
                         <f:setPropertyActionListener value="#{acte.id}" target="#{acteDecesListerBacking.selectedActeID}"/>
                         <p:fileDownload value="#{acteDecesListerBacking.download()}"/>
-                     </p:commandButton>
+                    </p:commandButton>
+                </p:column>
+                
+                <p:column style="width: 2%" >
+                    <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
+                                     styleClass="edit-button ui-button-success ui-button-outlined">
+                        <f:setPropertyActionListener value="#{acte.id}" target="#{acteDecesListerBacking.selectedActeID}"/>
+                        <p:fileDownload value="#{acteDecesListerBacking.downloadCopie()}"/>
+                    </p:commandButton>
                 </p:column>
                 
                 <p:column style="width: 2%">
@@ -154,8 +174,19 @@ xmlns:p="http://primefaces.org/ui">
                                         update=":contentForm:actesDatatable"/>
                         </p:menuitem>
                         
+                        <p:menuitem value="Modifier les textes de l'acte" 
+                                    action="#{acteDecesListerBacking.openUpdateTextView(acte)}" 
+                                    process="@this"
+                                    icon="pi pi-ticket">
+                            <p:ajax event="dialogReturn"  update=":contentForm:actesDatatable"/>
+                        </p:menuitem>
+                        <p:divider/>
+                        
+                        
+                        
                         <p:menuitem value="Supprimer" action="#{acteDecesListerBacking.supprimer(acte.id)}" 
-                                    process="@this" disabled="#{acteDecesListerBacking.disableMenuValiderActe(acte)}" 
+                                    process="@this" update="contentForm:actesDatatable"
+                                    disabled="#{acteDecesListerBacking.disableMenuValiderActe(acte)}" 
                                     icon="pi pi-book">
                              
                              <p:confirm header="Confirmation" 

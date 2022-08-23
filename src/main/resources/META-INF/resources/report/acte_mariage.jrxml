@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_mariage" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2fbd4a3-0e20-43eb-b4c2-af662db493e4">
-	<property name="com.jaspersoft.studio.data.sql.tables">
-		<![CDATA[dXJiaXMuYWN0ZV9tYXJpYWdlX2V0YXQgLDE1LDE1LDgyZDg1YzA1LTg1MjMtNDM0Zi1hYzhlLTli
-OWY0NzJhMDk4NDs=]]>
-	</property>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbis2"/>
 	<parameter name="ACTE_MARIAGE_ID" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["fedc557a-476b-4732-9130-a59c4f67f6e4"]]></defaultValueExpression>
@@ -160,7 +157,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{titre_texte}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="15" y="0" width="224" height="20" uuid="8b08c6d0-39a9-4734-af1b-095003a9c848"/>
+				<reportElement x="8" y="0" width="224" height="20" uuid="8b08c6d0-39a9-4734-af1b-095003a9c848"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>

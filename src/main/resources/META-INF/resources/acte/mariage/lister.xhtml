@@ -171,7 +171,8 @@ xmlns:p="http://primefaces.org/ui">
                         <p:divider/>
                         
                         
-                        <p:menuitem value="Modifier les textes de l'acte" action="#{acteMariageListerBacking.openUpdateTextView(acte)}" 
+                        <p:menuitem value="Modifier les textes de l'acte" 
+                                    action="#{acteMariageListerBacking.openUpdateTextView(acte)}" 
                                     process="@this"
                                     icon="pi pi-ticket">
                             <p:ajax event="dialogReturn"  update=":contentForm:actesDatatable"/>

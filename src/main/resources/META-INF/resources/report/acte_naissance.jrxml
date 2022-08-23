@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_naissance" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f1714bda-a84a-4f58-b420-15f4a10aedc9">
-	<property name="com.jaspersoft.studio.data.sql.tables">
-		<![CDATA[dXJiaXMuYWN0ZV9uYWlzc2FuY2VfZXRhdCAsMTUsMTUsNzc5MWU1ZDctOTE5NS00NDA4LWI3YzEt
-Y2I0NTYzMDUxMmEwOw==]]>
-	</property>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbisAdapter.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="256"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="738"/>
@@ -129,7 +126,7 @@ WHERE
 			<staticText>
 				<reportElement x="15" y="0" width="224" height="20" uuid="10dc13fd-347b-431b-afbd-b5e8069cd41a"/>
 				<textElement>
-					<font fontName="DejaVu Serif" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DEPARTEMENT DE GAGNOA]]></text>
 			</staticText>

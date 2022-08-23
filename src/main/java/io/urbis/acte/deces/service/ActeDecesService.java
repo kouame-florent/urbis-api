@@ -28,6 +28,8 @@ import io.urbis.acte.deces.domain.Mere;
 import io.urbis.acte.deces.domain.Pere;
 import io.urbis.acte.deces.domain.Jugement;
 import io.urbis.acte.deces.domain.Declarant;
+import io.urbis.acte.deces.dto.MentionAnnulationDecesDto;
+import io.urbis.acte.deces.dto.MentionRectificationDecesDto;
 import io.urbis.common.domain.Sexe;
 import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
@@ -35,8 +37,10 @@ import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.security.service.AuthenticationContext;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
@@ -58,7 +62,17 @@ public class ActeDecesService {
     LocaliteService localiteService;
     
     @Inject
+    ActeDecesEtatService acteDecesEtatService;
+    
+    @Inject
     AuthenticationContext authenticationContext;
+    
+    @Inject
+    MentionAnnulationDecesService mentionAnnulationDecesService;
+    
+    
+    @Inject
+    MentionRectificationDecesService mentionRectificationDecesService;
     
     
     
@@ -201,9 +215,23 @@ public class ActeDecesService {
             
         }
        
+        acteDecesEtatService.creer(acte.id);
         return acte.id;
     }
     
+    public void creerMentions(ActeDecesDto acteDecesDto, ActeDeces acte){
+       
+        acteDecesDto.getMentionAnnulationDecesDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionAnnulationDecesService.createMention(mm);
+        });
+        
+        acteDecesDto.getMentionRectificationDecesDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionRectificationDecesService.createMention(mm);
+        });
+        
+    }
    
     public void modifier(@NotBlank String id, @NotNull ActeDecesDto acteDecesDto) throws SQLException{
         
@@ -328,11 +356,42 @@ public class ActeDecesService {
             
         acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
         acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
+        
+        acteDecesEtatService.modifier(acte.id);
        
         
     }
     
     
+     public void modifierMentions(ActeDecesDto acteDecesDto, ActeDeces acte){
+       
+        //Annulation
+        Set<MentionAnnulationDecesDto> dma = new HashSet<>(mentionAnnulationDecesService.findByActeMariage(acte.id));
+        dma.removeAll(acteDecesDto.getMentionAnnulationDecesDtos());
+        
+        dma.forEach(mm -> {
+            mentionAnnulationDecesService.deleteMention(mm.getId());
+        });
+        
+        acteDecesDto.getMentionAnnulationDecesDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionAnnulationDecesService.modifierMention(mm);
+        });
+        
+       //rectification
+        Set<MentionRectificationDecesDto> drm = new HashSet<>(mentionRectificationDecesService.findByActeMariage(acte.id));
+        dma.removeAll(acteDecesDto.getMentionRectificationDecesDtos());
+        
+        drm.forEach(mm -> {
+            mentionRectificationDecesService.deleteMention(mm.getId());
+        });
+        
+        acteDecesDto.getMentionRectificationDecesDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionRectificationDecesService.modifierMention(mm);
+        });
+       
+    }
     
     
     public String dateNaissanceEnLettre(LocalDateTime localDateTime){

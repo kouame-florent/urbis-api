@@ -34,13 +34,18 @@ public class LazyDemandeDataModel extends LazyDataModel<DemandeDto>{
     
    // private String registreID;
     
+    private String typeRegistre;
+    
     List<DemandeDto> demandes = new ArrayList<>();
 
     @Override
     public List<DemandeDto> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         
         LOG.log(Level.INFO,"Loading the lazy data between {0} and {1}", new Object[]{offset, offset+pageSize} );
-        demandes = demandeService.findWithFilters(offset, pageSize);
+        if(typeRegistre == null){
+            throw new IllegalStateException("'typeRegistre' cannot be null");
+        }
+        demandes = demandeService.findWithFilters(offset, pageSize,typeRegistre);
         LOG.log(Level.INFO,"LOADED DATA SIZE: {0}", demandes.size());
         int count = demandeService.count();
         setRowCount(count);
@@ -84,6 +89,15 @@ public class LazyDemandeDataModel extends LazyDataModel<DemandeDto>{
         return demandeService.count();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public String getTypeRegistre() {
+        return typeRegistre;
+    }
+
+    public void setTypeRegistre(String typeRegistre) {
+        this.typeRegistre = typeRegistre;
+    }
+    
     
     
 }

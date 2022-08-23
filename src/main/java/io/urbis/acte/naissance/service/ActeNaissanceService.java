@@ -31,6 +31,7 @@ import io.urbis.acte.naissance.domain.TypeNaissance;
 import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
+import io.urbis.acte.naissance.dto.MentionAnnulationDto;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
@@ -95,6 +96,9 @@ public class ActeNaissanceService {
     
     @Inject
     MentionMariageService mentionMariageService;
+    
+    @Inject
+    MentionAnnulationService mentionAnnulationService;
     
     @Inject
     ActeNaissanceEtatService acteNaissanceEtatService;
@@ -383,6 +387,11 @@ public class ActeNaissanceService {
         acteNaissanceDto.getMentionRectificationDtos().forEach(mm -> {
             mm.setActeNaissanceID(acte.id);
             mentionRectificationService.createMention(mm);
+        });
+        
+        acteNaissanceDto.getMentionAnnulationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionAnnulationService.createMention(mm);
         });
     }
     
@@ -708,6 +717,19 @@ public class ActeNaissanceService {
             mentionDecesService.modifierMention(mm);
         });
         
+        //annulation
+        Set<MentionAnnulationDto> mans = new HashSet<>(mentionAnnulationService.findByActeNaissance(acte.id));
+        ddc.removeAll(acteNaissanceDto.getMentionAnnulationDtos());
+        
+        mans.forEach(mm -> {
+            mentionAnnulationService.deleteMention(mm.getId());
+        });
+        
+        acteNaissanceDto.getMentionAnnulationDtos().forEach(mm -> {
+            mm.setActeNaissanceID(acte.id);
+            mentionAnnulationService.modifierMention(mm);
+        });
+        
         
        
     }
@@ -1006,18 +1028,9 @@ public class ActeNaissanceService {
         dto.setMentionLegitimationDtos(mentionLegitimationService.findByActeNaissance(acte.id));
         dto.setMentionReconnaissanceDtos(mentionReconnaissanceService.findByActeNaissance(acte.id));
         dto.setMentionRectificationDtos(mentionRectificationService.findByActeNaissance(acte.id));
+        dto.setMentionAnnulationDtos(mentionAnnulationService.findByActeNaissance(acte.id));
         
-        //etat
-        /*
-        ActeNaissanceEtat etat = acteNaissanceEtatService.findByActeNaissance(acte);
-        dto.getActeNaissanceEtatDto().setId(etat.id);
-        dto.getActeNaissanceEtatDto().setActeNaissanceID(etat.acteNaissance.id);
-        dto.getActeNaissanceEtatDto().setCopieTexte(etat.copieTexte.toString());
-        dto.getActeNaissanceEtatDto().setExtraitTexte(etat.extraitTexte.toString());
-        dto.getActeNaissanceEtatDto().setMentionMariageConjointNomComplet(etat.conjointNomComplet);
-        dto.getActeNaissanceEtatDto().setMentionMariageDate(etat.date);
-        dto.getActeNaissanceEtatDto().setMentionMariageLieu(etat.lieuMariage);
-        */
+        
         
         return dto;
     }

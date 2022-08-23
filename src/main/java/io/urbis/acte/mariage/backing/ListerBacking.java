@@ -74,7 +74,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     private String registreID;
     private RegistreDto registreDto;
     
-    String selectedActeID;
+    private String selectedActeID;
     
     public void onload(){
         LOG.log(Level.INFO,"---- URBIS TENANT: {0}",tenant);
@@ -98,13 +98,6 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public StreamedContent download(){
         LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
-      // File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
-      // LOG.log(Level.INFO, "TENANT: {0}", tenant);
-      // LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
-      // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
-      // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
-      
-       
        
         StreamedContent content = null;
         Path path = null;

@@ -12,6 +12,7 @@ import javax.inject.Named;
 import io.urbis.demande.domain.Operation;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.demande.service.DemandeService;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.dto.TypeRegistreDto;
 import io.urbis.registre.service.TypeRegistreService;
 import java.text.MessageFormat;
@@ -22,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -43,6 +45,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     private String operationParam; //view param
     private Operation operation;
+    private String typeRegistre;
     
     private String demandeID;  //view param
     
@@ -106,7 +109,9 @@ public class EditerBacking extends BaseBacking implements Serializable{
             case CREATION:
                 demandeDto = new DemandeDto();
                 int numeroDemande = demandeService.numeroDemande();
+                TypeRegistre type = TypeRegistre.fromString(typeRegistre);
                 demandeDto.setNumero(numeroDemande);
+                demandeDto.setTypeRegistre(type.name());
                 break;
             
             case MODIFICATION:
@@ -117,6 +122,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
         }
         
        
+    }
+    
+    public void closeView(){
+        PrimeFaces.current().dialog().closeDynamic("");
     }
 
     public String getOperationParam() {
@@ -149,6 +158,14 @@ public class EditerBacking extends BaseBacking implements Serializable{
 
     public void setTypesRegistre(List<TypeRegistreDto> typesRegistre) {
         this.typesRegistre = typesRegistre;
+    }
+
+    public String getTypeRegistre() {
+        return typeRegistre;
+    }
+
+    public void setTypeRegistre(String typeRegistre) {
+        this.typeRegistre = typeRegistre;
     }
     
     

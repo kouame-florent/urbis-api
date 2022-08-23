@@ -373,7 +373,7 @@ public class ActeMariageEtatService {
     
     }
     
-     public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+   public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
         
         return doPrint(acteID, "/META-INF/resources/report/acte_mariage.jasper");
               

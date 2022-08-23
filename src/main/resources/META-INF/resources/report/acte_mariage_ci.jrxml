@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_mariage_ci" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56884695-eacb-4e18-aa38-2e446783ade9">
-	<property name="com.jaspersoft.studio.data.sql.tables">
-		<![CDATA[dXJiaXMuYWN0ZV9tYXJpYWdlX2V0YXQgLDE1LDE1LDUwZmMxNWUxLWEyODYtNGUzMi04Y2FiLWZk
-YjFmYmRmYTAxYTs=]]>
-	</property>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbis2"/>
 	<parameter name="ACTE_MARIAGE_ID" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["fedc557a-476b-4732-9130-a59c4f67f6e4"]]></defaultValueExpression>
@@ -23,7 +20,10 @@ YjFmYmRmYTAxYTs=]]>
 	titre_texte,
 	acte_mariage_id,
 	copie_mentions_textes
-FROM urbis.acte_mariage_etat]]>
+FROM urbis.acte_mariage_etat
+WHERE 
+	 urbis.acte_mariage_etat.acte_mariage_id = $P{ACTE_MARIAGE_ID}
+]]>
 	</queryString>
 	<field name="id" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="id"/>
@@ -166,15 +166,6 @@ FROM urbis.acte_mariage_etat]]>
 				</textElement>
 				<text><![CDATA[Du registre des actes de l'Etat Civil ]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="312" y="117" width="230" height="22" uuid="f0366416-c187-4423-a054-308fa21ab8e7">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83af0a6a-6e60-405c-827e-4b5652bd2e2b"/>
-				</reportElement>
-				<textElement textAlignment="Center" markup="styled">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{titre_texte}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="8" y="0" width="224" height="20" uuid="898ebbd8-9d5d-4989-8120-31d8779bf391"/>
 				<textElement>
@@ -228,6 +219,15 @@ FROM urbis.acte_mariage_etat]]>
 				</textElement>
 				<text><![CDATA[-------]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="312" y="119" width="236" height="17" uuid="928c3374-8ed9-4890-89fa-3688d47ef8a8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96e282a5-e87a-41c7-be23-e4625dc087ac"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{copie_titre_texte}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -239,7 +239,7 @@ FROM urbis.acte_mariage_etat]]>
 	<detail>
 		<band height="534" splitType="Stretch">
 			<textField>
-				<reportElement x="183" y="4" width="358" height="356" uuid="a8e43fca-c88c-4ac7-8869-946b1182f840">
+				<reportElement x="240" y="4" width="301" height="356" uuid="a8e43fca-c88c-4ac7-8869-946b1182f840">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e989026c-4e14-45e9-bf37-1bb912ec35f4"/>
 				</reportElement>
 				<textElement>
@@ -276,20 +276,42 @@ FROM urbis.acte_mariage_etat]]>
 				<text><![CDATA[(Signature)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="0" width="100" height="18" uuid="0b4f2a06-9a40-4857-91f2-ef4f5845bcf6"/>
+				<reportElement x="1" y="142" width="100" height="18" uuid="0b4f2a06-9a40-4857-91f2-ef4f5845bcf6"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Mentions]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="21" width="150" height="502" uuid="f242101c-7023-42ec-ba7d-f5a1aad30c59">
+				<reportElement x="0" y="165" width="150" height="347" uuid="f242101c-7023-42ec-ba7d-f5a1aad30c59">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9334518f-6f79-4792-8d81-325c9708590f"/>
 				</reportElement>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{copie_mentions_textes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="3" width="219" height="17" uuid="725a36cb-aaa6-465d-9223-65819143abc8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b1da0e2d-8588-4a12-b335-f0d9c7a9c401"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{copie_numero_acte_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="23" width="180" height="20" uuid="bdde795f-41d0-4f4e-ba9d-4e41330ab083"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[MARIAGE ENTRE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="46" width="179" height="94" uuid="f349b57c-9d00-4aec-8768-b80d64f2b553">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b660f39-eaf0-4618-bc03-cec457ef6506"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{noms_maries_texte}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

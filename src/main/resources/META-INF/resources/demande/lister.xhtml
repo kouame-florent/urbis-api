@@ -26,20 +26,34 @@ xmlns:p="http://primefaces.org/ui">
         </h:form>
        
         <h:form id="contentForm">
+            
+             <p:fieldset legend="Type de registres">
+                <p:selectOneRadio id="console" value="#{demandeListerBacking.selectedType}" 
+                                converter="omnifaces.SelectItemsConverter"
+                                required="true" columns="5" styleClass="grid-radio">
+                    <p:ajax listener="#{demandeListerBacking.onTypeRegistreSelect}" 
+                          update="contentForm:demandesDatatable"/>
+                  <f:selectItems value="#{demandeListerBacking.typesRegistre}" var="type" 
+                                 itemLabel="#{type.libelle}" itemValue="#{type}"/>
+                </p:selectOneRadio>
+                
+                    
+            </p:fieldset>
+            <p:spacer height="2"/>
              
              <p:toolbar>
                 <p:toolbarGroup>
                     <p:commandButton value="Nouvelle demande" icon="pi pi-plus"
                                      actionListener="#{demandeListerBacking.openCreerView()}"
                          styleClass="ui-button-success" style="margin-right: .5rem">
-                        <p:ajax event="dialogReturn" listener="#{demandeListerBacking.onDemandeCreated}"
+                        <p:ajax event="dialogReturn" listener="#{demandeListerBacking.onNewDemande}"
                                  update="messageForm :contentForm:demandesDatatable"/>
                     </p:commandButton>
                   
                 </p:toolbarGroup>
                  
                 <p:toolbarGroup align="right">
-                    <p:commandButton value="Registres" icon="pi pi-arrow-left" process="@this"
+                    <p:commandButton value="Registres" icon="pi pi-th-large" process="@this"
                                      action="#{demandeListerBacking.returnToRegistresList()}"
                                    styleClass="ui-button-success" style="margin-right: .5rem">
                         
@@ -97,11 +111,20 @@ xmlns:p="http://primefaces.org/ui">
                 </p:column>
                 
                 <p:column style="width: 2%" >
-                    <p:commandButton ajax="false" process="@this" title="Imprimer"
+                    <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
-                                     styleClass="edit-button rounded-button">
-                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
+                                     styleClass="edit-button ui-button-secondary ui-button-outlined">
+                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedDemandeID}"/>
                         <p:fileDownload value="#{demandeListerBacking.download()}"/>
+                    </p:commandButton>
+                </p:column>
+                
+                <p:column style="width: 2%" >
+                    <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
+                                     styleClass="edit-button ui-button-success ui-button-outlined">
+                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedDemandeID}"/>
+                        <p:fileDownload value="#{demandeListerBacking.downloadCopie()}"/>
                     </p:commandButton>
                 </p:column>
              

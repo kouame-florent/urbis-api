@@ -136,6 +136,7 @@ public class ActeNaissanceDto {
     private Set<MentionLegitimationDto> mentionLegitimationDtos = new HashSet<>();
     private Set<MentionReconnaissanceDto> mentionReconnaissanceDtos = new HashSet<>();
     private Set<MentionRectificationDto> mentionRectificationDtos = new HashSet<>();
+    private Set<MentionAnnulationDto> mentionAnnulationDtos = new HashSet<>();
     
     //private ActeNaissanceEtatDto acteNaissanceEtatDto = new ActeNaissanceEtatDto();
 
@@ -857,6 +858,14 @@ public class ActeNaissanceDto {
 
     public void setMentionRectificationDtos(Set<MentionRectificationDto> mentionRectificationDtos) {
         this.mentionRectificationDtos = mentionRectificationDtos;
+    }
+
+    public Set<MentionAnnulationDto> getMentionAnnulationDtos() {
+        return mentionAnnulationDtos;
+    }
+
+    public void setMentionAnnulationDtos(Set<MentionAnnulationDto> mentionAnnulationDtos) {
+        this.mentionAnnulationDtos = mentionAnnulationDtos;
     }
     
     

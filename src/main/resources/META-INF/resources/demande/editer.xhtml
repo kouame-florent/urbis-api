@@ -15,6 +15,7 @@ xmlns:p="http://primefaces.org/ui">
      <ui:define name="metadata">
          <f:metadata>
             <f:viewParam name="operation" value="#{demandeEditerBacking.operationParam}" />
+            <f:viewParam name="type" value="#{demandeEditerBacking.typeRegistre}" />
             <f:viewAction action="#{demandeEditerBacking.onload}" />
         </f:metadata>
      </ui:define>
@@ -29,37 +30,24 @@ xmlns:p="http://primefaces.org/ui">
              
         <h:form id="contentForm">  
            
-            <p:toolbar style="border: none">
-                <p:toolbarGroup>
-                    
-                </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    
-                </p:toolbarGroup>
-            </p:toolbar>
+            <div class="p-d-flex p-jc-end">
+                <p:commandButton title="fermer" action="#{demandeEditerBacking.closeView()}" process="@this" 
+                                     icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" >
+                        
+                </p:commandButton>
+            </div>
             
             <p:focus context="contentForm"/>
           
             
             <p:spacer height="2" />
-            
-              
+               
       
               <p:fieldset legend="Demande">
                 
                 <div class="ui-fluid p-formgrid p-grid">
                     
-                <div class="p-field p-lg-12">
-                    <p:outputLabel for="typeRegistre" styleClass="p-d-block">Type registre</p:outputLabel>
-                    <p:selectOneRadio id="typeRegistre" value="#{demandeEditerBacking.demandeDto.typeRegistre}" 
-                            converter="omnifaces.SelectItemsConverter"
-                            required="true">
-                        
-                        <f:selectItems value="#{demandeEditerBacking.typesRegistre}" var="type" 
-                                       itemLabel="#{type.libelle}" itemValue="#{type.code}"/>
-                    </p:selectOneRadio>
-                </div>
-                   
+                
                 <div class="p-field p-lg-6">
                     <p:outputLabel for="numeroActe" styleClass="p-d-block">Numéro acte</p:outputLabel>
                     <p:inputText id="numeroActe" value="#{demandeEditerBacking.demandeDto.numeroActe}"

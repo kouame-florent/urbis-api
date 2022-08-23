@@ -7,6 +7,8 @@ package io.urbis.acte.deces.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -90,6 +92,10 @@ public class ActeDecesDto {
     private String officierEtatCivilPrenoms;
     private String officierEtatCivilQualite;
     private String officierEtatCivilTitre;
+    
+    private Set<MentionAnnulationDecesDto> mentionAnnulationDecesDtos = new HashSet<>();
+    private Set<MentionRectificationDecesDto> mentionRectificationDecesDtos = new HashSet<>();
+
 
     public LocalDateTime getCreated() {
         return created;
@@ -537,6 +543,22 @@ public class ActeDecesDto {
 
     public void setOfficierEtatCivilTitre(String officierEtatCivilTitre) {
         this.officierEtatCivilTitre = officierEtatCivilTitre;
+    }
+
+    public Set<MentionAnnulationDecesDto> getMentionAnnulationDecesDtos() {
+        return mentionAnnulationDecesDtos;
+    }
+
+    public void setMentionAnnulationDecesDtos(Set<MentionAnnulationDecesDto> mentionAnnulationDecesDtos) {
+        this.mentionAnnulationDecesDtos = mentionAnnulationDecesDtos;
+    }
+
+    public Set<MentionRectificationDecesDto> getMentionRectificationDecesDtos() {
+        return mentionRectificationDecesDtos;
+    }
+
+    public void setMentionRectificationDecesDtos(Set<MentionRectificationDecesDto> mentionRectificationDecesDtos) {
+        this.mentionRectificationDecesDtos = mentionRectificationDecesDtos;
     }
     
     

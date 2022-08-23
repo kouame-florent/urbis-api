@@ -18,9 +18,11 @@ import io.urbis.acte.mariage.domain.Regime;
 import io.urbis.acte.mariage.domain.StatutActeMariage;
 import io.urbis.acte.mariage.domain.Temoin;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
+import io.urbis.acte.mariage.dto.MentionAnnulationMariageDto;
 import io.urbis.acte.mariage.dto.MentionDivorceDto;
 import io.urbis.acte.mariage.dto.MentionModifRegimeBiensDto;
 import io.urbis.acte.mariage.dto.MentionOrdonRetranscriptionDto;
+import io.urbis.acte.mariage.dto.MentionRectificationMariageDto;
 import io.urbis.common.domain.SituationMatrimoniale;
 import io.urbis.registre.domain.Registre;
 import io.urbis.param.domain.OfficierEtatCivil;
@@ -73,6 +75,12 @@ public class ActeMariageService {
     
     @Inject
     MentionOrdonRetranscriptionService mentionOrdonRetranscriptionService;
+    
+    @Inject
+    MentionAnnulationMariageService mentionAnnulationMariageService;
+    
+    @Inject
+    MentionRectificationMariageService mentionRectificationMariageService;
     
     
     public ActeMariageDto findById(@NotBlank String id){
@@ -218,7 +226,17 @@ public class ActeMariageService {
             mm.setActeMariageID(acte.id);
             mentionOrdonRetranscriptionService.createMention(mm);
         });
-       
+        
+        acteMariageDto.getMentionAnnulationMariageDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionAnnulationMariageService.createMention(mm);
+        });
+        
+        acteMariageDto.getMentionRectificationMariageDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionRectificationMariageService.createMention(mm);
+        });
+        
     }
     
    
@@ -370,7 +388,33 @@ public class ActeMariageService {
             mentionOrdonRetranscriptionService.modifierMention(mm);
         });
         
-       
+        
+        
+        //Annulation mariage
+        Set<MentionAnnulationMariageDto> dma = new HashSet<>(mentionAnnulationMariageService.findByActeMariage(acte.id));
+        dma.removeAll(acteMariageDto.getMentionAnnulationMariageDtos());
+        
+        dma.forEach(mm -> {
+            mentionAnnulationMariageService.deleteMention(mm.getId());
+        });
+        
+        acteMariageDto.getMentionAnnulationMariageDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionAnnulationMariageService.modifierMention(mm);
+        });
+        
+       //rectification
+        Set<MentionRectificationMariageDto> drm = new HashSet<>(mentionRectificationMariageService.findByActeMariage(acte.id));
+        dma.removeAll(acteMariageDto.getMentionRectificationMariageDtos());
+        
+        drm.forEach(mm -> {
+            mentionAnnulationMariageService.deleteMention(mm.getId());
+        });
+        
+        acteMariageDto.getMentionRectificationMariageDtos().forEach(mm -> {
+            mm.setActeMariageID(acte.id);
+            mentionRectificationMariageService.modifierMention(mm);
+        });
        
     }
     
@@ -557,6 +601,8 @@ public class ActeMariageService {
         dto.setMentionDivorceDtos(mentionDivorceService.findByActeMariage(acte.id));
         dto.setMentionModifRegimeBiensDtos(mentionModifRegimeBiensService.findByActeMariage(acte.id));
         dto.setMentionOrdonRetranscriptionDtos(mentionOrdonRetranscriptionService.findByActeMariage(acte.id));
+        dto.setMentionAnnulationMariageDtos(mentionAnnulationMariageService.findByActeMariage(acte.id));
+        dto.setMentionRectificationMariageDtos(mentionRectificationMariageService.findByActeMariage(acte.id));
         
         return dto;
     }

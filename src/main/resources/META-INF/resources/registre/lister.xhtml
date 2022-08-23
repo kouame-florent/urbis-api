@@ -25,6 +25,14 @@ xmlns:p="http://primefaces.org/ui">
                
         <h:form id="contentForm">
            
+            <div class="p-d-flex p-jc-end">
+                <p:commandButton action="#{registreListerBacking.openDemandeView()}" process="@this" ajax="false"
+                                     icon="pi pi-th-large" title="demandes" style="margin-right: .5rem"/>
+                <p:commandButton action="#{registreListerBacking.showParamsView()}" 
+                                     icon="pi pi-cog" title="paramètres" />
+                
+            </div>
+            
             <p:spacer height="2"/>
             <p:fieldset legend="Type de registres">
                 <p:selectOneRadio id="console" value="#{registreListerBacking.selectedType}" 
@@ -83,13 +91,7 @@ xmlns:p="http://primefaces.org/ui">
                     </p:commandButton>
                      
                 </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    <p:commandButton action="#{registreListerBacking.showParamsView()}" 
-                                     icon="pi pi-cog" title="paramètres" style="margin-right: .5rem"/>
-                    <p:commandButton action="#{registreListerBacking.openDemandeView()}" process="@this" ajax="false"
-                                     icon="pi pi-book" title="demandes" />
-                 
-                </p:toolbarGroup>
+               
             </p:toolbar>
                  
             <p:dataTable id="registre" widgetVar="registreWidget" var="registre" value="#{registreListerBacking.lazyRegistreDataModel}"
@@ -111,6 +113,7 @@ xmlns:p="http://primefaces.org/ui">
                 <p:column headerText="Numéro" filterBy="#{registre.numero}" >
                     <h:outputText value="#{registre.numero}"/>
                 </p:column>
+               
                 <p:column headerText="Libellé" rendered="#{registreListerBacking.renderRegistreLibelle()}">
                     <h:outputText value="#{registre.libelle}"/>
                 </p:column>

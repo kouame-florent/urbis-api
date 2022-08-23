@@ -5,6 +5,7 @@
  */
 package io.urbis.demande.service;
 
+import io.agroal.api.AgroalDataSource;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.urbis.acte.common.domain.Acte;
@@ -14,6 +15,10 @@ import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.acte.common.service.ActeService;
+import io.urbis.acte.deces.domain.ActeDeces;
+import io.urbis.acte.divers.domain.ActeDivers;
+import io.urbis.acte.mariage.domain.ActeMariage;
+import io.urbis.acte.naissance.domain.ActeNaissance;
 import io.urbis.common.domain.TypePiece;
 
 import io.urbis.demande.domain.Demande;
@@ -21,8 +26,14 @@ import io.urbis.demande.domain.Demandeur;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.security.service.AuthenticationContext;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -33,6 +44,12 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.jboss.logging.Logger;
 
 /**
@@ -60,6 +77,10 @@ public class DemandeService {
     
         
     @Inject
+    AgroalDataSource defaultDataSource;
+    
+        
+    @Inject
     EntityManager em;
     
     @Inject
@@ -72,6 +93,9 @@ public class DemandeService {
     public void creer(@NotNull DemandeDto dto){
         
         TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+        log.infof("---->> TYPE REGISTRE: %s", typeRegistre);
+        log.infof("---->> NUMERO ACTE: %s", dto.getNumeroActe());
+        log.infof("---->> DATE OUVERTURE REGISTRE: %s", dto.getDateOuvertureRegistre());
         
         Acte acte = null;
         
@@ -126,8 +150,13 @@ public class DemandeService {
     }
     
     
-    public List<DemandeDto> findWithFilters(int offset,int pageSize){
-        PanacheQuery<Demande>  query = Demande.findAll(Sort.by("numero").descending());
+    public List<DemandeDto> findWithFilters(int offset,int pageSize,String type){
+        
+        PanacheQuery<Demande> query = Demande.find("typeRegistre", 
+               Sort.by("numero", Sort.Direction.Descending),
+               TypeRegistre.fromString(type));
+        
+       // PanacheQuery<Demande>  query = Demande.findAll(Sort.by("numero").descending());
         
         PanacheQuery<Demande> rq =  query.range(offset, offset + (pageSize-1));
         
@@ -162,10 +191,11 @@ public class DemandeService {
     
 
 
-    private DemandeDto mapToDto(@NotNull Demande demande){
+    public DemandeDto mapToDto(@NotNull Demande demande){
         
         DemandeDto dto = new DemandeDto();
         
+        dto.setActeID(demande.id);
         dto.setCreated(demande.created);
         dto.setDateHeureDemande(demande.dateHeureDemande);
         dto.setDateHeureRdvRetrait(demande.dateHeureRdvRetrait);
@@ -187,4 +217,137 @@ public class DemandeService {
         
         return dto;
     }
+    
+    
+    public String print(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
+        
+        return doPrint(acteID, type,"/META-INF/resources/report/" + getReportTemplateName(type));
+              
+   }
+     
+    public String printCopie(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
+       return doPrint(acteID,type, "/META-INF/resources/report/"+ getReportTemplateName(type));
+       
+   }
+    
+    
+   private String doPrint(String acteID,TypeRegistre type,String resource) throws SQLException, JRException, FileNotFoundException{
+     
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        InputStream reportStream = loader.getResourceAsStream(resource);
+        log.infof("-- REPORT INPUT: %s", reportStream);
+        
+        
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(getReportIdParamName(type), acteID);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
+       
+        JRPdfExporter exporter = new JRPdfExporter();
+        
+
+        String reportFilePath = filePath(acteID,type);
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput( new SimpleOutputStreamExporterOutput(reportFilePath));
+        
+        exporter.exportReport();
+        
+        return reportFilePath;
+   
+   }
+   
+   
+   private String filePath(String acteID,TypeRegistre type){
+      Acte acte = getActe(acteID,type);
+      if( acte == null){
+          throw new EntityNotFoundException("Acte not found");
+      }
+      String name = acte.numero + "_" + acte.registre.dateOuverture  +"-"+ LocalDateTime.now().toString() + ".pdf";
+      
+      return "/tmp/" + name.replaceAll(" ", "-");
+   }
+   
+   private String getReportTemplateName(TypeRegistre typeRegistre){
+       
+       String tpl = "";
+       
+       switch(typeRegistre){
+            case DECES:
+               tpl = "acte_deces.jasper";
+               break;
+            case MARIAGE:
+               tpl = "acte_mariage.jasper";
+               break;
+            case SPECIAL_DECES:
+               tpl = "acte_deces.jasper";
+               break;
+            case DIVERS:
+               tpl = "acte_divers.jasper";
+               break;
+            case NAISSANCE:
+               tpl = "acte_naissance.jasper";
+               break;
+            case SPECIAL_NAISSANCE:
+               tpl = "acte_naissance.jasper";
+               break;
+       }
+   
+       return tpl;
+   }
+   
+   private Acte getActe(@NotNull String acteID,TypeRegistre typeRegistre){
+       
+       log.infof("--->> ACTE ID: %s", acteID);
+       Acte acte = null;
+   
+       switch(typeRegistre){
+            case DECES:
+               acte = ActeDeces.findById(acteID);
+               break;
+            case MARIAGE:
+               acte = ActeMariage.findById(acteID);
+               break;
+            case SPECIAL_DECES:
+               acte = ActeDeces.findById(acteID);
+               break;
+            case DIVERS:
+               acte = ActeDivers.findById(acteID);
+               break;
+            case NAISSANCE:
+               acte = ActeNaissance.findById(acteID);
+               break;
+            case SPECIAL_NAISSANCE:
+               acte = ActeNaissance.findById(acteID);
+               break;
+       }
+       
+       return acte;
+   }
+   
+   private String getReportIdParamName(TypeRegistre typeRegistre){
+       String name = "";
+       
+       switch(typeRegistre){
+            case DECES:
+               name = "ACTE_DECES_ID";
+               break;
+            case MARIAGE:
+               name = "ACTE_MARIAGE_ID";
+               break;
+            case SPECIAL_DECES:
+               name = "ACTE_DECES_ID";
+               break;
+            case DIVERS:
+               name = "ACTE_DIVERS_ID";
+               break;
+            case NAISSANCE:
+               name = "ACTE_NAISSANCE_ID";
+               break;
+            case SPECIAL_NAISSANCE:
+               name = "ACTE_NAISSANCE_ID";
+               break;
+       }
+   
+       return name;
+   
+   }
 }

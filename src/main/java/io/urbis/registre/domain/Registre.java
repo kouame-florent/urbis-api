@@ -80,7 +80,7 @@ import org.hibernate.annotations.ParamDef;
 )
 @Filter(
     name = "anneeFilter", 
-    condition = "annee = :anneeLimit"
+    condition = "annee = :anneeLimit"   
 )
 @FilterDef(
     name = "numeroFilter", 

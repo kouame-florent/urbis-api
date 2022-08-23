@@ -247,6 +247,7 @@ public class RegistreService {
        PanacheQuery<Registre> query = Registre.find("typeRegistre", 
                Sort.by("annee", Sort.Direction.Descending).and("numero", Sort.Direction.Descending),
                TypeRegistre.fromString(type));
+       
        if(annee != 0){
            query.filter("anneeFilter", Map.of("anneeLimit",annee));
        }

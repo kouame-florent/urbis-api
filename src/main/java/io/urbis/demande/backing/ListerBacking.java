@@ -10,11 +10,20 @@ import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.demande.domain.Operation;
 import io.urbis.demande.dto.DemandeDto;
+import io.urbis.demande.service.DemandeService;
+import io.urbis.registre.domain.TypeRegistre;
+import io.urbis.registre.dto.TypeRegistreDto;
+import io.urbis.registre.service.TypeRegistreService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,6 +36,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.PrimeFaces;
@@ -51,32 +61,63 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @RestClient
     ActeNaissanceRestClient acteNaissanceRestClient;
     
+    @Inject 
+    TypeRegistreService typeRegistreService;
+    
+    @Inject
+    DemandeService demandeService;
+    
     @Inject
     @ConfigProperty(name = "URBIS_TENANT", defaultValue = "standard")
     String tenant;
     
-    private String selectedActeID;
+   // private String selectedActeID;
     
     private DemandeDto selectedDemande;
+    private String selectedDemandeID;
+    
+    private List<TypeRegistreDto> typesRegistre;
+    private TypeRegistreDto selectedType;
     
     public void onload(){
-       
-        
+   
     }
     
    
     
-    
     @PostConstruct
     public void init(){
         
+             
+        typesRegistre = typeRegistreService.findAll();
+        
+        lazyDemandeDataModel.setTypeRegistre("naissance");  
+        selectedType = defaultSelectedType();
+    }
+    
+     public TypeRegistreDto defaultSelectedType(){
+       for(TypeRegistreDto t : typesRegistre){
+           if(t.getCode().equals(TypeRegistre.NAISSANCE.name())){
+               return t;
+           }
+       }
+       
+       throw new IllegalStateException("cannot get type registre 'NAISSANCE'");
+       
+    }
+     
+    public void onTypeRegistreSelect(){
+        LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
+        lazyDemandeDataModel.setTypeRegistre(selectedType.getCode());
+       // lazyRegistreDataModel.setAnnee(2018);
         
     }
     
      public void openCreerView(){
         List<String> ids = List.of();
         var operations = List.of(Operation.CREATION.name());
-        Map<String, List<String>> params = Map.of("operation",operations);
+        List<String> type = List.of(selectedType.getCode());
+        Map<String, List<String>> params = Map.of("operation",operations,"type",type);
         Map<String,Object> options = getDialogOptions(98, 98, true);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
@@ -84,28 +125,77 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     
     
-    public void onDemandeCreated(SelectEvent event){
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de demande", "Demande créee avec succès");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    public void onNewDemande(SelectEvent event){
+        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de demande", "Demande créee avec succès");
+        //FacesContext.getCurrentInstance().addMessage(null, message);
+         LOG.log(Level.INFO, "RETURN FROM NEW ACTE...");
     }
     
     public StreamedContent download(){
-       File file = acteNaissanceRestClient.downloadActeNaissance(tenant, selectedActeID);
-       LOG.log(Level.INFO, "TENANT: {0}", tenant);
-       LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
-       LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
-       LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
-       
-       StreamedContent content = null;
+        LOG.log(Level.INFO, "-- SLECTED DEMANDE ID: {0}", selectedDemandeID);
+        StreamedContent content = null;
+        Path path = null;
         try {
-            InputStream input = new FileInputStream(file);
+            TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
+            String pathString = demandeService.print(selectedDemandeID,typeRegistre);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
-                .name("acte_naissance.pdf")
+                .name(path.getFileName().toString())
                 .contentType("application/pdf")
                 .stream(() -> input).build();
                 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException | SQLException | JRException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
+        }
+       
+       return content;
+      
+    }
+    
+    public StreamedContent downloadCopie(){
+        LOG.log(Level.INFO, "-- SLECTED DEMANDE ID: {0}", selectedDemandeID);
+         
+        StreamedContent content = null;
+        Path path = null;
+        try {
+            TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
+            String pathString = demandeService.printCopie(selectedDemandeID,typeRegistre);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
+            content = DefaultStreamedContent.builder() 
+                .name(path.getFileName().toString())
+                .contentType("application/pdf")
+                .stream(() -> input).build();
+                
+        } catch (FileNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
         }
        
        return content;
@@ -132,12 +222,30 @@ public class ListerBacking extends BaseBacking implements Serializable{
         this.selectedDemande = selectedDemande;
     }
 
-    public String getSelectedActeID() {
-        return selectedActeID;
+   
+
+    public List<TypeRegistreDto> getTypesRegistre() {
+        return typesRegistre;
     }
 
-    public void setSelectedActeID(String selectedActeID) {
-        this.selectedActeID = selectedActeID;
+    public void setTypesRegistre(List<TypeRegistreDto> typesRegistre) {
+        this.typesRegistre = typesRegistre;
+    }
+
+    public TypeRegistreDto getSelectedType() {
+        return selectedType;
+    }
+
+    public void setSelectedType(TypeRegistreDto selectedType) {
+        this.selectedType = selectedType;
+    }
+
+    public String getSelectedDemandeID() {
+        return selectedDemandeID;
+    }
+
+    public void setSelectedDemandeID(String selectedDemandeID) {
+        this.selectedDemandeID = selectedDemandeID;
     }
 
    

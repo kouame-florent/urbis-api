@@ -122,6 +122,8 @@ public class ActeMariageDto {
     private Set<MentionDivorceDto> mentionDivorceDtos = new HashSet<>();
     private Set<MentionModifRegimeBiensDto> mentionModifRegimeBiensDtos = new HashSet<>();
     private Set<MentionOrdonRetranscriptionDto> mentionOrdonRetranscriptionDtos = new HashSet<>();
+    private Set<MentionAnnulationMariageDto> mentionAnnulationMariageDtos = new HashSet<>();
+    private Set<MentionRectificationMariageDto> mentionRectificationMariageDtos = new HashSet<>();
 
     public LocalDateTime getCreated() {
         return created;
@@ -689,6 +691,22 @@ public class ActeMariageDto {
 
     public void setMentionOrdonRetranscriptionDtos(Set<MentionOrdonRetranscriptionDto> mentionOrdonRetranscriptionDtos) {
         this.mentionOrdonRetranscriptionDtos = mentionOrdonRetranscriptionDtos;
+    }
+
+    public Set<MentionAnnulationMariageDto> getMentionAnnulationMariageDtos() {
+        return mentionAnnulationMariageDtos;
+    }
+
+    public void setMentionAnnulationMariageDtos(Set<MentionAnnulationMariageDto> mentionAnnulationMariageDtos) {
+        this.mentionAnnulationMariageDtos = mentionAnnulationMariageDtos;
+    }
+
+    public Set<MentionRectificationMariageDto> getMentionRectificationMariageDtos() {
+        return mentionRectificationMariageDtos;
+    }
+
+    public void setMentionRectificationMariageDtos(Set<MentionRectificationMariageDto> mentionRectificationMariageDtos) {
+        this.mentionRectificationMariageDtos = mentionRectificationMariageDtos;
     }
 
     

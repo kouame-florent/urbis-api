@@ -490,20 +490,17 @@ xmlns:p="http://primefaces.org/ui">
                         <p:commandButton value="Enregistrer l'acte de décès" process="@form" 
                                          action="#{acteDecesEditerBacking.creer()}"
                                          rendered="#{acteDecesEditerBacking.renderedCreerButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check" />
 
                         <p:commandButton value="Valider l'acte de décès" process="@form" 
                                          action="#{acteDecesEditerBacking.valider()}"
                                          rendered="#{acteDecesEditerBacking.renderedValiderButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check"/>
                         
-                         <p:commandButton value="Modifier l'acte mariage" process="@form" 
+                         <p:commandButton value="Modifier l'acte de décès" process="@form" 
                                          action="#{acteDecesEditerBacking.modifier()}"
                                          rendered="#{acteDecesEditerBacking.renderedModifierButton()}"
-                                         update="@form messageForm"  icon="pi pi-check" 
-                                         styleClass="ui-button-outlined"/>
+                                         update="@form messageForm"  icon="pi pi-check" />
 
                     </div>
                 </div>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_deces" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="93a6406d-9c51-451a-ad96-f872dde01d52">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbis2"/>
+	<parameter name="ACTE_DECES_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT id,
+	copie_mentions_textes,
+	copie_numero_acte_texte,
+	copie_texte,
+	copie_titre_texte,
+	extrait_texte,
+	nom_complet_texte,
+	numero_acte_texte,
+	titre_texte,
+	acte_deces_id
+FROM urbis.acte_deces_etat
+WHERE 
+	 urbis.acte_deces_etat.acte_deces_id = $P{ACTE_DECES_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="copie_mentions_textes" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_mentions_textes"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_mentions_textes"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="copie_numero_acte_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="copie_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="copie_titre_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="copie_titre_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="copie_titre_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="extrait_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="extrait_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="nom_complet_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nom_complet_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="nom_complet_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="numero_acte_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="numero_acte_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="titre_texte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="titre_texte"/>
+		<property name="com.jaspersoft.studio.field.label" value="titre_texte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<field name="acte_deces_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="acte_deces_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="acte_deces_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acte_deces_etat"/>
+	</field>
+	<group name="id">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+	</group>
+	<group name="copie_mentions_textes">
+		<groupExpression><![CDATA[$F{copie_mentions_textes}]]></groupExpression>
+	</group>
+	<group name="copie_numero_acte_texte">
+		<groupExpression><![CDATA[$F{copie_numero_acte_texte}]]></groupExpression>
+	</group>
+	<group name="copie_texte">
+		<groupExpression><![CDATA[$F{copie_texte}]]></groupExpression>
+	</group>
+	<group name="copie_titre_texte">
+		<groupExpression><![CDATA[$F{copie_titre_texte}]]></groupExpression>
+	</group>
+	<group name="extrait_texte">
+		<groupExpression><![CDATA[$F{extrait_texte}]]></groupExpression>
+	</group>
+	<group name="nom_complet_texte">
+		<groupExpression><![CDATA[$F{nom_complet_texte}]]></groupExpression>
+	</group>
+	<group name="numero_acte_texte">
+		<groupExpression><![CDATA[$F{numero_acte_texte}]]></groupExpression>
+	</group>
+	<group name="titre_texte">
+		<groupExpression><![CDATA[$F{titre_texte}]]></groupExpression>
+	</group>
+	<group name="acte_deces_id">
+		<groupExpression><![CDATA[$F{acte_deces_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="184" splitType="Stretch">
+			<staticText>
+				<reportElement x="320" y="0" width="240" height="20" uuid="50cf4520-cac4-43c4-a3ef-22e981040a32"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPUBLIQUE DE COTE D'IVOIRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="20" width="100" height="20" uuid="5416a2ad-a214-4e18-89b1-49f57b94f742"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[--------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="42" width="190" height="18" uuid="037c566d-3e27-42b5-ae3e-61530cb85873"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Union - Discipline - Travail]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="66" width="230" height="26" uuid="8b259a34-644d-4629-9049-4aebb3c4bab1"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXTRAIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="93" width="268" height="15" uuid="7e2604f9-9e89-4dcd-9feb-febb485a66f3"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Du registre des actes de l'Etat Civil ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="309" y="108" width="230" height="22" uuid="41dcef58-0e2a-47e8-ab5f-a30fefcb90c1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c76be407-3426-489b-b064-956ea1638591"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titre_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="0" width="224" height="20" uuid="c23fac82-3135-4d51-b853-79e885b4f4f0"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEPARTEMENT DE GAGNOA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="21" width="100" height="15" uuid="fcf6b90f-ec53-4703-9777-9fc546995fd7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="42" width="138" height="21" uuid="9cc88bea-9f2b-4711-81b6-8987dff6c657"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[COMMUNE DE GAGNOA]]></text>
+			</staticText>
+			<image>
+				<reportElement x="42" y="67" width="50" height="50" uuid="ebee71f9-8932-4619-a5fe-a806e82bd82b"/>
+				<imageExpression><![CDATA["http://localhost:8181/image/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="15" y="119" width="100" height="17" uuid="32cb697a-2715-407d-ab7d-7a5319185ca2"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ETAT CIVIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="136" width="100" height="15" uuid="df02c154-c109-483f-8a6b-3bc021fd48ee"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="151" width="150" height="22" uuid="876d1319-2c82-4277-b22c-59e83fbe79ae"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Centre de gagnoa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="169" width="100" height="15" uuid="19a4256c-ef08-458f-b91d-840d811f0114"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[-------]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="398" splitType="Stretch">
+			<textField>
+				<reportElement x="220" y="10" width="340" height="220" uuid="c7e4e05b-31ad-41bd-80f9-633a20bb7c7d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="640387a8-7442-4b52-8d0b-2018fef83594"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extrait_texte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="10" width="177" height="20" uuid="a545cceb-e1a9-464c-b6ad-9c07e9303a3f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4619a816-1f70-4624-9853-2dd06445fabe"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{numero_acte_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="33" width="180" height="20" uuid="f9d44ebf-244c-4535-a42e-37b442e88d6e"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[DECES DE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="60" width="180" height="30" uuid="25fc5bb5-46aa-4fb6-b420-450ca8809a00">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b63da61-3cf6-4533-9554-e7341f73d35c"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_complet_texte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="250" width="433" height="30" uuid="53df2160-5206-479b-aac8-e66217a58b77"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Certifié le présent extrait conforme aux indications portées au registre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="282" width="140" height="20" uuid="dfed5d91-fb1c-42e0-bf09-62b8104a5152"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Délivré à GAGNOA, le ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="391" y="281" width="141" height="30" uuid="3b7e449c-47c2-40c4-a18c-43b42f80ff8d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="340" y="322" width="170" height="20" uuid="4c524a17-ddb4-43bd-8f53-10f16208f4e0"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[L'Officier de l'Etat civil]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="344" width="100" height="18" uuid="6040a5b0-2a7a-4e94-a7b4-ca6b68d24073"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[(Signature)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="297" width="100" height="30" uuid="d17b6510-3bfa-4883-9927-e11626f56d78"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Timbre fiscal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="302" width="100" height="25" uuid="ea2d1cba-d082-4547-bfb9-9c134cf15bd2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Sceau]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="29" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="27" splitType="Stretch"/>
+	</summary>
+</jasperReport>

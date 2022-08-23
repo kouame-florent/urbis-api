@@ -57,7 +57,7 @@ public class DemandeDto {
     private LocalDateTime dateHeureRdvRetrait;
     
     //@NotBlank
-    private String ActeID;
+    private String acteID;
     
     
 }

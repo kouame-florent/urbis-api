@@ -8,13 +8,21 @@ package io.urbis.acte.deces.backing;
 import io.urbis.acte.deces.domain.Operation;
 import io.urbis.acte.deces.domain.StatutActeDeces;
 import io.urbis.acte.deces.dto.ActeDecesDto;
+import io.urbis.acte.deces.service.ActeDecesEtatService;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.registre.domain.StatutRegistre;
 
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,9 +35,11 @@ import javax.inject.Named;
 import javax.validation.constraints.NotBlank;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JRException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 /**
@@ -47,16 +57,19 @@ public class ListerBacking extends BaseBacking implements Serializable{
      
     @Inject 
     RegistreService registreService;  
-    
-    
-    
+   
     @Inject 
     ActeDecesService acteDecesService;
+    
+    @Inject
+    ActeDecesEtatService acteDecesEtatService;
     
     private String registreID;
     private RegistreDto registreDto;
     
-    String acteID;
+    private String acteID;
+    
+    private String selectedActeID;
     
     public void onload(){
         LOG.log(Level.INFO,"REGISTRE ID: {0}",registreID);
@@ -78,27 +91,71 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public StreamedContent download(){
-       /*
-       File file = etatService.downloadActeNaissance(acteID);
-       LOG.log(Level.INFO, "FILE NAME: {0}", file.getName());
-       LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
-       LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
-       
-       StreamedContent content = null;
+        LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+         
+        StreamedContent content = null;
+        Path path = null;
         try {
-            InputStream input = new FileInputStream(file);
+            String pathString = acteDecesEtatService.print(selectedActeID);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
-                .name("acte_naissance.pdf")
+                .name(path.getFileName().toString())
                 .contentType("application/pdf")
                 .stream(() -> input).build();
                 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException | SQLException | JRException ex) {
             Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
         }
        
        return content;
-       */
-       return null;
+    }
+    
+     public StreamedContent downloadCopie(){ 
+       LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
+         
+        StreamedContent content = null;
+        Path path = null;
+        try {
+            String pathString = acteDecesEtatService.printCopie(selectedActeID);
+            path = Paths.get(pathString);
+            InputStream input = Files.newInputStream(path);
+            content = DefaultStreamedContent.builder() 
+                .name(path.getFileName().toString())
+                .contentType("application/pdf")
+                .stream(() -> input).build();
+                
+        } catch (FileNotFoundException | SQLException | JRException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }finally{
+           if(path != null){
+                try {
+                    Files.deleteIfExists(path);
+                } catch (IOException ex) {
+                    Logger.getLogger(ListerBacking.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           }
+           
+        }
+       
+       return content;
     }
     
     public void onActeValidated(SelectEvent event){
@@ -189,6 +246,17 @@ public class ListerBacking extends BaseBacking implements Serializable{
        }
     }
     
+    public String returnToRegistresList(){
+        return "/registre/lister.xhtml?faces-redirect=true";
+    }
+    
+    public void openUpdateTextView(ActeDecesDto dto){
+        LOG.log(Level.INFO, "ACTE ID: {0}", dto.getId());
+        
+        var acteIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("acte-id",acteIds);
+        PrimeFaces.current().dialog().openDynamic("/acte/deces/editer-etat", getDialogOptions(98,98,false), params);
+    }
     
 
     public String getRegistreID() {
@@ -200,12 +268,13 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
 
     public String getSelectedActeID() {
-        return acteID;
+        return selectedActeID;
     }
 
     public void setSelectedActeID(String selectedActeID) {
-        this.acteID = selectedActeID;
+        this.selectedActeID = selectedActeID;
     }
+
 
     public RegistreDto getRegistreDto() {
         return registreDto;
@@ -224,6 +293,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
     public void setActeID(String acteID) {
         this.acteID = acteID;
     }
+    
+   
 
     public ActeDecesDto getActeDto() {
         return acteDto;

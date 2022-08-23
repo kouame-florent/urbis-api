@@ -5,6 +5,7 @@
  */
 package io.urbis.acte.naissance.backing;
 
+import io.urbis.acte.mariage.service.MentionAnnulationMariageService;
 import io.urbis.acte.naissance.domain.Operation;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.dto.LienDeclarantDto;
@@ -16,6 +17,7 @@ import io.urbis.acte.naissance.service.ModeDeclarationService;
 import io.urbis.acte.naissance.service.TypeNaissanceService;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.acte.naissance.dto.MentionAdoptionDto;
+import io.urbis.acte.naissance.dto.MentionAnnulationDto;
 import io.urbis.acte.naissance.dto.MentionDecesDto;
 import io.urbis.acte.naissance.dto.MentionDissolutionMariageDto;
 import io.urbis.acte.naissance.dto.MentionLegitimationDto;
@@ -35,6 +37,7 @@ import io.urbis.common.service.NationaliteService;
 import io.urbis.common.service.SexeService;
 import io.urbis.common.service.TypePieceService;
 import io.urbis.acte.naissance.service.MentionAdoptionService;
+import io.urbis.acte.naissance.service.MentionAnnulationService;
 import io.urbis.acte.naissance.service.MentionDecesService;
 import io.urbis.acte.naissance.service.MentionDissolutionMariageService;
 import io.urbis.acte.naissance.service.MentionLegitimationService;
@@ -128,6 +131,9 @@ public class EditerBacking extends BaseBacking implements Serializable{
     MentionRectificationService mentionRectificationService;
     
     @Inject
+    MentionAnnulationService mentionAnnulationService ;
+    
+    @Inject
     LazyActeNaissanceDataModel lazyActeNaissanceDataModel;
     
     //private ViewMode viewMode;
@@ -199,7 +205,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
     private MentionRectificationDto rectificationDto = new MentionRectificationDto();
     private MentionRectificationDto selectedMentionRectification;
     
-   
+    private MentionAnnulationDto annulationDto = new MentionAnnulationDto();
+    private MentionAnnulationDto selectedMentionAnnulation;
    
     
     @PostConstruct
@@ -325,6 +332,12 @@ public class EditerBacking extends BaseBacking implements Serializable{
     public void deleteMentionRectification(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
         acteNaissanceDto.getMentionRectificationDtos().remove(rectificationDto);
+        
+    }
+    
+    public void deleteMentionAnnulation(){
+        LOG.log(Level.INFO,"Deleting mention annulation...");
+        acteNaissanceDto.getMentionAnnulationDtos().remove(annulationDto);
         
     }
     
@@ -541,6 +554,22 @@ public class EditerBacking extends BaseBacking implements Serializable{
            // rectificationDtos.add(rectificationDto);
             acteNaissanceDto.getMentionRectificationDtos().add(rectificationDto);
             rectificationDto = new MentionRectificationDto();
+        }else{
+            violations.stream().forEach(v -> {
+                addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
+            });
+        }
+    }
+    
+    public void ajouterMentionAnnulation(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<MentionAnnulationDto>> violations = validator.validate(annulationDto);
+        if(violations.isEmpty()){
+            
+           // rectificationDtos.add(rectificationDto);
+            acteNaissanceDto.getMentionAnnulationDtos().add(annulationDto);
+            annulationDto = new MentionAnnulationDto();
         }else{
             violations.stream().forEach(v -> {
                 addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -937,6 +966,22 @@ public class EditerBacking extends BaseBacking implements Serializable{
 
     public void setOperation(Operation operation) {
         this.operation = operation;
+    }
+
+    public MentionAnnulationDto getAnnulationDto() {
+        return annulationDto;
+    }
+
+    public void setAnnulationDto(MentionAnnulationDto annulationDto) {
+        this.annulationDto = annulationDto;
+    }
+
+    public MentionAnnulationDto getSelectedMentionAnnulation() {
+        return selectedMentionAnnulation;
+    }
+
+    public void setSelectedMentionAnnulation(MentionAnnulationDto selectedMentionAnnulation) {
+        this.selectedMentionAnnulation = selectedMentionAnnulation;
     }
 
     

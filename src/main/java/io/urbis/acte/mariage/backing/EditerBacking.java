@@ -11,9 +11,11 @@ import static io.urbis.acte.mariage.domain.Operation.DECLARATION;
 import static io.urbis.acte.mariage.domain.Operation.SAISIE_ACTE_EXISTANT;
 import io.urbis.acte.mariage.domain.StatutActeMariage;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
+import io.urbis.acte.mariage.dto.MentionAnnulationMariageDto;
 import io.urbis.acte.mariage.dto.MentionDivorceDto;
 import io.urbis.acte.mariage.dto.MentionModifRegimeBiensDto;
 import io.urbis.acte.mariage.dto.MentionOrdonRetranscriptionDto;
+import io.urbis.acte.mariage.dto.MentionRectificationMariageDto;
 import io.urbis.acte.mariage.dto.RegimeDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.mariage.service.RegimeService;
@@ -97,6 +99,12 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     private MentionOrdonRetranscriptionDto ordonRetranscriptionDto = new MentionOrdonRetranscriptionDto();
     private MentionOrdonRetranscriptionDto selectedMentionOrdonRetranscriptionDto;
+    
+    private MentionAnnulationMariageDto mentionAnnulationDto = new MentionAnnulationMariageDto();
+    private MentionAnnulationMariageDto selectedMentionAnnulationDto;
+    
+    private MentionRectificationMariageDto mentionRectificationDto = new MentionRectificationMariageDto();
+    private MentionRectificationMariageDto selectedMentionRectificationDto = new MentionRectificationMariageDto();
     
     
     
@@ -291,6 +299,39 @@ public class EditerBacking extends BaseBacking implements Serializable{
         }
     }
     
+    public void ajouterMentionRectification(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<MentionRectificationMariageDto>> violations = validator.validate(mentionRectificationDto);
+        if(violations.isEmpty()){
+            
+           // rectificationDtos.add(rectificationDto);
+            acteDto.getMentionRectificationMariageDtos().add(mentionRectificationDto);
+            mentionRectificationDto = new MentionRectificationMariageDto();
+        }else{
+            violations.stream().forEach(v -> {
+                addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
+            });
+        }
+    }
+    
+    public void ajouterMentionAnnulation(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<MentionAnnulationMariageDto>> violations = validator.validate(mentionAnnulationDto);
+        if(violations.isEmpty()){
+            
+           // rectificationDtos.add(rectificationDto);
+            acteDto.getMentionAnnulationMariageDtos().add(mentionAnnulationDto);
+            mentionAnnulationDto = new MentionAnnulationMariageDto();
+        }else{
+            violations.stream().forEach(v -> {
+                addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
+            });
+        }
+    }
+     
+    
     public void deleteMentionDivorce(){
         LOG.log(Level.INFO,"Deleting mention divorce...");
         acteDto.getMentionDivorceDtos().remove(divorceDto);
@@ -307,6 +348,18 @@ public class EditerBacking extends BaseBacking implements Serializable{
         LOG.log(Level.INFO,"Deleting mention ordonnance...");
         acteDto.getMentionOrdonRetranscriptionDtos().remove(ordonRetranscriptionDto);
        
+    }
+    
+     public void deleteMentionRectification(){
+        LOG.log(Level.INFO,"Deleting mention mariage...");
+        acteDto.getMentionRectificationMariageDtos().remove(mentionRectificationDto);
+        
+    }
+    
+    public void deleteMentionAnnulation(){
+        LOG.log(Level.INFO,"Deleting mention annulation...");
+        acteDto.getMentionAnnulationMariageDtos().remove(mentionAnnulationDto);
+        
     }
     
     public void closeView(){
@@ -432,6 +485,41 @@ public class EditerBacking extends BaseBacking implements Serializable{
         this.selectedMentionOrdonRetranscriptionDto = selectedMentionOrdonRetranscriptionDto;
     }
 
+    public MentionAnnulationMariageDto getMentionAnnulationDto() {
+        return mentionAnnulationDto;
+    }
+
+    public void setMentionAnnulationDto(MentionAnnulationMariageDto mentionAnnulationDto) {
+        this.mentionAnnulationDto = mentionAnnulationDto;
+    }
+
+    public MentionAnnulationMariageDto getSelectedMentionAnnulationDto() {
+        return selectedMentionAnnulationDto;
+    }
+
+    public void setSelectedMentionAnnulationDto(MentionAnnulationMariageDto selectedMentionAnnulationDto) {
+        this.selectedMentionAnnulationDto = selectedMentionAnnulationDto;
+    }
+
+   
+
+    public MentionRectificationMariageDto getMentionRectificationDto() {
+        return mentionRectificationDto;
+    }
+
+    public void setMentionRectificationDto(MentionRectificationMariageDto mentionRectificationDto) {
+        this.mentionRectificationDto = mentionRectificationDto;
+    }
+
+    public MentionRectificationMariageDto getSelectedMentionRectificationDto() {
+        return selectedMentionRectificationDto;
+    }
+
+    public void setSelectedMentionRectificationDto(MentionRectificationMariageDto selectedMentionRectificationDto) {
+        this.selectedMentionRectificationDto = selectedMentionRectificationDto;
+    }
+
+    
     
     
     

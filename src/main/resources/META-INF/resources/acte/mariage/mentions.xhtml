@@ -153,9 +153,100 @@ xmlns:p="http://primefaces.org/ui">
            
          </p:tab>
          
+        <p:tab title="Rectification">
+            
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageRectificationDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-rectification-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionRectificationTable" 
+                         value="#{acteMariageEditerBacking.acteNaissanceDto.mentionRectificationDtos}" 
+                         var="rectification">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{rectification.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{rectification.decision}"/>
+               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-rectification-content"
+                         oncomplete="PF('manageRectificationDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{rectification}" 
+                                                     target="#{acteMariageEditerBacking.rectificationDto}"/>
+                        <p:resetInput target=":contentForm:manage-rectification-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteRectificationDialog').show()">
+                                <f:setPropertyActionListener value="#{rectification}" 
+                                                             target="#{acteMariageEditerBacking.rectificationDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
+
+            </p:dataTable>
         
-        
+         </p:tab>
          
+        
+        <p:tab title="Annulation">
+            
+             <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="nouvelle mention" icon="pi pi-plus" 
+                                         process="@this"            
+                             oncomplete="PF('manageAnnulationDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem"
+                             update=":contentForm:manage-annulation-content">
+
+                        </p:commandButton>
+                    </p:toolbarGroup>
+            </p:toolbar>
+            
+            <p:dataTable id="mentionAnnulationTable" 
+                         value="#{acteMariageEditerBacking.acteNaissanceDto.mentionAnnulationDtos}" 
+                         var="annulation">
+               <p:column headerText="date dressage" >
+                   <h:outputText value="#{annulation.dateDressage}"/>
+               </p:column>
+               <p:column headerText="Décision">
+                   <h:outputText value="#{annulation.decision}"/>
+               </p:column>
+               <p:column style="width: 3%">
+                    <p:commandButton icon="pi pi-pencil" update=":contentForm:manage-annulation-content"
+                         oncomplete="PF('manageAnnulationDialog').show()"
+                         styleClass="edit-button rounded-button" process="@this">
+                        <f:setPropertyActionListener value="#{annulation}" 
+                                                     target="#{acteMariageEditerBacking.annulationDto}"/>
+                        <p:resetInput target=":contentForm:manage-annulation-content"/>
+                    </p:commandButton>
+                            
+                </p:column>
+                <p:column style="width: 3%">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteAnnulationDialog').show()">
+                                <f:setPropertyActionListener value="#{annulation}" 
+                                                             target="#{acteMariageEditerBacking.annulationDto}"/>
+                    </p:commandButton>
+                      
+                </p:column>
+
+            </p:dataTable>
+        
+         </p:tab>
+         
+        
      </p:tabView>
      
      <p:dialog header="Mention divorce" showEffect="fade" modal="true"
@@ -344,6 +435,125 @@ xmlns:p="http://primefaces.org/ui">
     </p:confirmDialog>
      
    
+     <p:dialog header="Mention rectification" showEffect="fade" modal="true"
+               widgetVar="manageRectificationDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-rectification-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="rectificationDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+                    <p:inputMask id="rectificationDateDressage" value="#{acteMariageEditerBacking.rectificationDto.dateDressage}"
+                                 mask="99/99/9999" >
+                        <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        <f:validateBean disabled="true" />
+                    </p:inputMask>
+                    
+                    <p:message for="rectificationDateDressage"/>
+                 </div>
+                 <div class="p-field p-lg-12">
+                     <p:outputLabel for="rectificationDecision" styleClass="p-d-block">Décision</p:outputLabel>
+                     <p:inputTextarea id="rectificationDecision" value="#{acteMariageEditerBacking.rectificationDto.decision}" 
+                                      rows="10">
+                        <f:validateBean disabled="true" />
+                     </p:inputTextarea>
+                 </div>
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="rectificationOfficier" styleClass="p-d-block">Officier</p:outputLabel>
+                    <p:selectOneMenu id="rectificationOfficier" value="#{acteMariageEditerBacking.rectificationDto.officierEtatCivilID}"          
+                                     label="Selectionnez">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                        <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
+                                       itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                       itemValue="#{officier.id}"/>
+                        <f:validateBean disabled="true" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                    <p:commandButton value="Ajouter la mention de rectification" process="manage-rectification-content" 
+                                     action="#{acteMariageEditerBacking.ajouterMentionRectification()}"
+                                     oncomplete="PF('manageRectificationDialog').hide()"
+                                     update="mentionsTabView:mentionRectificationTable messageForm"  icon="pi pi-check" 
+                                     />
+                </div>
+                
+            </div>
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteRectificationDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteMariageEditerBacking.deleteMentionRectification()}"
+                             process="@this" update="mentionsTabView:mentionRectificationTable messageForm" 
+                             oncomplete="PF('deleteRectificationDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteRectificationDialog').hide()"/>
+    </p:confirmDialog>
+     
+     
+    <p:dialog header="Mention annulation" showEffect="fade" modal="true"
+               widgetVar="manageAnnulationDialog" responsive="true" fitViewport="true" >
+            <p:outputPanel id="manage-annulation-content" class="ui-fluid">
+                
+                 <div class="ui-fluid p-formgrid p-grid">
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="annulationDateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+                    <p:inputMask id="annulationDateDressage" 
+                                 value="#{acteMariageEditerBacking.annulationDto.dateDressage}"
+                                 mask="99/99/9999" >
+                        <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                        <f:validateBean disabled="true" />
+                    </p:inputMask>
+                    
+                    <p:message for="annulationDateDressage"/>
+                 </div>
+                 <div class="p-field p-lg-12">
+                     <p:outputLabel for="annulationDecision" styleClass="p-d-block">Décision</p:outputLabel>
+                     <p:inputTextarea id="rectificationDecision" value="#{acteMariageEditerBacking.annulationDto.decision}" 
+                                      rows="10">
+                        <f:validateBean disabled="true" />
+                     </p:inputTextarea>
+                 </div>
+                 <div class="p-field p-lg-12">
+                    <p:outputLabel for="annulationOfficier" styleClass="p-d-block">Officier</p:outputLabel>
+                    <p:selectOneMenu id="annulationOfficier" 
+                                     value="#{acteMariageEditerBacking.annulationDto.officierEtatCivilID}"          
+                                     label="Selectionnez">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                        <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
+                                       itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                       itemValue="#{officier.id}"/>
+                        <f:validateBean disabled="true" />
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-lg-12">
+                    <p:commandButton value="Ajouter la mention de annulation" process="manage-annulation-content" 
+                                     action="#{acteMariageEditerBacking.ajouterMentionAnnulation()}"
+                                     oncomplete="PF('manageAnnulationDialog').hide()"
+                                     update="mentionsTabView:mentionAnnulationTable messageForm"  icon="pi pi-check" 
+                                     />
+                </div>
+                
+            </div>
+             
+            </p:outputPanel>
+     </p:dialog>
+     
+    <p:confirmDialog widgetVar="deleteAnnulationDialog" showEffect="fade" width="500"
+                         message="Voulez-vous retirer cette mention ?" header="Confirmation" severity="warn">
+            <p:commandButton value="Oui" icon="pi pi-check" 
+                             actionListener="#{acteMariageEditerBacking.deleteMentionAnnulation()}"
+                             process="@this" update="mentionsTabView:mentionAnnulationTable messageForm" 
+                             oncomplete="PF('deleteAnnulationDialog').hide()"/>
+            <p:commandButton value="Non" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                             onclick="PF('deleteAnnulationDialog').hide()"/>
+    </p:confirmDialog>
+         
     
    
 </ui:composition>  

@@ -11,6 +11,8 @@ import io.urbis.acte.deces.domain.Operation;
 import io.urbis.acte.deces.domain.StatutActeDeces;
 import io.urbis.acte.deces.dto.ActeDecesDto;
 import io.urbis.acte.deces.dto.LienDeclarantDto;
+import io.urbis.acte.deces.dto.MentionAnnulationDecesDto;
+import io.urbis.acte.deces.dto.MentionRectificationDecesDto;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.acte.deces.service.LienDeclarantService;
 import io.urbis.common.dto.NationaliteDto;
@@ -42,6 +44,11 @@ import org.primefaces.event.FlowEvent;
 import io.urbis.param.service.OfficierService;
 import io.urbis.registre.service.RegistreService;
 import java.sql.SQLException;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  *
@@ -78,6 +85,11 @@ public class EditerBacking extends BaseBacking implements Serializable{
     @Inject
     NationaliteService nationaliteService;
     
+     
+    @Inject
+    LazyActeDecesDataModel lazyActeDecesDataModel;
+    
+    
     private String registreID;
     private RegistreDto registreDto;
     
@@ -96,10 +108,14 @@ public class EditerBacking extends BaseBacking implements Serializable{
     private List<TypePieceDto> typesPieces;
     private List<NationaliteDto> nationalites;
     
+    private MentionAnnulationDecesDto mentionAnnulationDto = new MentionAnnulationDecesDto();
+    private MentionAnnulationDecesDto selectedMentionAnnulationDto;
     
-    @Inject
-    LazyActeDecesDataModel lazyActeDecesDataModel;
+    private MentionRectificationDecesDto mentionRectificationDto = new MentionRectificationDecesDto();
+    private MentionRectificationDecesDto selectedMentionRectificationDto = new MentionRectificationDecesDto();
+   
     
+   
     @PostConstruct
     public void init(){
         officiers = officierService.findAll();
@@ -236,6 +252,38 @@ public class EditerBacking extends BaseBacking implements Serializable{
        
     }
     
+    public void ajouterMentionRectification(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<MentionRectificationDecesDto>> violations = validator.validate(mentionRectificationDto);
+        if(violations.isEmpty()){
+            
+           // rectificationDtos.add(rectificationDto);
+            acteDto.getMentionRectificationDecesDtos().add(mentionRectificationDto);
+            mentionRectificationDto = new MentionRectificationDecesDto();
+        }else{
+            violations.stream().forEach(v -> {
+                addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
+            });
+        }
+    }
+    
+    public void ajouterMentionAnnulation(){
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<MentionAnnulationDecesDto>> violations = validator.validate(mentionAnnulationDto);
+        if(violations.isEmpty()){
+            
+           // rectificationDtos.add(rectificationDto);
+            acteDto.getMentionAnnulationDecesDtos().add(mentionAnnulationDto);
+            mentionAnnulationDto = new MentionAnnulationDecesDto();
+        }else{
+            violations.stream().forEach(v -> {
+                addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
+            });
+        }
+    }
+    
     public void closeView(){
         PrimeFaces.current().dialog().closeDynamic(null);
     }
@@ -324,6 +372,41 @@ public class EditerBacking extends BaseBacking implements Serializable{
         return nationalites;
     }
 
+    public MentionAnnulationDecesDto getMentionAnnulationDto() {
+        return mentionAnnulationDto;
+    }
+
+    public void setMentionAnnulationDto(MentionAnnulationDecesDto mentionAnnulationDto) {
+        this.mentionAnnulationDto = mentionAnnulationDto;
+    }
+
+    public MentionAnnulationDecesDto getSelectedMentionAnnulationDto() {
+        return selectedMentionAnnulationDto;
+    }
+
+    public void setSelectedMentionAnnulationDto(MentionAnnulationDecesDto selectedMentionAnnulationDto) {
+        this.selectedMentionAnnulationDto = selectedMentionAnnulationDto;
+    }
+
+    
+
+    public MentionRectificationDecesDto getMentionRectificationDto() {
+        return mentionRectificationDto;
+    }
+
+    public void setMentionRectificationDto(MentionRectificationDecesDto mentionRectificationDto) {
+        this.mentionRectificationDto = mentionRectificationDto;
+    }
+
+    public MentionRectificationDecesDto getSelectedMentionRectificationDto() {
+        return selectedMentionRectificationDto;
+    }
+
+    public void setSelectedMentionRectificationDto(MentionRectificationDecesDto selectedMentionRectificationDto) {
+        this.selectedMentionRectificationDto = selectedMentionRectificationDto;
+    }
+
+   
     
     
 }

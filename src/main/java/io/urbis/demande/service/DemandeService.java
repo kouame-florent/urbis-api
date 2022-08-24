@@ -11,7 +11,6 @@ import io.quarkus.panache.common.Sort;
 import io.urbis.acte.common.domain.Acte;
 import io.urbis.acte.deces.service.ActeDecesService;
 import io.urbis.acte.divers.service.ActeDiversService;
-import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.service.ActeMariageService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
 import io.urbis.acte.common.service.ActeService;
@@ -29,7 +28,6 @@ import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +88,7 @@ public class DemandeService {
     AuthenticationContext authenticationContext;
     
         
-    public void creer(@NotNull DemandeDto dto){
+    public void creer(@NotNull DemandeDto dto) throws EntityNotFoundException{
         
         TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
         log.infof("---->> TYPE REGISTRE: %s", typeRegistre);
@@ -145,8 +143,30 @@ public class DemandeService {
        return mapToDto(d);
     }
     
-    public void modifier(@NotBlank String id,@NotNull DemandeDto demande){
+    public void modifier(@NotBlank String id,@NotNull DemandeDto dto){
+        Demande demande = Demande.findById(id);
+        
+        demande.dateHeureDemande = dto.getDateHeureDemande();
+        demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
+        demande.dateOuvertureRegistre = dto.getDateOuvertureRegistre();
+        demande.demandeur.email = dto.getDemandeurEmail();
+        demande.demandeur.nom = dto.getDemandeurNom();
+        demande.demandeur.numeroTelephone = dto.getDemandeurNumeroTelephone();
+        demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
+        demande.demandeur.prenoms = dto.getDemandeurPrenoms();
+        demande.demandeur.qualite = dto.getDemandeurQualite();
+        demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
+
+        demande.nombreCopies = dto.getNombreCopies();
+        demande.nombreExtraits = dto.getNombreExtraits();
+        demande.numero = dto.getNumero();
+        demande.numeroActe = dto.getNumeroActe();
+        demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+        demande.updatedBy = authenticationContext.userLogin();
+    }
     
+    public boolean supprimer(@NotBlank String id){
+        return Demande.deleteById(id);
     }
     
     

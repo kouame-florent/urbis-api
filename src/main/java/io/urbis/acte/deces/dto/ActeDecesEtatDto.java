@@ -35,7 +35,10 @@ public class ActeDecesEtatDto {
     
     private String copieTitreTexte;
     
-   
+    private String mentionRectificationTexte;
+    
+    private String mentionAnnulationTexte;
+  
     private String copieMentionsTextes;
 
     public String getId() {
@@ -119,6 +122,22 @@ public class ActeDecesEtatDto {
 
     public void setCopieMentionsTextes(String copieMentionsTextes) {
         this.copieMentionsTextes = copieMentionsTextes;
+    }
+
+    public String getMentionRectificationTexte() {
+        return mentionRectificationTexte;
+    }
+
+    public void setMentionRectificationTexte(String mentionRectificationTexte) {
+        this.mentionRectificationTexte = mentionRectificationTexte;
+    }
+
+    public String getMentionAnnulationTexte() {
+        return mentionAnnulationTexte;
+    }
+
+    public void setMentionAnnulationTexte(String mentionAnnulationTexte) {
+        this.mentionAnnulationTexte = mentionAnnulationTexte;
     }
     
     

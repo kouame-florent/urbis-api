@@ -262,7 +262,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         return true;
     }
     
-     public void supprimer(@NotBlank String id){
+    public void supprimer(@NotBlank String id){
        boolean result = acteMariageService.supprimer(id);
        if(!result){
            addGlobalMessage("L'acte ne peut être supprimé!", FacesMessage.SEVERITY_ERROR);

@@ -70,7 +70,6 @@ public class ActeDecesService {
     @Inject
     MentionAnnulationDecesService mentionAnnulationDecesService;
     
-    
     @Inject
     MentionRectificationDecesService mentionRectificationDecesService;
     
@@ -215,18 +214,19 @@ public class ActeDecesService {
             
         }
        
+        creerMentions(acteDecesDto, acte);
         acteDecesEtatService.creer(acte.id);
         return acte.id;
     }
     
     public void creerMentions(ActeDecesDto acteDecesDto, ActeDeces acte){
        
-        acteDecesDto.getMentionAnnulationDecesDtos().forEach(mm -> {
+        acteDecesDto.getMentionAnnulationDtos().forEach(mm -> {
             mm.setActeMariageID(acte.id);
             mentionAnnulationDecesService.createMention(mm);
         });
         
-        acteDecesDto.getMentionRectificationDecesDtos().forEach(mm -> {
+        acteDecesDto.getMentionRectificationDtos().forEach(mm -> {
             mm.setActeMariageID(acte.id);
             mentionRectificationDecesService.createMention(mm);
         });
@@ -357,6 +357,7 @@ public class ActeDecesService {
         acte.extraitTexte = new javax.sql.rowset.serial.SerialClob(extraitTexte(acte).toCharArray());
         acte.copieTexte = new javax.sql.rowset.serial.SerialClob((copieText(acte).toCharArray()));
         
+        modifierMentions(acteDecesDto, acte);
         acteDecesEtatService.modifier(acte.id);
        
         
@@ -366,27 +367,27 @@ public class ActeDecesService {
      public void modifierMentions(ActeDecesDto acteDecesDto, ActeDeces acte){
        
         //Annulation
-        Set<MentionAnnulationDecesDto> dma = new HashSet<>(mentionAnnulationDecesService.findByActeMariage(acte.id));
-        dma.removeAll(acteDecesDto.getMentionAnnulationDecesDtos());
+        Set<MentionAnnulationDecesDto> dma = new HashSet<>(mentionAnnulationDecesService.findByActeDeces(acte.id));
+        dma.removeAll(acteDecesDto.getMentionAnnulationDtos());
         
         dma.forEach(mm -> {
             mentionAnnulationDecesService.deleteMention(mm.getId());
         });
         
-        acteDecesDto.getMentionAnnulationDecesDtos().forEach(mm -> {
+        acteDecesDto.getMentionAnnulationDtos().forEach(mm -> {
             mm.setActeMariageID(acte.id);
             mentionAnnulationDecesService.modifierMention(mm);
         });
         
        //rectification
-        Set<MentionRectificationDecesDto> drm = new HashSet<>(mentionRectificationDecesService.findByActeMariage(acte.id));
-        dma.removeAll(acteDecesDto.getMentionRectificationDecesDtos());
+        Set<MentionRectificationDecesDto> drm = new HashSet<>(mentionRectificationDecesService.findByActeDeces(acte.id));
+        dma.removeAll(acteDecesDto.getMentionRectificationDtos());
         
         drm.forEach(mm -> {
             mentionRectificationDecesService.deleteMention(mm.getId());
         });
         
-        acteDecesDto.getMentionRectificationDecesDtos().forEach(mm -> {
+        acteDecesDto.getMentionRectificationDtos().forEach(mm -> {
             mm.setActeMariageID(acte.id);
             mentionRectificationDecesService.modifierMention(mm);
         });
@@ -672,11 +673,11 @@ public class ActeDecesService {
         //dto.setOfficierEtatCivilQualite(acte.officierEtatCivil.qualite);
         dto.setOfficierEtatCivilTitre(acte.officierEtatCivil.titre.name());
         
-        
         dto.setRegistreNumero(acte.registre.reference.numero);
         dto.setRegistreAnnee(acte.registre.reference.annee);
         
-        
+        dto.setMentionAnnulationDtos(mentionAnnulationDecesService.findByActeDeces(acte.id));
+        dto.setMentionRectificationDtos(mentionRectificationDecesService.findByActeDeces(acte.id));
         
         return dto;
     }

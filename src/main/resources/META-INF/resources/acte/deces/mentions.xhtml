@@ -26,7 +26,7 @@ xmlns:p="http://primefaces.org/ui">
         </p:toolbar>
 
         <p:dataTable id="mentionRectificationTable" 
-                     value="#{acteDecesEditerBacking.acteNaissanceDto.mentionRectificationDtos}" 
+                     value="#{acteDecesEditerBacking.acteDto.mentionRectificationDtos}" 
                      var="rectification">
            <p:column headerText="date dressage" >
                <h:outputText value="#{rectification.dateDressage}"/>
@@ -73,7 +73,7 @@ xmlns:p="http://primefaces.org/ui">
         </p:toolbar>
 
         <p:dataTable id="mentionAnnulationTable" 
-                     value="#{acteDecesEditerBacking.acteNaissanceDto.mentionAnnulationDtos}" 
+                     value="#{acteDecesEditerBacking.acteDto.mentionAnnulationDtos}" 
                      var="annulation">
            <p:column headerText="date dressage" >
                <h:outputText value="#{annulation.dateDressage}"/>
@@ -186,7 +186,7 @@ xmlns:p="http://primefaces.org/ui">
                  </div>
                  <div class="p-field p-lg-12">
                      <p:outputLabel for="annulationDecision" styleClass="p-d-block">Décision</p:outputLabel>
-                     <p:inputTextarea id="rectificationDecision" value="#{acteDecesEditerBacking.annulationDto.decision}" 
+                     <p:inputTextarea id="annulationDecision" value="#{acteDecesEditerBacking.annulationDto.decision}" 
                                       rows="10">
                         <f:validateBean disabled="true" />
                      </p:inputTextarea>

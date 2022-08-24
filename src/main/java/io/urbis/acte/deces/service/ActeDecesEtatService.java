@@ -9,6 +9,8 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.acte.deces.domain.ActeDeces;
 import io.urbis.acte.deces.domain.ActeDecesEtat;
 import io.urbis.acte.deces.dto.ActeDecesEtatDto;
+import io.urbis.acte.deces.dto.MentionAnnulationDecesDto;
+import io.urbis.acte.deces.dto.MentionRectificationDecesDto;
 import io.urbis.common.util.DateTimeUtils;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.security.service.AuthenticationContext;
@@ -17,10 +19,13 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
@@ -50,6 +55,12 @@ public class ActeDecesEtatService {
     
     @Inject
     LocaliteService localiteService;
+    
+    @Inject
+    MentionRectificationDecesService mentionRectificationService;
+    
+    @Inject
+    MentionAnnulationDecesService  mentionAnnulationService;
      
     @Inject
     AgroalDataSource defaultDataSource;
@@ -61,6 +72,21 @@ public class ActeDecesEtatService {
         ActeDeces acte = ActeDeces.findById(acteID);
         etat.acteDeces = acte;
         etat.updatedBy = authenticationContext.userLogin();  
+        
+        
+        Set<MentionRectificationDecesDto> rectifications = mentionRectificationService.findByActeDeces(acteID);
+        Optional<MentionRectificationDecesDto> optRectification = rectifications.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optRectification.ifPresent(mRectification -> { 
+            etat.mentionRectificationTexte = mRectification.getDecision();
+           
+        });
+        
+        Set<MentionAnnulationDecesDto> annulations = mentionAnnulationService.findByActeDeces(acteID);
+        Optional<MentionAnnulationDecesDto> optAnnulation = annulations.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optAnnulation.ifPresent(mAnnulation -> { 
+            etat.mentionAnnulationTexte = mAnnulation.getDecision();
+           
+        });
         
         
         etat.nomCompletTexte = nomComplet(acte);
@@ -94,6 +120,9 @@ public class ActeDecesEtatService {
             etat.copieTitreTexte = copieTitretexte(acte);
             etat.copieTexte = copieIntegraleTexte(acte);
             etat.copieMentionsTextes = copieMentionsTextes(acte);
+            
+            etat.mentionRectificationTexte = mentionRectificationService.mentionRecenteTexte(acte);
+            etat.mentionAnnulationTexte = mentionAnnulationService.mentionRecenteTexte(acte);
             
             
         }
@@ -221,7 +250,10 @@ public class ActeDecesEtatService {
     
     public String copieMentionsTextes(ActeDeces acte) {
         StringBuilder sb = new StringBuilder();
-       
+        sb.append(mentionRectificationService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionAnnulationService.mentionRecenteTexte(acte));
         return sb.toString();
     
     }
@@ -235,6 +267,8 @@ public class ActeDecesEtatService {
        
        etat.extraitTexte = dto.getExtraitTexte();
        etat.copieTexte = dto.getCopieTexte();
+       etat.mentionRectificationTexte = dto.getMentionRectificationTexte();
+       etat.mentionAnnulationTexte = dto.getMentionAnnulationTexte();
    }
     
     public ActeDecesEtatDto mapToDto(@NotNull ActeDecesEtat etat){
@@ -249,6 +283,8 @@ public class ActeDecesEtatService {
         dto.setNomCompletTexte(etat.nomCompletTexte);
         dto.setNumeroActeTexte(etat.numeroActeTexte);
         dto.setTitreTexte(etat.titreTexte);
+        dto.setMentionRectificationTexte(etat.mentionRectificationTexte);
+        dto.setMentionAnnulationTexte(etat.mentionAnnulationTexte);
         
         return dto;
     

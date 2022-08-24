@@ -122,8 +122,8 @@ public class ActeMariageDto {
     private Set<MentionDivorceDto> mentionDivorceDtos = new HashSet<>();
     private Set<MentionModifRegimeBiensDto> mentionModifRegimeBiensDtos = new HashSet<>();
     private Set<MentionOrdonRetranscriptionDto> mentionOrdonRetranscriptionDtos = new HashSet<>();
-    private Set<MentionAnnulationMariageDto> mentionAnnulationMariageDtos = new HashSet<>();
-    private Set<MentionRectificationMariageDto> mentionRectificationMariageDtos = new HashSet<>();
+    private Set<MentionAnnulationMariageDto> mentionAnnulationDtos = new HashSet<>();
+    private Set<MentionRectificationMariageDto> mentionRectificationDtos = new HashSet<>();
 
     public LocalDateTime getCreated() {
         return created;
@@ -693,21 +693,23 @@ public class ActeMariageDto {
         this.mentionOrdonRetranscriptionDtos = mentionOrdonRetranscriptionDtos;
     }
 
-    public Set<MentionAnnulationMariageDto> getMentionAnnulationMariageDtos() {
-        return mentionAnnulationMariageDtos;
+    public Set<MentionAnnulationMariageDto> getMentionAnnulationDtos() {
+        return mentionAnnulationDtos;
     }
 
-    public void setMentionAnnulationMariageDtos(Set<MentionAnnulationMariageDto> mentionAnnulationMariageDtos) {
-        this.mentionAnnulationMariageDtos = mentionAnnulationMariageDtos;
+    public void setMentionAnnulationDtos(Set<MentionAnnulationMariageDto> mentionAnnulationDtos) {
+        this.mentionAnnulationDtos = mentionAnnulationDtos;
     }
 
-    public Set<MentionRectificationMariageDto> getMentionRectificationMariageDtos() {
-        return mentionRectificationMariageDtos;
+    public Set<MentionRectificationMariageDto> getMentionRectificationDtos() {
+        return mentionRectificationDtos;
     }
 
-    public void setMentionRectificationMariageDtos(Set<MentionRectificationMariageDto> mentionRectificationMariageDtos) {
-        this.mentionRectificationMariageDtos = mentionRectificationMariageDtos;
+    public void setMentionRectificationDtos(Set<MentionRectificationMariageDto> mentionRectificationDtos) {
+        this.mentionRectificationDtos = mentionRectificationDtos;
     }
+
+    
 
     
     

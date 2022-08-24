@@ -34,6 +34,11 @@ public class ActeMariageEtatDto {
    
     private String mentionOrdonRetranscriptionTexte;
     
+    private String mentionRectificationTexte;
+    
+    private String mentionAnnulationTexte;
+    
+    
     private String copieMentionsTextes;
     
 
@@ -139,6 +144,22 @@ public class ActeMariageEtatDto {
 
     public void setCopieMentionsTextes(String copieMentionsTextes) {
         this.copieMentionsTextes = copieMentionsTextes;
+    }
+
+    public String getMentionRectificationTexte() {
+        return mentionRectificationTexte;
+    }
+
+    public void setMentionRectificationTexte(String mentionRectificationTexte) {
+        this.mentionRectificationTexte = mentionRectificationTexte;
+    }
+
+    public String getMentionAnnulationTexte() {
+        return mentionAnnulationTexte;
+    }
+
+    public void setMentionAnnulationTexte(String mentionAnnulationTexte) {
+        this.mentionAnnulationTexte = mentionAnnulationTexte;
     }
     
     

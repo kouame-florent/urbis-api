@@ -34,6 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.NotBlank;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import net.sf.jasperreports.engine.JRException;
@@ -199,6 +200,31 @@ public class ListerBacking extends BaseBacking implements Serializable{
         }
        
        return content;
+    }
+    
+    
+    public void openConsulterDemandeView(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        var operations = List.of(Operation.CONSULTATION.name());
+        var demandesIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("demande-id",demandesIds,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/demande/editer", getDialogOptions(98,98,false), params);
+    }
+    
+    public void openModifierDemandeView(DemandeDto dto){
+    
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        var operations = List.of(Operation.MODIFICATION.name());
+        var demandesIds = List.of(dto.getId());
+        Map<String, List<String>> params = Map.of("demande-id",demandesIds,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/demande/editer", getDialogOptions(98,98,false), params);
+    }
+    
+    public void supprimer(@NotBlank String id){
+       boolean result = demandeService.supprimer(id);
+       if(!result){
+           addGlobalMessage("L'acte ne peut être supprimé!", FacesMessage.SEVERITY_ERROR);
+       }
     }
     
      public String returnToRegistresList(){

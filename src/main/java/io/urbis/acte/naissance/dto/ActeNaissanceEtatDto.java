@@ -44,9 +44,10 @@ public class ActeNaissanceEtatDto {
     
     
     private String mentionReconnaissanceTexte;
-    
-    
+   
     private String mentionRectificationTexte;
+    
+    private String mentionAnnulationTexte;
     
     
     private String copieMentionsTextes;
@@ -265,6 +266,14 @@ public class ActeNaissanceEtatDto {
 
     public void setCopieTitreTexte(String copieTitreTexte) {
         this.copieTitreTexte = copieTitreTexte;
+    }
+
+    public String getMentionAnnulationTexte() {
+        return mentionAnnulationTexte;
+    }
+
+    public void setMentionAnnulationTexte(String mentionAnnulationTexte) {
+        this.mentionAnnulationTexte = mentionAnnulationTexte;
     }
     
     

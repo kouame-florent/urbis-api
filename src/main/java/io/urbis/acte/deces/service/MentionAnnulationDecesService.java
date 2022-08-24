@@ -86,7 +86,7 @@ public class MentionAnnulationDecesService {
         MentionAnnulationDeces.deleteById(mentionID);
     }
     
-    public Set<MentionAnnulationDecesDto> findByActeMariage(@NotBlank String acteDecesID){
+    public Set<MentionAnnulationDecesDto> findByActeDeces(@NotBlank String acteDecesID){
         ActeDeces acte = ActeDeces.findById(acteDecesID);
         List<MentionAnnulationDeces> mentions = MentionAnnulationDeces.list("acteDeces", acte);
         return mentions.stream().map(this::mapToDto).collect(Collectors.toSet());

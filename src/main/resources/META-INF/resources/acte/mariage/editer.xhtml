@@ -627,7 +627,7 @@ xmlns:p="http://primefaces.org/ui">
                             <p:selectOneMenu id="officierEtatCivil" value="#{acteMariageEditerBacking.acteDto.officierEtatCivilID}"          
                                              label="Selectionnez" required="true">
                                 <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
-                                <f:selectItems value="#{acteNaissanceEditerBacking.officiers}" var="officier" 
+                                <f:selectItems value="#{acteMariageEditerBacking.officiers}" var="officier" 
                                                itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
                                                itemValue="#{officier.id}"/>
                             </p:selectOneMenu>

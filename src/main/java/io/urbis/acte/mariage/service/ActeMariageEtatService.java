@@ -11,9 +11,11 @@ import io.urbis.acte.mariage.domain.ActeMariage;
 import io.urbis.acte.mariage.domain.ActeMariageEtat;
 import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.dto.ActeMariageEtatDto;
+import io.urbis.acte.mariage.dto.MentionAnnulationMariageDto;
 import io.urbis.acte.mariage.dto.MentionDivorceDto;
 import io.urbis.acte.mariage.dto.MentionModifRegimeBiensDto;
 import io.urbis.acte.mariage.dto.MentionOrdonRetranscriptionDto;
+import io.urbis.acte.mariage.dto.MentionRectificationMariageDto;
 import io.urbis.common.util.DateTimeUtils;
 import io.urbis.param.service.LocaliteService;
 import io.urbis.security.service.AuthenticationContext;
@@ -69,6 +71,12 @@ public class ActeMariageEtatService {
     MentionOrdonRetranscriptionService mentionOrdonRetranscriptionService;
     
     @Inject
+    MentionRectificationMariageService mentionRectificationService;
+    
+    @Inject
+    MentionAnnulationMariageService  mentionAnnulationService;
+    
+    @Inject
     AgroalDataSource defaultDataSource;
     
      
@@ -99,6 +107,20 @@ public class ActeMariageEtatService {
         Optional<MentionOrdonRetranscriptionDto> optOrd = ords.stream().max(Comparator.comparing(m -> m.getDateDressage()));
         optOrd.ifPresent(m -> { 
             etat.mentionOrdonRetranscriptionTexte = m.getDecision();
+           
+        });
+        
+        Set<MentionRectificationMariageDto> rectifications = mentionRectificationService.findByActeMariage(acteID);
+        Optional<MentionRectificationMariageDto> optRectification = rectifications.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optRectification.ifPresent(mRectification -> { 
+            etat.mentionRectificationTexte = mRectification.getDecision();
+           
+        });
+        
+        Set<MentionAnnulationMariageDto> annulations = mentionAnnulationService.findByActeMariage(acteID);
+        Optional<MentionAnnulationMariageDto> optAnnulation = annulations.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optAnnulation.ifPresent(mAnnulation -> { 
+            etat.mentionAnnulationTexte = mAnnulation.getDecision();
            
         });
       
@@ -137,6 +159,8 @@ public class ActeMariageEtatService {
             etat.mentionDivorceTexte = mentionDivorceService.mentionRecenteTexte(acte);
             etat.mentionModifRegimeBiensTexte = mentionModifRegimeBiensService.mentionRecenteTexte(acte);
             etat.mentionOrdonRetranscriptionTexte = mentionOrdonRetranscriptionService.mentionRecenteTexte(acte);
+            etat.mentionRectificationTexte = mentionRectificationService.mentionRecenteTexte(acte);
+            etat.mentionAnnulationTexte = mentionAnnulationService.mentionRecenteTexte(acte);
         }
     
     }
@@ -332,6 +356,12 @@ public class ActeMariageEtatService {
         sb.append("\n");
         sb.append("\n");
         sb.append(mentionOrdonRetranscriptionService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionRectificationService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionAnnulationService.mentionRecenteTexte(acte));
         
         
         
@@ -350,6 +380,8 @@ public class ActeMariageEtatService {
        etat.mentionDivorceTexte = dto.getMentionDivorceTexte();
        etat.mentionModifRegimeBiensTexte = dto.getMentionModifRegimeBiensTexte();
        etat.mentionOrdonRetranscriptionTexte = dto.getMentionOrdonRetranscriptionTexte();
+       etat.mentionRectificationTexte = dto.getMentionRectificationTexte();
+       etat.mentionAnnulationTexte = dto.getMentionAnnulationTexte();
        
    }
     
@@ -364,6 +396,8 @@ public class ActeMariageEtatService {
         dto.setMentionDivorceTexte(etat.mentionDivorceTexte);
         dto.setMentionModifRegimeBiensTexte(etat.mentionModifRegimeBiensTexte);
         dto.setMentionOrdonRetranscriptionTexte(etat.mentionOrdonRetranscriptionTexte);
+        dto.setMentionRectificationTexte(etat.mentionRectificationTexte);
+        dto.setMentionAnnulationTexte(etat.mentionAnnulationTexte);
         dto.setCopieMentionsTextes(etat.copieMentionsTextes);
         dto.setNomsMariesTexte(etat.nomsMariesTexte);
         dto.setNumeroActeTexte(etat.numeroActeTexte);

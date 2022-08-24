@@ -66,6 +66,10 @@ public class ActeNaissanceEtat extends BaseEntity{
     public String mentionRectificationTexte;
     
     @Lob
+    @Column(name = "mention_annulation_texte")
+    public String mentionAnnulationTexte;
+    
+    @Lob
     @Column(name = "copie_mentions_textes")
     public String copieMentionsTextes;
     

@@ -187,7 +187,7 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
             RegistreDto registreDto = new RegistreDto();
             
             registreDto.setTypeRegistre(selectedType.getCode());
-            registreDto.setLibelle(selectedType.getLibelle());
+            registreDto.setLibelle(registreLibelle(selectedType));
             registreDto.setLocalite(currentLocalite.getLibelle());
             registreDto.setLocaliteID(currentLocalite.getId());
             registreDto.setCentre(currentCentre.getLibelle());
@@ -228,12 +228,14 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
         return type.getLibelle();
     }
     
+    /*
     private void clear(){
         annee = 0;
         premier = 0;
         dernier = 0;
         nombreDeFeuillets = 0;
     }
+    */
 
     public int getPremier() {
         return premier;

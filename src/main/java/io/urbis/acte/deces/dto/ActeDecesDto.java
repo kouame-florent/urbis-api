@@ -93,8 +93,8 @@ public class ActeDecesDto {
     private String officierEtatCivilQualite;
     private String officierEtatCivilTitre;
     
-    private Set<MentionAnnulationDecesDto> mentionAnnulationDecesDtos = new HashSet<>();
-    private Set<MentionRectificationDecesDto> mentionRectificationDecesDtos = new HashSet<>();
+    private Set<MentionAnnulationDecesDto> mentionAnnulationDtos = new HashSet<>();
+    private Set<MentionRectificationDecesDto> mentionRectificationDtos = new HashSet<>();
 
 
     public LocalDateTime getCreated() {
@@ -545,21 +545,23 @@ public class ActeDecesDto {
         this.officierEtatCivilTitre = officierEtatCivilTitre;
     }
 
-    public Set<MentionAnnulationDecesDto> getMentionAnnulationDecesDtos() {
-        return mentionAnnulationDecesDtos;
+    public Set<MentionAnnulationDecesDto> getMentionAnnulationDtos() {
+        return mentionAnnulationDtos;
     }
 
-    public void setMentionAnnulationDecesDtos(Set<MentionAnnulationDecesDto> mentionAnnulationDecesDtos) {
-        this.mentionAnnulationDecesDtos = mentionAnnulationDecesDtos;
+    public void setMentionAnnulationDtos(Set<MentionAnnulationDecesDto> mentionAnnulationDtos) {
+        this.mentionAnnulationDtos = mentionAnnulationDtos;
     }
 
-    public Set<MentionRectificationDecesDto> getMentionRectificationDecesDtos() {
-        return mentionRectificationDecesDtos;
+    public Set<MentionRectificationDecesDto> getMentionRectificationDtos() {
+        return mentionRectificationDtos;
     }
 
-    public void setMentionRectificationDecesDtos(Set<MentionRectificationDecesDto> mentionRectificationDecesDtos) {
-        this.mentionRectificationDecesDtos = mentionRectificationDecesDtos;
+    public void setMentionRectificationDtos(Set<MentionRectificationDecesDto> mentionRectificationDtos) {
+        this.mentionRectificationDtos = mentionRectificationDtos;
     }
+
+    
     
     
   

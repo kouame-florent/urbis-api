@@ -100,10 +100,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
     private MentionOrdonRetranscriptionDto ordonRetranscriptionDto = new MentionOrdonRetranscriptionDto();
     private MentionOrdonRetranscriptionDto selectedMentionOrdonRetranscriptionDto;
     
-    private MentionAnnulationMariageDto mentionAnnulationDto = new MentionAnnulationMariageDto();
+    private MentionAnnulationMariageDto annulationDto = new MentionAnnulationMariageDto();
     private MentionAnnulationMariageDto selectedMentionAnnulationDto;
     
-    private MentionRectificationMariageDto mentionRectificationDto = new MentionRectificationMariageDto();
+    private MentionRectificationMariageDto rectificationDto = new MentionRectificationMariageDto();
     private MentionRectificationMariageDto selectedMentionRectificationDto = new MentionRectificationMariageDto();
     
     
@@ -302,12 +302,12 @@ public class EditerBacking extends BaseBacking implements Serializable{
     public void ajouterMentionRectification(){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<MentionRectificationMariageDto>> violations = validator.validate(mentionRectificationDto);
+        Set<ConstraintViolation<MentionRectificationMariageDto>> violations = validator.validate(rectificationDto);
         if(violations.isEmpty()){
             
            // rectificationDtos.add(rectificationDto);
-            acteDto.getMentionRectificationMariageDtos().add(mentionRectificationDto);
-            mentionRectificationDto = new MentionRectificationMariageDto();
+            acteDto.getMentionRectificationDtos().add(rectificationDto);
+            rectificationDto = new MentionRectificationMariageDto();
         }else{
             violations.stream().forEach(v -> {
                 addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -318,12 +318,12 @@ public class EditerBacking extends BaseBacking implements Serializable{
     public void ajouterMentionAnnulation(){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<MentionAnnulationMariageDto>> violations = validator.validate(mentionAnnulationDto);
+        Set<ConstraintViolation<MentionAnnulationMariageDto>> violations = validator.validate(annulationDto);
         if(violations.isEmpty()){
             
            // rectificationDtos.add(rectificationDto);
-            acteDto.getMentionAnnulationMariageDtos().add(mentionAnnulationDto);
-            mentionAnnulationDto = new MentionAnnulationMariageDto();
+            acteDto.getMentionAnnulationDtos().add(annulationDto);
+            annulationDto = new MentionAnnulationMariageDto();
         }else{
             violations.stream().forEach(v -> {
                 addGlobalMessage(v.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -350,15 +350,15 @@ public class EditerBacking extends BaseBacking implements Serializable{
        
     }
     
-     public void deleteMentionRectification(){
+    public void deleteMentionRectification(){
         LOG.log(Level.INFO,"Deleting mention mariage...");
-        acteDto.getMentionRectificationMariageDtos().remove(mentionRectificationDto);
+        acteDto.getMentionRectificationDtos().remove(rectificationDto);
         
     }
     
     public void deleteMentionAnnulation(){
         LOG.log(Level.INFO,"Deleting mention annulation...");
-        acteDto.getMentionAnnulationMariageDtos().remove(mentionAnnulationDto);
+        acteDto.getMentionAnnulationDtos().remove(annulationDto);
         
     }
     
@@ -485,14 +485,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         this.selectedMentionOrdonRetranscriptionDto = selectedMentionOrdonRetranscriptionDto;
     }
 
-    public MentionAnnulationMariageDto getMentionAnnulationDto() {
-        return mentionAnnulationDto;
-    }
-
-    public void setMentionAnnulationDto(MentionAnnulationMariageDto mentionAnnulationDto) {
-        this.mentionAnnulationDto = mentionAnnulationDto;
-    }
-
+    
     public MentionAnnulationMariageDto getSelectedMentionAnnulationDto() {
         return selectedMentionAnnulationDto;
     }
@@ -503,20 +496,28 @@ public class EditerBacking extends BaseBacking implements Serializable{
 
    
 
-    public MentionRectificationMariageDto getMentionRectificationDto() {
-        return mentionRectificationDto;
-    }
-
-    public void setMentionRectificationDto(MentionRectificationMariageDto mentionRectificationDto) {
-        this.mentionRectificationDto = mentionRectificationDto;
-    }
-
     public MentionRectificationMariageDto getSelectedMentionRectificationDto() {
         return selectedMentionRectificationDto;
     }
 
     public void setSelectedMentionRectificationDto(MentionRectificationMariageDto selectedMentionRectificationDto) {
         this.selectedMentionRectificationDto = selectedMentionRectificationDto;
+    }
+
+    public MentionAnnulationMariageDto getAnnulationDto() {
+        return annulationDto;
+    }
+
+    public void setAnnulationDto(MentionAnnulationMariageDto annulationDto) {
+        this.annulationDto = annulationDto;
+    }
+
+    public MentionRectificationMariageDto getRectificationDto() {
+        return rectificationDto;
+    }
+
+    public void setRectificationDto(MentionRectificationMariageDto rectificationDto) {
+        this.rectificationDto = rectificationDto;
     }
 
     

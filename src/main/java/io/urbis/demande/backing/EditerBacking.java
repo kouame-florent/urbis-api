@@ -117,6 +117,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
             case MODIFICATION:
                 demandeDto = demandeService.findById(demandeID);
                 break;
+                
+            case CONSULTATION:
+                demandeDto = demandeService.findById(demandeID);
+                break;
            
             
         }
@@ -166,6 +170,14 @@ public class EditerBacking extends BaseBacking implements Serializable{
 
     public void setTypeRegistre(String typeRegistre) {
         this.typeRegistre = typeRegistre;
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public void setOperation(Operation operation) {
+        this.operation = operation;
     }
     
     

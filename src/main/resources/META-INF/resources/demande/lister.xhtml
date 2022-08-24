@@ -127,6 +127,38 @@ xmlns:p="http://primefaces.org/ui">
                         <p:fileDownload value="#{demandeListerBacking.downloadCopie()}"/>
                     </p:commandButton>
                 </p:column>
+                
+                <p:column  style="width: 2%">
+                    <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;"
+                                  title="options">
+                        
+                        <p:menuitem value="Consulter" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.openConsulterDemandeView(demande)}"/>
+                        
+                        <p:menuitem icon="pi pi-pencil" title="modifier" value="Modifier"
+                            action="#{demandeListerBacking.openModifierDemandeView(demande)}"            
+                            styleClass="edit-button rounded-button" process="@this">
+                            <p:ajax event="dialogReturn" update="messageForm :contentForm:demandesDatatable" />
+                            
+                        </p:menuitem>
+                        
+                        <p:divider/>
+                        
+                       
+                        <p:menuitem value="Supprimer" action="#{demandeListerBacking.supprimer(demande.id)}" 
+                                    process="@this" icon="pi pi-times">
+                             
+                             <p:confirm header="Confirmation" 
+                                           message="Voulez-vous vraiment supprimer la demande #{demande.numero} ?" 
+                                           icon="pi pi-exclamation-triangle"/>
+                            
+                            
+                        </p:menuitem>
+                        
+                    </p:menuButton>
+                </p:column>
+                
+             
              
             </p:dataTable>
             

@@ -13,6 +13,7 @@ import io.urbis.acte.naissance.domain.ActeNaissanceEtat;
 import io.urbis.acte.naissance.dto.ActeNaissanceEtatDto;
 import io.urbis.common.domain.Sexe;
 import io.urbis.acte.naissance.dto.MentionAdoptionDto;
+import io.urbis.acte.naissance.dto.MentionAnnulationDto;
 import io.urbis.acte.naissance.dto.MentionDecesDto;
 import io.urbis.acte.naissance.dto.MentionDissolutionMariageDto;
 import io.urbis.acte.naissance.dto.MentionLegitimationDto;
@@ -74,6 +75,9 @@ public class ActeNaissanceEtatService {
     
     @Inject
     MentionRectificationService mentionRectificationService;
+    
+    @Inject
+    MentionAnnulationService  mentionAnnulationService;
     
     @Inject
     MentionMariageService mentionMariageService;
@@ -169,6 +173,13 @@ public class ActeNaissanceEtatService {
            
         });
         
+        Set<MentionAnnulationDto> annulations = mentionAnnulationService.findByActeNaissance(acteID);
+        Optional<MentionAnnulationDto> optAnnulation = annulations.stream().max(Comparator.comparing(m -> m.getDateDressage()));
+        optAnnulation.ifPresent(mAnnulation -> { 
+            etat.mentionAnnulationTexte = mAnnulation.getDecision();
+           
+        });
+        
         
         etat.numeroActeTexte = numeroActeTexte(acte);
         etat.titreTexte = titreTexte(acte);
@@ -214,6 +225,8 @@ public class ActeNaissanceEtatService {
             
             etat.mentionRectificationTexte = mentionRectificationService.mentionRecenteTexte(acte);
             
+            etat.mentionAnnulationTexte = mentionAnnulationService.mentionRecenteTexte(acte);
+            
             
         }
     
@@ -235,6 +248,7 @@ public class ActeNaissanceEtatService {
        etat.mentionMarigeTexte = dto.getMentionMarigeTexte();
        etat.mentionReconnaissanceTexte = dto.getMentionReconnaissanceTexte();
        etat.mentionRectificationTexte = dto.getMentionRectificationTexte();
+       etat.mentionAnnulationTexte = dto.getMentionAnnulationTexte();
    }
    
     public ActeNaissanceEtatDto mapToDto(@NotNull ActeNaissanceEtat etat) throws SQLException, IOException{
@@ -261,6 +275,7 @@ public class ActeNaissanceEtatService {
         dto.setMentionMarigeTexte(etat.mentionMarigeTexte);
         dto.setMentionReconnaissanceTexte(etat.mentionReconnaissanceTexte);
         dto.setMentionRectificationTexte(etat.mentionRectificationTexte);
+        dto.setMentionAnnulationTexte(etat.mentionAnnulationTexte);
         dto.setNomCompletTexte(etat.nomCompletTexte);
         dto.setNumeroActeTexte(etat.numeroActeTexte);
         dto.setTitreTexte(etat.titreTexte);
@@ -426,6 +441,9 @@ public class ActeNaissanceEtatService {
         sb.append("\n");
         sb.append("\n");
         sb.append(mentionRectificationService.mentionRecenteTexte(acte));
+        sb.append("\n");
+        sb.append("\n");
+        sb.append(mentionAnnulationService.mentionRecenteTexte(acte));
         sb.append("\n");
         sb.append("\n");
         sb.append(mentionDecesService.mentionRecenteTexte(acte));

@@ -17,7 +17,8 @@ import javax.ws.rs.core.Response;
 public enum Operation {
     
     CREATION("Création"), 
-    MODIFICATION("Modification");
+    MODIFICATION("Modification"),
+    CONSULTATION("Consultation");
     
     private final String libelle;
     

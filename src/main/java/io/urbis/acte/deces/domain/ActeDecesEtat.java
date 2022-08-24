@@ -47,6 +47,13 @@ public class ActeDecesEtat extends BaseEntity {
     @Column(name = "copie_titre_texte")
     public String copieTitreTexte;
     
+    @Lob
+    @Column(name = "mention_rectification_texte")
+    public String mentionRectificationTexte;
+    
+    @Lob
+    @Column(name = "mention_annulation_texte")
+    public String mentionAnnulationTexte;    
      
     @Lob
     @Column(name = "copie_mentions_textes")

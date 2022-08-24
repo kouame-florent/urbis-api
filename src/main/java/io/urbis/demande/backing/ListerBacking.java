@@ -72,7 +72,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @ConfigProperty(name = "URBIS_TENANT", defaultValue = "standard")
     String tenant;
     
-   // private String selectedActeID;
+    private String selectedActeID;
     
     private DemandeDto selectedDemande;
     private String selectedDemandeID;
@@ -138,7 +138,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         Path path = null;
         try {
             TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
-            String pathString = demandeService.print(selectedDemandeID,typeRegistre);
+            String pathString = demandeService.print(selectedActeID,typeRegistre);
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -174,7 +174,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         Path path = null;
         try {
             TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
-            String pathString = demandeService.printCopie(selectedDemandeID,typeRegistre);
+            String pathString = demandeService.printCopie(selectedActeID,typeRegistre);
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -272,6 +272,14 @@ public class ListerBacking extends BaseBacking implements Serializable{
 
     public void setSelectedDemandeID(String selectedDemandeID) {
         this.selectedDemandeID = selectedDemandeID;
+    }
+
+    public String getSelectedActeID() {
+        return selectedActeID;
+    }
+
+    public void setSelectedActeID(String selectedActeID) {
+        this.selectedActeID = selectedActeID;
     }
 
    

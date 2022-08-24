@@ -114,7 +114,7 @@ xmlns:p="http://primefaces.org/ui">
                     <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
                                      styleClass="edit-button ui-button-secondary ui-button-outlined">
-                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedDemandeID}"/>
+                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
                         <p:fileDownload value="#{demandeListerBacking.download()}"/>
                     </p:commandButton>
                 </p:column>
@@ -123,7 +123,7 @@ xmlns:p="http://primefaces.org/ui">
                     <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
                                      styleClass="edit-button ui-button-success ui-button-outlined">
-                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedDemandeID}"/>
+                        <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
                         <p:fileDownload value="#{demandeListerBacking.downloadCopie()}"/>
                     </p:commandButton>
                 </p:column>

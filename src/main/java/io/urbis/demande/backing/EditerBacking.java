@@ -131,6 +131,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
     public void closeView(){
         PrimeFaces.current().dialog().closeDynamic("");
     }
+    
+    
 
     public String getOperationParam() {
         return operationParam;

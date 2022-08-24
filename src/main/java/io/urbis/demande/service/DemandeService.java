@@ -28,6 +28,7 @@ import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -90,21 +91,7 @@ public class DemandeService {
         
     public void creer(@NotNull DemandeDto dto) throws EntityNotFoundException{
         
-        TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
-        log.infof("---->> TYPE REGISTRE: %s", typeRegistre);
-        log.infof("---->> NUMERO ACTE: %s", dto.getNumeroActe());
-        log.infof("---->> DATE OUVERTURE REGISTRE: %s", dto.getDateOuvertureRegistre());
-        
-        Acte acte = null;
-        
-        try{
-            
-            acte = acteService.findByDemandeCreteria(dto.getNumeroActe(),typeRegistre,
-                            dto.getDateOuvertureRegistre());
-           
-        }catch(EntityNotFoundException ex){
-            throw  ex;
-        }
+        Acte acte = findActeByDemande(dto);
        
         if(acte != null){
             Demandeur demandeur = new Demandeur();
@@ -136,6 +123,28 @@ public class DemandeService {
         
        
     
+    }
+    
+     
+    
+    private Acte findActeByDemande(@NotNull DemandeDto dto){
+        TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+        log.infof("---->> TYPE REGISTRE: %s", typeRegistre);
+        log.infof("---->> NUMERO ACTE: %s", dto.getNumeroActe());
+        log.infof("---->> DATE OUVERTURE REGISTRE: %s", dto.getDateOuvertureRegistre());
+        
+        Acte acte = null;
+        
+        try{
+            
+            acte = acteService.findByDemandeCreteria(dto.getNumeroActe(),typeRegistre,
+                            dto.getDateOuvertureRegistre());
+           
+        }catch(EntityNotFoundException ex){
+            throw  ex;
+        }
+        
+        return acte;
     }
     
     public DemandeDto findById(@NotBlank String id){
@@ -214,8 +223,11 @@ public class DemandeService {
     public DemandeDto mapToDto(@NotNull Demande demande){
         
         DemandeDto dto = new DemandeDto();
-        
-        dto.setActeID(demande.id);
+        Acte acte = acteService.findByDemandeCreteria(demande.numeroActe, 
+                demande.typeRegistre, demande.dateOuvertureRegistre);
+                
+        dto.setId(demande.id);
+        dto.setActeID(acte.id);
         dto.setCreated(demande.created);
         dto.setDateHeureDemande(demande.dateHeureDemande);
         dto.setDateHeureRdvRetrait(demande.dateHeureRdvRetrait);

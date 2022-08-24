@@ -28,9 +28,9 @@ public class ActeService {
     @Inject
     EntityManager em;
     
-    public Acte findByDemandeCreteria(int numero,TypeRegistre typeRegistre, LocalDate dateOuvertureRegistre){
+    public Acte findByDemandeCreteria(int numeroActe,TypeRegistre typeRegistre, LocalDate dateOuvertureRegistre){
         TypedQuery<Acte> query =  em.createNamedQuery("Acte.findByDemandeCreteria", Acte.class);
-        query.setParameter("numero",numero);
+        query.setParameter("numero",numeroActe);
         query.setParameter("dateOuvertureRegistre", dateOuvertureRegistre);
         query.setParameter("typeRegistre", typeRegistre);
         

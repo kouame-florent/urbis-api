@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition>
+  
+     <div class="p-d-flex p-jc-end">
+        <p:menuButton icon="pi pi-th-large" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem">
+            <p:menuitem value="Registres" process="@this"
+                        action="#{globalMenuBacking.openRegistreView()}" 
+                        icon="pi pi-book"/>
+            
+            <p:menuitem value="Demandes" process="@this"
+                        action="#{globalMenuBacking.openDemandeView()}" 
+                        icon="pi pi-id-card"/>
+             
+        </p:menuButton>
+        <p:menuButton icon="pi pi-cog" style="width: 100%;white-space: nowrap;width: auto !important;">
+            <p:menuitem value="Paramètres sectoriels" process="@this"
+                        action="#{globalMenuBacking.openParamsView()}" 
+                        icon="pi pi-box" style="width: 100%;white-space: nowrap;width: auto !important;"/>
+            
+            <p:menuitem value="Utilisateurs" process="@this"
+                        action="#{globalMenuBacking.openUserView()}" 
+                        icon="pi pi-users"/>
+
+            <p:menuitem value="Mon compte" process="@this" 
+                         icon="pi pi-user"/>
+        </p:menuButton>      
+     </div>
+     
+    
+   
+</ui:composition>  
+ 
+</html>
+

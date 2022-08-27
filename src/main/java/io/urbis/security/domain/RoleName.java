@@ -9,8 +9,10 @@ package io.urbis.security.domain;
  *
  * @author florent
  */
-public enum Roles {
-    USER,
+public enum RoleName {
+    ANONYME,
+    ADMIN,
+    UTILISATEUR,
     CHEF_ETAT_CIVIL,
     AGENT_ETAT_CIVIL,
     OFFICIER_ETAT_CIVIL;

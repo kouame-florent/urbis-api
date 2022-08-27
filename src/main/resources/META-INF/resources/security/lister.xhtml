@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/default-tpl.xhtml">
+     
+     <ui:define name="title">
+         GESTION DES UTILISATEURS
+     </ui:define>
+     
+     <ui:define name="metadata">
+         <f:metadata>
+            <f:viewAction action="#{userListerBacking.onload}" />
+        </f:metadata>
+     </ui:define>
+    
+    <ui:define name="content">
+        
+        <h:form id="messageForm">
+            <p:growl globalOnly="true" life="15000" showDetail="true"/>        
+        </h:form>
+       
+        <h:form id="contentForm">
+          <ui:include src="../common/menu-global.xhtml"/>
+          
+          <p:spacer height="2"/>
+            
+           <p:toolbar>
+                <p:toolbarGroup>
+                    
+                    <p:commandButton value="Nouvelle demande" icon="pi pi-plus"
+                                     actionListener="#{userListerBacking.openCreerView()}"
+                         styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:ajax event="dialogReturn" listener="#{userListerBacking.onNew}"
+                                 update="messageForm :contentForm:datatable"/>
+                    </p:commandButton>
+                   
+                  
+                </p:toolbarGroup>
+                    
+             
+            </p:toolbar>
+      
+             
+                 
+            <p:dataTable id="datatable"  var="user" 
+                         value="#{userListerBacking.lazyUserDataModel}"
+                         selection="#{userListerBacking.selectedUser}" rowKey="#{user.id}" paginator="true"
+                        rows="25" rowSelectMode="add" paginatorPosition="bottom">
+                
+                
+                <p:column headerText="Login">
+                    <h:outputText value="#{user.name}"/>
+                </p:column>
+                
+                <p:column headerText="Roles">
+                    <h:outputText value="#{user.rolesView}"/>
+                </p:column>
+               
+                
+                <p:column  style="width: 2%">
+                    <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;"
+                                  title="options">
+                        
+                        <p:menuitem value="Consulter" process="@this"  icon="pi pi-book"
+                                    action="#{userListerBacking.openConsulterView(user)}"/>
+                        
+                        <p:menuitem icon="pi pi-pencil" title="modifier" value="Modifier"
+                            action="#{userListerBacking.openModifierView(user)}"            
+                            styleClass="edit-button rounded-button" process="@this">
+                            <p:ajax event="dialogReturn" update="messageForm :contentForm:datatable" />
+                            
+                        </p:menuitem>
+                        
+                        <p:divider/>
+                        
+                       
+                        <p:menuitem value="Supprimer" action="#{userListerBacking.supprimer(user.id)}" 
+                                    process="@this" icon="pi pi-times">
+                             
+                             <p:confirm header="Confirmation" 
+                                           message="Voulez-vous vraiment supprimer l'utilisatur #{user.name} ?" 
+                                           icon="pi pi-exclamation-triangle"/>
+                            
+                            
+                        </p:menuitem>
+                        
+                    </p:menuButton>
+                </p:column>
+                
+             
+             
+            </p:dataTable>
+            
+             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" />
+            </p:confirmDialog>
+
+        </h:form>
+         
+        <script>
+            function start() {
+                    PF('statusDialog').show();
+            }
+            function stop() {
+                    PF('statusDialog').hide();
+            }
+	</script>
+        
+       
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

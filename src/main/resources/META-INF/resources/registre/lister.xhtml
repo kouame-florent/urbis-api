@@ -25,13 +25,9 @@ xmlns:p="http://primefaces.org/ui">
                
         <h:form id="contentForm">
            
-            <div class="p-d-flex p-jc-end">
-                <p:commandButton action="#{registreListerBacking.openDemandeView()}" process="@this" ajax="false"
-                                     icon="pi pi-th-large" title="demandes" style="margin-right: .5rem"/>
-                <p:commandButton action="#{registreListerBacking.showParamsView()}" 
-                                     icon="pi pi-cog" title="paramètres" />
-                
-            </div>
+               
+            <ui:include src="../common/menu-global.xhtml"/>
+            
             
             <p:spacer height="2"/>
             <p:fieldset legend="Type de registres">

@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition template="../templates/dialog-tpl.xhtml">
+     
+     <ui:define name="title">
+         #{demandeEditerBacking.operation.libelle}
+     </ui:define>
+     
+     <ui:define name="metadata">
+         <f:metadata>
+            <f:viewParam name="operation" value="#{demandeEditerBacking.operationParam}" />
+            <f:viewParam name="type" value="#{demandeEditerBacking.typeRegistre}" />
+            <f:viewParam name="demande-id" value="#{demandeEditerBacking.demandeID}" />
+            <f:viewAction action="#{demandeEditerBacking.onload}" />
+        </f:metadata>
+     </ui:define>
+    
+    <ui:define name="content">
+        
+        
+        
+        <h:form id="messageForm">
+                <p:growl globalOnly="true" life="15000" />        
+        </h:form>
+             
+        <h:form id="contentForm">  
+           
+            <div class="p-d-flex p-jc-end">
+                <p:commandButton title="fermer" action="#{demandeEditerBacking.closeView()}" process="@this" 
+                                     icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" >
+                        
+                </p:commandButton>
+            </div>
+            
+            <p:focus context="contentForm"/>
+          
+            
+            <p:spacer height="2" />
+               
+      
+              <p:fieldset legend="Demande">
+                
+                <div class="ui-fluid p-formgrid p-grid">
+                    
+                
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="numeroActe" styleClass="p-d-block">Numéro acte</p:outputLabel>
+                    <p:inputText id="numeroActe" value="#{demandeEditerBacking.demandeDto.numeroActe}"
+                                 required="true" styleClass="p-d-block"/>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="dateOuvertureRegistre" styleClass="p-d-block">Date ouverture registre</p:outputLabel>   
+                    <p:inputMask id="dateOuvertureRegistre" value="#{demandeEditerBacking.demandeDto.dateOuvertureRegistre}"
+                                         mask="99/99/9999" required="true">
+                                <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                    </p:inputMask>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="numero" styleClass="p-d-block">Numéro demande</p:outputLabel>
+                    <p:inputText id="numero" value="#{demandeEditerBacking.demandeDto.numero}"
+                                 disabled="true" required="true" styleClass="p-d-block"/>
+
+                </div>
+                    
+               
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="dateHeureDemande" styleClass="p-d-block">Date heure demande</p:outputLabel>   
+                    <p:inputMask id="dateHeureDemande" value="#{demandeEditerBacking.demandeDto.dateHeureDemande}"
+                                         mask="99/99/9999 99:99:99" required="true">
+                                <f:convertDateTime locale="fr_FR" type="localDateTime" pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </p:inputMask>
+
+                </div>
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="dateHeureRdvRetrait" styleClass="p-d-block">Date heure rendez-vous retrait</p:outputLabel>
+                    <p:inputMask id="dateHeureRdvRetrait" value="#{demandeEditerBacking.demandeDto.dateHeureRdvRetrait}"
+                                         mask="99/99/9999 99:99:99" required="true">
+                                <f:convertDateTime locale="fr_FR" type="localDateTime" pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </p:inputMask>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="nombreExtraits" styleClass="p-d-block">Nombre d'extraits</p:outputLabel>
+                    <p:inputText id="nombreExtraits" value="#{demandeEditerBacking.demandeDto.nombreExtraits}" required="true"
+                                  styleClass="p-d-block"/>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="nombreCopies" styleClass="p-d-block">Nombre de copie</p:outputLabel>
+                    <p:inputText id="nombreCopies" value="#{demandeEditerBacking.demandeDto.nombreCopies}" required="true"
+                                  styleClass="p-d-block"/>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurNom" styleClass="p-d-block">Nom demandeur</p:outputLabel>
+                    <p:inputText id="demandeurNom" value="#{demandeEditerBacking.demandeDto.demandeurNom}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurPrenoms" styleClass="p-d-block">Prénoms demandeur</p:outputLabel>
+                    <p:inputText id="demandeurPrenoms" value="#{demandeEditerBacking.demandeDto.demandeurPrenoms}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurEmail" styleClass="p-d-block">Email demandeur</p:outputLabel>
+                    <p:inputText id="demandeurEmail" value="#{demandeEditerBacking.demandeDto.demandeurEmail}"  required="true" 
+                                    styleClass="p-d-block"/>
+
+                </div>
+                    
+               
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurNumeroTelephone" styleClass="p-d-block">Numéro téléphone demandeur</p:outputLabel>
+                    <p:inputText id="demandeurNumeroTelephone" value="#{demandeEditerBacking.demandeDto.demandeurNumeroTelephone}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurQualite" styleClass="p-d-block">Qualité demandeur</p:outputLabel>
+                    <p:inputText id="demandeurQualite" value="#{demandeEditerBacking.demandeDto.demandeurQualite}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                    
+                <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurTypePiece" styleClass="p-d-block">Type pièce demandeur</p:outputLabel>
+                    <p:inputText id="demandeurTypePiece" value="#{demandeEditerBacking.demandeDto.demandeurTypePiece}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                    
+                 <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurNumeroPiece" styleClass="p-d-block">Numéro pièce demandeur</p:outputLabel>
+                    <p:inputText id="demandeurNumeroPiece" value="#{demandeEditerBacking.demandeDto.demandeurNumeroPiece}"  required="true" 
+                                   styleClass="p-d-block"/>
+
+                </div>
+                    
+
+            </div>
+
+           </p:fieldset>
+            
+           <p:spacer height="2"/>
+            <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-field p-col">
+                    <p:commandButton value="Creer la demande" process="@form" action="#{demandeEditerBacking.creer()}"
+                                     rendered="#{demandeEditerBacking.renderedCreerButton()}"
+                                     update="@form :messageForm"  icon="pi pi-check" />
+                    <p:commandButton value="Modifier" process="@form" action="#{demandeEditerBacking.modifier()}"
+                                     rendered="#{demandeEditerBacking.renderedModifierButton()}"
+                                     update="@form :messageForm"  icon="pi pi-check" />
+                
+                </div>
+                
+            </div>
+            
+       </h:form>
+        
+    </ui:define>
+
+</ui:composition>  
+ 
+</html>
+

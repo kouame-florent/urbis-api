@@ -10,17 +10,17 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <myfaces.version>2.3-next-M6</myfaces.version>
+    <omnifaces-quarkus.version>1.4.0</omnifaces-quarkus.version>
+    <omnifaces.version>3.13</omnifaces.version>
+    <primefaces-extensions.version>11.0.2</primefaces-extensions.version>
+    <primefaces.version>11.0.0</primefaces.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>2.9.2.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
-    <primefaces.version>11.0.0</primefaces.version>
-    <primefaces-extensions.version>11.0.2</primefaces-extensions.version>
-    <myfaces.version>2.3-next-M6</myfaces.version>
-    <omnifaces-quarkus.version>1.4.0</omnifaces-quarkus.version>
-    <omnifaces.version>3.13</omnifaces.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -34,8 +34,8 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-    <dependency> 
-      <groupId>io.quarkus</groupId> 
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
     </dependency>
     <dependency>
@@ -44,153 +44,117 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-security-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
-    
-    <!-- Hibernate ORM specific dependencies -->
     <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-hibernate-orm</artifactId>
-    </dependency>
-
-    <!-- JDBC driver dependencies -->
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-jdbc-mariadb</artifactId>
-    </dependency>
-    
-    <!-- Hibernate ORM specific dependencies -->
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-hibernate-orm-panache</artifactId>
-    </dependency> 
-    
-   
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-smallrye-openapi</artifactId>
-    </dependency>
-   
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-resteasy-jackson</artifactId>
-    </dependency>
-        
-
-    <dependency> 
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-rest-client</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-orm</artifactId>
     </dependency>
     <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-rest-client-jackson</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-elytron-security-properties-file</artifactId>
-    </dependency>
-    
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-hibernate-validator</artifactId> 
-    </dependency>
-    
-   <!--
-    <dependency> 
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-oidc</artifactId>
-    </dependency>
-    -->
-    
-    <!--
-    <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-keycloak-authorization</artifactId>
-    </dependency>
-    -->
-
-    <dependency>
-        <groupId>org.primefaces</groupId>
-        <artifactId>primefaces</artifactId>
-        <version>${primefaces.version}</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-mariadb</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.primefaces.extensions</groupId>
-        <artifactId>primefaces-extensions</artifactId>
-        <version>${primefaces-extensions.version}</version>
-        <scope>compile</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.omnifaces</groupId>
-        <artifactId>omnifaces</artifactId>
-        <version>${omnifaces.version}</version>
-        <scope>compile</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>com.github.adminfaces</groupId>
-        <artifactId>quarkus-omnifaces</artifactId>
-        <version>${omnifaces-quarkus.version}</version>
-    </dependency>
-    
-    <dependency>
-        <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
-        <artifactId>myfaces-quarkus</artifactId>
-        <version>${myfaces.version}</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
     <dependency>
-        <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
-        <artifactId>myfaces-quarkus-deployment</artifactId>
-        <version>${myfaces.version}</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
-    
     <dependency>
-        <groupId>org.webjars.npm</groupId>
-        <artifactId>primeflex</artifactId>
-        <version>2.0.0</version>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-jackson</artifactId>
     </dependency>
-
     <dependency>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-test-security</artifactId>
-        <scope>test</scope>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-elytron-security-properties-file</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>${primefaces.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.primefaces.extensions</groupId>
+      <artifactId>primefaces-extensions</artifactId>
+      <version>${primefaces-extensions.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.omnifaces</groupId>
+      <artifactId>omnifaces</artifactId>
+      <version>${omnifaces.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.adminfaces</groupId>
+      <artifactId>quarkus-omnifaces</artifactId>
+      <version>${omnifaces-quarkus.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
+      <artifactId>myfaces-quarkus</artifactId>
+      <version>${myfaces.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
+      <artifactId>myfaces-quarkus-deployment</artifactId>
+      <version>${myfaces.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>primeflex</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-test-security</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
-    
     <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>provided</scope>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+      <scope>provided</scope>
     </dependency>
- 
     <dependency>
-        <groupId>com.ibm.icu</groupId>
-        <artifactId>icu4j</artifactId>
-        <version>69.1</version>
+      <groupId>com.ibm.icu</groupId>
+      <artifactId>icu4j</artifactId>
+      <version>69.1</version>
     </dependency>
-    
     <dependency>
-        <groupId>net.sf.jasperreports</groupId>
-        <artifactId>jasperreports</artifactId>
-        <version>6.19.1</version>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports</artifactId>
+      <version>6.19.1</version>
     </dependency>
-    
     <dependency>
-        <groupId>net.sf.jasperreports</groupId>
-        <artifactId>jasperreports-fonts</artifactId>
-        <version>6.19.1</version>
+      <groupId>net.sf.jasperreports</groupId>
+      <artifactId>jasperreports-fonts</artifactId>
+      <version>6.19.1</version>
     </dependency>
-
-    
   </dependencies>
   <build>
     <plugins>

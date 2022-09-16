@@ -25,13 +25,14 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author florent
  */
-@QuarkusTest
+//@QuarkusTest
 public class RegistreServiceTest {
 
     private static final Logger LOG = Logger.getLogger(RegistreServiceTest.class.getName());
@@ -40,9 +41,9 @@ public class RegistreServiceTest {
     RegistreService registreService;
     
    
-    @BeforeAll
-    @Transactional
-    @TestSecurity(user = "lisa", roles = {"admin", "user"})
+    //@BeforeAll
+    //@Transactional
+    //@TestSecurity(user = "lisa", roles = {"admin", "user"})
     public static void createGlobalParams(){
         Localite localite = new Localite("l-01", "gagnoa", TypeLocalite.COMMUNE);
         localite.id = "f79908c8-23b8-4946-a38e-5e0ac889ef25";
@@ -73,9 +74,10 @@ public class RegistreServiceTest {
     }
     
     
-    @Test
-    @Transactional
-    @TestSecurity(user = "lisa", roles = {"admin", "user"})
+    
+    //@Test
+    //@Transactional
+    //@TestSecurity(user = "lisa", roles = {"admin", "user"})
     public void creerRegistresTest(){
         
         LOG.log(Level.INFO, "testing creer registre");
@@ -96,9 +98,10 @@ public class RegistreServiceTest {
         
     }
     
-    @Test
-    @Transactional
-    @TestSecurity(user = "lisa", roles = {"admin", "user"})
+    
+    //@Test
+    //@Transactional
+    //@TestSecurity(user = "lisa", roles = {"admin", "user"})
     public void creerSerieRegistresTest(){
         
         String[] ids = creerSerieRegistre();

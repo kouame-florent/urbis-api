@@ -127,7 +127,7 @@ public class DemandeService {
     
      
     
-    private Acte findActeByDemande(@NotNull DemandeDto dto){
+    public Acte findActeByDemande(@NotNull DemandeDto dto){
         TypeRegistre typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
         log.infof("---->> TYPE REGISTRE: %s", typeRegistre);
         log.infof("---->> NUMERO ACTE: %s", dto.getNumeroActe());
@@ -326,7 +326,7 @@ public class DemandeService {
        return tpl;
    }
    
-   private Acte getActe(@NotNull String acteID,TypeRegistre typeRegistre){
+   public Acte getActe(@NotNull String acteID,TypeRegistre typeRegistre){
        
        log.infof("--->> ACTE ID: %s", acteID);
        Acte acte = null;

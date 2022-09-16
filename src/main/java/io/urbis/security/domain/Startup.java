@@ -38,6 +38,7 @@ public class Startup {
             User user = new User();
             user.name = "admin";
             user.password = BcryptUtil.bcryptHash("admin");
+            user.updatedBy = "system";
             
             PanacheQuery<Role> rq = Role.find("role", RoleName.ADMIN.name());
             Role role = rq.firstResult();
@@ -70,6 +71,7 @@ public class Startup {
         Role role = new Role();
         
         role.role = roleName.name();
+        role.updatedBy = "system";
         
         role.persist();
     }

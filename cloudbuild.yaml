@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build','--file','src/main/docker/Dockerfile.jvm', '-t', 'europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209161049', '.' ]
+images:
+- 'europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209161049'

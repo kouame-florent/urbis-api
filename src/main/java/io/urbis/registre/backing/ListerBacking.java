@@ -25,16 +25,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotBlank;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.omnifaces.util.Ajax;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
@@ -74,8 +71,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @Inject
     LazyRegistreDataModel lazyRegistreDataModel;
     
-    @Inject
-    FilterData filterData;
+   // @Inject
+   // FilterData filterData;
     
     @Inject
     FacesContext facesCtx;
@@ -89,6 +86,9 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     @Inject
     SecurityIdentity identity;
+    
+    @Inject
+    ListerContext pageCtx;
    
     
    // private LazyDataModel<RegistreDto> lazyModel;
@@ -170,11 +170,22 @@ public class ListerBacking extends BaseBacking implements Serializable{
         }
        */
        
+       typesRegistre = typeRegistreService.findAll();
        
-        typesRegistre = typeRegistreService.findAll();
+       LOG.log(Level.INFO, "--- POST CONSTRUCT SELECTED TYPE: {0}", pageCtx.getSelectedType());   
+       
+       if(pageCtx.getLastNavigationURL().isBlank()){
+            
+            lazyRegistreDataModel.setTypeRegistre("naissance");  
+            selectedType = retrieveSelectedType(TypeRegistre.NAISSANCE.name());
+       }else{
+           lazyRegistreDataModel.setTypeRegistre(pageCtx.getSelectedType());  
+           selectedType = retrieveSelectedType(pageCtx.getSelectedType());
+       }
+       
+       
+       
         
-        lazyRegistreDataModel.setTypeRegistre("naissance");  
-        selectedType = defaultSelectedType();
         
     }
     
@@ -202,24 +213,18 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     
-    public TypeRegistreDto defaultSelectedType(){
+    public TypeRegistreDto retrieveSelectedType(String typeCode){
        for(TypeRegistreDto t : typesRegistre){
-           if(t.getCode().equals(TypeRegistre.NAISSANCE.name())){
+           if(t.getCode().equals(typeCode)){
                return t;
            }
        }
        
        throw new IllegalStateException("cannot get type registre 'NAISSANCE'");
-       /*
-       return typesRegistre.stream()
-                .peek(c -> LOG.log(Level.INFO, "TYPE NAME: {0}", c.getCode()))
-                .filter(t -> t.getCode().equals(TypeRegistre.NAISSANCE.name()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("cannot get type registre 'NAISSANCE'"));
-       */
+      
     }
     
-    
+    /*
     public void filtrer(){
         LOG.log(Level.INFO, "FILTRER...");
        
@@ -240,11 +245,13 @@ public class ListerBacking extends BaseBacking implements Serializable{
         lazyRegistreDataModel.setNumero(0);
     }
     
+    */
+    
     
     public void onTypeRegistreSelect(){
         LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
         lazyRegistreDataModel.setTypeRegistre(selectedType.getCode());
-       // lazyRegistreDataModel.setAnnee(2018);
+
         
     }
     
@@ -402,6 +409,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
                 break;
         }
         
+        savePageContext(uri);
+        
         LOG.log(Level.INFO, "--- URI FROM OPEN LIST ACTES {0}", uri);   
         return uri;
     }
@@ -465,6 +474,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         
         return  url;
+    }
+    
+    private void savePageContext(String navURL){
+        pageCtx.setSelectedType(selectedType.getCode());
+        LOG.log(Level.INFO, "--- SELECTED TYPEL: {0}", pageCtx.getSelectedType());   
+        pageCtx.setLastNavigationURL(navURL);
     }
     
     public boolean renderGererActesMenu(RegistreDto registreDto){
@@ -678,6 +693,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
 
     public void setSelectedType(TypeRegistreDto selectedType) {
         this.selectedType = selectedType;
+        pageCtx.setSelectedType(selectedType.getCode());
     }
 
     public List<TypeRegistreDto> getTypesRegistre() {
@@ -688,17 +704,14 @@ public class ListerBacking extends BaseBacking implements Serializable{
         return lazyRegistreDataModel;
     }
 
-    public FilterData getFilterData() {
-        return filterData;
+    public ListerContext getPageCtx() {
+        return pageCtx;
     }
 
-    public void setFilterData(FilterData filterData) {
-        this.filterData = filterData;
+    public void setPageCtx(ListerContext pageCtx) {
+        this.pageCtx = pageCtx;
     }
 
-    
-
-   
     
     
 }

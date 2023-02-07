@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+xmlns:f="http://xmlns.jcp.org/jsf/core"
+xmlns:p="http://primefaces.org/ui">
+    
+ <ui:composition>
+
+        <div class="ui-fluid p-formgrid p-grid">
+            
+            <div class="p-field p-col">
+                <p:outputLabel for="extraitExtraordinaire" styleClass="p-d-block">Extraits extraordinaires</p:outputLabel>
+                <p:inputText id="extraitExtraordinaire" value="#{acteNaissanceEditerBacking.extraitsExtraordinaires}"  required="true" styleClass="p-d-block"/>
+
+            </div>
+            <div class="p-field p-col">
+                <p:outputLabel for="copieActe" styleClass="p-d-block">Copies d'acte</p:outputLabel>
+                <p:inputText id="copieActe" value="#{acteNaissanceEditerBacking.nombreCopies}" required="true" styleClass="p-d-block"/>   
+            </div>
+
+            <div class="p-field p-col">
+                <p:outputLabel for="extraitOrdinaire" styleClass="p-d-block">Extraits ordinaires</p:outputLabel>
+                <p:inputText id="extraitOrdinaire" value="#{acteNaissanceEditerBacking.extraitsOrdinaires}" required="true" styleClass="p-d-block"/>
+            </div>
+
+        </div>
+
+</ui:composition>  
+ 
+</html>
+

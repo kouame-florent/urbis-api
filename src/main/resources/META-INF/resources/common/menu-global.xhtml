@@ -9,16 +9,15 @@ xmlns:p="http://primefaces.org/ui">
  <ui:composition>
   
      <div class="p-d-flex p-jc-end">
-        <p:menuButton icon="pi pi-th-large" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem">
-            <p:menuitem value="Registres" process="@this"
+         <p:commandButton value="Registres" process="@this" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem"
                         action="#{globalMenuBacking.openRegistreView()}" 
                         icon="pi pi-book"/>
-            
-            <p:menuitem value="Demandes" process="@this"
+         
+        <p:commandButton value="Demandes" process="@this" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem"
                         action="#{globalMenuBacking.openDemandeView()}" 
                         icon="pi pi-id-card"/>
              
-        </p:menuButton>
+      
         <p:menuButton icon="pi pi-cog" style="width: 100%;white-space: nowrap;width: auto !important;">
             <p:menuitem value="Paramètres sectoriels" process="@this"
                         action="#{globalMenuBacking.openParamsView()}" 

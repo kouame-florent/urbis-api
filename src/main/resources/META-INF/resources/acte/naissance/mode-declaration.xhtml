@@ -7,38 +7,57 @@ xmlns:f="http://xmlns.jcp.org/jsf/core"
 xmlns:p="http://primefaces.org/ui">
     
  <ui:composition>
-    <p:fieldset>
-        <div class="ui-fluid p-formgrid p-grid">
-            <div class="p-field p-col">
-                <p:outputLabel for="modeDeclaration" >Mode déclaration</p:outputLabel>
-                <p:selectOneRadio id="modeDeclaration" value="#{acteNaissanceEditerBacking.acteNaissanceDto.modeDeclaration}" 
-                                    converter="omnifaces.SelectItemsConverter"
-                                    required="true" requiredMessage="Ce champ est obligatoire">
-                    <p:ajax update="contentForm:jugementOutputPanel"/>
-                      <f:selectItems value="#{acteNaissanceEditerBacking.modesDeclaration}" var="mode" 
-                                     itemLabel="#{mode.libelle}" itemValue="#{mode.code}"/>
-                  </p:selectOneRadio>
-                <p:message for="modeDeclaration"/>
-
-            </div>
-            <div class="p-field p-col">
-                <p:outputLabel for="extraitExtraordinaire" styleClass="p-d-block">Extraits extraordinaires</p:outputLabel>
-                <p:inputText id="extraitExtraordinaire" value="#{acteNaissanceEditerBacking.extraitsExtraordinaires}"  required="true" styleClass="p-d-block"/>
-
-            </div>
-            <div class="p-field p-col">
-                <p:outputLabel for="copieActe" styleClass="p-d-block">Copies d'acte</p:outputLabel>
-                <p:inputText id="copieActe" value="#{acteNaissanceEditerBacking.nombreCopies}" required="true" styleClass="p-d-block"/>   
-            </div>
-
-            <div class="p-field p-col">
-                <p:outputLabel for="extraitOrdinaire" styleClass="p-d-block">Extraits ordinaires</p:outputLabel>
-                <p:inputText id="extraitOrdinaire" value="#{acteNaissanceEditerBacking.extraitsOrdinaires}" required="true" styleClass="p-d-block"/>
-            </div>
+   
+    <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-lg-6">
+            <p:outputLabel for="modeDeclaration" >Mode déclaration</p:outputLabel>
+            <p:selectOneRadio id="modeDeclaration" value="#{acteNaissanceEditerBacking.acteNaissanceDto.modeDeclaration}" 
+                                converter="omnifaces.SelectItemsConverter"
+                                required="true" requiredMessage="Ce champ est obligatoire">
+                <p:ajax update="contentForm:jugementOutputPanel"/>
+                  <f:selectItems value="#{acteNaissanceEditerBacking.modesDeclaration}" var="mode" 
+                                 itemLabel="#{mode.libelle}" itemValue="#{mode.code}"/>
+              </p:selectOneRadio>
+            <p:message for="modeDeclaration"/>
 
         </div>
+        <div class="p-field p-lg-6">
+            <p:outputLabel for="lienParenteDeclarant">Lien parenté déclarant</p:outputLabel>
+            <p:selectOneRadio id="lienParenteDeclarant" 
+                              value="#{acteNaissanceEditerBacking.acteNaissanceDto.declarantLien}" 
+                                converter="omnifaces.SelectItemsConverter"
+                                required="true">
 
-    </p:fieldset>
+                <f:selectItems value="#{acteNaissanceEditerBacking.liensParenteDeclarant}" var="lien" 
+                               itemLabel="#{lien.libelle}" itemValue="#{lien.code}"/>
+
+            </p:selectOneRadio>
+        </div>
+
+    </div>
+
+    
+    <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-lg-6">
+            <p:outputLabel for="dateDeclaration" styleClass="p-d-block">Date déclaration</p:outputLabel>
+            <p:inputMask id="dateDeclaration" value="#{acteNaissanceEditerBacking.acteNaissanceDto.dateDeclaration}"
+                         mask="99/99/9999" required="true">
+                <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+            </p:inputMask>
+
+        </div>
+        <div class="p-field p-lg-6">
+            <p:outputLabel for="dateDressage" styleClass="p-d-block">Date dressage</p:outputLabel>
+            <p:inputMask id="dateDressage" value="#{acteNaissanceEditerBacking.acteNaissanceDto.dateDressage}"
+                        mask="99/99/9999 99:99:99" required="true">
+                <f:convertDateTime locale="fr_FR" type="localDateTime" pattern="dd/MM/yyyy HH:mm:ss"/>
+           </p:inputMask>
+
+            <p:message for="dateDressage"/>
+        </div>
+        
+    </div>
+  
     <p:spacer height="2"/>
 
     <p:outputPanel id="jugementOutputPanel">

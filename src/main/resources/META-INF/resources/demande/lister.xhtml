@@ -21,11 +21,15 @@ xmlns:p="http://primefaces.org/ui">
     
     <ui:define name="content">
         
+        
+        
         <h:form id="messageForm">
             <p:growl globalOnly="true" life="15000" showDetail="true"/>        
         </h:form>
        
         <h:form id="contentForm">
+            
+            <ui:include src="../common/menu-global.xhtml"/>
             
              <p:fieldset legend="Type de registres">
                 <p:selectOneRadio id="console" value="#{demandeListerBacking.selectedType}" 

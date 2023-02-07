@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
@@ -38,6 +37,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     @Inject 
     RegistreService registreService;
     
+    
     private String typeRegistre;
     private int annee;
     private int numero;
@@ -46,7 +46,9 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     @Override
     public List<RegistreDto> load(int offset, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
         LOG.log(Level.INFO,"Loading the lazy registre data between {0} and {1}", new Object[]{offset, offset+pageSize} );
-        handleFilter(filterBy);
+        
+        setFilterValues(filterBy);
+        
         if(typeRegistre == null){
             throw new IllegalStateException("'typeRegistre' cannot be null");
         }
@@ -58,7 +60,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
         return regs;
     }
     
-    private void handleFilter(Map<String, FilterMeta> filterBy){
+    private void setFilterValues(Map<String, FilterMeta> filterBy){
          annee = 0;
          numero = 0;
         

@@ -103,10 +103,10 @@ xmlns:p="http://primefaces.org/ui">
                     </div>
                 </f:facet>
                 
-                <p:column headerText="Année" filterBy="#{registre.annee}">
+                <p:column headerText="Année" filterBy="#{registre.annee}" filterValue="#{registreListerBacking.pageCtx.annee}">
                     <h:outputText value="#{registre.annee}"/>
                 </p:column>
-                <p:column headerText="Numéro" filterBy="#{registre.numero}" >
+                <p:column headerText="Numéro" filterBy="#{registre.numero}" filterValue="#{registreListerBacking.pageCtx.numero}">
                     <h:outputText value="#{registre.numero}"/>
                 </p:column>
                
@@ -135,11 +135,36 @@ xmlns:p="http://primefaces.org/ui">
              
                 </p:column>
                 
-              
+                
                 <p:column width="5%">
-                    
                    
                     <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;">
+                        
+                         <p:menuitem value="Gerer les actes " process="@this" ajax="false"
+                                    outcome="#{registreListerBacking.openListActes(registre)}"  icon="pi pi-id-card"
+                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
+                                    rendered="#{registreListerBacking.renderGererActesMenu(registre)}">
+                        
+                        </p:menuitem>
+                        
+                        <p:menuitem value="Gérer les reconnaissances d'enfant naturel" process="@this"
+                                    
+                                    action="#{registreListerBacking.openListActesDecRecEnfNaturel(registre)}" icon="pi pi-id-card"
+                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
+                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
+                        
+                        <p:menuitem value="Gérer les reconnaissances d'enfant adultérin" process="@this" 
+                                    action="#{registreListerBacking.openListActesDecRecEnfAdulterin(registre)}" icon="pi pi-id-card"
+                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
+                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
+                        
+                        <p:menuitem value="Gérer les consentements à reconnaissance" process="@this" 
+                                    action="#{registreListerBacking.openListActesConsReconnaissance(registre)}" icon="pi pi-id-card"
+                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
+                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
+                        
+                         <p:divider/>
+                        
                         <p:menuitem value="Consulter" process="@this"
                                     action="#{registreListerBacking.openConsulterView(registre)}"
                                      
@@ -172,31 +197,7 @@ xmlns:p="http://primefaces.org/ui">
                             
                         </p:menuitem>
                         <p:divider/>
-                          
-                        <p:menuitem value="Gerer les actes " process="@this" ajax="false"
-                                    outcome="#{registreListerBacking.openListActes(registre)}"
-                                    icon="pi pi-folder"
-                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
-                                    rendered="#{registreListerBacking.renderGererActesMenu(registre)}">
-                        
-                        </p:menuitem>
-                        
-                        <p:menuitem value="Gérer les reconnaissances d'enfant naturel" process="@this"
-                                    
-                                    action="#{registreListerBacking.openListActesDecRecEnfNaturel(registre)}" icon="pi pi-folder"
-                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
-                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
-                        
-                        <p:menuitem value="Gérer les reconnaissances d'enfant adultérin" process="@this" 
-                                    action="#{registreListerBacking.openListActesDecRecEnfAdulterin(registre)}" icon="pi pi-folder"
-                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
-                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
-                        
-                        <p:menuitem value="Gérer les consentements à reconnaissance" process="@this" 
-                                    action="#{registreListerBacking.openListActesConsReconnaissance(registre)}" icon="pi pi-folder"
-                                    disabled="#{registreListerBacking.disableMenuGererActes(registre)}"
-                                    rendered="#{registreListerBacking.renderGererActesDiversMenu(registre)}"/>
-                        
+                         
                         <p:divider/>
                         <p:menuitem value="Supprimer" process="@this" action="#{registreListerBacking.supprimer(registre.id)}"  
                                    icon="pi pi-times" update="contentForm:registre"

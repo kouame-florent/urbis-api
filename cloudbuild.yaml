@@ -1,16 +1,15 @@
 steps:
- - name: maven:3-jdk-11
-   entrypoint: mvn
-   args: ['package','-Dmaven.test.skip=true']
-steps:
+- name: maven:3-jdk-11
+  entrypoint: mvn
+  args: ['package','-Dmaven.test.skip=true']
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build','--file','src/main/docker/Dockerfile.jvm', '-t', 'europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209161049', '.' ]
-images:
-- 'europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209161049'
+  args: [ 'build','--file','src/main/docker/Dockerfile.jvm', '-t', 'europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209171906', '.' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push','europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209171906']
 - name: "gcr.io/cloud-builders/gke-deploy"
   args:
   - run
   - --filename=deployment.yaml
-  - --image=gcr.io/urbis-362316/urbis:202209161049
+  - --image=europe-west1-docker.pkg.dev/urbis-362316/urbis-docker-repo/urbis:202209171906
   - --location=europe-west1
   - --cluster=urbis

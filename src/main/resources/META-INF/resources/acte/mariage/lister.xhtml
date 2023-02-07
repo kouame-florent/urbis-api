@@ -87,6 +87,7 @@ xmlns:p="http://primefaces.org/ui">
                                  update="messageForm :contentForm:actesDatatable"/>
 
                     </p:commandButton>
+                   
                     
                 </p:toolbarGroup>
                 
@@ -159,7 +160,7 @@ xmlns:p="http://primefaces.org/ui">
                 </p:column>
                
                 <p:column  style="width: 2%">
-                    <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;"
+                    <p:menuButton icon="pi pi-ellipsis-h" style="white-space: nowrap;width: auto !important;"
                                   title="options">
                         <p:menuitem value="Consulter l'acte" process="@this"  icon="pi pi-book"/>
                         <p:menuitem value="Valider l'acte" action="#{acteMariageListerBacking.openValiderActeView(acte)}" 

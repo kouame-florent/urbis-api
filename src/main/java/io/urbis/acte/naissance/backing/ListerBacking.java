@@ -217,10 +217,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public void onActeValidated(SelectEvent event){
+        /*
         if(event.getObject() != null){
             WebApplicationException ex = (WebApplicationException)event.getObject();
             addGlobalMessage(ex.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
+*/
         addGlobalMessage("L'acte de naissance a été validé avec succès", FacesMessage.SEVERITY_INFO);
     }
     
@@ -307,7 +309,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var ids = List.of(registreID);
         var operations = List.of(Operation.DECLARATION_JUGEMENT.name());
         Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations);
-        Map<String,Object> options = getDialogOptions(100, 100, true);
+        Map<String,Object> options = getDialogOptions(100, 100, false);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }

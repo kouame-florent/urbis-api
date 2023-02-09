@@ -78,11 +78,11 @@ xmlns:p="http://primefaces.org/ui">
            <p:toolbar>
                  <p:toolbarGroup>
                      <p:commandButton  value="Créer le registre courant" action="#{registreListerBacking.openCreerView()}" icon="pi pi-plus" 
-                                       process="@this" style="margin-right: .5rem" styleClass="ui-button-success">   
+                                       process="@this" style="margin-right: .5rem" styleClass="ui-button-secondary">   
                          <p:ajax event="dialogReturn" listener="#{registreListerBacking.onCreate}" update="messageForm @form"/>
                     </p:commandButton>
                      <p:commandButton value="Créer une serie de registres" action="#{registreListerBacking.openCreerSerieView()}" icon="pi pi-plus" 
-                                      process="@this" style="margin-right: .5rem" styleClass="ui-button-success"> 
+                                      process="@this" style="margin-right: .5rem" > 
                          <p:ajax event="dialogReturn" listener="#{registreListerBacking.onSerieCreated}" update="messageForm @form"/>
                     </p:commandButton>
                      

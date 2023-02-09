@@ -128,6 +128,7 @@ public class ActeNaissanceService {
         log.infof("-- DECLARE: %s", acteNaissanceDto.getEnfantNom() + " " + acteNaissanceDto.getEnfantPrenoms());
         log.infof("-- REGISTRE ID: %s", acteNaissanceDto.getRegistreID());
         log.infof("-- OFFICIER ID: %s", acteNaissanceDto.getOfficierEtatCivilID());
+        log.infof("-- DECLARANT LIEN: %s", acteNaissanceDto.getDeclarantLien());
         
         ActeNaissance acte = new ActeNaissance(new Enfant(), new Jugement(), new Pere(), 
                 new Mere(), new Declarant(), new Interprete(), new Temoins());
@@ -254,7 +255,7 @@ public class ActeNaissanceService {
         }
             
         acte.declarant.lien = acteNaissanceDto.getDeclarantLien();
-        if(acteNaissanceDto.getDeclarantDatePiece() != null){
+        if(acteNaissanceDto.getDeclarantDateNaissance() != null){
             acte.declarant.dateNaissance = acteNaissanceDto.getDeclarantDateNaissance();
         }
         if(acteNaissanceDto.getDeclarantDatePiece() != null){

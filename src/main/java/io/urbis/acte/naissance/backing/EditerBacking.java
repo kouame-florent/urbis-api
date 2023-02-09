@@ -374,6 +374,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         LOG.log(Level.INFO,"Updating acte naissance...");
          
         LOG.log(Level.INFO,"ENFANT DATE NAISSANCE: {0}",acteNaissanceDto.getEnfantDateNaissance());
+        LOG.log(Level.INFO,"DECLAANT LIENT PARENTE: {0}",acteNaissanceDto.getDeclarantLien());
         acteNaissanceDto.setOperation(Operation.MODIFICATION.name());
           
         try{

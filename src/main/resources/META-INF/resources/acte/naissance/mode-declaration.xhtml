@@ -27,7 +27,7 @@ xmlns:p="http://primefaces.org/ui">
                               value="#{acteNaissanceEditerBacking.acteNaissanceDto.declarantLien}" 
                                 converter="omnifaces.SelectItemsConverter"
                                 required="true">
-
+                <p:ajax update="contentForm:declarantLienParente"/>
                 <f:selectItems value="#{acteNaissanceEditerBacking.liensParenteDeclarant}" var="lien" 
                                itemLabel="#{lien.libelle}" itemValue="#{lien.code}"/>
 

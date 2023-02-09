@@ -223,6 +223,7 @@ public class ActeNaissance extends Acte{
     
     @Column(name = "date_dressage")
     public LocalDateTime dateDressage;
+    
         
     @Column(name = "motif_annulation")
     public String motifAnnulation;

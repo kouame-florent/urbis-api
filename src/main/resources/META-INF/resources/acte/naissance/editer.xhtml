@@ -96,25 +96,22 @@ xmlns:p="http://primefaces.org/ui">
                 </p:fieldset>
             
                  <p:spacer height="2" />
+                 
+                  <p:fieldset legend="Numéro acte">
+                        <p:inputText id="numeroActe" value="#{acteNaissanceEditerBacking.acteNaissanceDto.numero}" 
+                                     required="true" style="font-size: larger;font-weight: bold"/>
+                  </p:fieldset>
+                 
+                 <p:spacer height="2" />
                 
                  <p:fieldset legend="Demande">
                     <ui:include src="./demande.xhtml"/>
                 </p:fieldset>
 
                 <p:spacer height="2" />
-
+            
                 <p:outputPanel id="naissanceMultipleOutputPanel" >
-                <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-lg-4">
-                        <p:fieldset legend="Numéro acte">
-                             
-                              <p:inputText id="numeroActe" value="#{acteNaissanceEditerBacking.acteNaissanceDto.numero}" 
-                                           required="true" style="font-size: larger;font-weight: bold"/>
-                        </p:fieldset>
-                    </div>
-
-                </div>
-
+       
                 <p:spacer width="2"/>
                 <p:fieldset legend="Type naissance">      
                     

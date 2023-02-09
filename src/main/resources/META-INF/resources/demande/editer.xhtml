@@ -33,7 +33,7 @@ xmlns:p="http://primefaces.org/ui">
            
             <div class="p-d-flex p-jc-end">
                 <p:commandButton title="fermer" action="#{demandeEditerBacking.closeView()}" process="@this" 
-                                     icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-outlined" >
+                                     icon="pi pi-times" styleClass="rounded-button ui-button-outlined" >
                         
                 </p:commandButton>
             </div>
@@ -104,7 +104,17 @@ xmlns:p="http://primefaces.org/ui">
 
                 </div>
                     
-                <div class="p-field p-lg-6">
+               
+        
+            </div>
+
+           </p:fieldset>
+            
+            <p:spacer height="2"/>
+            
+            <p:fieldset legend="Demandeur">
+                <div class="ui-fluid p-formgrid p-grid">
+                     <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurNom" styleClass="p-d-block">Nom demandeur</p:outputLabel>
                     <p:inputText id="demandeurNom" value="#{demandeEditerBacking.demandeDto.demandeurNom}"  required="true" 
                                    styleClass="p-d-block"/>
@@ -122,9 +132,8 @@ xmlns:p="http://primefaces.org/ui">
                                     styleClass="p-d-block"/>
 
                 </div>
-                    
-               
-                <div class="p-field p-lg-6">
+                
+                 <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurNumeroTelephone" styleClass="p-d-block">Numéro téléphone demandeur</p:outputLabel>
                     <p:inputText id="demandeurNumeroTelephone" value="#{demandeEditerBacking.demandeDto.demandeurNumeroTelephone}"  required="true" 
                                    styleClass="p-d-block"/>
@@ -145,6 +154,7 @@ xmlns:p="http://primefaces.org/ui">
 
                 </div>
                     
+                
                  <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurNumeroPiece" styleClass="p-d-block">Numéro pièce demandeur</p:outputLabel>
                     <p:inputText id="demandeurNumeroPiece" value="#{demandeEditerBacking.demandeDto.demandeurNumeroPiece}"  required="true" 
@@ -152,10 +162,10 @@ xmlns:p="http://primefaces.org/ui">
 
                 </div>
                     
-
-            </div>
-
-           </p:fieldset>
+                    
+                    
+                </div>
+            </p:fieldset>
             
            <p:spacer height="2"/>
             <div class="ui-fluid p-formgrid p-grid">

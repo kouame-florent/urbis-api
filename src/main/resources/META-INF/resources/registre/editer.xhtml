@@ -29,6 +29,13 @@ xmlns:p="http://primefaces.org/ui">
              
         <h:form id="contentForm">
             
+            <div class="p-d-flex p-jc-end">
+                <p:commandButton title="fermer" action="#{registreEditerBacking.closeView()}" process="@this" 
+                                     icon="pi pi-times" styleClass="rounded-button ui-button-outlined">
+                        
+                    </p:commandButton>
+            </div>
+            
             <p:fieldset legend="Référence registre">
                 <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-col">

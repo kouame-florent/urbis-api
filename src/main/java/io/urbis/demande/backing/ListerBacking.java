@@ -96,6 +96,10 @@ public class ListerBacking extends BaseBacking implements Serializable{
         selectedType = defaultSelectedType();
     }
     
+     public String pageTitle(){
+        return "Demandes";
+    }
+    
      public TypeRegistreDto defaultSelectedType(){
        for(TypeRegistreDto t : typesRegistre){
            if(t.getCode().equals(TypeRegistre.NAISSANCE.name())){
@@ -119,7 +123,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.CREATION.name());
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("operation",operations,"type",type);
-        Map<String,Object> options = getDialogOptions(98, 98, true);
+        Map<String,Object> options = getDialogOptions(98, 98, false);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }

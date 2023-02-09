@@ -253,7 +253,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
             
             try{
                   registreService.creer(registreDto);
-                  PrimeFaces.current().dialog().closeDynamic("");
+                
             }catch(EntityExistsException | ValidationException  e){
                   LOG.log(Level.SEVERE, e.getMessage());
                   addGlobalMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -265,6 +265,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
             
         }
     
+    }
+    
+     public void closeView(){
+        PrimeFaces.current().dialog().closeDynamic("");
     }
 
     public LocaliteDto getCurrentLocalite() {

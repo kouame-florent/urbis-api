@@ -8,6 +8,8 @@ xmlns:p="http://primefaces.org/ui">
     
  <ui:composition template="../templates/default-tpl.xhtml">
      
+     <ui:param name="bean" value="#{demandeListerBacking}"/>
+     
      <ui:define name="title">
          GESTION DES UTILISATEURS
      </ui:define>
@@ -49,21 +51,14 @@ xmlns:p="http://primefaces.org/ui">
                 <p:toolbarGroup>
                     <p:commandButton value="Nouvelle demande" icon="pi pi-plus"
                                      actionListener="#{demandeListerBacking.openCreerView()}"
-                         styleClass="ui-button-success" style="margin-right: .5rem">
+                          style="margin-right: .5rem">
                         <p:ajax event="dialogReturn" listener="#{demandeListerBacking.onNewDemande}"
                                  update="messageForm :contentForm:demandesDatatable"/>
                     </p:commandButton>
                   
                 </p:toolbarGroup>
                  
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Registres" icon="pi pi-th-large" process="@this"
-                                     action="#{demandeListerBacking.returnToRegistresList()}"
-                                   styleClass="ui-button-success" style="margin-right: .5rem">
-                        
-
-                    </p:commandButton>
-                </p:toolbarGroup>
+                
                  
             </p:toolbar>
             

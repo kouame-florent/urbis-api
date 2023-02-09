@@ -30,19 +30,13 @@ xmlns:p="http://primefaces.org/ui">
         </h:form>
              
         <h:form id="contentForm">  
-           
-            <p:toolbar style="border: none">
-                <p:toolbarGroup>
-                    
-                </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    <p:commandButton title="fermer" action="#{acteNaissanceEditerBacking.closeView()}" process="@this" 
-                                     icon="pi pi-times" styleClass="rounded-button ui-button-danger"
-                                     >
+            
+            <div class="p-d-flex p-jc-end">
+                <p:commandButton title="fermer" action="#{acteNaissanceEditerBacking.closeView()}" process="@this" 
+                                     icon="pi pi-times" styleClass="rounded-button ui-button-outlined">
                         
                     </p:commandButton>
-                </p:toolbarGroup>
-            </p:toolbar>
+            </div>
             
             <p:focus context="contentForm"/>
          

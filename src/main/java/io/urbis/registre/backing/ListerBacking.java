@@ -289,13 +289,13 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.CREATION.name());
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations,"type",type);
-        Map<String,Object> options = getDialogOptions(98, 98, true);
+        Map<String,Object> options = getDialogOptions(100, 100, true);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }
     
     public void openCreerSerieView(){
-        Map<String,Object> options = getDialogOptions(98, 98, true);
+        Map<String,Object> options = getDialogOptions(100, 100, true);
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("type",type);
         options.put("resizable", false);
@@ -464,12 +464,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
     public String openListActesDeces(RegistreDto registreDto) {
-        /*
-        var ids = List.of(registreDto.getId());
-        Map<String, List<String>> params = Map.of("reg-id", ids);
-        PrimeFaces.current().dialog().openDynamic("/acte/deces/lister", 
-                getDialogOptions(100,100,true), params);
-        */
+        
         String url = "/acte/deces/lister.xhtml?faces-redirect=true"+"&reg-id=" + registreDto.getId();
         LOG.log(Level.INFO, "--- ACTES URL: {0}", url);   
         

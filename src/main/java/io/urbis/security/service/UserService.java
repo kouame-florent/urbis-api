@@ -87,9 +87,9 @@ public class UserService {
         
         dto.setId(entity.id);
         dto.setName(entity.name);
-        List<String> roles = entity.roles.stream().map(r -> r.role).collect(Collectors.toList());
+        List<String> roles = entity.roles.stream().map(r -> r.value).collect(Collectors.toList());
         dto.setRoles(roles);
-        String roleView = entity.roles.stream().map(r -> r.role).collect(Collectors.joining(" "));
+        String roleView = entity.roles.stream().map(r -> r.value).collect(Collectors.joining(" "));
         dto.setRolesView(roleView);
       
         

@@ -27,7 +27,6 @@ import javax.validation.constraints.NotNull;
  */
 
 @Table(name = "acte_naissance")
-
 @Entity
 public class ActeNaissance extends Acte{
     

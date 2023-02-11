@@ -19,6 +19,9 @@ public enum Operation {
     CREATION("Création"), 
     MODIFICATION("Modification"),
     CONSULTATION("Consultation");
+    //PRISE_EN_CHARGE("Prise en charge"),
+    //CLOTURER("Cloturer");
+    
     
     private final String libelle;
     

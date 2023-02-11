@@ -206,6 +206,31 @@ public class ListerBacking extends BaseBacking implements Serializable{
        return content;
     }
     
+    public void verifierActe(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        
+    }
+    
+     public void statutPrisEnCharge(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        
+    }
+    
+    public void statutEnSignature(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        
+    }
+    
+    public void statutSigne(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        
+    }
+    
+    public void statutCloture(DemandeDto dto){
+        LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        
+    }
+    
     
     public void openConsulterDemandeView(DemandeDto dto){
         LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());

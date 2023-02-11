@@ -4,10 +4,8 @@
  */
 package io.urbis.security.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.security.jpa.RolesValue;
 import io.urbis.common.domain.BaseEntity;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -25,13 +23,13 @@ public class Role extends BaseEntity{
     public List<User> users ;
     
     @RolesValue
-    public String role;
+    public String value;
 
     public Role() {
     }
 
-    public Role(String role) {
-        this.role = role;
+    public Role(String value) {
+        this.value = value;
     }
     
     

@@ -9,7 +9,7 @@ package io.urbis.security.domain;
  *
  * @author florent
  */
-public enum RoleName {
+public enum RoleValue {
     ANONYME,
     ADMIN,
     UTILISATEUR,

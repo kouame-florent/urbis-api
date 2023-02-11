@@ -80,9 +80,6 @@ xmlns:p="http://primefaces.org/ui">
                     <h:outputText value="#{demande.numero}"/>
                 </p:column>
                 
-                <p:column headerText="Type registre" >
-                    <h:outputText value="#{demande.typeRegistre}"/>
-                </p:column>
               
                 <p:column headerText="N° acte" >
                     <h:outputText value="#{demande.numeroActe}"/>
@@ -109,6 +106,14 @@ xmlns:p="http://primefaces.org/ui">
                     <h:outputText value="#{demande.nombreCopies}"/>
                 </p:column>
                 
+                 <p:column headerText="Statut demande" >
+                    <h:outputText value="#{demande.statutDemande}"/>
+                </p:column>
+                
+                 <p:column headerText="Statut acte" >
+                    <h:outputText value="#{demande.statutActe}"/>
+                </p:column>
+                
                 <p:column style="width: 2%" >
                     <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
@@ -130,6 +135,21 @@ xmlns:p="http://primefaces.org/ui">
                 <p:column  style="width: 2%">
                     <p:menuButton icon="pi pi-ellipsis-h" style="width: 100%;white-space: nowrap;width: auto !important;"
                                   title="options">
+                        
+                        <p:menuitem value="Verifier l'acte" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.verifierActe(demande)}"/>
+                        
+                        <p:menuitem value="Statut pris en charge" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.statutPrisEnCharge(demande)}"/>
+                        
+                        <p:menuitem value="Statut en signature" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.statutEnSignature(demande)}"/>
+                        
+                        <p:menuitem value="Statut signé" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.statutSigne(demande)}"/>
+                        
+                        <p:menuitem value="Statut cloturé" process="@this"  icon="pi pi-book"
+                                    action="#{demandeListerBacking.statutCloture(demande)}"/>
                         
                         <p:menuitem value="Consulter" process="@this"  icon="pi pi-book"
                                     action="#{demandeListerBacking.openConsulterDemandeView(demande)}"/>

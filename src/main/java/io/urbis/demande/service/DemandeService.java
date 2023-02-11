@@ -22,6 +22,8 @@ import io.urbis.common.domain.TypePiece;
 
 import io.urbis.demande.domain.Demande;
 import io.urbis.demande.domain.Demandeur;
+import io.urbis.demande.domain.StatutActe;
+import io.urbis.demande.domain.StatutDemande;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.security.service.AuthenticationContext;
@@ -93,37 +95,43 @@ public class DemandeService {
         
         Acte acte = findActeByDemande(dto);
        
+        
+        
+        Demandeur demandeur = new Demandeur();
+
+        Demande demande = new Demande(demandeur);
+        
         if(acte != null){
-            Demandeur demandeur = new Demandeur();
-        
-            Demande demande = new Demande(demandeur);
-
+            demande.statutActe = StatutActe.ACTE_PRESENT;
+            demande.statutDemande = StatutDemande.PRIS_EN_CHARGE;
             demande.acte = acte;
-            demande.dateHeureDemande = dto.getDateHeureDemande();
-            demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
-            demande.dateOuvertureRegistre = dto.getDateOuvertureRegistre();
-            demande.demandeur.email = dto.getDemandeurEmail();
-            demande.demandeur.nom = dto.getDemandeurNom();
-            demande.demandeur.numeroTelephone = dto.getDemandeurNumeroTelephone();
-            demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
-            demande.demandeur.prenoms = dto.getDemandeurPrenoms();
-            demande.demandeur.qualite = dto.getDemandeurQualite();
-            demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
-
-            demande.nombreCopies = dto.getNombreCopies();
-            demande.nombreExtraits = dto.getNombreExtraits();
-            demande.numero = dto.getNumero();
-            demande.numeroActe = dto.getNumeroActe();
-            demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
-            demande.updatedBy = authenticationContext.userLogin();
-
-            demande.persist();
-        
+        }else{
+            demande.statutActe = StatutActe.ACTE_ABSENT;
+            demande.statutDemande = StatutDemande.EN_ATTENTE;
         }
+
         
-       
-    
-    }
+        demande.dateHeureDemande = dto.getDateHeureDemande();
+        demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
+        demande.dateOuvertureRegistre = dto.getDateOuvertureRegistre();
+        demande.demandeur.email = dto.getDemandeurEmail();
+        demande.demandeur.nom = dto.getDemandeurNom();
+        demande.demandeur.numeroTelephone = dto.getDemandeurNumeroTelephone();
+        demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
+        demande.demandeur.prenoms = dto.getDemandeurPrenoms();
+        demande.demandeur.qualite = dto.getDemandeurQualite();
+        demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
+
+        demande.nombreCopies = dto.getNombreCopies();
+        demande.nombreExtraits = dto.getNombreExtraits();
+        demande.numero = dto.getNumero();
+        demande.numeroActe = dto.getNumeroActe();
+        demande.typeRegistre = TypeRegistre.fromString(dto.getTypeRegistre());
+        demande.updatedBy = authenticationContext.userLogin();
+
+        demande.persist();
+        
+     }
     
      
     
@@ -133,17 +141,10 @@ public class DemandeService {
         log.infof("---->> NUMERO ACTE: %s", dto.getNumeroActe());
         log.infof("---->> DATE OUVERTURE REGISTRE: %s", dto.getDateOuvertureRegistre());
         
-        Acte acte = null;
-        
-        try{
-            
-            acte = acteService.findByDemandeCreteria(dto.getNumeroActe(),typeRegistre,
+             
+         Acte  acte = acteService.findByDemandeCreteria(dto.getNumeroActe(),typeRegistre,
                             dto.getDateOuvertureRegistre());
-           
-        }catch(EntityNotFoundException ex){
-            throw  ex;
-        }
-        
+         
         return acte;
     }
     
@@ -154,6 +155,7 @@ public class DemandeService {
     
     public void modifier(@NotBlank String id,@NotNull DemandeDto dto){
         Demande demande = Demande.findById(id);
+        
         
         demande.dateHeureDemande = dto.getDateHeureDemande();
         demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
@@ -246,6 +248,9 @@ public class DemandeService {
         dto.setNumeroActe(demande.numeroActe);
         dto.setTypeRegistre(demande.typeRegistre.name());
         dto.setUpdated(demande.updated);
+        
+        dto.setStatutDemande(demande.statutDemande.name()); 
+        dto.setStatutActe(demande.statutActe.name());
         
         return dto;
     }

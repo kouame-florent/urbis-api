@@ -4,7 +4,6 @@
  */
 package io.urbis.security.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import javax.persistence.Entity;

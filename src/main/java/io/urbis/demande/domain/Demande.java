@@ -68,6 +68,16 @@ public class Demande extends BaseEntity{
     @Column(name = "type_registre",nullable = false)
     @Enumerated(EnumType.STRING)   
     public TypeRegistre typeRegistre;
+    
+    @NotNull
+    @Column(name = "statut_demande",nullable = false)
+    @Enumerated(EnumType.STRING) 
+    public StatutDemande statutDemande;
+    
+    @NotNull
+    @Column(name = "statut_acte",nullable = true)
+    @Enumerated(EnumType.STRING) 
+    public StatutActe statutActe;
 
     @Column(name = "numero_acte")
     public int numeroActe;

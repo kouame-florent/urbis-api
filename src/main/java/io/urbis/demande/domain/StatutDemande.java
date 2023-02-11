@@ -14,9 +14,12 @@ import javax.ws.rs.core.Response;
  */
 public enum StatutDemande {
     
-    NOUVEAU("Nouveau"),
-    PRIS_EN_CHARGE("Pris en charge"),
-    CLOTURE("clôturé");
+    EN_ATTENTE("En attente"), //nouvelle demande avec acte absent
+    PRIS_EN_CHARGE("Pris en charge"), //nouvelle demande avec acte present
+    En_SIGNATURE("Acte en signature"),
+    SIGNE("Acte signé"), 
+    CLOTURE("clôturée"); 
+    
     
     public String libelle;
     

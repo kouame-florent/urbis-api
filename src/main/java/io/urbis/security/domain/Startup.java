@@ -28,7 +28,7 @@ public class Startup {
     
     
     public void loadRoles(){
-       EnumSet<RoleName> roleNames = EnumSet.allOf(RoleName.class);
+       EnumSet<RoleValue> roleNames = EnumSet.allOf(RoleValue.class);
        roleNames.stream().filter(this::roleNotExist).forEach(this::createRole);
     }
     
@@ -40,12 +40,12 @@ public class Startup {
             user.password = BcryptUtil.bcryptHash("admin");
             user.updatedBy = "system";
             
-            PanacheQuery<Role> rq = Role.find("role", RoleName.ADMIN.name());
+            PanacheQuery<Role> rq = Role.find("value", RoleValue.ADMIN.name());
             Role role = rq.firstResult();
             if(role != null){
                  user.roles.add(role);
             }else{
-                throw new EntityNotFoundException("Role ADMIN not found");
+                throw new EntityNotFoundException("role ADMIN not found");
             }
             
             user.persist();
@@ -60,17 +60,17 @@ public class Startup {
         return user == null;
     }
     
-    private boolean roleNotExist(RoleName roleName){
-        PanacheQuery<Role> rq = Role.find("role", roleName.name());
+    private boolean roleNotExist(RoleValue roleName){
+        PanacheQuery<Role> rq = Role.find("value", roleName.name());
         Role role = rq.firstResult();
         
         return role == null;
     }
     
-    private void createRole(RoleName roleName){
+    private void createRole(RoleValue roleName){
         Role role = new Role();
         
-        role.role = roleName.name();
+        role.value = roleName.name();
         role.updatedBy = "system";
         
         role.persist();

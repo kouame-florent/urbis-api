@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
  * @author florent
  */
 
-public class ActeMariageDto {
+public class ActeMariageDto { 
     
     private LocalDateTime created; 
     private LocalDateTime updated; 

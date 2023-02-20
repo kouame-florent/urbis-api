@@ -5,9 +5,6 @@
  */
 package io.urbis.acte.naissance.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
  *
  * @author florent

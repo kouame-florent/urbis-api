@@ -76,7 +76,7 @@ xmlns:p="http://primefaces.org/ui">
                         <div class="p-field p-lg-12">
                             <p:outputLabel for="pereNationalite" styleClass="p-d-block">Nationalité</p:outputLabel>
                             <p:selectOneMenu id="pereNationalite" value="#{acteNaissanceEditerBacking.acteNaissanceDto.pereNationalite}"          
-                                             label="Selectionnez" converter="omnifaces.SelectItemsConverter">
+                                             label="Selectionnez" converter="omnifaces.SelectItemsConverter" required="true">
                                 <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez une nationalité --" />
                                 <f:selectItems value="#{acteNaissanceEditerBacking.nationalites}" var="nationalite" 
                                                itemLabel="#{nationalite.libelle}"  
@@ -184,7 +184,7 @@ xmlns:p="http://primefaces.org/ui">
                                 <p:outputLabel for="mereNationalite" styleClass="p-d-block">Nationalité</p:outputLabel>
                                 <p:selectOneMenu id="mereNationalite" converter="omnifaces.SelectItemsConverter" 
                                                  value="#{acteNaissanceEditerBacking.acteNaissanceDto.mereNationalite}"          
-                                                 label="Selectionnez" >
+                                                 label="Selectionnez" required="true">
                                     <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez une nationalité --" />
                                     <f:selectItems value="#{acteNaissanceEditerBacking.nationalites}" var="nationalite" 
                                                    itemLabel="#{nationalite.libelle}"  

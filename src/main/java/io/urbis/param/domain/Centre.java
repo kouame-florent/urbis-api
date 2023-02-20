@@ -11,15 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author florent
  */
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Table(name = "centre")
 @Entity
 public class Centre extends  BaseEntity{
@@ -31,7 +28,16 @@ public class Centre extends  BaseEntity{
     @ManyToOne
     @JoinColumn(nullable = false,name = "localite")
     public Localite localite;
+
+    public Centre(String code, String libelle, Localite localite) {
+        this.code = code;
+        this.libelle = libelle;
+        this.localite = localite;
+    }
+
+    public Centre() {
+    }
     
-    //public StatutParametre statut;
+    
     
 }

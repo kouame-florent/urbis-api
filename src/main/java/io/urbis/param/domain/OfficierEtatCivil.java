@@ -24,4 +24,6 @@ public class OfficierEtatCivil extends  BaseEntity{
     public boolean actif;
     public String profession;
     
+    
+    
 }

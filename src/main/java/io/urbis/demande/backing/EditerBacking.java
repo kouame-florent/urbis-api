@@ -15,7 +15,6 @@ import io.urbis.demande.service.DemandeService;
 import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.dto.TypeRegistreDto;
 import io.urbis.registre.service.TypeRegistreService;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import org.primefaces.PrimeFaces;
 
 /**
@@ -69,7 +69,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     public void creer(){
         try{
-            demandeService.creer(demandeDto);
+            String id = demandeService.creer(demandeDto);
+            LOG.log(Level.INFO, id);
             initDemandDto();
             addGlobalMessage("Demande enregistrée avec succès", FacesMessage.SEVERITY_INFO);
         }catch(EntityNotFoundException ex){
@@ -77,12 +78,22 @@ public class EditerBacking extends BaseBacking implements Serializable{
             String msg = String.format("L'acte avec le numéro %s du %s n'existe pas", 
                     demandeDto.getNumeroActe(),demandeDto.getDateOuvertureRegistre()) ;
             addGlobalMessage(msg, FacesMessage.SEVERITY_ERROR);
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
     }
     
     
     public void modifier(){
-    
+        try{
+            
+            demandeService.modifier(demandeDto.getId(), demandeDto);
+            initDemandDto();
+            addGlobalMessage("L'acte a été modifié avec succès", FacesMessage.SEVERITY_INFO);
+        }catch(ValidationException ex){
+            Logger.getLogger(EditerBacking.class.getName()).log(Level.SEVERE, null, ex);
+            addGlobalMessage(ex.getLocalizedMessage(), FacesMessage.SEVERITY_ERROR);
+        } 
     }
     
     public boolean renderedCreerButton(){

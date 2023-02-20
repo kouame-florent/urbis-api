@@ -6,17 +6,13 @@
 package io.urbis.param.dto;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 /**
  *
  * @author florent
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class LocaliteDto {
     
     private String id;
@@ -28,6 +24,78 @@ public class LocaliteDto {
     private String libelle;
     private String type;
     private String libelleType;
-    //private String statut;
+
+    public LocaliteDto(String id, LocalDateTime created, LocalDateTime updated, String code, String libelle, String type, String libelleType) {
+        this.id = id;
+        this.created = created;
+        this.updated = updated;
+        this.code = code;
+        this.libelle = libelle;
+        this.type = type;
+        this.libelleType = libelleType;
+    }
+
+    public LocaliteDto() {
+    }
+    
+    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getLibelleType() {
+        return libelleType;
+    }
+
+    public void setLibelleType(String libelleType) {
+        this.libelleType = libelleType;
+    }
+    
+  
     
 }

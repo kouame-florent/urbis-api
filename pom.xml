@@ -6,20 +6,18 @@
   <artifactId>urbis-api</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
-    <compiler-plugin.version>3.8.1</compiler-plugin.version>
-    <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <myfaces.version>2.3-next-M7</myfaces.version>
-    <omnifaces-quarkus.version>1.4.0</omnifaces-quarkus.version>
-    <omnifaces.version>3.14.1</omnifaces.version>
-    <primefaces-extensions.version>12.0.3</primefaces-extensions.version>
-    <primefaces.version>12.0.0</primefaces.version>
+    <compiler-plugin.version>3.10.1</compiler-plugin.version>
+    <maven.compiler.release>17</maven.compiler.release>
+    
+    <omnifaces-quarkus.version>3.0.4</omnifaces-quarkus.version>
+    <primefaces-quarkus.version>2.12.0</primefaces-quarkus.version>
+    
+    
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>2.16.2.Final</quarkus.platform.version>
+    <quarkus.platform.version>2.16.3.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
   <dependencyManagement>
@@ -91,38 +89,25 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-validator</artifactId>
     </dependency>
+    
+   <!-- Faces -->
     <dependency>
-      <groupId>org.primefaces</groupId>
-      <artifactId>primefaces</artifactId>
-      <version>${primefaces.version}</version>
+        <groupId>io.quarkiverse.primefaces</groupId>
+        <artifactId>quarkus-primefaces</artifactId>
+        <version>${primefaces-quarkus.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.primefaces.extensions</groupId>
-      <artifactId>primefaces-extensions</artifactId>
-      <version>${primefaces-extensions.version}</version>
-      <scope>compile</scope>
+        <groupId>io.quarkiverse.primefaces</groupId>
+        <artifactId>quarkus-primefaces-extensions</artifactId>
+        <version>${primefaces-quarkus.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.omnifaces</groupId>
-      <artifactId>omnifaces</artifactId>
-      <version>${omnifaces.version}</version>
-      <scope>compile</scope>
+        <groupId>io.quarkiverse.omnifaces</groupId>
+        <artifactId>quarkus-omnifaces</artifactId>
+        <version>${omnifaces-quarkus.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.github.adminfaces</groupId>
-      <artifactId>quarkus-omnifaces</artifactId>
-      <version>${omnifaces-quarkus.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
-      <artifactId>myfaces-quarkus</artifactId>
-      <version>${myfaces.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core.extensions.quarkus</groupId>
-      <artifactId>myfaces-quarkus-deployment</artifactId>
-      <version>${myfaces.version}</version>
-    </dependency>
+    
+    
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>primeflex</artifactId>
@@ -138,12 +123,7 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
-      <scope>provided</scope>
-    </dependency>
+    
     <dependency>
       <groupId>com.ibm.icu</groupId>
       <artifactId>icu4j</artifactId>

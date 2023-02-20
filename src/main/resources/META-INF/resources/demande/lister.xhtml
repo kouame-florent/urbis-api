@@ -117,16 +117,18 @@ xmlns:p="http://primefaces.org/ui">
                 <p:column style="width: 2%" >
                     <p:commandButton ajax="false" process="@this" title="Imprimer l'extrait"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
-                                     styleClass="edit-button ui-button-secondary ui-button-outlined">
+                                     styleClass="edit-button ui-button-secondary ui-button-outlined"
+                                     rendered="#{demandeListerBacking.rendererPrintButton(demande)}">
                         <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
-                        <p:fileDownload value="#{demandeListerBacking.download()}"/>
+                        <p:fileDownload value="#{demandeListerBacking.downloadExtrait()}"/>
                     </p:commandButton>
                 </p:column>
                 
                 <p:column style="width: 2%" >
                     <p:commandButton ajax="false" process="@this" title="Imprimer la copie intégrale"
                                      onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-print"
-                                     styleClass="edit-button ui-button-success ui-button-outlined">
+                                     styleClass="edit-button ui-button-success ui-button-outlined"
+                                     rendered="#{demandeListerBacking.rendererPrintButton(demande)}">
                         <f:setPropertyActionListener value="#{demande.acteID}" target="#{demandeListerBacking.selectedActeID}"/>
                         <p:fileDownload value="#{demandeListerBacking.downloadCopie()}"/>
                     </p:commandButton>
@@ -137,7 +139,8 @@ xmlns:p="http://primefaces.org/ui">
                                   title="options">
                         
                         <p:menuitem value="Verifier l'acte" process="@this"  icon="pi pi-book"
-                                    action="#{demandeListerBacking.verifierActe(demande)}"/>
+                                    action="#{demandeListerBacking.verifierActe(demande)}"
+                                    update="@form :messageForm"/>
                         
                         <p:menuitem value="Statut pris en charge" process="@this"  icon="pi pi-book"
                                     action="#{demandeListerBacking.statutPrisEnCharge(demande)}"/>

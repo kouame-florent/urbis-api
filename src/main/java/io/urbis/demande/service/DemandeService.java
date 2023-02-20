@@ -30,7 +30,6 @@ import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +57,7 @@ import org.jboss.logging.Logger;
  * @author florent
  */
 @ApplicationScoped
-@Transactional
+@Transactional 
 public class DemandeService {
     
     @Inject
@@ -90,13 +89,12 @@ public class DemandeService {
     @Inject
     AuthenticationContext authenticationContext;
     
+    
+    public String creer(@NotNull DemandeDto dto){
         
-    public void creer(@NotNull DemandeDto dto) throws EntityNotFoundException{
-        
-        Acte acte = findActeByDemande(dto);
        
-        
-        
+        Acte   acte = findActeByDemande(dto);
+             
         Demandeur demandeur = new Demandeur();
 
         Demande demande = new Demande(demandeur);
@@ -109,7 +107,7 @@ public class DemandeService {
             demande.statutActe = StatutActe.ACTE_ABSENT;
             demande.statutDemande = StatutDemande.EN_ATTENTE;
         }
-
+        
         
         demande.dateHeureDemande = dto.getDateHeureDemande();
         demande.dateHeureRdvRetrait = dto.getDateHeureRdvRetrait();
@@ -130,8 +128,25 @@ public class DemandeService {
         demande.updatedBy = authenticationContext.userLogin();
 
         demande.persist();
+        //demande.persistAndFlush();
+        
+        return demande.id;
         
      }
+    
+    
+    public boolean verifierActe(@NotBlank String id,@NotNull DemandeDto dto){
+        Acte acte = findActeByDemande(dto);
+        Demande demande = Demande.findById(id);    
+        if(acte != null && demande.statutDemande == StatutDemande.EN_ATTENTE){         
+            demande.statutActe = StatutActe.ACTE_PRESENT;
+            demande.statutDemande = StatutDemande.PRIS_EN_CHARGE;
+            demande.acte = acte;
+        }
+        
+       return acte != null;       
+    
+    }
     
      
     
@@ -153,6 +168,7 @@ public class DemandeService {
        return mapToDto(d);
     }
     
+   
     public void modifier(@NotBlank String id,@NotNull DemandeDto dto){
         Demande demande = Demande.findById(id);
         
@@ -206,7 +222,7 @@ public class DemandeService {
           
         try{
             Integer num = query.getSingleResult();
-            log.infof("-- NUM DEMANDE: %d", num);
+            log.infof("--MAX NUM DEMANDE: %d", num);
             if(num != null){
                 return num + 1;
             }
@@ -229,7 +245,10 @@ public class DemandeService {
                 demande.typeRegistre, demande.dateOuvertureRegistre);
                 
         dto.setId(demande.id);
-        dto.setActeID(acte.id);
+        if(acte != null){
+            dto.setActeID(acte.id);
+        }
+        
         dto.setCreated(demande.created);
         dto.setDateHeureDemande(demande.dateHeureDemande);
         dto.setDateHeureRdvRetrait(demande.dateHeureRdvRetrait);
@@ -256,14 +275,16 @@ public class DemandeService {
     }
     
     
-    public String print(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
+    public String printExtrait(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
         
-        return doPrint(acteID, type,"/META-INF/resources/report/" + getReportTemplateName(type));
+        return doPrint(acteID, type,"/META-INF/resources/report/" + getExtraitTemplateName(type));
               
    }
      
     public String printCopie(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
-       return doPrint(acteID,type, "/META-INF/resources/report/"+ getReportTemplateName(type));
+       String reportPath =  "/META-INF/resources/report/"+ getCopieTemplateName(type);
+       log.infof("---REPORT PATH: %s", reportPath);
+       return doPrint(acteID,type,reportPath);
        
    }
     
@@ -303,7 +324,7 @@ public class DemandeService {
       return "/tmp/" + name.replaceAll(" ", "-");
    }
    
-   private String getReportTemplateName(TypeRegistre typeRegistre){
+   private String getExtraitTemplateName(TypeRegistre typeRegistre){
        
        String tpl = "";
        
@@ -325,6 +346,34 @@ public class DemandeService {
                break;
             case SPECIAL_NAISSANCE:
                tpl = "acte_naissance.jasper";
+               break;
+       }
+   
+       return tpl;
+   }
+   
+   private String getCopieTemplateName(TypeRegistre typeRegistre){
+       
+       String tpl = "";
+       
+       switch(typeRegistre){
+            case DECES:
+               tpl = "acte_deces_ci.jasper";
+               break;
+            case MARIAGE:
+               tpl = "acte_mariage_ci.jasper";
+               break;
+            case SPECIAL_DECES:
+               tpl = "acte_deces_ci.jasper";
+               break;
+            case DIVERS:
+               tpl = "acte_divers_ci.jasper";
+               break;
+            case NAISSANCE:
+               tpl = "acte_naissance_ci.jasper";
+               break;
+            case SPECIAL_NAISSANCE:
+               tpl = "acte_naissance_ci.jasper";
                break;
        }
    

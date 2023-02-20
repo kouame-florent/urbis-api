@@ -16,6 +16,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import org.jboss.logging.Logger;
 
 /**
  *
@@ -28,6 +29,9 @@ public class ActeService {
     @Inject
     EntityManager em;
     
+    @Inject
+    Logger log;
+    
     public Acte findByDemandeCreteria(int numeroActe,TypeRegistre typeRegistre, LocalDate dateOuvertureRegistre){
         TypedQuery<Acte> query =  em.createNamedQuery("Acte.findByDemandeCreteria", Acte.class);
         query.setParameter("numero",numeroActe);
@@ -39,7 +43,8 @@ public class ActeService {
         try{
              acte = query.getSingleResult();
         }catch(NoResultException | NonUniqueResultException ex){
-            throw new EntityNotFoundException("cannot find Acte");
+            
+            log.infof("cannot find Acte: %s", numeroActe);
         }
        
         

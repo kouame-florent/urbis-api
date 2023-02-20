@@ -170,8 +170,8 @@ public class ActeNaissanceService {
        // acte.dateEnregistrement = DateTimeUtils.fromStringToDateTime(acteNaissanceDto.getDateEnregistrement());
         if(acteNaissanceDto.getEnfantDateNaissance() != null){
             acte.enfant.dateNaissance = acteNaissanceDto.getEnfantDateNaissance() ;
-           // acte.enfant.dateNaissanceLettre = dateNaissanceEnLettre(acte.enfant.dateNaissance);
-           // acte.enfant.heureNaissanceLettre = heureNaissanceEnLettre(acte.enfant.dateNaissance);
+           // acte.enfant.dateNaissanceLettre = dateEnLettre(acte.enfant.dateNaissance);
+           // acte.enfant.heureNaissanceLettre = heureEnLettre(acte.enfant.dateNaissance);
         }      
         acte.enfant.lieuNaissance = acteNaissanceDto.getEnfantLieuNaissance();
         acte.enfant.localite = acteNaissanceDto.getEnfantLocalite();

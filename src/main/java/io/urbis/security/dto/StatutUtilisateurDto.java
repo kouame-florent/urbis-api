@@ -5,18 +5,40 @@
  */
 package io.urbis.security.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 /**
  *
  * @author florent
  */
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class StatutUtilisateurDto {
    
     public String code;
     public String libelle;
+
+    public StatutUtilisateurDto() {
+    }
+
+    public StatutUtilisateurDto(String code, String libelle) {
+        this.code = code;
+        this.libelle = libelle;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+    
+    
    
 }

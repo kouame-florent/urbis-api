@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+body{
+    
+    background-image: url("#{resource['image/elephant10.jpg']}");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.ui-widget, .ui-widget .ui-widget 
+{
+    font-size: 95% !important; 
+     
+}
+

@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *

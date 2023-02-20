@@ -9,6 +9,7 @@ import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.demande.domain.Operation;
+import io.urbis.demande.domain.StatutActe;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.demande.service.DemandeService;
 import io.urbis.registre.domain.TypeRegistre;
@@ -136,13 +137,13 @@ public class ListerBacking extends BaseBacking implements Serializable{
          LOG.log(Level.INFO, "RETURN FROM NEW ACTE...");
     }
     
-    public StreamedContent download(){
+    public StreamedContent downloadExtrait(){
         LOG.log(Level.INFO, "-- SLECTED DEMANDE ID: {0}", selectedDemandeID);
         StreamedContent content = null;
         Path path = null;
         try {
             TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
-            String pathString = demandeService.print(selectedActeID,typeRegistre);
+            String pathString = demandeService.printExtrait(selectedActeID,typeRegistre);
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -208,6 +209,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public void verifierActe(DemandeDto dto){
         LOG.log(Level.INFO, "DEMANDE ID: {0}", dto.getId());
+        boolean res = demandeService.verifierActe(dto.getId(), dto);
+        if(res != true) {
+            addGlobalMessage("L'acte référencé n'existe pas!", FacesMessage.SEVERITY_WARN);
+        }else{
+            addGlobalMessage("L'acte référencé existe", FacesMessage.SEVERITY_INFO);
+        }
         
     }
     
@@ -257,7 +264,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
     }
     
      public String returnToRegistresList(){
-        return "/registre/lister.xhtml?faces-redirect=true";
+        return "/registre/lister.xhtml?faces-redirect=true";  
+    }
+     
+    public boolean rendererPrintButton(DemandeDto dto){
+        StatutActe statut = StatutActe.fromString(dto.getStatutActe());
+        return statut == StatutActe.ACTE_PRESENT;
     }
     
 

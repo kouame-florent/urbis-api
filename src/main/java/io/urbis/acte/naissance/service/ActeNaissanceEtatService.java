@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -295,10 +296,10 @@ public class ActeNaissanceEtatService {
     public String extraitTexte(ActeNaissance acte){
         StringBuilder sb = new StringBuilder();
         sb.append("Le ");
-        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append(ActeNaissanceEtatService.this.dateEnLettre(acte.enfant.dateNaissance));
         sb.append("\n");
         sb.append("à ");
-        sb.append(heureNaissanceEnLettre(acte.enfant.dateNaissance));
+        sb.append(heureEnLettre(acte.enfant.dateNaissance));
         sb.append("\n");
         if(acte.enfant.sexe == Sexe.MASCULIN){
             sb.append("est né ");
@@ -333,67 +334,68 @@ public class ActeNaissanceEtatService {
     }
     
     public String copieIntegraleTexte(ActeNaissance acte){
-        StringBuilder sb = new StringBuilder();
-        sb.append(dateNaissanceEnLettre(acte.enfant.dateNaissance));
-        sb.append(" ");
-        sb.append(acte.enfant.lieuNaissance);
-        sb.append(", ");
-        sb.append("\n");
-        sb.append(localiteService.findActive().getType());
-        sb.append(" de ");
-        sb.append(localiteService.findActive().getLibelle());
-        sb.append(", ");
-        sb.append("l'enfant ");
-        sb.append(acte.enfant.nomComplet);
-        sb.append("\n");
-        sb.append("de sexe ");
-        sb.append(acte.enfant.sexe);
-        sb.append(",");
-        sb.append("ayant pour père ");
-        sb.append(acte.pere.nomComplet);
-        sb.append(", ");
-        sb.append("né à ");
-        sb.append("\n");
-        sb.append(acte.pere.lieuNaissance);
-        sb.append(", ");
-        sb.append(acte.pere.profession);
-        sb.append(", ");
-        sb.append("domicilié à ");
-        sb.append(acte.pere.localite);
-        sb.append(" et pour mère ");
-        sb.append("\n");
-        sb.append(acte.mere.nomComplet);
-        sb.append(", ");
-        sb.append("né à ");
-        sb.append(acte.mere.lieuNaissance);
-        sb.append(", ");
-        sb.append("\n");
-        sb.append(acte.mere.profession);
-        sb.append(" domicilié à ");
-        sb.append(acte.mere.localite);
         
-        sb.append("\n");
-        sb.append("\n");
+        String text = """
+                      Le %s 
+                      à %s
+                      %s %s,
+                      %s de %s, l'enfant %s 
+                      de sexe %s, ayant pour père %s,
+                      né le %s
+                      à %s, de nationnalité %s,
+                      %s, domicilié à %s et pour mère
+                      %s, né le %s
+                      à %s, de nationnalité %s, %s
+                      domiciliée à %s.
+                      
+                      Dressé le %s,
+                      à %s, sur déclaration
+                      du %s, par Nous, %s, Officier d'état civil,
+                      %s de la commune, après que le déclarant
+                      est été averti des peines sanctionnant les
+                      fausses déclarations.
+                      
+                      Lecture faite et le déclarant invité à lire l'acte.
+                      Nous avons signé avec le déclarant.
+                      """;
         
-        sb.append("Dressé le, par nous, ");
-        sb.append(acte.officierEtatCivil.nom);
-        sb.append(" ");
-        sb.append(acte.officierEtatCivil.prenoms);
-        sb.append(", ");
-        sb.append("Officier ");
-        sb.append("\n");
-        sb.append("d'état civil, ");
-        sb.append(acte.officierEtatCivil.titre);
-        sb.append(" de la commune, après que le déclarant ");
-        sb.append("\n");
-        sb.append("est été averti des peines sanctionnant les fausses ");
-        sb.append("déclarations. ");
-        sb.append("\n");
-        sb.append("\n");
-        sb.append("Lecture faite et le déclarant invité à lire l'acte.");
-        sb.append(" Nous avons signé avec le déclarant.");
         
-        return sb.toString();
+        var fmtTxt = String.format(text,
+                dateEnLettre(acte.enfant.dateNaissance),
+                heureEnLettre(acte.enfant.dateNaissance),
+                estNe(acte),
+                acte.enfant.lieuNaissance,
+                localiteService.findActive().getType(),
+                localiteService.findActive().getLibelle(),
+                acte.enfant.nomComplet,
+                acte.enfant.sexe,
+                
+                acte.pere.nomComplet,
+                dateEnLettre(acte.pere.dateNaissance),
+                acte.pere.lieuNaissance,
+                acte.pere.nationalite,
+                acte.pere.profession,
+                acte.pere.localite,
+                
+                                
+                acte.mere.nomComplet,
+                dateEnLettre(acte.mere.dateNaissance),
+                acte.mere.lieuNaissance,
+                acte.mere.nationalite,
+                acte.mere.profession,
+                acte.mere.localite,
+                
+                dateEnLettre(acte.dateDressage),
+                heureEnLettre(acte.dateDressage),
+                acte.declarant.lien,
+                
+                acte.officierEtatCivil.nom + " " + acte.officierEtatCivil.prenoms,
+                acte.officierEtatCivil.titre);
+         
+        
+        
+        return fmtTxt;
+        
     }
     
     public String numeroActeTexte(ActeNaissance acte){
@@ -454,7 +456,7 @@ public class ActeNaissanceEtatService {
     }
   
 
-    public String dateNaissanceEnLettre(LocalDateTime localDateTime){
+    public String dateEnLettre(LocalDateTime localDateTime){
       
         int dayOfMonth = localDateTime.getDayOfMonth();
         String month = localDateTime.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
@@ -481,7 +483,44 @@ public class ActeNaissanceEtatService {
     }
     
     
-    public String heureNaissanceEnLettre(LocalDateTime localDateTime){
+     public String dateEnLettre(LocalDate localDate){
+      
+        int dayOfMonth = localDate.getDayOfMonth();
+        String month = localDate.getMonth().getDisplayName(TextStyle.FULL, new Locale("fr","FR"));
+        int year = localDate.getYear();
+        
+       String laDate = "";
+        
+        if(dayOfMonth == 1){
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth,"%spellout-ordinal-masculine") + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        
+        }else{
+            RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat( new Locale("fr", "FR"),
+                RuleBasedNumberFormat.SPELLOUT );  
+            laDate = ruleBasedNumberFormat.format(dayOfMonth) + " " 
+                 + month + " " + ruleBasedNumberFormat.format(year);
+        }
+      
+        
+        return laDate;
+        
+    }
+    
+    
+    public String estNe(ActeNaissance acte){
+        if(acte.enfant.sexe == Sexe.MASCULIN){
+            return "est né";
+        }else{
+            return "est née";
+        }
+    
+    }
+    
+    
+    public String heureEnLettre(LocalDateTime localDateTime){
         
         int hour = localDateTime.getHour();
         int minute = localDateTime.getMinute();

@@ -6,7 +6,6 @@
 package io.urbis.param.domain;
 
 import io.urbis.param.dto.TypeLocaliteDto;
-import java.util.logging.Logger;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 

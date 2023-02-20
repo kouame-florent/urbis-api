@@ -12,15 +12,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author florent
  */
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Table(name = "localite")
 @Entity
 //@EntityListeners(AuditingEntityListener.class)
@@ -35,4 +32,15 @@ public class Localite extends  BaseEntity{
     public TypeLocalite typeLocalite;
     
    // public StatutParametre statut;
+
+    public Localite(String code, String libelle, TypeLocalite typeLocalite) {
+        this.code = code;
+        this.libelle = libelle;
+        this.typeLocalite = typeLocalite;
+    }
+
+    public Localite() {
+    }
+    
+    
 }

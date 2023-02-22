@@ -5,6 +5,7 @@
 package io.urbis.registre.backing;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.enterprise.context.SessionScoped;
 
 /**
@@ -17,6 +18,7 @@ public class ListerContext implements Serializable{
     private String selectedType;
     private String annee;
     private String numero;
+    private String dateOuverture;
     
     //empty string is the sentinel value
     private String lastNavigationURL = "";
@@ -56,6 +58,15 @@ public class ListerContext implements Serializable{
         this.lastNavigationURL = lastNavigationURL;
     }
 
+    public String getDateOuverture() {
+        return dateOuverture;
+    }
+
+    public void setDateOuverture(String dateOuverture) {
+        this.dateOuverture = dateOuverture;
+    }
+
+   
    
     
     

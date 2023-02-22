@@ -43,38 +43,7 @@ xmlns:p="http://primefaces.org/ui">
                     
             </p:fieldset>
             <p:spacer height="2"/>
-            <p:fieldset legend="Recherche" rendered="false">
-                <div class="ui-fluid p-formgrid p-grid">
-                        <div class="p-field p-col">
-                           <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
-                           <p:inputMask id="annee" value="#{registreListerBacking.filterData.annee}" mask="9999" maxlength="4"
-                                          styleClass="p-d-block"/>
-                           <p:message for="annee"/>
-                          
-
-                        </div>
-                        <div class="p-field p-col">
-                           <p:outputLabel for="numero" styleClass="p-d-block">Numéro</p:outputLabel>
-                           <p:inputText id="numero" value="#{registreListerBacking.filterData.numero}" styleClass="p-d-block"/>
-
-                        </div>
-                    </div>
-                    <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-col">
-                        <p:commandButton id="rechercher" value="Rechercher" 
-                                         process="@this contentForm:annee contentForm:numero"
-                                         action="#{registreListerBacking.filtrer()}"
-                                         update="contentForm:registre"  icon="pi pi-check"/>
-                    </div>
-                    <div class="p-field p-col">
-                        <p:commandButton value="Effacer les critères" icon="pi pi-times" process="@this contentForm:annee"
-                                         action="#{registreListerBacking.effacerFiltres()}"
-                                         update="contentForm:registre contentForm:annee contentForm:numero"  
-                                         styleClass="ui-button-warning" />
-                    </div>
-                </div>
-            </p:fieldset>
-            
+             
            <p:toolbar>
                  <p:toolbarGroup>
                      <p:commandButton  value="Créer le registre courant" action="#{registreListerBacking.openCreerView()}" icon="pi pi-plus" 
@@ -113,9 +82,11 @@ xmlns:p="http://primefaces.org/ui">
                 <p:column headerText="Libellé" rendered="#{registreListerBacking.renderRegistreLibelle()}">
                     <h:outputText value="#{registre.libelle}"/>
                 </p:column>
-                <p:column headerText="Date d'ouverture" width="10%" >
-                    <h:outputText value="#{registre.dateOuverture}">
-                        <f:convertDateTime type="localDateTime" pattern="dd-MM-yyyy" />
+                <p:column headerText="Date d'ouverture" width="10%" filterBy="#{registre.dateOuverture}" 
+                          filterValue="#{registreListerBacking.pageCtx.dateOuverture}" >
+                    
+                    <h:outputText value="#{registre.dateOuverture}" > 
+                        <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy" />
                     </h:outputText>
                 </p:column>
                  <p:column headerText="N° prémier acte" >

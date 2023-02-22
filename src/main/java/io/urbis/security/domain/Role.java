@@ -23,13 +23,13 @@ public class Role extends BaseEntity{
     public List<User> users ;
     
     @RolesValue
-    public String value;
+    public String role;
 
     public Role() {
     }
 
-    public Role(String value) {
-        this.value = value;
+    public Role(String role) {
+        this.role = role;
     }
     
     

@@ -109,66 +109,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     @PostConstruct
     public void init(){
         
-        
-       // Principal pr = facesContext.getExternalContext().getUserPrincipal();
-       // sc.getCallerPrincipal().
-       
-      // LOG.log(Level.INFO, "--------- SECURITY CONTEXT : {0}", sc.getCallerPrincipal().getName()); 
-       
-       /*
-       Configuration config = new Configuration("http://127.0.0.1:8585/auth/", 
-                "urbis",
-                "urbis-jsf", 
-                Map.of("secret", "f57e3e40-788c-450e-8a29-d32c01501348"), null);
-       */
-       
-        /*
-        KeycloakPrincipal principal = (KeycloakPrincipal)facesContext.getExternalContext().getUserPrincipal();
-        LOG.log(Level.INFO, "--------- KEYCLOAK PRINCIPAL: {0}", principal.getKeycloakSecurityContext()); 
-        RefreshableKeycloakSecurityContext ctx = (RefreshableKeycloakSecurityContext)principal.getKeycloakSecurityContext();
-        LOG.log(Level.INFO, "--------- PREFERRED USER NAME: {0}", ctx.getIdToken().getPreferredUsername());  
-        
-        AccessToken accessToken = principal.getKeycloakSecurityContext().getToken();
-        LOG.log(Level.INFO, "--------- SCOPE: {0}", accessToken.getScope());  
-        
-       */
-       // AuthzClient ac = AuthzClient.create();
-        
-       
-       //LOG.log(Level.INFO, "--------- AUTHZ CLIENT: {0}", ac);  
-       //LOG.log(Level.INFO, "--------- ACCESS TOKEN: {0}", ac.obtainAccessToken().getTokenType());  
-     
-       
-       
-       //Map<String,String> headers = facesContext.getExternalContext().getRequestHeaderMap();
-       //headers.forEach((k,v) -> LOG.log(Level.INFO, "--------- KEY : {0}\n",v));
-       
-       
-      // Principal princ = facesCtx.getExternalContext().getUserPrincipal();
-               
-      // LOG.log(Level.INFO, "--------- SECURITY PRINCIPAL : {0}", princ);   
-       
-      /*
-        Configuration config = new Configuration("http://127.0.0.1:8585/auth/", 
-                "urbis",
-                "urbis-jsf", 
-                Map.of("secret", "f57e3e40-788c-450e-8a29-d32c01501348"), null);
-        AuthzClient ac = AuthzClient.create();
-       
-       LOG.log(Level.INFO, "--------- AUTHZ CLIENT: {0}", ac);  
-      */
-       
-       /*
-       String userName = sc.getCallerPrincipal().getName();
-
-        if (sc.getCallerPrincipal() instanceof KeycloakPrincipal) {
-          KeycloakPrincipal<KeycloakSecurityContext> kp = (KeycloakPrincipal<KeycloakSecurityContext>)sc.getCallerPrincipal();
-         
-          // this is how to get the real userName (or rather the login name)
-          userName = kp.getKeycloakSecurityContext().getIdToken().getPreferredUsername();
-          LOG.log(Level.INFO, "--------- USER NAME FROM EYCLOAK : {0}", userName);   
-        }
-       */
+      
        
        typesRegistre = typeRegistreService.findAll();
        
@@ -224,30 +165,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
       
     }
     
-    /*
-    public void filtrer(){
-        LOG.log(Level.INFO, "FILTRER...");
-       
-        LOG.log(Level.INFO, "FILTRE ANNEE: {0}", filterData.getAnnee());   
-        LOG.log(Level.INFO, "FILTRE NUMERO: {0}", filterData.getNumero());
-        LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
-        lazyRegistreDataModel.setTypeRegistre(selectedType.getCode());
-        lazyRegistreDataModel.setAnnee(filterData.getAnnee());
-        lazyRegistreDataModel.setNumero(filterData.getNumero());
-    
-    }
-    
-    public void effacerFiltres(){
-        filterData.setAnnee(0);
-        filterData.setNumero(0);
-        //lazyRegistreDataModel.setTypeRegistre("naissance");  
-        lazyRegistreDataModel.setAnnee(0);
-        lazyRegistreDataModel.setNumero(0);
-    }
-    
-    */
-    
-    
+     
     public void onTypeRegistreSelect(){
         LOG.log(Level.INFO, "SELECTED TYPE: {0}", selectedType);
         lazyRegistreDataModel.setTypeRegistre(selectedType.getCode());
@@ -289,7 +207,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.CREATION.name());
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations,"type",type);
-        Map<String,Object> options = getDialogOptions(100, 100, true);
+        Map<String,Object> options = getDialogOptions(100, 100, false);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }
@@ -302,16 +220,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().openDynamic("editer-serie", options, params);
     }
     
-    /*
-    public String openConsulterView(RegistreDto registreDto){
-        
-        //return "editer";
-        
-        return "editer?faces-redirect=true&reg-id="+registreDto.getId()+"&operation="+Operation.CONSULTATION.name();
-    
-    }
-    */
-    
+      
     
     public void openConsulterView(RegistreDto registreDto){
         LOG.log(Level.INFO, "--- CALL OPEN CONSULTER");
@@ -319,7 +228,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.CONSULTATION.name());
         var values = List.of(registreDto.getId());
         Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
-        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,true), params);
+        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,false), params);
     
     }
     
@@ -330,7 +239,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var values = List.of(registreDto.getId());
 
         Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
-        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,true), params);
+        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,false), params);
     
     }
     
@@ -360,7 +269,11 @@ public class ListerBacking extends BaseBacking implements Serializable{
 */
     
     public void onRegistreValidated(SelectEvent event){
-        addGlobalMessage("Le registre a été validé avec succès", FacesMessage.SEVERITY_INFO);
+        String status = (String) event.getObject();
+        if(status != null && status.equals(StatutRegistre.VALIDE.name())){
+            addGlobalMessage("Le registre a été validé avec succès", FacesMessage.SEVERITY_INFO);
+        }
+        
     }
     
     public void showAnnulerView(RegistreDto registreDto){

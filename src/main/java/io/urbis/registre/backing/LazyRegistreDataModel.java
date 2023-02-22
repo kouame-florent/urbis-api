@@ -8,6 +8,9 @@ package io.urbis.registre.backing;
 
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,6 +44,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     private String typeRegistre;
     private int annee;
     private int numero;
+    private LocalDate dateOuverture;
     
 
     @Override
@@ -52,7 +56,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
         if(typeRegistre == null){
             throw new IllegalStateException("'typeRegistre' cannot be null");
         }
-        List<RegistreDto> regs = registreService.findWithFilters(offset, pageSize, typeRegistre, annee, numero);
+        List<RegistreDto> regs = registreService.findWithFilters(offset, pageSize, typeRegistre, annee, numero,dateOuverture);
         LOG.log(Level.INFO,"LOADED DATA SIZE: {0}", regs.size());
         int count = registreService.count(typeRegistre,annee,numero);
         setRowCount(count);
@@ -63,6 +67,7 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
     private void setFilterValues(Map<String, FilterMeta> filterBy){
          annee = 0;
          numero = 0;
+         dateOuverture = null;
         
         for(FilterMeta filter : filterBy.values()) {
             FilterConstraint constraint = filter.getConstraint();
@@ -89,11 +94,32 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
                 }
             }
             
+            if(field.equals("dateOuverture")){
+                var val = filterValue.toString();
+                try{
+                  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                  dateOuverture =  LocalDate.parse(val,formatter);
+                }catch(DateTimeParseException ex){
+                    LOG.log(Level.WARNING, "cannot parse '{0}' to localdate", val);  
+                }
+                
+                
+            }
+            
             
         }
     
     }
 
+    
+
+    
+    @Override
+    public int count(Map<String, FilterMeta> arg0) {
+        return registreService.count(typeRegistre,annee,numero);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     public void setTypeRegistre(String typeRegistre) {
         this.typeRegistre = typeRegistre;
     }
@@ -114,12 +140,15 @@ public class LazyRegistreDataModel extends LazyDataModel<RegistreDto> {
         this.numero = numero;
     }
 
-    
-    @Override
-    public int count(Map<String, FilterMeta> arg0) {
-        return registreService.count(typeRegistre,annee,numero);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LocalDate getDateOuverture() {
+        return dateOuverture;
     }
+
+    public void setDateOuverture(LocalDate dateOuverture) {
+        this.dateOuverture = dateOuverture;
+    }
+    
+    
     
     
     

@@ -38,7 +38,7 @@ public class AfficherBacking implements Serializable{
     RegistreService registreService;
     
     public void onload(){
-        LOG.log(Level.INFO,"REGISTRE ID: {0}",registreID);
+        LOG.log(Level.INFO,"REGISTRE ID: {0}",registreID); 
         registreDto = registreService.findById(registreID);
         LOG.log(Level.INFO,"REGISTRE LIBELLE: {0}",registreDto.getLibelle());
     }
@@ -46,7 +46,7 @@ public class AfficherBacking implements Serializable{
     public void valider(){
       //  registreService.patch(registreID,new RegistrePatchDto(StatutRegistre.VALIDE.name(),null,""));
         registreService.validerRegistre(registreID, new RegistrePatchDto(StatutRegistre.VALIDE.name(),null,""));
-        PrimeFaces.current().dialog().closeDynamic(null);
+        PrimeFaces.current().dialog().closeDynamic(StatutRegistre.VALIDE.name());
     }
     
     public boolean rendererCmdValider(){

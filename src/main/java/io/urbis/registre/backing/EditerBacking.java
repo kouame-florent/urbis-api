@@ -207,7 +207,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
              //   registreDto.getDateOuverture(),""));
         registreService.validerRegistre(registreID, new RegistrePatchDto(StatutRegistre.VALIDE.name(),
                 registreDto.getDateOuverture(),""));
-        PrimeFaces.current().dialog().closeDynamic(null);
+        PrimeFaces.current().dialog().closeDynamic("");
     }
     
     public boolean renderedCreerButton(){

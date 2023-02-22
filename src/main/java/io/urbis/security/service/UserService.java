@@ -41,7 +41,7 @@ public class UserService {
       user.password = dto.getPassword();
       
       for(String roleStr : dto.getRoles()){
-         PanacheQuery<Role> rq = Role.find("name", roleStr);
+         PanacheQuery<Role> rq = Role.find("role", roleStr);
          Role r = rq.firstResult();
          if(r == null){
              throw new EntityNotFoundException("Role not found");
@@ -82,14 +82,14 @@ public class UserService {
    
     
     
-    public UserDto mapToDto(@NotNull User entity){
+    public UserDto mapToDto(@NotNull User user){
         UserDto dto = new UserDto();
         
-        dto.setId(entity.id);
-        dto.setName(entity.name);
-        List<String> roles = entity.roles.stream().map(r -> r.value).collect(Collectors.toList());
+        dto.setId(user.id);
+        dto.setName(user.name);
+        List<String> roles = user.roles.stream().map(r -> r.role).collect(Collectors.toList());
         dto.setRoles(roles);
-        String roleView = entity.roles.stream().map(r -> r.value).collect(Collectors.joining(" "));
+        String roleView = user.roles.stream().map(r -> r.role).collect(Collectors.joining(" "));
         dto.setRolesView(roleView);
       
         

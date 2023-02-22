@@ -9,6 +9,7 @@ import io.urbis.registre.domain.StatutRegistre;
 import io.urbis.registre.dto.RegistrePatchDto;
 import io.urbis.registre.dto.RegistreDto;
 import io.urbis.registre.service.RegistreService;
+import java.time.LocalDate;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
@@ -45,8 +46,9 @@ public class RegistreResource {
     @Transactional
     @GET
     public List<RegistreDto> findWithFilters(@QueryParam("offset") int offset, @QueryParam("pageSize") int pageSize,
-            @QueryParam("type") String typeRegistre, @QueryParam("annee") int annee, @QueryParam("numero") int numero){
-        return this.registreService.findWithFilters(offset, pageSize, typeRegistre, annee, numero);
+            @QueryParam("type") String typeRegistre, @QueryParam("annee") int annee,
+            @QueryParam("numero") int numero){
+        return registreService.findWithFilters(offset, pageSize, typeRegistre, annee, numero,LocalDate.now());
     }
     
     //@RolesAllowed("CHEF_ETAT_CIVIL")

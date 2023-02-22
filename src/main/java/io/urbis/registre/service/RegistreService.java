@@ -242,10 +242,10 @@ public class RegistreService {
     }
     
     @Transactional
-    public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero){
+    public List<RegistreDto> findWithFilters(int offset,int pageSize, String type,int annee,int numero,LocalDate dateOuverture){
        
        PanacheQuery<Registre> query = Registre.find("typeRegistre", 
-               Sort.by("annee", Sort.Direction.Descending).and("numero", Sort.Direction.Descending),
+               Sort.by("annee", Sort.Direction.Descending).and("numero", Sort.Direction.Descending).and("dateOuverture",Sort.Direction.Descending),
                TypeRegistre.fromString(type));
        
        if(annee != 0){
@@ -254,6 +254,10 @@ public class RegistreService {
        
        if(numero != 0){
            query.filter("numeroFilter", Map.of("numeroLimit",numero));
+       }
+       
+       if(dateOuverture != null){
+         query.filter("dateOuvertureFilter", Map.of("dateOuvertureLimit",dateOuverture));
        }
        
        PanacheQuery<Registre> rq =  query.range(offset, offset + (pageSize-1));

@@ -90,6 +90,14 @@ import org.hibernate.annotations.ParamDef;
     name = "numeroFilter", 
     condition = "numero = :numeroLimit"
 )
+@FilterDef(
+    name = "dateOuvertureFilter", 
+    parameters = @ParamDef(name = "dateOuvertureLimit", type = "java.time.LocalDate")
+)
+@Filter(
+    name = "dateOuvertureFilter", 
+    condition = "date_ouverture = :dateOuvertureLimit"
+)
 @Table(name = "registre",
         uniqueConstraints = { @UniqueConstraint(columnNames = {"type_registre","localite_id", "centre_id","annee","numero"})}
 )

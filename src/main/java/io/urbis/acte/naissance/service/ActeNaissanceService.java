@@ -24,6 +24,7 @@ import io.urbis.acte.naissance.domain.Enfant;
 import io.urbis.acte.naissance.domain.Jugement;
 import io.urbis.acte.naissance.domain.Declarant;
 import io.urbis.acte.naissance.domain.Interprete;
+import io.urbis.acte.naissance.domain.LienDeclarant;
 import io.urbis.acte.naissance.domain.Temoins;
 import io.urbis.acte.naissance.domain.Operation;
 import io.urbis.common.domain.TypePiece;
@@ -32,9 +33,16 @@ import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.domain.ModeDeclaration;
 import io.urbis.acte.naissance.dto.MentionAnnulationDto;
+import io.urbis.demande.domain.Demande;
+import io.urbis.demande.domain.Demandeur;
+import io.urbis.demande.domain.StatutActe;
+import io.urbis.demande.domain.StatutDemande;
+import io.urbis.demande.dto.DemandeDto;
+import io.urbis.demande.service.Helper;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.registre.domain.Registre;
 import io.urbis.registre.domain.StatutRegistre;
+import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.security.service.AuthenticationContext;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -112,6 +120,11 @@ public class ActeNaissanceService {
     
     @Inject
     EntityManager em;
+    
+    @Inject
+    Helper helper;
+    
+    final long MAX_DELAI = 3;
    
     
     public ActeNaissanceDto findById(@NotBlank String id){
@@ -156,6 +169,8 @@ public class ActeNaissanceService {
         acte.registre = registre;
         
         acte.numero = acteNaissanceDto.getNumero();
+        acte.nombreCopiesIntegrales = acteNaissanceDto.getNombreCopiesIntegrales();
+        acte.nombreExtraits = acteNaissanceDto.getNombreExtraits();
         
         if(acteNaissanceDto.getDateDeclaration() != null){
             acte.dateDeclaration = acteNaissanceDto.getDateDeclaration();
@@ -345,11 +360,78 @@ public class ActeNaissanceService {
         
         creerMentions(acteNaissanceDto, acte);
         acteNaissanceEtatService.creer(acte.id);
+        creerDemande(acte, registre);
        
         return acte.id;
     }
     
- 
+    private String creerDemande(@NotNull ActeNaissance acte,@NotNull Registre reg){
+        
+                    
+        Demandeur demandeur = new Demandeur();
+
+        Demande demande = new Demande(demandeur);
+        
+        demande.statutActe = StatutActe.ACTE_PRESENT;
+        demande.statutDemande = StatutDemande.PRIS_EN_CHARGE;
+        demande.acte = acte;
+        
+               
+        demande.dateHeureDemande = acte.dateDressage;
+        demande.dateHeureRdvRetrait = LocalDateTime.now().plusDays(MAX_DELAI);
+        demande.dateOuvertureRegistre = reg.dateOuverture;
+        demande.demandeur.email = "";
+        
+        if(acte.declarant.lien.equals(LienDeclarant.PERE.name())){
+            demande.demandeur.nom = acte.pere.nom;
+            demande.demandeur.prenoms = acte.pere.prenoms;
+            demande.demandeur.numeroTelephone = "";
+            demande.demandeur.numeroPiece = acte.pere.numeroPiece;
+            
+            demande.demandeur.qualite = acte.declarant.lien;
+            demande.demandeur.typePiece = acte.pere.typePiece;
+        
+        }
+        
+        if(acte.declarant.lien.equals(LienDeclarant.MERE.name())){
+            demande.demandeur.nom = acte.mere.nom;
+            demande.demandeur.prenoms = acte.mere.prenoms;
+            demande.demandeur.numeroTelephone = "";
+            demande.demandeur.numeroPiece = acte.mere.numeroPiece;
+            
+            demande.demandeur.qualite = acte.declarant.lien;
+            demande.demandeur.typePiece = acte.mere.typePiece;
+        
+        }
+        
+        if(acte.declarant.lien.equals(LienDeclarant.AUTRES.name())){
+            demande.demandeur.nom = acte.declarant.nom;
+            demande.demandeur.prenoms = acte.declarant.prenoms;
+            demande.demandeur.numeroTelephone = "";
+            demande.demandeur.numeroPiece = acte.declarant.numeroPiece;
+            
+            demande.demandeur.qualite = acte.declarant.lien;
+            demande.demandeur.typePiece = acte.declarant.typePiece;
+        
+        }
+        
+        
+
+        demande.nombreCopies = acte.nombreCopiesIntegrales;
+        demande.nombreExtraits = acte.nombreExtraits;
+        demande.numero = helper.numeroDemande();
+        demande.numeroActe = acte.numero;
+        demande.typeRegistre = TypeRegistre.fromString(reg.typeRegistre.name());
+        demande.updatedBy = authenticationContext.userLogin();
+
+        demande.persist();
+        
+        
+        return demande.id;
+        
+        
+    
+    }
 
     public void creerMentions(ActeNaissanceDto acteNaissanceDto,ActeNaissance acte){
         
@@ -397,7 +479,7 @@ public class ActeNaissanceService {
     }
     
     
-    public void valider(@NotBlank String id, @NotNull ActeNaissanceDto acteNaissanceDto){
+    public void valider(@NotBlank String id){
     
         ActeNaissance acte = ActeNaissance.findById(id);
         acte.statut = StatutActeNaissance.VALIDE;
@@ -737,20 +819,20 @@ public class ActeNaissanceService {
     
   
    
-    public void validerActe(Registre registre,ActeNaissanceDto acte,Operation operation){
+    public void validerActe(Registre registre,ActeNaissanceDto dto,Operation operation){
         if(operation == Operation.DECLARATION_JUGEMENT){
-            verifierNumero(registre, acte);
+            verifierNumero(registre, dto);
         }
         
-        validerBorneInferieure(registre, acte.getNumero());
-        validerBorneSuperieure(registre, acte.getNumero());
+        validerBorneInferieure(registre, dto.getNumero());
+        validerBorneSuperieure(registre, dto.getNumero());
         //validerNombreDefeuillets(registre);
     }
     
    
-    public void verifierNumero(Registre registre,ActeNaissanceDto acte){
-        while(numeroExist(registre, acte.getNumero())){
-            acte.setNumero(acte.getNumero() + 1);
+    public void verifierNumero(Registre registre,ActeNaissanceDto dto){
+        while(numeroExist(registre, dto.getNumero())){
+            dto.setNumero(dto.getNumero() + 1);
             registre.numeroProchainActe += 1;
         }
     }
@@ -826,6 +908,7 @@ public class ActeNaissanceService {
         dto.setUpdated(acte.updated);
         
         dto.setId(acte.id);
+        
         
          
         if(acte.dateDeclaration != null){
@@ -1006,8 +1089,8 @@ public class ActeNaissanceService {
         });
         
         dto.setMotifAnnulation(acte.motifAnnulation);
-       // dto.setNombreCopiesIntegrales(acte.nombreCopiesIntegrales);
-       // dto.setNombreExtraits(acte.nombreExtraits);
+        dto.setNombreCopiesIntegrales(acte.nombreCopiesIntegrales);
+        dto.setNombreExtraits(acte.nombreExtraits);
         
         dto.setNumero(acte.numero);
         dto.setRegistreID(acte.registre.id);
@@ -1048,7 +1131,7 @@ public class ActeNaissanceService {
         
         return registre.numeroProchainActe;
         /*
-        if(ActeNaissance.count() > 0){
+        if(ActeNaissanceDto.count() > 0){
             return registre.numeroProchainActe + 1;
         }else{
             return registre.numeroPremierActe;

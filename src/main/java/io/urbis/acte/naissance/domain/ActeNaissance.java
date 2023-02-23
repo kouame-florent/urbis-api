@@ -231,18 +231,9 @@ public class ActeNaissance extends Acte{
     public int nombreCopiesIntegrales;
     
     @Column(name = "nombre_extraits")
-    public int nombreExtraits;
+    public int nombreExtraits = 3;
     
-    /*
-    @Lob
-    @Column(name = "extrait_texte")
-    public Clob extraitTexte;
-    
-    @Lob
-    @Column(name = "copie_texte")
-    public Clob copieTexte;
-*/
-    
+      
     @NotNull
     @ManyToOne
     @JoinColumn(name = "officier_etat_civil_id",nullable = false)

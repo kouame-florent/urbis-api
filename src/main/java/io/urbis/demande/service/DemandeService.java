@@ -80,8 +80,7 @@ public class DemandeService {
     AgroalDataSource defaultDataSource;
     
         
-    @Inject
-    EntityManager em;
+   
     
     @Inject
     Logger log;
@@ -216,25 +215,7 @@ public class DemandeService {
         return (int)Demande.count();
     }
     
-     public int numeroDemande(){
-   
-        TypedQuery<Integer> query =  em.createNamedQuery("Demande.findMaxNumero", Integer.class);   
-          
-        try{
-            Integer num = query.getSingleResult();
-            log.infof("--MAX NUM DEMANDE: %d", num);
-            if(num != null){
-                return num + 1;
-            }
-            log.infof("aucune demande trouvée...");
-            return 1;
-        }catch(NoResultException ex){
-            log.infof("aucune demande trouvée...");
-            return 1;
-        }
-      
-      
-    }
+    
     
 
 

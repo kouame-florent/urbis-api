@@ -395,7 +395,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     public void valider(){
    
-        acteNaissanceService.valider(acteNaissanceDto.getId(), acteNaissanceDto);
+        acteNaissanceService.valider(acteNaissanceDto.getId());
         initActeDto();
         addGlobalMessage("L'acte a été validé avec succès", FacesMessage.SEVERITY_INFO);
         PrimeFaces.current().dialog().closeDynamic(null);

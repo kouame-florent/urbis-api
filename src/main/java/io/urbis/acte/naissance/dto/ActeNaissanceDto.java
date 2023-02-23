@@ -116,8 +116,8 @@ public class ActeNaissanceDto {
   
     private String statut;
     private String motifAnnulation;
-    //private int nombreCopiesIntegrales;
-    //private int nombreExtraits;
+    private int nombreCopiesIntegrales;
+    private int nombreExtraits;
     
     private String officierEtatCivilID;
     private String officierEtatCivilNom;
@@ -866,6 +866,22 @@ public class ActeNaissanceDto {
 
     public void setMentionAnnulationDtos(Set<MentionAnnulationDto> mentionAnnulationDtos) {
         this.mentionAnnulationDtos = mentionAnnulationDtos;
+    }
+
+    public int getNombreCopiesIntegrales() {
+        return nombreCopiesIntegrales;
+    }
+
+    public void setNombreCopiesIntegrales(int nombreCopiesIntegrales) {
+        this.nombreCopiesIntegrales = nombreCopiesIntegrales;
+    }
+
+    public int getNombreExtraits() {
+        return nombreExtraits;
+    }
+
+    public void setNombreExtraits(int nombreExtraits) {
+        this.nombreExtraits = nombreExtraits;
     }
     
     

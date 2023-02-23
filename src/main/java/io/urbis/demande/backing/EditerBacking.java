@@ -12,6 +12,7 @@ import javax.inject.Named;
 import io.urbis.demande.domain.Operation;
 import io.urbis.demande.dto.DemandeDto;
 import io.urbis.demande.service.DemandeService;
+import io.urbis.demande.service.Helper;
 import io.urbis.registre.domain.TypeRegistre;
 import io.urbis.registre.dto.TypeRegistreDto;
 import io.urbis.registre.service.TypeRegistreService;
@@ -40,6 +41,9 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     @Inject
     TypeRegistreService typeRegistreService;
+    
+    @Inject
+    Helper helper;
     
     private List<TypeRegistreDto> typesRegistre;
     
@@ -119,7 +123,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
         switch(operation){
             case CREATION:
                 demandeDto = new DemandeDto();
-                int numeroDemande = demandeService.numeroDemande();
+                int numeroDemande = helper.numeroDemande();
                 TypeRegistre type = TypeRegistre.fromString(typeRegistre);
                 demandeDto.setNumero(numeroDemande);
                 demandeDto.setTypeRegistre(type.name());

@@ -47,25 +47,33 @@ xmlns:p="http://primefaces.org/ui">
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
-                       <p:inputText id="annee" value="#{acteNaissanceListerBacking.registreDto.annee}" required="true"
+                       <p:inputText id="annee" value="#{acteNaissanceListerBacking.registreDto.annee}"
                                     disabled="true" styleClass="p-d-block"/>
 
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="numero" styleClass="p-d-block">Numéro</p:outputLabel>
-                       <p:inputText id="numero" value="#{acteNaissanceListerBacking.registreDto.numero}"  required="true" 
+                       <p:inputText id="numero" value="#{acteNaissanceListerBacking.registreDto.numero}"
                                     disabled="true"   styleClass="p-d-block"/>
 
                    </div>
                    <div class="p-field p-col">
+                       <p:outputLabel for="dateOuverture" styleClass="p-d-block">Date ouverture</p:outputLabel>
+                       <p:inputText id="dateOuverture" value="#{acteNaissanceListerBacking.registreDto.dateOuverture}" 
+                                    disabled="true"   styleClass="p-d-block">
+                           <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                       </p:inputText>
+
+                   </div>
+                   <div class="p-field p-col">
                        <p:outputLabel for="numeroPremierActe" styleClass="p-d-block">Numéro premier acte</p:outputLabel>
-                       <p:inputText id="numeroPremierActe" value="#{acteNaissanceListerBacking.registreDto.numeroPremierActe}"  required="true" 
+                       <p:inputText id="numeroPremierActe" value="#{acteNaissanceListerBacking.registreDto.numeroPremierActe}"
                                     disabled="true"   styleClass="p-d-block"/>
 
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="numeroDernierActe" styleClass="p-d-block">Numéro dernier acte</p:outputLabel>
-                       <p:inputText id="numeroDernierActe" value="#{acteNaissanceListerBacking.registreDto.numeroDernierActe}"  required="true" 
+                       <p:inputText id="numeroDernierActe" value="#{acteNaissanceListerBacking.registreDto.numeroDernierActe}"
                                     disabled="true"   styleClass="p-d-block"/>
 
                    </div>
@@ -244,8 +252,12 @@ xmlns:p="http://primefaces.org/ui">
                 <p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
                 <p:commandButton value="Oui" type="button" styleClass="ui-confirmdialog-yes" />
             </p:confirmDialog>
-          
-
+            
+    
+            
+           
+            
+            
         </h:form>
          
         <script>

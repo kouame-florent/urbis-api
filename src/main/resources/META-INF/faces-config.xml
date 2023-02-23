@@ -28,14 +28,14 @@
             <default-locale>fr</default-locale>
         </locale-config>
         <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
-        <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+        
         <resource-bundle>
             <base-name>messages</base-name>
             <var>msg</var>
         </resource-bundle>
+    
        
     </application>
-    <factory>
-       
-    </factory>
+    
+   
 </faces-config>

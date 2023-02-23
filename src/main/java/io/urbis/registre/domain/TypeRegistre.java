@@ -13,10 +13,10 @@ public enum TypeRegistre {
     
     NAISSANCE("Naissance"),
     MARIAGE("Mariage"),
-    DIVERS("Divers"),
     DECES("Décès"),
     SPECIAL_NAISSANCE("Spécial naissance"),
-    SPECIAL_DECES("Spécial décès");
+    SPECIAL_DECES("Spécial décès"),
+    DIVERS("Divers");
     
     private final String libelle;
     

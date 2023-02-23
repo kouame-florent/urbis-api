@@ -57,25 +57,33 @@ xmlns:p="http://primefaces.org/ui">
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="annee" styleClass="p-d-block">Année</p:outputLabel>
-                       <p:inputText id="annee" value="#{acteNaissanceEditerBacking.registreDto.annee}" required="true"
+                       <p:inputText id="annee" value="#{acteNaissanceEditerBacking.registreDto.annee}"
                                     disabled="true" styleClass="p-d-block" style="font-weight: bold"/>
 
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="numero" styleClass="p-d-block">Numéro</p:outputLabel>
-                       <p:inputText id="numero" value="#{acteNaissanceEditerBacking.registreDto.numero}"  required="true" 
+                       <p:inputText id="numero" value="#{acteNaissanceEditerBacking.registreDto.numero}"
                                     disabled="true"   styleClass="p-d-block" style="font-weight: bold"/>
 
                    </div>
                    <div class="p-field p-col">
+                       <p:outputLabel for="dateOuverture" styleClass="p-d-block">Numéro</p:outputLabel>
+                       <p:inputText id="dateOuverture" value="#{acteNaissanceEditerBacking.registreDto.dateOuverture}"
+                                    disabled="true"   styleClass="p-d-block" style="font-weight: bold">
+                           <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
+                       </p:inputText>
+
+                   </div>
+                   <div class="p-field p-col">
                        <p:outputLabel for="numeroPremierActe" styleClass="p-d-block">Numéro premier acte</p:outputLabel>
-                       <p:inputText id="numeroPremierActe" value="#{acteNaissanceEditerBacking.registreDto.numeroPremierActe}"  required="true" 
+                       <p:inputText id="numeroPremierActe" value="#{acteNaissanceEditerBacking.registreDto.numeroPremierActe}" 
                                     disabled="true"   styleClass="p-d-block" style="font-weight: bold"/>
 
                    </div>
                    <div class="p-field p-col">
                        <p:outputLabel for="numeroDernierActe" styleClass="p-d-block">Numéro dernier acte</p:outputLabel>
-                       <p:inputText id="numeroDernierActe" value="#{acteNaissanceEditerBacking.registreDto.numeroDernierActe}"  required="true" 
+                       <p:inputText id="numeroDernierActe" value="#{acteNaissanceEditerBacking.registreDto.numeroDernierActe}"  
                                     disabled="true"   styleClass="p-d-block" style="font-weight: bold"/>
 
                    </div>

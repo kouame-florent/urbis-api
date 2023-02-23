@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public abstract class BaseBacking {
     
     @Inject
-    FacesContext facesContext;
+    public FacesContext facesContext;
     
     protected Map<String,Object> getDialogOptions(int widthPercent,int heightPercent,boolean closable){
       

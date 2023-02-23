@@ -2,34 +2,45 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:f="http://xmlns.jcp.org/jsf/core"
 xmlns:p="http://primefaces.org/ui">
     
  <ui:composition>
   
      <div class="p-d-flex p-jc-end">
          <p:commandButton value="Registres" process="@this" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem"
-                        action="#{globalMenuBacking.openRegistreView()}" 
+                          action="#{globalMenuBacking.openRegistreView()}" ajax="false"
                         icon="pi pi-book"/>
          
         <p:commandButton value="Demandes" process="@this" style="width: 100%;white-space: nowrap;width: auto !important;margin-right: .5rem"
-                        action="#{globalMenuBacking.openDemandeView()}" 
+                         action="#{globalMenuBacking.openDemandeView()}"  ajax="false"
                         icon="pi pi-id-card"/>
+        
              
       
-        <p:menuButton icon="pi pi-cog" style="width: 100%;white-space: nowrap;width: auto !important;">
+        <p:menuButton icon="pi pi-cog" style="width: 100%;white-space: nowrap;width: auto !important; margin-right: .5rem">
             <p:menuitem value="Paramètres sectoriels" process="@this"
                         action="#{globalMenuBacking.openParamsView()}" 
                         icon="pi pi-box" style="width: 100%;white-space: nowrap;width: auto !important;"/>
             
             <p:menuitem value="Utilisateurs" process="@this"
                         action="#{globalMenuBacking.openUserView()}" 
-                        icon="pi pi-users"/>
-
+                        icon="pi pi-user-edit"/>
+            
+            
+        </p:menuButton>   
+        
+        <p:menuButton icon="pi pi-user" style="width: 100%;white-space: nowrap;width: auto !important;">
+              
+               
             <p:menuitem value="Mon compte" process="@this" 
                          icon="pi pi-user"/>
-        </p:menuButton>      
+            
+            <p:menuitem value="Se deconnecter" process="@this" ajax="false"
+                        action="#{globalMenuBacking.logout()}"
+                         icon="pi pi-sign-out"/>
+            
+        </p:menuButton>   
+        
      </div>
      
     

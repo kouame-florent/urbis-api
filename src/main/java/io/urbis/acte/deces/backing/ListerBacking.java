@@ -10,6 +10,7 @@ import io.urbis.acte.deces.domain.StatutActeDeces;
 import io.urbis.acte.deces.dto.ActeDecesDto;
 import io.urbis.acte.deces.service.ActeDecesEtatService;
 import io.urbis.acte.deces.service.ActeDecesService;
+import io.urbis.common.backing.ImageBacking;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.registre.domain.StatutRegistre;
 
@@ -90,13 +91,16 @@ public class ListerBacking extends BaseBacking implements Serializable{
         
     }
     
+    @Inject
+    ImageBacking imageBacking;
+    
     public StreamedContent download(){
         LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
          
         StreamedContent content = null;
         Path path = null;
         try {
-            String pathString = acteDecesEtatService.print(selectedActeID);
+            String pathString = acteDecesEtatService.print(selectedActeID,imageBacking.logoURI());
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -130,7 +134,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         StreamedContent content = null;
         Path path = null;
         try {
-            String pathString = acteDecesEtatService.printCopie(selectedActeID);
+            String pathString = acteDecesEtatService.printCopie(selectedActeID,imageBacking.logoURI());
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 

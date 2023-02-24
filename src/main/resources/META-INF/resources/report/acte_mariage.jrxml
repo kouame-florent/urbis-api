@@ -6,6 +6,9 @@
 	<parameter name="ACTE_MARIAGE_ID" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["fedc557a-476b-4732-9130-a59c4f67f6e4"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="LOGO_URI" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["http://127.0.0.1:8181/image/logo.png"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT id,
 	copie_numero_acte_texte,
@@ -179,7 +182,7 @@ WHERE
 			</staticText>
 			<image>
 				<reportElement x="42" y="67" width="50" height="50" uuid="68697760-1532-47d9-b57d-57827261286e"/>
-				<imageExpression><![CDATA["http://localhost:8181/image/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_URI}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="15" y="119" width="100" height="17" uuid="795f8d7d-1b19-4b44-ba4b-7615a879af65"/>

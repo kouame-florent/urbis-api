@@ -126,21 +126,8 @@ xmlns:p="http://primefaces.org/ui">
                                    styleClass="p-d-block"/>
 
                 </div>
-                <div class="p-field p-lg-6">
-                    <p:outputLabel for="demandeurEmail" styleClass="p-d-block">Email demandeur</p:outputLabel>
-                    <p:inputText id="demandeurEmail" value="#{demandeEditerBacking.demandeDto.demandeurEmail}"  required="true" 
-                                    styleClass="p-d-block"/>
-
-                </div>
-                
-                 <div class="p-field p-lg-6">
-                    <p:outputLabel for="demandeurNumeroTelephone" styleClass="p-d-block">Numéro téléphone demandeur</p:outputLabel>
-                    <p:inputText id="demandeurNumeroTelephone" value="#{demandeEditerBacking.demandeDto.demandeurNumeroTelephone}"  required="true" 
-                                   styleClass="p-d-block"/>
-
-                </div>
                     
-                <div class="p-field p-lg-6">
+                 <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurQualite" styleClass="p-d-block">Qualité demandeur</p:outputLabel>
                     <p:inputText id="demandeurQualite" value="#{demandeEditerBacking.demandeDto.demandeurQualite}"  required="true" 
                                    styleClass="p-d-block"/>
@@ -148,8 +135,24 @@ xmlns:p="http://primefaces.org/ui">
                 </div>
                     
                 <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurEmail" styleClass="p-d-block">Email demandeur</p:outputLabel>
+                    <p:inputText id="demandeurEmail" value="#{demandeEditerBacking.demandeDto.demandeurEmail}"  
+                                    styleClass="p-d-block"/>
+
+                </div>
+                
+                 <div class="p-field p-lg-6">
+                    <p:outputLabel for="demandeurNumeroTelephone" styleClass="p-d-block">Numéro téléphone demandeur</p:outputLabel>
+                    <p:inputText id="demandeurNumeroTelephone" value="#{demandeEditerBacking.demandeDto.demandeurNumeroTelephone}"  
+                                   styleClass="p-d-block"/>
+
+                </div>
+                    
+               
+                    
+                <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurTypePiece" styleClass="p-d-block">Type pièce demandeur</p:outputLabel>
-                    <p:inputText id="demandeurTypePiece" value="#{demandeEditerBacking.demandeDto.demandeurTypePiece}"  required="true" 
+                    <p:inputText id="demandeurTypePiece" value="#{demandeEditerBacking.demandeDto.demandeurTypePiece}"  
                                    styleClass="p-d-block"/>
 
                 </div>
@@ -157,7 +160,7 @@ xmlns:p="http://primefaces.org/ui">
                 
                  <div class="p-field p-lg-6">
                     <p:outputLabel for="demandeurNumeroPiece" styleClass="p-d-block">Numéro pièce demandeur</p:outputLabel>
-                    <p:inputText id="demandeurNumeroPiece" value="#{demandeEditerBacking.demandeDto.demandeurNumeroPiece}"  required="true" 
+                    <p:inputText id="demandeurNumeroPiece" value="#{demandeEditerBacking.demandeDto.demandeurNumeroPiece}" 
                                    styleClass="p-d-block"/>
 
                 </div>

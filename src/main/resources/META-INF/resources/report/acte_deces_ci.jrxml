@@ -4,6 +4,9 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="urbis2"/>
 	<parameter name="ACTE_DECES_ID" class="java.lang.String"/>
+	<parameter name="LOGO_URI" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["http://127.0.0.1:8181/image/logo.png"]]></defaultValueExpression>
+	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT copie_mentions_textes,
 	copie_numero_acte_texte,
@@ -162,7 +165,7 @@ WHERE
 			</staticText>
 			<image>
 				<reportElement x="42" y="67" width="50" height="50" uuid="80134d11-a0b9-4dbc-bc6e-be2b08d9a662"/>
-				<imageExpression><![CDATA["http://localhost:8181/image/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_URI}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="15" y="119" width="100" height="17" uuid="1c40220b-b7ff-4d27-bac5-6363bc44dc5d"/>

@@ -551,14 +551,18 @@ public class ActeNaissanceEtatService {
         return temps;
     }
     
-     public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+    public String print(String acteID,String logoURI) throws SQLException, JRException, FileNotFoundException{
         
-        return doPrint(acteID, "/META-INF/resources/report/acte_naissance.jasper");
+        return doPrint(acteID,logoURI, "/META-INF/resources/report/acte_naissance.jasper");
               
    }
     
+   public String printCopie(String acteID,String logoURI) throws SQLException, JRException, FileNotFoundException{
+       return doPrint(acteID,logoURI ,"/META-INF/resources/report/acte_naissance_ci.jasper");
+       
+   }
     
-   private String doPrint(String acteID,String resource) throws SQLException, JRException, FileNotFoundException{
+   private String doPrint(String acteID,String logoURI,String resource) throws SQLException, JRException, FileNotFoundException{
      
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         InputStream reportStream = loader.getResourceAsStream(resource);
@@ -567,6 +571,7 @@ public class ActeNaissanceEtatService {
         
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ACTE_NAISSANCE_ID", acteID);
+        parameters.put("LOGO_URI", logoURI);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
        
         JRPdfExporter exporter = new JRPdfExporter();

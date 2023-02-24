@@ -10,19 +10,15 @@ xmlns:p="http://primefaces.org/ui">
 
         <div class="ui-fluid p-formgrid p-grid">
             
-            <div class="p-field p-col">
-                <p:outputLabel for="extraitExtraordinaire" styleClass="p-d-block">Extraits extraordinaires</p:outputLabel>
-                <p:inputText id="extraitExtraordinaire" value="#{acteNaissanceEditerBacking.extraitsExtraordinaires}"  required="true" styleClass="p-d-block"/>
-
-            </div>
+           
             <div class="p-field p-col">
                 <p:outputLabel for="copieActe" styleClass="p-d-block">Copies d'acte</p:outputLabel>
-                <p:inputText id="copieActe" value="#{acteNaissanceEditerBacking.nombreCopies}" required="true" styleClass="p-d-block"/>   
+                <p:inputText id="copieActe" value="#{acteNaissanceEditerBacking.acteNaissanceDto.nombreCopiesIntegrales}" required="true" styleClass="p-d-block"/>   
             </div>
 
             <div class="p-field p-col">
                 <p:outputLabel for="extraitOrdinaire" styleClass="p-d-block">Extraits ordinaires</p:outputLabel>
-                <p:inputText id="extraitOrdinaire" value="#{acteNaissanceEditerBacking.extraitsOrdinaires}" required="true" styleClass="p-d-block"/>
+                <p:inputText id="extraitOrdinaire" value="#{acteNaissanceEditerBacking.acteNaissanceDto.nombreExtraits}" required="true" styleClass="p-d-block"/>
             </div>
 
         </div>

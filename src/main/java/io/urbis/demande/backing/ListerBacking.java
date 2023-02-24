@@ -7,6 +7,7 @@ package io.urbis.demande.backing;
 
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.service.ActeNaissanceRestClient;
+import io.urbis.common.backing.ImageBacking;
 import io.urbis.common.util.BaseBacking;
 import io.urbis.demande.domain.Operation;
 import io.urbis.demande.domain.StatutActe;
@@ -137,13 +138,16 @@ public class ListerBacking extends BaseBacking implements Serializable{
          LOG.log(Level.INFO, "RETURN FROM NEW ACTE...");
     }
     
+    @Inject
+    ImageBacking imageBacking;
+    
     public StreamedContent downloadExtrait(){
         LOG.log(Level.INFO, "-- SLECTED DEMANDE ID: {0}", selectedDemandeID);
         StreamedContent content = null;
         Path path = null;
         try {
             TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
-            String pathString = demandeService.printExtrait(selectedActeID,typeRegistre);
+            String pathString = demandeService.printExtrait(selectedActeID,imageBacking.logoURI(),typeRegistre);
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -179,7 +183,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         Path path = null;
         try {
             TypeRegistre typeRegistre = TypeRegistre.fromString(selectedType.getCode());
-            String pathString = demandeService.printCopie(selectedActeID,typeRegistre);
+            String pathString = demandeService.printCopie(selectedActeID,imageBacking.logoURI(),typeRegistre);
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 

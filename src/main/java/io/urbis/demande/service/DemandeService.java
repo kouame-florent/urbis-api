@@ -181,7 +181,10 @@ public class DemandeService {
         demande.demandeur.numeroPiece = dto.getDemandeurNumeroPiece();
         demande.demandeur.prenoms = dto.getDemandeurPrenoms();
         demande.demandeur.qualite = dto.getDemandeurQualite();
-        demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
+        if(dto.getDemandeurTypePiece() != null && !dto.getDemandeurTypePiece().isBlank()){
+            demande.demandeur.typePiece = TypePiece.fromString(dto.getDemandeurTypePiece());
+        }
+        
 
         demande.nombreCopies = dto.getNombreCopies();
         demande.nombreExtraits = dto.getNombreExtraits();
@@ -240,7 +243,9 @@ public class DemandeService {
         dto.setDemandeurNumeroPiece(demande.demandeur.numeroPiece);
         dto.setDemandeurPrenoms(demande.demandeur.prenoms);
         dto.setDemandeurQualite(demande.demandeur.qualite);
-        dto.setDemandeurTypePiece(demande.demandeur.typePiece.name());
+        if(demande.demandeur.typePiece != null){
+            dto.setDemandeurTypePiece(demande.demandeur.typePiece.name());
+        }
         dto.setId(demande.id);
         dto.setNombreCopies(demande.nombreCopies);
         dto.setNombreExtraits(demande.nombreExtraits);
@@ -256,21 +261,21 @@ public class DemandeService {
     }
     
     
-    public String printExtrait(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
+    public String printExtrait(@NotNull @NotBlank String acteID,String logoURI,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
         
-        return doPrint(acteID, type,"/META-INF/resources/report/" + getExtraitTemplateName(type));
+        return doPrint(acteID,logoURI, type,"/META-INF/resources/report/" + getExtraitTemplateName(type));
               
    }
      
-    public String printCopie(@NotNull @NotBlank String acteID,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
+    public String printCopie(@NotNull @NotBlank String acteID,String logoURI,TypeRegistre type) throws SQLException, JRException, FileNotFoundException{
        String reportPath =  "/META-INF/resources/report/"+ getCopieTemplateName(type);
        log.infof("---REPORT PATH: %s", reportPath);
-       return doPrint(acteID,type,reportPath);
+       return doPrint(acteID,logoURI, type,reportPath);
        
    }
     
     
-   private String doPrint(String acteID,TypeRegistre type,String resource) throws SQLException, JRException, FileNotFoundException{
+   private String doPrint(String acteID,String logoURI,TypeRegistre type,String resource) throws SQLException, JRException, FileNotFoundException{
      
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         InputStream reportStream = loader.getResourceAsStream(resource);
@@ -279,6 +284,7 @@ public class DemandeService {
         
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(getReportIdParamName(type), acteID);
+        parameters.put("LOGO_URI", logoURI);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
        
         JRPdfExporter exporter = new JRPdfExporter();

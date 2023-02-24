@@ -10,6 +10,7 @@ import io.urbis.acte.naissance.domain.StatutActeNaissance;
 import io.urbis.acte.naissance.dto.ActeNaissanceDto;
 import io.urbis.acte.naissance.service.ActeNaissanceEtatService;
 import io.urbis.acte.naissance.service.ActeNaissanceService;
+import io.urbis.common.backing.ImageBacking;
 import io.urbis.common.util.BaseBacking;
 
 import io.urbis.registre.dto.RegistreDto;
@@ -40,6 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import net.sf.jasperreports.engine.JRException;
 
@@ -133,6 +135,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
         */
     }
     
+    @Inject
+    ImageBacking imageBacking;
    
     public StreamedContent downloadCopie(){ 
        LOG.log(Level.INFO, "-- SLECTED ACTE ID: {0}", selectedActeID);
@@ -142,12 +146,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
       // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
       // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
       
-       
-       
+      
+      
         StreamedContent content = null;
         Path path = null;
         try {
-            String pathString = acteNaissanceService.printCopie(selectedActeID);
+            String pathString = acteNaissanceEtatService.printCopie(selectedActeID,imageBacking.logoURI());
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -183,12 +187,12 @@ public class ListerBacking extends BaseBacking implements Serializable{
       // LOG.log(Level.INFO, "FILE ABSOLUTE PATH: {0}", file.getAbsolutePath());
       // LOG.log(Level.INFO, "FILE LENGHT: {0}", file.length());
       
-       
+    
        
         StreamedContent content = null;
         Path path = null;
         try {
-            String pathString = acteNaissanceService.print(selectedActeID);
+            String pathString = acteNaissanceEtatService.print(selectedActeID,imageBacking.logoURI());
             path = Paths.get(pathString);
             InputStream input = Files.newInputStream(path);
             content = DefaultStreamedContent.builder() 
@@ -215,6 +219,8 @@ public class ListerBacking extends BaseBacking implements Serializable{
        
        return content;
     }
+    
+    
     
     public void onActeValidated(SelectEvent event){
         /*

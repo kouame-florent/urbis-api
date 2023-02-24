@@ -9,7 +9,6 @@ import io.agroal.api.AgroalDataSource;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.urbis.acte.mariage.domain.ActeMariage;
 import io.urbis.acte.mariage.domain.ActeMariageEtat;
-import io.urbis.acte.mariage.dto.ActeMariageDto;
 import io.urbis.acte.mariage.dto.ActeMariageEtatDto;
 import io.urbis.acte.mariage.dto.MentionAnnulationMariageDto;
 import io.urbis.acte.mariage.dto.MentionDivorceDto;
@@ -407,19 +406,21 @@ public class ActeMariageEtatService {
     
     }
     
-   public String print(String acteID) throws SQLException, JRException, FileNotFoundException{
+   
+    
+   public String print(String acteID,String logoUri) throws SQLException, JRException, FileNotFoundException{
         
-        return doPrint(acteID, "/META-INF/resources/report/acte_mariage.jasper");
+        return doPrint(acteID,logoUri, "/META-INF/resources/report/acte_mariage.jasper");
               
    }
      
-    public String printCopie(String acteID) throws SQLException, JRException, FileNotFoundException{
-       return doPrint(acteID, "/META-INF/resources/report/acte_mariage_ci.jasper");
+    public String printCopie(String acteID,String logoUri) throws SQLException, JRException, FileNotFoundException{
+       return doPrint(acteID,logoUri, "/META-INF/resources/report/acte_mariage_ci.jasper");
        
    }
     
-    
-   private String doPrint(String acteID,String resource) throws SQLException, JRException, FileNotFoundException{
+   
+   private String doPrint(String acteID,String logoURI,String resource) throws SQLException, JRException, FileNotFoundException{
      
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         InputStream reportStream = loader.getResourceAsStream(resource);
@@ -428,6 +429,7 @@ public class ActeMariageEtatService {
         
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ACTE_MARIAGE_ID", acteID);
+        parameters.put("LOGO_URI", logoURI);
         JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, defaultDataSource.getConnection());
        
         JRPdfExporter exporter = new JRPdfExporter();

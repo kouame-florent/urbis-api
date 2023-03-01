@@ -71,6 +71,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 /**
@@ -124,7 +125,8 @@ public class ActeNaissanceService {
     @Inject
     Helper helper;
     
-    final long MAX_DELAI = 3;
+    @ConfigProperty(name = "urbis.rdv.max.delai")
+    long rdvMaxDelai;
    
     
     public ActeNaissanceDto findById(@NotBlank String id){
@@ -381,7 +383,7 @@ public class ActeNaissanceService {
         
                
         demande.dateHeureDemande = acte.dateDressage;
-        demande.dateHeureRdvRetrait = LocalDateTime.now().plusDays(MAX_DELAI);
+        demande.dateHeureRdvRetrait = LocalDateTime.now().plusDays(rdvMaxDelai);
         demande.dateOuvertureRegistre = reg.dateOuverture;
         demande.demandeur.email = "";
         

@@ -14,8 +14,8 @@
 	<parameter name="ACTE_NAISSANCE_ID" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["6c40bcb6-ebbf-4797-b5b1-aaadc6c4f89c"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="URBIS_DOMAIN" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["127.0.0.1:8181"]]></defaultValueExpression>
+	<parameter name="LOGO_URI" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["http://127.0.0.1:8181/image/logo.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString language="SQL">
 		<![CDATA[SELECT mention_mariage_conjoint_nom_complet,
@@ -135,7 +135,7 @@ WHERE
 			</staticText>
 			<image>
 				<reportElement x="42" y="67" width="50" height="50" uuid="36962dad-7f49-4550-9f75-d4e6fe09fe42"/>
-				<imageExpression><![CDATA["http://$P{URBIS_DOMAIN}/image/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_URI}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="15" y="119" width="100" height="17" uuid="6c8f6b37-7e22-4f50-968f-320867d935fc"/>

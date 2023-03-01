@@ -47,6 +47,8 @@ public abstract class BaseBacking {
         facesContext.addMessage(clientId, msg);
     }
     
-   
+   public String pageTitle(){
+        return "Urbis";
+   }
     
 }

@@ -87,7 +87,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     private RegistreDto registreDto;
     
     public String pageTitle(){
-        return "Naissances";
+        return "Actes de naissance";
     }
     
     public void onload(){

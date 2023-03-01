@@ -19,7 +19,8 @@ public enum Operation {
     MODIFICATION("Modification"),
     VALIDATION("Validation"),
     CONSULTATION("Consultation"),
-    ANNULATION("Annulation");
+    ANNULATION("Annulation"),
+    NO_OP("");
     
     
     private final String libelle;

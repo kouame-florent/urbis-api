@@ -8,7 +8,7 @@ xmlns:p="http://primefaces.org/ui">
     
  <ui:composition template="../templates/dialog-tpl.xhtml">
      
-     <ui:define name="title">
+      <ui:define name="title">
          #{registreEditerSerieBacking.pageTitle()}
      </ui:define>
      
@@ -20,12 +20,19 @@ xmlns:p="http://primefaces.org/ui">
      </ui:define>
     
     <ui:define name="content">
-               
-        <h:form id="messageForm">
+        
+         <h:form id="messageForm">
                 <p:growl globalOnly="true" life="15000"/>        
         </h:form>
-             
+              
+       
         <h:form id="contentForm">
+            
+             
+            <div class="p-d-flex p-jc-end">
+                    <p:commandButton title="fermer" action="#{registreEditerSerieBacking.closeView()}" process="@this" 
+                                         icon="pi pi-times" styleClass="rounded-button ui-button-outlined"/>
+            </div>
      
             <p:fieldset legend="Type de registres" rendered="false">
                 <p:selectOneRadio id="console" value="#{registreEditerSerieBacking.selectedType}" 

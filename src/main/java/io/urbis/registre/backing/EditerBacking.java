@@ -93,6 +93,34 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     private RegistreDto registreDto;
     
+    @Override
+    public String pageTitle(){
+        LOG.log(Level.INFO,"---PAGE TITLE CURRENT OPERATION : {0}",operation);
+        if(operation != null && typeRegistre != null){
+            var type = TypeRegistre.fromString(typeRegistre);
+            switch(operation){
+                case CREATION -> {
+                    return type.getLibelle()+ ": Créer";
+                }
+
+                case MODIFICATION -> {
+                    return type.getLibelle()+ ": Modifier";
+                }
+               
+                case VALIDATION -> {
+                    return type.getLibelle()+ ": Valider";
+                }
+                case CONSULTATION -> {
+                    return type.getLibelle()+ ": Consulter";
+                }
+                   
+            }
+        }
+        
+        return "Urbis";
+    }
+    
+    
     
     @PostConstruct
     public void init(){
@@ -116,43 +144,24 @@ public class EditerBacking extends BaseBacking implements Serializable{
         }
                
         switch(operation){
-            case CREATION:
-                registreDto = initDto();
-                break;
-            case MODIFICATION:
+            case CREATION -> registreDto = initDto();
+            case MODIFICATION -> {
                 defaultParams();
                 registreDto = registreService.findById(registreID);
-                break;
-            case VALIDATION:
+            }
+            case VALIDATION -> {
                 defaultParams();
                 registreDto = registreService.findById(registreID);
-                break;
-            case CONSULTATION:
+            }
+            case CONSULTATION -> {
                 defaultParams();
                 registreDto = registreService.findById(registreID);
-                break;
+            }
         }
      
     }
    
-    public String pageTitle(){
-        if(operation != null && typeRegistre != null){
-            var type = TypeRegistre.fromString(typeRegistre);
-            switch(operation){
-                case CREATION:
-                    return type.getLibelle()+ ": Création";
-
-                case MODIFICATION:
-                    return type.getLibelle()+ ": Modification";
-               
-                case VALIDATION:
-                    return type.getLibelle()+ ": Validation";
-                   
-            }
-        }
-        
-        return "";
-    }
+    
     
     public void onTypeRegistreSelect(){
         LOG.log(Level.INFO, "SELECTED TYPE: {0}", registreDto.getTypeRegistre());
@@ -207,7 +216,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
              //   registreDto.getDateOuverture(),""));
         registreService.validerRegistre(registreID, new RegistrePatchDto(StatutRegistre.VALIDE.name(),
                 registreDto.getDateOuverture(),""));
-        PrimeFaces.current().dialog().closeDynamic("");
+        PrimeFaces.current().dialog().closeDynamic(operation.NO_OP);
     }
     
     public boolean renderedCreerButton(){
@@ -253,7 +262,7 @@ public class EditerBacking extends BaseBacking implements Serializable{
             
             try{
                   registreService.creer(registreDto);
-                
+                  PrimeFaces.current().dialog().closeDynamic(operation);
             }catch(EntityExistsException | ValidationException  e){
                   LOG.log(Level.SEVERE, e.getMessage());
                   addGlobalMessage(e.getMessage(), FacesMessage.SEVERITY_ERROR);
@@ -267,8 +276,8 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     }
     
-     public void closeView(){
-        PrimeFaces.current().dialog().closeDynamic("");
+    public void closeView(){
+        PrimeFaces.current().dialog().closeDynamic(Operation.NO_OP);
     }
 
     public LocaliteDto getCurrentLocalite() {

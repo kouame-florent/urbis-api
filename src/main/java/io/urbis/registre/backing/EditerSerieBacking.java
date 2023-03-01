@@ -110,13 +110,14 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
     
     }
     
+    @Override
     public String pageTitle(){
         if(typeRegistre != null){
             var type = TypeRegistre.fromString(typeRegistre);
-            return type.getLibelle()+ ": Création en serie";
+            return type.getLibelle()+ ": Créer une serie";
         }
         
-        return "";
+        return "Urbis";
     }
    
     public void onTypeRgistreSelect(){
@@ -217,7 +218,7 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
            
         }
         
-       PrimeFaces.current().dialog().closeDynamic("");
+       PrimeFaces.current().dialog().closeDynamic(Operation.NO_OP);
     }
     
     private String registreLibelle(TypeRegistreDto type){
@@ -236,6 +237,11 @@ public class EditerSerieBacking extends BaseBacking implements Serializable{
         nombreDeFeuillets = 0;
     }
     */
+    
+    public void closeView(){
+        PrimeFaces.current().dialog().closeDynamic(Operation.NO_OP);
+    }
+
 
     public int getPremier() {
         return premier;

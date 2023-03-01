@@ -47,7 +47,7 @@ public class AnnulerBacking implements Serializable{
        // registreService.patch(registreID,
                // new RegistrePatchDto(StatutRegistre.ANNULE.name(),null,registreDto.getMotifAnnulation()));
         registreService.annulerRegistre(registreID, registreDto.getMotifAnnulation());
-        PrimeFaces.current().dialog().closeDynamic(null);
+        PrimeFaces.current().dialog().closeDynamic(Operation.ANNULATION);
     }
    
 

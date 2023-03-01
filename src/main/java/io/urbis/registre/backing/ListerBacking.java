@@ -207,13 +207,13 @@ public class ListerBacking extends BaseBacking implements Serializable{
         var operations = List.of(Operation.CREATION.name());
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("reg-id", ids,"operation",operations,"type",type);
-        Map<String,Object> options = getDialogOptions(100, 100, false);
+        Map<String,Object> options = getDialogOptions(99, 99, false);
         options.put("resizable", false);
         PrimeFaces.current().dialog().openDynamic("editer", options, params);
     }
     
     public void openCreerSerieView(){
-        Map<String,Object> options = getDialogOptions(100, 100, true);
+        Map<String,Object> options = getDialogOptions(98, 98, false);
         List<String> type = List.of(selectedType.getCode());
         Map<String, List<String>> params = Map.of("type",type);
         options.put("resizable", false);
@@ -502,16 +502,22 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     
     public void onCreate(SelectEvent event){
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de registre", "Registre crée avec succès");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-    }
+        Operation op = (Operation)event.getObject();
+        if(op != null && op == Operation.CREATION){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de registre", "Registre crée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
         
-    
-    
+    }
+      
     
     public void onSerieCreated(SelectEvent event){
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de registre", "Serie créee avec succès");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        Operation op = (Operation)event.getObject();
+        if(op != null && op == Operation.CREATION_SERIE){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Création de registre", "Serie créee avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+       
     
     }
     

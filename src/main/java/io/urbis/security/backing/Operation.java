@@ -20,7 +20,8 @@ public enum Operation {
     
     CREATION("Création"), 
     MODIFICATION("Modification"),
-    CONSULTATION("Consultation");
+    CONSULTATION("Consultation"),
+    NO_OP("");
     
     private final String libelle;
     

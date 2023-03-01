@@ -13,7 +13,7 @@ xmlns:p="http://primefaces.org/ui">
             <p:outputLabel for="modeDeclaration" >Mode déclaration</p:outputLabel>
             <p:selectOneRadio id="modeDeclaration" value="#{acteNaissanceEditerBacking.acteNaissanceDto.modeDeclaration}" 
                                 converter="omnifaces.SelectItemsConverter"
-                                required="true" requiredMessage="Ce champ est obligatoire">
+                                required="true" >
                 <p:ajax update="contentForm:jugementOutputPanel"/>
                   <f:selectItems value="#{acteNaissanceEditerBacking.modesDeclaration}" var="mode" 
                                  itemLabel="#{mode.libelle}" itemValue="#{mode.code}"/>
@@ -44,6 +44,7 @@ xmlns:p="http://primefaces.org/ui">
                          mask="99/99/9999" required="true">
                 <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
             </p:inputMask>
+            <p:message for="dateDeclaration"/>
 
         </div>
         <div class="p-field p-lg-6">
@@ -71,7 +72,7 @@ xmlns:p="http://primefaces.org/ui">
                 <div class="p-field p-lg-4">
                     <p:outputLabel for="dateJugement" styleClass="p-d-block">Du</p:outputLabel>
                     <p:inputMask id="dateJugement" value="#{acteNaissanceEditerBacking.acteNaissanceDto.jugementDate}"
-                        mask="99/99/9999 99:99:99" >
+                        mask="99/99/9999" >
                         <f:convertDateTime locale="fr_FR" type="localDate" pattern="dd/MM/yyyy"/>
                     </p:inputMask>
                     

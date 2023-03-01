@@ -8,7 +8,9 @@ xmlns:p="http://primefaces.org/ui">
     <ui:insert name="metadata"/>
     
     <h:head>
-        <title><ui:insert name="title"> Urbis </ui:insert></title>
+        <title>
+            <ui:insert name="title"/>
+        </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>		
       <h:outputStylesheet name="webjars/primeflex/2.0.0/primeflex.css" />
       <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
@@ -17,11 +19,6 @@ xmlns:p="http://primefaces.org/ui">
     <h:body >
         
         <div class="p-grid">
-            <div class="p-col-12">
-                <ui:insert name="header">
-                   <!-- <ui:include src="header.xhtml"/> -->
-                 </ui:insert>
-            </div>
             <div class="p-col-12">
                 <div class="p-grid">
                     <div class="p-col">

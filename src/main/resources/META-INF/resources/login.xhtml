@@ -31,6 +31,17 @@ xmlns:p="http://primefaces.org/ui">
 
                    </div>
                 </div>
+                
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-lg-12">
+                        <p:outputPanel >
+                            <h:outputText value="Login ou mot de passe incorrect" style="color: crimson; font-size: large;font-weight: bold"
+                                          rendered="#{param['fail'] == 'true'}" />
+                        </p:outputPanel>
+                    </div>
+                </div>
+                
+            
             </p:panel>
             
                     

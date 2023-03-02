@@ -2,10 +2,11 @@
 
 body{
     
-    background-image: url("#{resource['image/elephant10.jpg']}");
+    background-image: url("#{resource['image/urbis2.jpg']}"); 
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+    background-size: 100%;
 }
 
 .ui-widget, .ui-widget .ui-widget 

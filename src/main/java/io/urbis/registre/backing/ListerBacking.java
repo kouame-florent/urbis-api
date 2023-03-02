@@ -173,17 +173,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         
     }
     
-    public void cloturer(@NotBlank String registreID){
-        try{
-           // registreService.patch(registreID,new RegistrePatchDto(StatutRegistre.CLOTURE.name(),null,""));
-            registreService.cloturerRegistre(registreID);
-        }catch(ValidationException ex){
-            LOG.log(Level.INFO,"ERROR MESSAGE: {0}",ex.getMessage());
-            addGlobalMessage(ex.getLocalizedMessage(), FacesMessage.SEVERITY_ERROR);
-        }
-        
-        
-    }
+   
     
     public void supprimer(@NotBlank String id){
         LOG.log(Level.INFO, "-- DELETE REGISTRE WITH ID: {0}", id);
@@ -232,6 +222,16 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     }
     
+    public void openModifierView(RegistreDto registreDto){
+        LOG.log(Level.INFO, "--- CALL OPEN CONSULTER");
+        LOG.log(Level.INFO, "--- REGISTRE ID: {0}", registreDto.getId());
+        var operations = List.of(Operation.MODIFICATION.name());
+        var values = List.of(registreDto.getId());
+        Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,false), params);
+    
+    }
+    
     
     public void openValiderView(RegistreDto registreDto){
         LOG.log(Level.INFO, "--- REGISTRE ID: {0}", registreDto.getId());
@@ -241,6 +241,18 @@ public class ListerBacking extends BaseBacking implements Serializable{
         Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
         PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,false), params);
     
+    }
+    
+     public void cloturer(@NotBlank String registreID){
+        try{
+           // registreService.patch(registreID,new RegistrePatchDto(StatutRegistre.CLOTURE.name(),null,""));
+            registreService.cloturerRegistre(registreID);
+        }catch(ValidationException ex){
+            LOG.log(Level.INFO,"ERROR MESSAGE: {0}",ex.getMessage());
+            addGlobalMessage(ex.getLocalizedMessage(), FacesMessage.SEVERITY_ERROR);
+        }
+        
+        
     }
     
     public void showParamsView(){
@@ -269,26 +281,28 @@ public class ListerBacking extends BaseBacking implements Serializable{
 */
     
     public void onRegistreValidated(SelectEvent event){
-        String status = (String) event.getObject();
-        if(status != null && status.equals(StatutRegistre.VALIDE.name())){
+        Operation op = (Operation) event.getObject();
+        if(op != null && op == Operation.VALIDATION){
             addGlobalMessage("Le registre a été validé avec succès", FacesMessage.SEVERITY_INFO);
         }
         
     }
     
-    public void showAnnulerView(RegistreDto registreDto){
+    public void openAnnulerView(RegistreDto registreDto){
         LOG.log(Level.INFO, "REGISTRE ID: {0}", registreDto.getId());
+        var operations = List.of(Operation.ANNULATION.name());
         var values = List.of(registreDto.getId());
-        Map<String, List<String>> params = Map.of("id", values);
-        PrimeFaces.current().dialog().openDynamic("/registre/annuler", getDialogOptions(80,95,true), params);
+        Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,false), params);
     
     }
     
     public void openCloturerRegistreView(RegistreDto registreDto){
         LOG.log(Level.INFO, "REGISTRE ID: {0}", registreDto.getId());
+        var operations = List.of(Operation.ANNULATION.name());
         var values = List.of(registreDto.getId());
-        Map<String, List<String>> params = Map.of("id", values);
-        PrimeFaces.current().dialog().openDynamic("/registre/cloturer", getDialogOptions(80,95,true), params);
+        Map<String, List<String>> params = Map.of("reg-id", values,"operation",operations);
+        PrimeFaces.current().dialog().openDynamic("/registre/editer", getDialogOptions(98,98,true), params);
     }
     
     
@@ -480,6 +494,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
     
     public boolean disableMenuAnnuler(RegistreDto registreDto){
         return registreDto.getStatut().equals(StatutRegistre.ANNULE.name()) || 
+                registreDto.getStatut().equals(StatutRegistre.PROJET.name()) ||
                 registreDto.getStatut().equals(StatutRegistre.CLOTURE.name());  
     }
     
@@ -532,7 +547,7 @@ public class ListerBacking extends BaseBacking implements Serializable{
         }
         
         if(statut.equalsIgnoreCase("CLOTURE")){
-            return "info";
+            return "danger";
         }
         
          if(statut.equalsIgnoreCase("ANNULE")){

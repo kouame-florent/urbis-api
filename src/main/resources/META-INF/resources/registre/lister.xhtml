@@ -138,8 +138,12 @@ xmlns:p="http://primefaces.org/ui">
                         
                         <p:menuitem value="Consulter" process="@this"
                                     action="#{registreListerBacking.openConsulterView(registre)}"
-                                     
                                     icon="pi pi-book" />
+                        
+                        <p:menuitem value="Modifier" process="@this"
+                                    action="#{registreListerBacking.openConsulterView(registre)}"
+                                    icon="pi pi-book" />
+                        
                         
                         <p:menuitem value="Valider" process="@this" action="#{registreListerBacking.openValiderView(registre)}" 
                                     update="contentForm:registre" icon="pi pi-ticket" 
@@ -160,11 +164,10 @@ xmlns:p="http://primefaces.org/ui">
                                        icon="pi pi-exclamation-triangle"/>
                         </p:menuitem>
                         
-                        <p:menuitem value="Annuler" process="@this" action="#{registreListerBacking.showAnnulerView(registre)}"  
+                        <p:menuitem value="Annuler" process="@this" action="#{registreListerBacking.openAnnulerView(registre)}"  
                                     icon="pi pi-undo"
                                     disabled="#{registreListerBacking.disableMenuAnnuler(registre)}">
-                            <p:ajax event="dialogReturn" 
-                                        update=":contentForm:registre messageForm"/>
+                            <p:ajax event="dialogReturn" update=":contentForm:registre messageForm"/>
                             
                         </p:menuitem>
                         <p:divider/>

@@ -116,12 +116,14 @@ xmlns:p="http://primefaces.org/ui">
                     <div class="p-field p-col">
                         <p:outputLabel for="officier" styleClass="p-d-block">Officier</p:outputLabel>
                         <p:selectOneMenu id="officier" value="#{registreEditerBacking.registreDto.officierEtatCivilID}"          
-                                         label="Selectionnez" required="true">
+                                         label="Selectionnez" required="true" filter="true" filterMatchMode="startsWith">
                            
-                            <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier --" />
+                            <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un officier d'état civil --" />
                             <f:selectItems value="#{registreEditerBacking.officiers}" var="officier" 
-                                           itemLabel="#{officier.prenoms} #{officier.nom} [#{officier.titre}]" 
+                                           itemLabel="#{officier.nom} #{officier.prenoms}  [#{officier.titre}]" 
                                            itemValue="#{officier.id}"/>
+                            
+                         
                         </p:selectOneMenu>
                        
 
@@ -132,6 +134,18 @@ xmlns:p="http://primefaces.org/ui">
 
             </p:fieldset>
             <p:spacer height="2"/>
+            <p:outputPanel id="annulationOutputPanel" rendered="#{registreEditerBacking.renderedAnnulerButton()}">
+            <p:fieldset legend="Annulation">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:outputLabel for="motif" class="p-lg-3">Motif annulation:</p:outputLabel>
+                        <p:inputTextarea id="motif" required="true" value="#{registreEditerBacking.registreDto.motifAnnulation}" class="p-lg-9"/>
+                        <p:message for="motif"/>
+                    </div>
+                </div>
+                
+            </p:fieldset>
+            </p:outputPanel>
             <div class="ui-fluid p-formgrid p-grid">
                 <div class="p-field p-col">
                     <p:commandButton value="Créer le registre" process="@form" action="#{registreEditerBacking.creer()}"
@@ -139,6 +153,9 @@ xmlns:p="http://primefaces.org/ui">
                                      update="@form :messageForm"  icon="pi pi-check" />
                     <p:commandButton value="Valider" process="@form" action="#{registreEditerBacking.valider()}"
                                      rendered="#{registreEditerBacking.renderedValiderButton()}"
+                                     update="@form"  icon="pi pi-check" />
+                    <p:commandButton value="Annuler" process="@form" action="#{registreEditerBacking.annuler()}"
+                                     rendered="#{registreEditerBacking.renderedAnnulerButton()}"
                                      update="@form"  icon="pi pi-check" />
                 
                 </div>

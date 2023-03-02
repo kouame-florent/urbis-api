@@ -20,6 +20,55 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
              
             <p:tabView id="paramTabView">
                 
+                  <p:tab title="Officiers">
+                    <h:form id="officierForm">
+                        <p:toolbar>
+                            <p:toolbarGroup>
+                                <p:commandButton value="Nouvel officier" icon="pi pi-plus"
+                                                 actionListener="#{parametresBacking.openNewOfficier()}"
+                                     oncomplete="PF('manageOfficierDialog').show()"
+                                      style="margin-right: .5rem"
+                                     update=":officierDialogForm:manage-officier-content">
+
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
+                        <p:dataTable id="officierDataTable" 
+                                     var="officier" value="#{parametresBacking.officiers}"
+                                     selection="#{parametresBacking.selectedOfficier}" 
+                                    rowKey="#{officier.id}" paginator="true"
+                                    rows="25" rowSelectMode="add" paginatorPosition="bottom" size="small">
+                        
+                            <p:column headerText="Nom" >
+                                <h:outputText value=" #{officier.nom} #{officier.prenoms}"/>
+                            </p:column>
+                            <p:column headerText="Titre"  >
+                                <h:outputText value="#{officier.titre}"/>
+                            </p:column>
+                            <p:column headerText="Actif"  >
+                                <h:outputText value="#{parametresBacking.officierActif(officier)}"/>
+                            </p:column>
+
+                            <p:column style="width: 3%">
+                                <p:commandButton icon="pi pi-pencil" update=":officierDialogForm:manage-officier-content"
+                                     oncomplete="PF('manageOfficierDialog').show()"
+                                     styleClass="edit-button rounded-button" process="@this">
+                                    <f:setPropertyActionListener value="#{officier}" target="#{parametresBacking.selectedOfficier}"/>
+                                    <p:resetInput target=":officierDialogForm:manage-officier-content"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:column style="width: 3%">
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                 oncomplete="PF('deleteOfficierDialog').show()">
+                                <f:setPropertyActionListener value="#{officier}" target="#{parametresBacking.selectedOfficier}"/>
+                            </p:commandButton>
+                        </p:column>
+                        </p:dataTable>
+                        
+                    </h:form>
+                </p:tab>
+                
                 <p:tab title="Localité">
                     <h:form id="localiteForm">
                     <p:toolbar>
@@ -27,7 +76,7 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
                             <p:commandButton value="Nouvelle localité" icon="pi pi-plus" 
                                              actionListener="#{parametresBacking.openNewLocalite()}"
                                  oncomplete="PF('manageLocaliteDialog').show()"
-                                 styleClass="ui-button-success" style="margin-right: .5rem"
+                                 style="margin-right: .5rem"
                                  update=":localiteDialogForm:manage-localite-content">
                                 
                             </p:commandButton>
@@ -75,7 +124,7 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
                             <p:commandButton value="Nouveau centre" icon="pi pi-plus"
                                  actionListener="#{parametresBacking.openNewCentre()}"
                                  oncomplete="PF('manageCentreDialog').show()"
-                                 styleClass="ui-button-success" style="margin-right: .5rem"
+                                  style="margin-right: .5rem"
                                  update=":centreDialogForm:manage-centre-content">
                                 
                             </p:commandButton>
@@ -122,7 +171,7 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
                             <p:commandButton value="Nouveau tribunal" icon="pi pi-plus"
                                              actionListener="#{parametresBacking.openNewTribunal()}"
                                  oncomplete="PF('manageTribunalDialog').show()"
-                                 styleClass="ui-button-success" style="margin-right: .5rem"
+                                 style="margin-right: .5rem"
                                  update=":tribunalDialogForm:manage-tribunal-content">
                                 
                             </p:commandButton>
@@ -160,55 +209,76 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
                   </h:form>
                 </p:tab>
                 
-                <p:tab title="Officier">
-                    <h:form id="officierForm">
-                        <p:toolbar>
-                            <p:toolbarGroup>
-                                <p:commandButton value="Nouvel officier" icon="pi pi-plus"
-                                                 actionListener="#{parametresBacking.openNewOfficier()}"
-                                     oncomplete="PF('manageOfficierDialog').show()"
-                                     styleClass="ui-button-success" style="margin-right: .5rem"
-                                     update=":officierDialogForm:manage-officier-content">
-
-                                </p:commandButton>
-                            </p:toolbarGroup>
-                        </p:toolbar>
-                        
-                        <p:dataTable id="officierDataTable" 
-                                     var="officier" value="#{parametresBacking.officiers}"
-                                     selection="#{parametresBacking.selectedOfficier}" 
-                                    rowKey="#{officier.id}" paginator="true"
-                                    rows="25" rowSelectMode="add" paginatorPosition="bottom" size="small">
-                        
-                            <p:column headerText="Nom" >
-                                <h:outputText value="#{officier.prenoms} #{officier.nom}"/>
-                            </p:column>
-                            <p:column headerText="Titre"  >
-                                <h:outputText value="#{officier.titre}"/>
-                            </p:column>
-                            <p:column headerText="Actif"  >
-                                <h:outputText value="#{parametresBacking.officierActif(officier)}"/>
-                            </p:column>
-
-                            <p:column style="width: 3%">
-                                <p:commandButton icon="pi pi-pencil" update=":officierDialogForm:manage-officier-content"
-                                     oncomplete="PF('manageOfficierDialog').show()"
-                                     styleClass="edit-button rounded-button" process="@this">
-                                    <f:setPropertyActionListener value="#{officier}" target="#{parametresBacking.selectedOfficier}"/>
-                                    <p:resetInput target=":officierDialogForm:manage-officier-content"/>
-                                </p:commandButton>
-                            </p:column>
-                            <p:column style="width: 3%">
-                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
-                                 oncomplete="PF('deleteOfficierDialog').show()">
-                                <f:setPropertyActionListener value="#{officier}" target="#{parametresBacking.selectedOfficier}"/>
-                            </p:commandButton>
-                        </p:column>
-                        </p:dataTable>
-                        
-                    </h:form>
-                </p:tab>
+              
             </p:tabView>
+        
+         <h:form id="officierDialogForm">
+            <p:dialog header="Officier" showEffect="fade"  modal="true"
+                      widgetVar="manageOfficierDialog" responsive="true" width="800">
+                <p:outputPanel id="manage-officier-content" class="ui-fluid">
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-6">
+                    <p:outputLabel for="officierNom" styleClass="p-d-block">Nom</p:outputLabel>
+                    <p:inputText id="officierNom" value="#{parametresBacking.selectedOfficier.nom}"
+                                  required="true" styleClass="p-d-block"/>
+
+                    </div>
+                    <div class="p-field p-col-6">
+                    <p:outputLabel for="officierPrenom" styleClass="p-d-block">Prénoms</p:outputLabel>
+                    <p:inputText id="officierPrenom" value="#{parametresBacking.selectedOfficier.prenoms}"
+                                  required="true" styleClass="p-d-block"/>
+
+                    </div>
+                    
+                    <div class="p-field p-col-6">
+                    <p:outputLabel for="officierProfession" styleClass="p-d-block">Profession</p:outputLabel>
+                    <p:inputText id="officierProfession" value="#{parametresBacking.selectedOfficier.profession}"
+                                   styleClass="p-d-block"/>
+
+                    </div>
+                    
+                    <div class="p-field p-col-6">
+                    <p:outputLabel for="officierTitre" styleClass="p-d-block">Titre</p:outputLabel>
+                    <p:selectOneMenu id="officierTitre" value="#{parametresBacking.selectedOfficier.titre}" 
+                                  converter="omnifaces.SelectItemsConverter"
+                                  required="true"  styleClass="p-d-block">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un titre --" />
+                        <f:selectItems value="#{parametresBacking.titres}" var="titre" 
+                                       itemLabel="#{titre.libelle}" itemValue="#{titre.code}"/>
+                    </p:selectOneMenu>
+                    
+
+                    </div>
+                    
+                    <div class="p-field p-col-6">
+                    <p:outputLabel for="officierActif" styleClass="p-d-block">Actif ?</p:outputLabel>
+                    <p:toggleSwitch id="officierActif" value="#{parametresBacking.selectedOfficier.actif}"
+                                    required="true" styleClass="p-d-block"/>
+                  
+                    </div>
+                    
+                    
+                </div>
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col">
+                        <p:commandButton id="createOfficierCommandButton" value="Valider" 
+                                         action="#{parametresBacking.enregistrerOfficier()}"
+                                         oncomplete="PF('manageOfficierDialog').hide()"
+                                         update=":paramTabView:officierForm:officierDataTable"/>
+                    </div>
+                </div>
+
+              </p:outputPanel>        
+            </p:dialog>
+            <p:confirmDialog widgetVar="deleteOfficierDialog" showEffect="fade" width="300"
+                         message="Supprimer l'officier ?" header="Confirmation" severity="warn">
+                <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{parametresBacking.deleteOfficier}"
+                                 process="@this" oncomplete="PF('deleteOfficierDialog').hide()"
+                                 update=":paramTabView:officierForm:officierDataTable messageForm"/>
+                <p:commandButton value="Non" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteOfficierDialog').hide()"/>
+            </p:confirmDialog>
+         </h:form>
             
         <h:form id="localiteDialogForm">
             <p:dialog header="Localité" showEffect="fade" modal="true"
@@ -347,73 +417,7 @@ xmlns:f="http://xmlns.jcp.org/jsf/core">
             </p:confirmDialog>
          </h:form>
         
-        <h:form id="officierDialogForm">
-            <p:dialog header="Officier" showEffect="fade"  modal="true"
-                      widgetVar="manageOfficierDialog" responsive="true" width="800">
-                <p:outputPanel id="manage-officier-content" class="ui-fluid">
-                <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-col-6">
-                    <p:outputLabel for="officierNom" styleClass="p-d-block">Nom</p:outputLabel>
-                    <p:inputText id="officierNom" value="#{parametresBacking.selectedOfficier.nom}"
-                                  required="true" styleClass="p-d-block"/>
-
-                    </div>
-                    <div class="p-field p-col-6">
-                    <p:outputLabel for="officierPrenom" styleClass="p-d-block">Prénoms</p:outputLabel>
-                    <p:inputText id="officierPrenom" value="#{parametresBacking.selectedOfficier.prenoms}"
-                                  required="true" styleClass="p-d-block"/>
-
-                    </div>
-                    
-                    <div class="p-field p-col-6">
-                    <p:outputLabel for="officierProfession" styleClass="p-d-block">Profession</p:outputLabel>
-                    <p:inputText id="officierProfession" value="#{parametresBacking.selectedOfficier.profession}"
-                                   styleClass="p-d-block"/>
-
-                    </div>
-                    
-                    <div class="p-field p-col-6">
-                    <p:outputLabel for="officierTitre" styleClass="p-d-block">Titre</p:outputLabel>
-                    <p:selectOneMenu id="officierTitre" value="#{parametresBacking.selectedOfficier.titre}" 
-                                  converter="omnifaces.SelectItemsConverter"
-                                  required="true"  styleClass="p-d-block">
-                        <f:selectItem itemValue="#{null}" itemLabel="-- selectionnez un titre --" />
-                        <f:selectItems value="#{parametresBacking.titres}" var="titre" 
-                                       itemLabel="#{titre.libelle}" itemValue="#{titre.code}"/>
-                    </p:selectOneMenu>
-                    
-
-                    </div>
-                    
-                    <div class="p-field p-col-6">
-                    <p:outputLabel for="officierActif" styleClass="p-d-block">Actif ?</p:outputLabel>
-                    <p:toggleSwitch id="officierActif" value="#{parametresBacking.selectedOfficier.actif}"
-                                    required="true" styleClass="p-d-block"/>
-                  
-                    </div>
-                    
-                    
-                </div>
-                <div class="ui-fluid p-formgrid p-grid">
-                    <div class="p-field p-col">
-                        <p:commandButton id="createOfficierCommandButton" value="Valider" 
-                                         action="#{parametresBacking.enregistrerOfficier()}"
-                                         oncomplete="PF('manageOfficierDialog').hide()"
-                                         update=":paramTabView:officierForm:officierDataTable"/>
-                    </div>
-                </div>
-
-              </p:outputPanel>        
-            </p:dialog>
-            <p:confirmDialog widgetVar="deleteOfficierDialog" showEffect="fade" width="300"
-                         message="Supprimer l'officier ?" header="Confirmation" severity="warn">
-                <p:commandButton value="Oui" icon="pi pi-check" actionListener="#{parametresBacking.deleteOfficier}"
-                                 process="@this" oncomplete="PF('deleteOfficierDialog').hide()"
-                                 update=":paramTabView:officierForm:officierDataTable messageForm"/>
-                <p:commandButton value="Non" styleClass="ui-button-secondary" icon="pi pi-times"
-                                 onclick="PF('deleteOfficierDialog').hide()"/>
-            </p:confirmDialog>
-         </h:form>
+       
         
     </ui:define>
 

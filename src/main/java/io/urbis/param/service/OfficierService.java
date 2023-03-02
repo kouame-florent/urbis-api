@@ -5,6 +5,7 @@
  */
 package io.urbis.param.service;
 
+import io.quarkus.panache.common.Sort;
 import io.urbis.param.domain.OfficierEtatCivil;
 import io.urbis.param.domain.TitreOfficier;
 import io.urbis.param.dto.OfficierEtatCivilDto;
@@ -88,7 +89,7 @@ public class OfficierService {
     }
     
     public List<OfficierEtatCivilDto> findAll(){
-        Stream<OfficierEtatCivil> officiers = OfficierEtatCivil.findAll().stream();
+        Stream<OfficierEtatCivil> officiers = OfficierEtatCivil.streamAll(Sort.by("actif").descending().and("titre").and("nom"));
         return officiers.map(OfficierService::mapToDto).collect(Collectors.toList());      
         
     }

@@ -207,6 +207,12 @@ public class EditerBacking extends BaseBacking implements Serializable{
     
     private MentionAnnulationDto annulationDto = new MentionAnnulationDto();
     private MentionAnnulationDto selectedMentionAnnulation;
+    
+    
+    public String pageTitle(){
+        return "Actes de naissance";
+    }
+    
    
     
     @PostConstruct

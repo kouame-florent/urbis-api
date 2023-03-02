@@ -157,6 +157,10 @@ public class EditerBacking extends BaseBacking implements Serializable{
                 defaultParams();
                 registreDto = registreService.findById(registreID);
             }
+            case ANNULATION -> {
+                defaultParams();
+                registreDto = registreService.findById(registreID);
+            }
         }
      
     }
@@ -219,6 +223,11 @@ public class EditerBacking extends BaseBacking implements Serializable{
         PrimeFaces.current().dialog().closeDynamic(operation.NO_OP);
     }
     
+    public void annuler(){
+        registreService.annulerRegistre(registreID, registreDto.getMotifAnnulation());
+        PrimeFaces.current().dialog().closeDynamic(Operation.ANNULATION);
+    }
+    
     public boolean renderedCreerButton(){
         LOG.log(Level.INFO,"---RENDERED CURRENT OPERATION : {0}",operation);
         if(operation != null){
@@ -238,6 +247,14 @@ public class EditerBacking extends BaseBacking implements Serializable{
         return false;
     }
     
+    public boolean renderedAnnulerButton(){
+        if(operation != null){
+            return operation == Operation.ANNULATION && 
+                    registreDto.getStatut().equals(StatutRegistre.VALIDE.name());
+        }
+        
+        return false;
+    }
     
     public List<TypeRegistreDto> getTypesRegistre() {
         return typesRegistre;
